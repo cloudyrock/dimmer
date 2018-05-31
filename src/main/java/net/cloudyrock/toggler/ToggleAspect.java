@@ -11,17 +11,17 @@ import org.aspectj.lang.annotation.After;
 public class ToggleAspect {
 
     @Pointcut("@annotation(toggleAnnotation) && execution(* *(..))")
-    public void annotationPointCutDefinition(ToggledOFF toggleAnnotation){
+    public void annotationPointCutDefinition(ToggleOff toggleAnnotation){
     }
 
     @Around("annotationPointCutDefinition(toggleAnnotation)")
-    public Object aroundAdvice(ProceedingJoinPoint joinPoint, ToggledOFF toggleAnnotation) throws Throwable {
+    public Object aroundAdvice(ProceedingJoinPoint joinPoint, ToggleOff toggleAnnotation) throws Throwable {
         System.out.println("AROUND ADVICE");
         return joinPoint.proceed();
     }
 
     @After("annotationPointCutDefinition(toggleAnnotation)")
-    public void printNewLine(JoinPoint pointcut, ToggledOFF toggleAnnotation){
+    public void printNewLine(JoinPoint pointcut, ToggleOff toggleAnnotation){
         System.out.println("AFTER");
     }
 }

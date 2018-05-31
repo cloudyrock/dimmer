@@ -10,6 +10,8 @@ public class YourAspectTest {
         DummyClass d = new DummyClass();
         d.annotatedMethod();
         System.out.println("\n\n\n\n\n");
+        d.annotatedMethod2();
+        System.out.println("\n\n\n\n\n");
         d.notAnnotatedMethod();
 
     }

@@ -51,6 +51,7 @@
                         <execution>
                             <goals>
                                 <goal>compile</goal>
+                                <goal>test-compile</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -58,9 +59,6 @@
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>2.5.5</version>
-                    <!--<configuration>-->
-                        <!--<appendAssemblyId>false</appendAssemblyId>-->
-                    <!--</configuration>-->
                     <executions>
                         <execution>
                             <id>cloudyrock-toggler-assembly_id</id>
