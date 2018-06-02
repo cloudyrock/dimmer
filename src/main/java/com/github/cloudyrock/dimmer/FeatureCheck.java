@@ -1,4 +1,4 @@
-package net.cloudyrock.toggler;
+package com.github.cloudyrock.dimmer;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ToggleOffAndThrow {
-    Class<? extends RuntimeException> value() default TogglerInvocationException.class;
+public @interface FeatureCheck {
+
+    String feature();
 
 }

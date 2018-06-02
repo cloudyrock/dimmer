@@ -1,4 +1,4 @@
-package net.cloudyrock.toggler;
+package com.github.cloudyrock.dimmer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -6,23 +6,25 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public class TogglerConfiguration {
+//TODO: This implementation is static. Makes sense right now but may not be as convenient
+//TODO when injecting dependencies, if needed
+public class DimmerConfiguration {
 
-    private static final Map<String, Function<FeatureInvocation, Object>> handlersMap =
+    private static final Map<String, Function<FeatureInvocation, Object>> behavioursMap =
             new ConcurrentHashMap<>();
 
-    public static boolean toggleOffWithBehaviour(
+    public static boolean featureOffWithBehaviour(
             String featureId,
             Function<FeatureInvocation, Object> behaviour) {
         checkArgument(behaviour, "behaviour");
         return putBehaviour(featureId, behaviour);
     }
 
-    public static boolean toggleOffWithDefaultException(String featureId) {
-        return toggleOffWithException(featureId, TogglerInvocationException.class);
+    public static boolean featureOffWithDefaultException(String featureId) {
+        return featureOffWithException(featureId, DimmerInvocationException.class);
     }
 
-    public static boolean toggleOffWithException(
+    public static boolean featureOffWithException(
             String featureId,
             Class<? extends RuntimeException> exceptionType) {
 
@@ -32,7 +34,7 @@ public class TogglerConfiguration {
             ex = exceptionType.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                 InvocationTargetException e) {
-            throw new TogglerConfigurationException(e);
+            throw new DimmerConfigException(e);
         }
 
         return putBehaviour(featureId, signature -> {
@@ -40,7 +42,7 @@ public class TogglerConfiguration {
         });
     }
 
-    public static boolean toggleOffWithValue(String featureId, Object valueToReturn) {
+    public static boolean featureOffWithValue(String featureId, Object valueToReturn) {
 
         return putBehaviour(featureId, signature -> valueToReturn);
     }
@@ -53,16 +55,16 @@ public class TogglerConfiguration {
     }
 
     static boolean contains(String feature) {
-        return handlersMap.containsKey(feature);
+        return behavioursMap.containsKey(feature);
     }
 
     static Function<FeatureInvocation, Object> getBehaviour(String feature) {
-        return handlersMap.get(feature);
+        return behavioursMap.get(feature);
     }
 
     private static boolean putBehaviour(String featureId,
-                                        Function<FeatureInvocation, Object> handler) {
+                                        Function<FeatureInvocation, Object> behaviour) {
         checkArgument(featureId, "featureId");
-        return handlersMap.putIfAbsent(featureId, handler) == null;
+        return behavioursMap.putIfAbsent(featureId, behaviour) == null;
     }
 }

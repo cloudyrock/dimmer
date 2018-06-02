@@ -1,4 +1,5 @@
-package net.cloudyrock.toggler;
+package com.github.cloudyrock.dimmer;
+
 
 public class FeatureInvocation {
     private final String methodName;
@@ -9,6 +10,7 @@ public class FeatureInvocation {
         this.methodName = methodName;
         this.declaringType = declaringType;
         this.args = args;
+
     }
 
     public String getMethodName() {
