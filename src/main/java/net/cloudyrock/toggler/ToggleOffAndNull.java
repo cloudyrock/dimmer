@@ -7,8 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ToggleCheck {
-
-    String feature();
-
+public @interface ToggleOffAndNull {
 }

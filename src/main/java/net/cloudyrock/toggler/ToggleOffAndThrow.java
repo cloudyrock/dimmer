@@ -7,5 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface ToggleOff {
+public @interface ToggleOffAndThrow {
+    Class<? extends RuntimeException> value() default TogglerInvocationException.class;
+
 }
