@@ -13,6 +13,7 @@ public class DimmerConfiguration {
     private static final Map<String, Function<FeatureInvocation, Object>> behavioursMap =
             new ConcurrentHashMap<>();
 
+    //TODO: Java doc to specify whatever the function returns, must be compatible with the real method
     public static boolean featureOffWithBehaviour(
             String featureId,
             Function<FeatureInvocation, Object> behaviour) {
@@ -42,6 +43,7 @@ public class DimmerConfiguration {
         });
     }
 
+    //TODO: Java doc to specify whatever the value's type is, must be compatible with the real method
     public static boolean featureOffWithValue(String featureId, Object valueToReturn) {
 
         return putBehaviour(featureId, signature -> valueToReturn);
