@@ -1,11 +1,26 @@
-
-- Handle expception in Aspect when the returned object doesn't match the real method's signature
+FEATURES
+- Handle exceptions in Aspect when the returned object doesn't match the real method's signature
 - Add returning type to FeatureInvocation
 - @FeatureOffXXX precedes @FeatureCheck → Put in README and JavaDoc
 - Make DimmerConfiguration non static???
 - Generic support for environments
 - Provide configuration for Spring as well as stand alone apps → this should be a separated library
     - Spring environment
+- Be able to clean feature configuration. This will allow runtime configuration. But won’t survived though execution(no persisted)
+- Provide enough information to the exception: class, method, parameters, name of feature, etc.
+
+- Persist configuration? → Challenges
+    - store/load functions
+    - Different types of database
+    - Different frameworks
+
+
+
+
+OPS, MANAGEMENT, ETC
+- Configure GITHUB: PR requirements, etc.
+- publish Maven repository
+- Travis
 - JavaDoc
 - README
     - Description
@@ -18,18 +33,6 @@
         - Test method names
         - Final modifier?
 
-
-- publish Maven repository
-- Travis
-- Be able to clean feature configuration. This will allow runtime configuration. But won’t survived though execution(no persisted)
-- Provide enough information to the exception: class, method, parameters, name of feature, etc.
-
-- Persist configuration? → Challenges
-    - store/load functions
-    - Different types of database
-    - Different frameworks
-
-
-- Technical questions
-    - When not using Spring, pom has to be configured by adding aspectj-maven-plugin. Does this allow to add other aspect libraries?
-    - Problems with Lombock and other aspectj libraries
+QUESTIONS
+- When not using Spring, pom has to be configured by adding aspectj-maven-plugin. Does this allow to add other aspect libraries?
+- Problems with Lombock and other aspectj libraries
