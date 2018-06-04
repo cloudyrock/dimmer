@@ -5,6 +5,7 @@ FEATURES
 - @FeatureOffXXX precedes @FeatureCheck → Put in README and JavaDoc
 - Make DimmerConfiguration non static???
 - Generic support for environments
+- Camel support...maybe just providing a Procesor
 - Provide configuration for Spring as well as stand alone apps → this should be a separated library
     - Spring environment
 - Be able to clean feature configuration. This will allow runtime configuration. But won’t survived though execution(no persisted)
