@@ -25,6 +25,7 @@ public class DimmerConfiguration {
         return featureOffWithException(featureId, DimmerInvocationException.class);
     }
 
+    //exceptionType must have an empty constructor
     public static boolean featureOffWithException(
             String featureId,
             Class<? extends RuntimeException> exceptionType) {
