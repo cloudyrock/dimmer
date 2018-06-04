@@ -13,6 +13,7 @@ public @interface FeatureOff {
 
     FeatureOffBehaviour value() default THROW_EXCEPTION;
 
+    //exception must have an empty constructor
     Class<? extends RuntimeException> exception() default DimmerInvocationException.class;
 
 }
