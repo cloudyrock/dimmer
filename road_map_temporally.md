@@ -1,6 +1,7 @@
 # FEATURES
 - Handle exceptions in Aspect when the returned object doesn't match the real method's signature
 - Replace String with a more static way of passing feature to @FeatureCheck: enum(problem enums cannot be casted) or something
+- allow to override default Exception, instead DimmerInvocationException
 - Add returning type to FeatureInvocation
 - @FeatureOffXXX precedes @FeatureCheck → Put in README and JavaDoc
 - Make DimmerConfiguration non static???
