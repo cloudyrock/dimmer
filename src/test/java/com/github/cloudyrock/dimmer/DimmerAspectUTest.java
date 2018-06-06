@@ -20,7 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class DimmerAspectUTest {
+public class DimmerAspectUTest extends DimmerTestBase {
 
     private String feature;
 
@@ -52,10 +52,12 @@ public class DimmerAspectUTest {
         FeatureCheck featureCheck = mock(FeatureCheck.class);
         when(featureCheck.feature()).thenReturn(feature);
 
-        DimmerConfiguration.featureOffWithBehaviour(feature, behaviourMock);
+        dimmerConfiguration.featureOffWithBehaviour(feature, behaviourMock);
 
         //when
-        Object actualReturnedValue = new DimmerAspect()
+        final DimmerAspect dimmerAspect = new DimmerAspect();
+        dimmerAspect.setConfiguration(dimmerConfiguration);
+        Object actualReturnedValue = dimmerAspect
                 .featureCheckAdvice(jointPointMock, featureCheck);
 
         //then
@@ -82,8 +84,11 @@ public class DimmerAspectUTest {
         FeatureCheck featureCheck = mock(FeatureCheck.class);
         when(featureCheck.feature()).thenReturn(feature);
 
+        DimmerAspect dimmerAspect = new DimmerAspect();
+        dimmerAspect.setConfiguration(dimmerConfiguration);
+
         //when
-        Object actualReturnedValue = new DimmerAspect()
+        Object actualReturnedValue = dimmerAspect
                 .featureCheckAdvice(jointPointMock, featureCheck);
 
         //then

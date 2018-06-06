@@ -10,6 +10,12 @@ import java.util.function.Function;
 @Aspect
 public class DimmerAspect {
 
+    private DimmerConfiguration configuration;
+
+    void setConfiguration(DimmerConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
     @Pointcut("@annotation(featureCheckAnnotation) && execution(* *(..))")
     public void featureCheckPointCutDef(FeatureCheck featureCheckAnnotation) {
     }
@@ -22,10 +28,10 @@ public class DimmerAspect {
     public Object featureCheckAdvice(ProceedingJoinPoint joinPoint,
                                      FeatureCheck featureCheckAnn) throws Throwable {
 
-        if (DimmerConfiguration.contains(featureCheckAnn.feature())) {
+        if (configuration.contains(featureCheckAnn.feature())) {
 
             Function<FeatureInvocation, Object> behaviour =
-                    DimmerConfiguration.getBehaviour(featureCheckAnn.feature());
+                    configuration.getBehaviour(featureCheckAnn.feature());
             return behaviour.apply(generateFeatureInvocation(joinPoint));
 
         }
