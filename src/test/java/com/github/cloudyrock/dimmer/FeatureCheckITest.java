@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class FeatureCheckITest {
+public class FeatureCheckITest extends DimmerTestBase {
 
     private static final String REAL_VALUE = "real_value";
     private static final String FEATURE1 = "FEATURE1";
@@ -17,7 +17,7 @@ public class FeatureCheckITest {
     @Test
     public void featureOffWithBehaviour_return_mock_value() {
         String mock_value3 = "MOCK_VALUE3";
-        assertTrue(DimmerConfiguration.featureOffWithBehaviour(
+        assertTrue(dimmerConfiguration.featureOffWithBehaviour(
                 FEATURE1,
                 s -> mock_value3));
         assertEquals(mock_value3, new DummyFeatureCheckClass().feature1Method());
@@ -26,19 +26,19 @@ public class FeatureCheckITest {
     @Test
     public void featureOffWithValue_return_mock_value() {
         String mock_value1 = "MOCK_VALUE1";
-        assertTrue(DimmerConfiguration.featureOffWithValue(FEATURE3, mock_value1));
+        assertTrue(dimmerConfiguration.featureOffWithValue(FEATURE3, mock_value1));
         assertEquals(mock_value1, new DummyFeatureCheckClass().feature3Method());
     }
 
     @Test(expected = DimmerInvocationException.class)
     public void featureOffWithException_throws_exception() {
-        assertTrue(DimmerConfiguration.featureOffWithDefaultException(FEATURE2));
+        assertTrue(dimmerConfiguration.featureOffWithDefaultException(FEATURE2));
         new DummyFeatureCheckClass().feature2Method();
     }
 
     @Test
     public void featureOffWithValue_return_null_when_arg_is_null() {
-        assertTrue(DimmerConfiguration.featureOffWithValue(FEATURE5, null));
+        assertTrue(dimmerConfiguration.featureOffWithValue(FEATURE5, null));
         assertEquals(null, new DummyFeatureCheckClass().feature5Method());
     }
 
