@@ -6,8 +6,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-//TODO: This implementation is static. Makes sense right now but may not be as convenient
-//TODO when injecting dependencies, if needed
+//TODO: Move to non-static and inject it to Aspect
 public class DimmerConfiguration {
 
     private static final Map<String, Function<FeatureInvocation, Object>> behavioursMap =
