@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+import com.github.cloudyrock.dimmer.exceptions.DefaultException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +18,7 @@ public class FeatureCheckITest extends DimmerTestBase {
     @Test
     public void featureOffWithBehaviour_return_mock_value() {
         String mock_value3 = "MOCK_VALUE3";
-        assertTrue(dimmerConfiguration.featureOffWithBehaviour(
+        assertTrue(dimmerProcessor.featureWithBehaviour(
                 FEATURE1,
                 s -> mock_value3));
         assertEquals(mock_value3, new DummyFeatureCheckClass().feature1Method());
@@ -26,19 +27,19 @@ public class FeatureCheckITest extends DimmerTestBase {
     @Test
     public void featureOffWithValue_return_mock_value() {
         String mock_value1 = "MOCK_VALUE1";
-        assertTrue(dimmerConfiguration.featureOffWithValue(FEATURE3, mock_value1));
+        assertTrue(dimmerProcessor.featureWithValue(FEATURE3, mock_value1));
         assertEquals(mock_value1, new DummyFeatureCheckClass().feature3Method());
     }
 
-    @Test(expected = DimmerInvocationException.class)
+    @Test(expected = DefaultException.class)
     public void featureOffWithException_throws_exception() {
-        assertTrue(dimmerConfiguration.featureOffWithDefaultException(FEATURE2));
+        assertTrue(dimmerProcessor.featureWithDefaultException(FEATURE2));
         new DummyFeatureCheckClass().feature2Method();
     }
 
     @Test
     public void featureOffWithValue_return_null_when_arg_is_null() {
-        assertTrue(dimmerConfiguration.featureOffWithValue(FEATURE5, null));
+        assertTrue(dimmerProcessor.featureWithValue(FEATURE5, null));
         assertEquals(null, new DummyFeatureCheckClass().feature5Method());
     }
 

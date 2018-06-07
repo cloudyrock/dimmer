@@ -5,15 +5,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
-import java.util.function.Function;
-
 @Aspect
 public class DimmerAspect {
 
-    private DimmerConfiguration configuration;
+    private DimmerProcessor dimmerProcessor;
 
-    void setConfiguration(DimmerConfiguration configuration) {
-        this.configuration = configuration;
+    void setDimmerProcessor(DimmerProcessor dimmerProcessor) {
+        this.dimmerProcessor = dimmerProcessor;
     }
 
     @Pointcut("@annotation(featureCheckAnnotation) && execution(* *(..))")
@@ -27,27 +25,18 @@ public class DimmerAspect {
     @Around("featureCheckPointCutDef(featureCheckAnn)")
     public Object featureCheckAdvice(ProceedingJoinPoint joinPoint,
                                      FeatureCheck featureCheckAnn) throws Throwable {
-
-        if (configuration.contains(featureCheckAnn.feature())) {
-
-            Function<FeatureInvocation, Object> behaviour =
-                    configuration.getBehaviour(featureCheckAnn.feature());
-            return behaviour.apply(generateFeatureInvocation(joinPoint));
-
-        }
-        return joinPoint.proceed();
+        return dimmerProcessor.runBehaviourIfExistsOrReaInvocation(
+                featureCheckAnn.feature(),
+                generateFeatureInvocation(joinPoint),
+                joinPoint
+        );
     }
 
     @Around("featureOffPointCutDef(featureOffAnn)")
     public Object featureOffAdvice(FeatureOff featureOffAnn) throws Throwable {
-        switch (featureOffAnn.value()) {
-            case RETURN_NULL:
-                return null;
-
-            case THROW_EXCEPTION:
-            default:
-                throw featureOffAnn.exception().getConstructor().newInstance();
-        }
+        return dimmerProcessor.runFeatureOff(
+                featureOffAnn.value(),
+                featureOffAnn.exception());
 
     }
 

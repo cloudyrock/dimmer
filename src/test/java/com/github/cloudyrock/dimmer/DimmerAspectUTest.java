@@ -38,25 +38,18 @@ public class DimmerAspectUTest extends DimmerTestBase {
         when(behaviourMock.apply(any(FeatureInvocation.class)))
                 .thenReturn(expectedReturnedValue);
 
-        Signature signatureMock = mock(Signature.class);
         String methodName = "METHOD_NAME";
-        when(signatureMock.getName()).thenReturn(methodName);
-        when(signatureMock.getDeclaringType()).thenReturn(ArrayList.class);
-
         Object[] expectedArgs = {new Object(), new Object()};
-
-        ProceedingJoinPoint jointPointMock = mock(ProceedingJoinPoint.class);
-        when(jointPointMock.getSignature()).thenReturn(signatureMock);
-        when(jointPointMock.getArgs()).thenReturn(expectedArgs);
+        ProceedingJoinPoint jointPointMock = mockJoinPoint(methodName, expectedArgs);
 
         FeatureCheck featureCheck = mock(FeatureCheck.class);
         when(featureCheck.feature()).thenReturn(feature);
 
-        dimmerConfiguration.featureOffWithBehaviour(feature, behaviourMock);
+        dimmerProcessor.featureWithBehaviour(feature, behaviourMock);
 
         //when
         final DimmerAspect dimmerAspect = new DimmerAspect();
-        dimmerAspect.setConfiguration(dimmerConfiguration);
+        dimmerAspect.setDimmerProcessor(dimmerProcessor);
         Object actualReturnedValue = dimmerAspect
                 .featureCheckAdvice(jointPointMock, featureCheck);
 
@@ -74,18 +67,32 @@ public class DimmerAspectUTest extends DimmerTestBase {
         }
     }
 
+    private ProceedingJoinPoint mockJoinPoint(String methodName, Object[] expectedArgs) {
+        Signature signatureMock = mock(Signature.class);
+        when(signatureMock.getName()).thenReturn(methodName);
+        when(signatureMock.getDeclaringType()).thenReturn(ArrayList.class);
+
+        ProceedingJoinPoint jointPointMock = mock(ProceedingJoinPoint.class);
+        when(jointPointMock.getSignature()).thenReturn(signatureMock);
+        when(jointPointMock.getArgs()).thenReturn(expectedArgs);
+        return jointPointMock;
+    }
+
     @Test
     public void featureCheckAdvice_execute_real_method_when_not_feature_off()
             throws Throwable {
         //given
-        ProceedingJoinPoint jointPointMock = mock(ProceedingJoinPoint.class);
+        String methodName = "METHOD_NAME";
+        Object[] expectedArgs = {new Object(), new Object()};
+        ProceedingJoinPoint jointPointMock = mockJoinPoint(methodName, expectedArgs);
+
         Object expectedReturnedValue = "returnedValue";
         when(jointPointMock.proceed()).thenReturn(expectedReturnedValue);
         FeatureCheck featureCheck = mock(FeatureCheck.class);
         when(featureCheck.feature()).thenReturn(feature);
 
         DimmerAspect dimmerAspect = new DimmerAspect();
-        dimmerAspect.setConfiguration(dimmerConfiguration);
+        dimmerAspect.setDimmerProcessor(dimmerProcessor);
 
         //when
         Object actualReturnedValue = dimmerAspect
@@ -98,15 +105,21 @@ public class DimmerAspectUTest extends DimmerTestBase {
 
     @Test
     public void featureOff_return_null_when_RETURN_NULL() throws Throwable {
+
+        DimmerAspect dimmerAspect = new DimmerAspect();
+        dimmerAspect.setDimmerProcessor(dimmerProcessor);
         FeatureOff featureOffAnn = mock(FeatureOff.class);
         when(featureOffAnn.value()).thenReturn(RETURN_NULL);
-        assertNull(new DimmerAspect().featureOffAdvice(featureOffAnn));
+        assertNull(dimmerAspect.featureOffAdvice(featureOffAnn));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void featureOff_throw_exception_when_THROW_EXCEPTION() throws Throwable {
+
+        DimmerAspect dimmerAspect = new DimmerAspect();
+        dimmerAspect.setDimmerProcessor(dimmerProcessor);
         FeatureOff featureOffAnn = getFeatureOffException();
-        assertNull(new DimmerAspect().featureOffAdvice(featureOffAnn));
+        assertNull(dimmerAspect.featureOffAdvice(featureOffAnn));
     }
 
     private FeatureOff getFeatureOffException() {
