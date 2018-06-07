@@ -1,13 +1,15 @@
 package com.github.cloudyrock.dimmer;
 
+import com.github.cloudyrock.dimmer.exceptions.DefaultException;
+import com.github.cloudyrock.dimmer.exceptions.DummyException;
 import org.junit.Test;
 
 import static com.github.cloudyrock.dimmer.FeatureOffBehaviour.RETURN_NULL;
 import static org.junit.Assert.assertNull;
 
-public class FeatureOffITest {
+public class FeatureOffITest extends DimmerTestBase {
 
-    @Test(expected = DimmerInvocationException.class)
+    @Test(expected = DefaultException.class)
     public void featureOff_throw_default_ex_when_no_params() {
         new DummyFeatureOffClass().throwDefaultException();
     }

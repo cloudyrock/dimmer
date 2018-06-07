@@ -1,9 +1,15 @@
 package com.github.cloudyrock.dimmer;
 
+import com.github.cloudyrock.dimmer.exceptions.DefaultException;
+
 public abstract class DimmerTestBase {
-    protected static DimmerConfiguration dimmerConfiguration;
+    protected static DimmerProcessor dimmerProcessor;
+
+
 
     static {
-        dimmerConfiguration = DimmerConfiguration.singletonBuilder.build();
+        dimmerProcessor = DimmerProcessor.builder()
+                .setDefaultExceptionType(DefaultException.class)
+                .build();
     }
 }
