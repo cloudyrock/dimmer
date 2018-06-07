@@ -1,7 +1,7 @@
 package com.github.cloudyrock.dimmer;
 
 public class DimmerConfigException extends RuntimeException{
-    public DimmerConfigException(ReflectiveOperationException e) {
+    public DimmerConfigException(Exception e) {
         super(e);
     }
 }
