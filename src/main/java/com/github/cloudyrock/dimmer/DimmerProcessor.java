@@ -3,9 +3,12 @@ package com.github.cloudyrock.dimmer;
 import org.aspectj.lang.Aspects;
 import org.aspectj.lang.ProceedingJoinPoint;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+
+import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
 
 public class DimmerProcessor {
 
@@ -63,33 +66,74 @@ public class DimmerProcessor {
     private boolean putBehaviour(String featureId,
                                  Function<FeatureInvocation, ? extends Object> behaviour) {
         Util.checkArgument(featureId, "featureId");
+        if (ALWAYS_OFF.equals(featureId)) {
+            throw new IllegalArgumentException(
+                    String.format("Value %s for feature not allowed", ALWAYS_OFF)
+            );
+        }
         return behaviours.putIfAbsent(featureId, behaviour) == null;
     }
 
-    Object runBehaviourIfExistsOrReaInvocation(String feature,
-                                               FeatureInvocation featureInvocation,
-                                               ProceedingJoinPoint realMethod) throws Throwable {
+    Object executeDimmerFeature(
+            DimmerFeature dimmerFeature,
+            FeatureInvocation featureInvocation,
+            ProceedingJoinPoint realMethod) throws Throwable {
+
+        if (dimmerFeature.runRealMethod()) {
+            return realMethod.proceed();
+        } else {
+            switch (dimmerFeature.value()) {
+                case ALWAYS_OFF:
+                    return processAlwaysOff(dimmerFeature);
+                default:
+                    return processFeature(dimmerFeature, featureInvocation, realMethod);
+            }
+        }
+
+    }
+
+    private Object processAlwaysOff(DimmerFeature dimmerFeature) throws Exception {
+        switch (dimmerFeature.behaviour()) {
+            case RETURN_NULL:
+                return null;
+            case THROW_EXCEPTION:
+            case DEFAULT:
+            default:
+                return throwException(dimmerFeature.exception());
+        }
+    }
+
+    private Object processFeature(DimmerFeature dimmerFeature,
+                                  FeatureInvocation featureInvocation,
+                                  ProceedingJoinPoint realMethod) throws Throwable {
+        final String feature = dimmerFeature.value();
         if (behaviours.containsKey(feature)) {
-            final Function<FeatureInvocation, ? extends Object> function =
-                    behaviours.get(feature);
-            Object r = function.apply(featureInvocation);
-            return r;
+            switch (dimmerFeature.behaviour()) {
+                case RETURN_NULL:
+                    return null;
+                case THROW_EXCEPTION:
+                    throwException(dimmerFeature.exception());
+                case DEFAULT:
+                default:
+                    return behaviours.get(feature).apply(featureInvocation);
+            }
         } else {
             return realMethod.proceed();
         }
     }
 
-    Object runFeatureOff(FeatureOffBehaviour featureOffBehaviour,
-                         Class<? extends RuntimeException> exceptionType) throws Throwable {
-        switch (featureOffBehaviour) {
-            case RETURN_NULL:
-                return null;
-
-            case THROW_EXCEPTION:
-            default:
-                throw (exceptionType.equals(NULL_EXCEPTION.class)
-                        ? defaultExceptionType
-                        : exceptionType).getConstructor().newInstance();
+    private Object throwException(Class<? extends RuntimeException> exceptionTypeFromAn) {
+        try {
+            Class<? extends RuntimeException> exType =
+                    exceptionTypeFromAn != DimmerFeature.NULL_EXCEPTION.class
+                            ? exceptionTypeFromAn
+                            : defaultExceptionType;
+            throw exType.getConstructor().newInstance();
+        } catch (InstantiationException |
+                IllegalAccessException |
+                InvocationTargetException |
+                NoSuchMethodException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -117,11 +161,7 @@ public class DimmerProcessor {
         }
 
         public boolean isInitialised() {
-            return getInstance() != null;
-        }
-
-        public DimmerProcessor getInstance() {
-            return instance;
+            return instance != null;
         }
 
         public synchronized DimmerProcessor build() {
@@ -133,6 +173,4 @@ public class DimmerProcessor {
         }
     }
 
-    static class NULL_EXCEPTION extends RuntimeException {
-    }
 }

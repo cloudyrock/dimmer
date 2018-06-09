@@ -14,30 +14,18 @@ public class DimmerAspect {
         this.dimmerProcessor = dimmerProcessor;
     }
 
-    @Pointcut("@annotation(featureCheckAnnotation) && execution(* *(..))")
-    public void featureCheckPointCutDef(FeatureCheck featureCheckAnnotation) {
+    @Pointcut("@annotation(dimmerFeatureAnnotation) && execution(* *(..))")
+    public void dimmerFeaturePointCutDef(DimmerFeature dimmerFeatureAnnotation) {
     }
 
-    @Pointcut("@annotation(featureOffAnnotation) && execution(* *(..))")
-    public void featureOffPointCutDef(FeatureOff featureOffAnnotation) {
-    }
-
-    @Around("featureCheckPointCutDef(featureCheckAnn)")
-    public Object featureCheckAdvice(ProceedingJoinPoint joinPoint,
-                                     FeatureCheck featureCheckAnn) throws Throwable {
-        return dimmerProcessor.runBehaviourIfExistsOrReaInvocation(
-                featureCheckAnn.feature(),
+    @Around("dimmerFeaturePointCutDef(dimmerFeatureAnn)")
+    public Object dimmerFeatureAdvice(ProceedingJoinPoint joinPoint,
+                                      DimmerFeature dimmerFeatureAnn) throws Throwable {
+        return dimmerProcessor.executeDimmerFeature(
+                dimmerFeatureAnn,
                 generateFeatureInvocation(joinPoint),
                 joinPoint
         );
-    }
-
-    @Around("featureOffPointCutDef(featureOffAnn)")
-    public Object featureOffAdvice(FeatureOff featureOffAnn) throws Throwable {
-        return dimmerProcessor.runFeatureOff(
-                featureOffAnn.value(),
-                featureOffAnn.exception());
-
     }
 
     private FeatureInvocation generateFeatureInvocation(ProceedingJoinPoint joinPoint) {

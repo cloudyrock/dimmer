@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-
 public class FeatureInvocation {
     private final String methodName;
     private final Class declaringType;
@@ -24,7 +23,5 @@ public class FeatureInvocation {
     public Object[] getArgs() {
         return args;
     }
-
-
 
 }
