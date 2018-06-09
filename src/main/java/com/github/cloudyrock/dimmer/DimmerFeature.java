@@ -5,16 +5,24 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.github.cloudyrock.dimmer.DimmerProcessor.NULL_EXCEPTION;
-import static com.github.cloudyrock.dimmer.FeatureOffBehaviour.THROW_EXCEPTION;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface FeatureOff {
+public @interface DimmerFeature {
 
-    FeatureOffBehaviour value() default THROW_EXCEPTION;
+    String value();
 
-    //exception must have an empty constructor
+    DimmerBehaviour behaviour() default DimmerBehaviour.DEFAULT;
+
     Class<? extends RuntimeException> exception() default NULL_EXCEPTION.class;
 
+
+    boolean disabled() default false;
+
+    String ALWAYS_OFF = "ALWAYS_OFF";
+
+    enum DimmerBehaviour {DEFAULT, THROW_EXCEPTION, RETURN_NULL}
+
+    class NULL_EXCEPTION extends RuntimeException {
+    }
 }
