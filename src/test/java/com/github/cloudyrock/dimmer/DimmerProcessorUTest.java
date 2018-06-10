@@ -2,6 +2,8 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DefaultException;
 import com.github.cloudyrock.dimmer.exceptions.DummyException;
+import com.github.cloudyrock.dimmer.exceptions.DummyNoConstructorException;
+import com.github.cloudyrock.dimmer.exceptions.ExceptionWithFeatureInvocation;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,11 +13,13 @@ import org.mockito.Mock;
 
 import java.util.UUID;
 import java.util.function.Function;
+import static org.hamcrest.Matchers.hasProperty;
 
 import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
 import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.DEFAULT;
 import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.RETURN_NULL;
 import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.THROW_EXCEPTION;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.given;
@@ -37,6 +41,9 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     @Mock
     private Function<FeatureInvocation, String> behaviour;
 
+    @Mock
+    private FeatureInvocation featureInvocation;
+
     private String feature;
 
     @Before
@@ -55,7 +62,9 @@ public class DimmerProcessorUTest extends DimmerTestBase {
         given(dimmerFeature.exception()).willReturn((Class) ex);
     }
 
-    private void givenDimmerFeature(String value, DimmerFeature.DimmerBehaviour behaviour, boolean disabled) {
+    private void givenDimmerFeature(String value,
+                                    DimmerFeature.DimmerBehaviour behaviour,
+                                    boolean disabled) {
         givenDimmerFeatureWithEx(value, behaviour, disabled,
                 DimmerFeature.NULL_EXCEPTION.class);
     }
@@ -151,7 +160,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_FEATURE_DEFAULT_and_enabled_should_executed_registered_behaviour() throws Throwable {
+    public void when_FEATURE_DEFAULT_and_enabled_should_executed_registered_behaviour()
+            throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature, DEFAULT, false);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
@@ -160,7 +170,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_featureWithValue_and_enabled_should_executed_return_value() throws Throwable {
+    public void when_featureWithValue_and_enabled_should_executed_return_value()
+            throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature, DEFAULT, false);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
@@ -169,15 +180,40 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test(expected = DefaultException.class)
-    public void when_featureWithDefaultException_and_enabled_should_throw_default_exception() throws Throwable {
+    public void
+    when_featureWithDefaultException_and_enabled_should_throw_default_exception()
+            throws Throwable {
         dimmerProcessor.featureWithDefaultException(feature);
         givenDimmerFeature(feature, DEFAULT, false);
-        dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, null, null);
+        dimmerProcessor.executeDimmerFeature(dimmerFeature, null, null);
+    }
+
+    @Test(expected = DimmerConfigException.class)
+    public void
+    when_exception_doesnt_provide_right_constructors_should_DimmerConfigException()
+            throws Throwable {
+        dimmerProcessor.featureWithDefaultException(feature);
+        givenDimmerFeatureWithEx(feature, THROW_EXCEPTION, false,
+                DummyNoConstructorException.class);
+        dimmerProcessor.executeDimmerFeature(dimmerFeature, null, null);
     }
 
     @Test
-    public void when_featureWithBehaviour_and_enabled_should_execute_behaviour_with_featureInvocation() throws Throwable {
+    public void when_exception_with_featureInvocation() throws Throwable {
+        dimmerProcessor.featureWithDefaultException(feature);
+        givenDimmerFeatureWithEx(feature, THROW_EXCEPTION, false,
+                ExceptionWithFeatureInvocation.class);
+
+        exception.expect(ExceptionWithFeatureInvocation.class);
+        exception.expect(hasProperty("featureInvocation", is(featureInvocation)));
+
+        dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocation, null);
+    }
+
+    @Test
+    public void
+    when_featureWithBehaviour_and_enabled_should_execute_behaviour_with_featureInvocation()
+            throws Throwable {
 
         FeatureInvocation featureInvocationMock = mock(FeatureInvocation.class);
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("BEHAVIOUR");
@@ -225,6 +261,7 @@ public class DimmerProcessorUTest extends DimmerTestBase {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
                 String.format("Value %s for feature not allowed", ALWAYS_OFF));
+
 
         dimmerProcessor.featureWithBehaviour(ALWAYS_OFF, s -> "");
     }

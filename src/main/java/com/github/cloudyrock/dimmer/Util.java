@@ -2,7 +2,7 @@ package com.github.cloudyrock.dimmer;
 
 import java.util.Objects;
 
-public final class Util {
+final class Util {
 
     static void checkArgument(Object arg, String argName) {
         if (Objects.isNull(arg)) {
@@ -10,4 +10,5 @@ public final class Util {
                     String.format("arg %s cannot be null or empty", argName));
         }
     }
+
 }
