@@ -15,7 +15,7 @@ import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.THROW_E
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-@Ignore
+
 public class DimmerAspectITest extends DimmerTestBase {
 
     private static final String REAL_VALUE = "real_value";
