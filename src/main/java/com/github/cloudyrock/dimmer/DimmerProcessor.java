@@ -15,6 +15,9 @@ import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
  *
  * Threadsafe.
  *
+ * @see Function
+ * @see DimmerConfigException
+ * @see FeatureInvocation
  * @author Antonio Perez Dieppa
  * @since 11/06/2018
  */
@@ -197,6 +200,7 @@ public class DimmerProcessor {
      * Singleton builder to configure (@{@link DimmerProcessor}).
      *
      * Threadsafe
+     * @see DimmerProcessor
      */
     public static class SingletonBuilder {
 
