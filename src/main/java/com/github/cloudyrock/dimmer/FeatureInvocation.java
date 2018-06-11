@@ -1,8 +1,25 @@
 package com.github.cloudyrock.dimmer;
 
+/**
+ * Represents method call with all its information.
+ *
+ * @author Antonio Perez Dieppa
+ * @since 11/06/2018
+ */
 public class FeatureInvocation {
+    /**
+     * Method's name
+     */
     private final String methodName;
+
+    /**
+     * Owner class of the method
+     */
     private final Class declaringType;
+
+    /**
+     * The arguments which the method was invoked with
+     */
     private final Object[] args;
 
     public FeatureInvocation(String methodName, Class declaringType, Object[] args) {
