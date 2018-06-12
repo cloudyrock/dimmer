@@ -86,5 +86,8 @@ public @interface DimmerFeature {
     enum DimmerBehaviour {DEFAULT, THROW_EXCEPTION, RETURN_NULL}
 
     class NULL_EXCEPTION extends RuntimeException {
+        private static final long serialVersionUID = 5913725645825359951L;
+
+        private NULL_EXCEPTION () {}
     }
 }
