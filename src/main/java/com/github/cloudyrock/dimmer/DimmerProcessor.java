@@ -3,7 +3,6 @@ package com.github.cloudyrock.dimmer;
 import org.aspectj.lang.Aspects;
 import org.aspectj.lang.ProceedingJoinPoint;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -24,6 +23,7 @@ public class DimmerProcessor {
     }
 
     private DimmerProcessor(Class<? extends RuntimeException> defaultExceptionType) {
+        ExceptionUtil.checkAndGetExceptionConstructorType(defaultExceptionType);
         this.defaultExceptionType = defaultExceptionType;
     }
 
@@ -44,23 +44,33 @@ public class DimmerProcessor {
             String featureId,
             Class<? extends RuntimeException> exceptionType) {
 
-        Util.checkArgument(exceptionType, "exceptionType");
-        final RuntimeException ex;
-        try {
-            ex = exceptionType.getConstructor().newInstance();
-        } catch (Exception e) {
-            throw new DimmerConfigException(e);
-        }
-
-        return putBehaviour(featureId, signature -> {
-            throw ex;
-        });
+        final ExceptionConstructorType constructorType =
+                ExceptionUtil.checkAndGetExceptionConstructorType(exceptionType);
+        return putBehaviour(featureId,
+                f -> ExceptionUtil.throwException(exceptionType, constructorType, f));
     }
 
     //TODO: Java doc to specify whatever the value's type is, must be compatible with the real method
     public boolean featureWithValue(String featureId, Object valueToReturn) {
-
         return putBehaviour(featureId, signature -> valueToReturn);
+    }
+
+    Object executeDimmerFeature(
+            DimmerFeature dimmerFeature,
+            FeatureInvocation featureInvocation,
+            ProceedingJoinPoint realMethod) throws Throwable {
+
+        if (dimmerFeature.runRealMethod()) {
+            return realMethod.proceed();
+        } else {
+            switch (dimmerFeature.value()) {
+                case ALWAYS_OFF:
+                    return processAlwaysOff(dimmerFeature, featureInvocation);
+                default:
+                    return processFeature(dimmerFeature, featureInvocation, realMethod);
+            }
+        }
+
     }
 
     private boolean putBehaviour(String featureId,
@@ -74,32 +84,18 @@ public class DimmerProcessor {
         return behaviours.putIfAbsent(featureId, behaviour) == null;
     }
 
-    Object executeDimmerFeature(
-            DimmerFeature dimmerFeature,
-            FeatureInvocation featureInvocation,
-            ProceedingJoinPoint realMethod) throws Throwable {
-
-        if (dimmerFeature.runRealMethod()) {
-            return realMethod.proceed();
-        } else {
-            switch (dimmerFeature.value()) {
-                case ALWAYS_OFF:
-                    return processAlwaysOff(dimmerFeature);
-                default:
-                    return processFeature(dimmerFeature, featureInvocation, realMethod);
-            }
-        }
-
-    }
-
-    private Object processAlwaysOff(DimmerFeature dimmerFeature) throws Exception {
+    private Object processAlwaysOff(DimmerFeature dimmerFeature,
+                                    FeatureInvocation featureInvocation) throws Exception {
         switch (dimmerFeature.behaviour()) {
             case RETURN_NULL:
                 return null;
             case THROW_EXCEPTION:
             case DEFAULT:
             default:
-                return throwException(dimmerFeature.exception());
+                return ExceptionUtil.checkAndThrowException(
+                        dimmerFeature.exception(),
+                        defaultExceptionType,
+                        featureInvocation);
         }
     }
 
@@ -112,28 +108,16 @@ public class DimmerProcessor {
                 case RETURN_NULL:
                     return null;
                 case THROW_EXCEPTION:
-                    throwException(dimmerFeature.exception());
+                    ExceptionUtil.checkAndThrowException(
+                            dimmerFeature.exception(),
+                            defaultExceptionType,
+                            featureInvocation);
                 case DEFAULT:
                 default:
                     return behaviours.get(feature).apply(featureInvocation);
             }
         } else {
             return realMethod.proceed();
-        }
-    }
-
-    private Object throwException(Class<? extends RuntimeException> exceptionTypeFromAn) {
-        try {
-            Class<? extends RuntimeException> exType =
-                    exceptionTypeFromAn != DimmerFeature.NULL_EXCEPTION.class
-                            ? exceptionTypeFromAn
-                            : defaultExceptionType;
-            throw exType.getConstructor().newInstance();
-        } catch (InstantiationException |
-                IllegalAccessException |
-                InvocationTargetException |
-                NoSuchMethodException e) {
-            throw new RuntimeException(e);
         }
     }
 
