@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+import com.github.cloudyrock.dimmer.displayname.DisplayName;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.junit.Before;
@@ -43,6 +44,7 @@ public class DimmerAspectUTest {
     }
 
     @Test
+    @DisplayName("Aspect should delegate to dimmerProcessor")
     public void aspect_delegate_dimmerProcessor_with_right_parameters() throws Throwable {
 
         final Object expectedReturnedValue = "returnedValue";

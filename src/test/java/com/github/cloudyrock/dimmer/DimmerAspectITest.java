@@ -2,7 +2,7 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DefaultException;
 import com.github.cloudyrock.dimmer.exceptions.DummyException;
-import org.junit.Ignore;
+import com.github.cloudyrock.dimmer.displayname.DisplayName;
 import org.junit.Test;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -14,7 +14,7 @@ import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.RETURN_
 import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.THROW_EXCEPTION;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
+import static org.junit.Assert.assertTrue;
 
 public class DimmerAspectITest extends DimmerTestBase {
 
@@ -33,31 +33,37 @@ public class DimmerAspectITest extends DimmerTestBase {
     };
 
     @Test(expected = DefaultException.class)
+    @DisplayName("Should throw default exception when ALWAYS_OFF and behaviour is DEFAULT")
     public void offAndDefault() {
         dummyClass.offAndDefault();
     }
 
     @Test
+    @DisplayName("Should return when ALWAYS_NULL and behaviour is RETURN_NULL")
     public void offAndNull() {
         assertNull(dummyClass.offAndNull());
     }
 
     @Test(expected = DefaultException.class)
+    @DisplayName("Should throw default exception when ALWAYS_OFF and behaviour is THROW_EXCEPTION")
     public void offAndDefaultException() {
         dummyClass.offAndDefaultException();
     }
 
     @Test(expected = DummyException.class)
+    @DisplayName("Should throw DummyException exception when ALWAYS_OFF and behaviour is THROW_EXCEPTION and exception is DummyException")
     public void offAndCustomException() {
         dummyClass.offAndCustomException();
     }
 
     @Test
+    @DisplayName("Should call real method when ALWAYS_OFF and runRealMethod is true")
     public void offAndDisabled() {
         assertEquals(REAL_VALUE, dummyClass.offAndDisabled());
     }
 
     @Test
+    @DisplayName("Should run behaviour when FEATURE and behaviour is DEFAULT")
     public void featureAndDefault() {
         dimmerProcessor.featureWithBehaviour(
                 FEATURE_AND_DEFAULT,
@@ -66,12 +72,14 @@ public class DimmerAspectITest extends DimmerTestBase {
     }
 
     @Test
+    @DisplayName("Should return when FEATURE and behaviour is RETURN_NULL")
     public void featureAndNull() {
         dimmerProcessor.featureWithBehaviour(FEATURE_AND_NULL, exceptionBehaviour);
         assertNull(dummyClass.featureAndNull());
     }
 
     @Test(expected = DefaultException.class)
+    @DisplayName("Should throw default exception when FEATURE and behaviour is THROW_EXCEPTION")
     public void featureAndDefaultException() {
         dimmerProcessor
                 .featureWithBehaviour(FEATURE_AND_DEFAULT_EXCEPTION, exceptionBehaviour);
@@ -79,6 +87,7 @@ public class DimmerAspectITest extends DimmerTestBase {
     }
 
     @Test(expected = DummyException.class)
+    @DisplayName("Should throw DummyException exception when FEATURE and behaviour is THROW_EXCEPTION and exception is DummyException")
     public void featureAndCustomException() {
         dimmerProcessor
                 .featureWithBehaviour(FEATURE_AND_CUSTOM_EXCEPTION, exceptionBehaviour);
@@ -86,12 +95,14 @@ public class DimmerAspectITest extends DimmerTestBase {
     }
 
     @Test
+    @DisplayName("Should call real method when FEATURE and runRealMethod is true")
     public void featureAndDisabled() {
         dimmerProcessor.featureWithBehaviour(FEATURE_AND_DISABLED, exceptionBehaviour);
         assertEquals(REAL_VALUE, dummyClass.featureAndDisabled());
     }
 
     @Test
+    @DisplayName("A real method should run successfully when having parameters")
     public void executes_real_method_with_arguments() {
         assertEquals(
                 "ARGUMENT enhanced other",

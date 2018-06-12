@@ -2,6 +2,7 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DefaultException;
 import com.github.cloudyrock.dimmer.exceptions.DummyException;
+import com.github.cloudyrock.dimmer.displayname.DisplayName;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.Before;
 import org.junit.Rule;
@@ -26,7 +27,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DimmerProcessorUTest extends DimmerTestBase {
 
-    @Rule public final ExpectedException exception = ExpectedException.none();
+    @Rule public ExpectedException exception = ExpectedException.none();
 
     @Mock
     private DimmerFeature dimmerFeature;
@@ -61,7 +62,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_OFF_NULL_and_enabled_should_return_NULL() throws Throwable {
+    @DisplayName("Should return null when ALWAYS_OFF and behaviour is RETURN_NULL")
+    public void alwaysOffAndReturnNull() throws Throwable {
         givenDimmerFeature(ALWAYS_OFF, RETURN_NULL, false);
 
         Object returnedValue = dimmerProcessor.executeDimmerFeature(
@@ -71,14 +73,16 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test(expected = DefaultException.class)
-    public void when_OFF_THROW_EX_and_enabled_should_default_THROW_EX() throws Throwable {
+    @DisplayName("Should throw default exception when ALWAYS_OFF and behaviour is THROW_EXCEPTION")
+    public void alwaysOffAndThrowException() throws Throwable {
         givenDimmerFeature(ALWAYS_OFF, THROW_EXCEPTION, false);
         dimmerProcessor.executeDimmerFeature(
                 dimmerFeature, null, null);
     }
 
     @Test(expected = DummyException.class)
-    public void when_OFF_THROW_EX_and_custom_ex_and_enabled_should_custom_THROW_EX()
+    @DisplayName("Should throw DummyException when ALWAYS_OFF and behaviour is THROW_EXCEPTION and exception is DummyException")
+    public void alwaysOffAndThrowCustomException()
             throws Throwable {
         givenDimmerFeatureWithEx(ALWAYS_OFF, THROW_EXCEPTION, false,
                 DummyException.class);
@@ -87,14 +91,16 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test(expected = DefaultException.class)
-    public void when_OFF_DEFAULT_and_enabled_should_THROW_EX() throws Throwable {
+    @DisplayName("Should throw default exception when ALWAYS_OFF and behaviour is DEFAULT")
+    public void alwaysOffAndDefault() throws Throwable {
         givenDimmerFeature(ALWAYS_OFF, DEFAULT, false);
         dimmerProcessor.executeDimmerFeature(
                 dimmerFeature, null, null);
     }
 
     @Test
-    public void when_OFF_and_disabled_should_call_real_method() throws Throwable {
+    @DisplayName("Should call real method when ALWAYS_OFF and disabled is true")
+    public void alwaysOffAndDisabled() throws Throwable {
         givenDimmerFeature(ALWAYS_OFF, DEFAULT, true);
         given(jointPoint.proceed()).willReturn("REAL METHOD");
 
@@ -106,7 +112,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_FEATURE_not_registered_should_call_real_method() throws Throwable {
+    @DisplayName("Should run real method when FEATURE and not registered in DimmerProcessor")
+    public void featureButNotRegistered() throws Throwable {
         givenDimmerFeature(feature, DEFAULT, false);
         given(jointPoint.proceed()).willReturn("REAL METHOD");
 
@@ -118,7 +125,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_FEATURE_NULL_and_enabled_should_return_NULL() throws Throwable {
+    @DisplayName("Should return null when FEATURE and behaviour is RETURN_NULL")
+    public void featureAndReturnNull() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature, RETURN_NULL, false);
 
@@ -129,7 +137,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test(expected = DefaultException.class)
-    public void when_FEATURE_THROW_EX_and_enabled_should_THROW_EX() throws Throwable {
+    @DisplayName("Should throw default exception when FEATURE and behaviour is THROW_EXCEPTION")
+    public void featureAndThrowDefaultException() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature, THROW_EXCEPTION, false);
 
@@ -138,7 +147,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_FEATURE_and_disabled_should_call_real_method() throws Throwable {
+    @DisplayName("Should call real method when FEATURE and disabled is true")
+    public void featureAndDisabled() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature, DEFAULT, true);
         given(jointPoint.proceed()).willReturn("REAL METHOD");
@@ -151,8 +161,9 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_FEATURE_DEFAULT_and_enabled_should_executed_registered_behaviour() throws Throwable {
-        dimmerProcessor.featureWithValue(feature, "VALUE");
+    @DisplayName("Should run behaviour when FEATURE and behaviour is DEFAULT")
+    public void featureAndConfiguredWithBehaviour() throws Throwable {
+        dimmerProcessor.featureWithBehaviour(feature, s-> "VALUE");
         givenDimmerFeature(feature, DEFAULT, false);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
                 dimmerFeature, null, null);
@@ -160,7 +171,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_featureWithValue_and_enabled_should_executed_return_value() throws Throwable {
+    @DisplayName("Should return value when FEATURE is configured to return value and behaviour is DEFAULT")
+    public void featureAndConfiguredWithValue() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature, DEFAULT, false);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
@@ -169,7 +181,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test(expected = DefaultException.class)
-    public void when_featureWithDefaultException_and_enabled_should_throw_default_exception() throws Throwable {
+    @DisplayName("Should throw default exception when FEATURE is configured to throw default exception and behaviour is DEFAULT")
+    public void featureAndConfiguredWithDefaultException() throws Throwable {
         dimmerProcessor.featureWithDefaultException(feature);
         givenDimmerFeature(feature, DEFAULT, false);
         dimmerProcessor.executeDimmerFeature(
@@ -177,7 +190,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void when_featureWithBehaviour_and_enabled_should_execute_behaviour_with_featureInvocation() throws Throwable {
+    @DisplayName("Should pass FeatureInvocation parameter to behaviour")
+    public void ensureFeatureInvocationParameter() throws Throwable {
 
         FeatureInvocation featureInvocationMock = mock(FeatureInvocation.class);
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("BEHAVIOUR");
@@ -191,7 +205,8 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void does_not_allow_ALWAYS_OFF_when_put_featureWithBehaviour() {
+    @DisplayName(value = "Should throw  IllegalArgumentException when using ALWAYS_OFF as feature when configuring DimmerProcessor.featureWithBehaviour(...)")
+    public void featureWithBehaviourDoesNotAllowALWAYS_OFF() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
                 String.format("Value %s for feature not allowed", ALWAYS_OFF));
@@ -201,32 +216,35 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     }
 
     @Test
-    public void does_not_allow_ALWAYS_OFF_when_put_featureWithDefaultException() {
+    @DisplayName(value = "Should throw  IllegalArgumentException when using ALWAYS_OFF as feature when configuring DimmerProcessor.featureWithDefaultException(...)")
+    public void featureWithDefaultExceptionDoesNotAllowALWAYS_OFF() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
                 String.format("Value %s for feature not allowed", ALWAYS_OFF));
 
-        dimmerProcessor.featureWithBehaviour(ALWAYS_OFF, s -> "");
+        dimmerProcessor.featureWithDefaultException(ALWAYS_OFF);
 
     }
 
     @Test
-    public void does_not_allow_ALWAYS_OFF_when_put_featureWithException() {
+    @DisplayName(value = "Should throw  IllegalArgumentException when using ALWAYS_OFF as feature when configuring DimmerProcessor.featureWithException(...)")
+    public void featureWuthExceptionDoesNotAllowALWAYS_OFF() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
                 String.format("Value %s for feature not allowed", ALWAYS_OFF));
 
-        dimmerProcessor.featureWithBehaviour(ALWAYS_OFF, s -> "");
+        dimmerProcessor.featureWithException(ALWAYS_OFF, DummyException.class);
 
     }
 
     @Test
-    public void does_not_allow_ALWAYS_OFF_when_put_featureWithValue() {
+    @DisplayName(value = "Should throw  IllegalArgumentException when using ALWAYS_OFF as feature when configuring DimmerProcessor.featureWithValue(...)")
+    public void featureWithValueDoesNotAllowALWAYS_OFF() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage(
                 String.format("Value %s for feature not allowed", ALWAYS_OFF));
 
-        dimmerProcessor.featureWithBehaviour(ALWAYS_OFF, s -> "");
+        dimmerProcessor.featureWithValue(ALWAYS_OFF, "VALUE");
     }
 
 }
