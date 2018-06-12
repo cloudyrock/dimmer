@@ -2,8 +2,12 @@ package com.github.cloudyrock.dimmer;
 
 import java.util.Objects;
 
+/**
+ *
+ * @author Antonio Perez Dieppa
+ * @since 11/06/2018
+ */
 final class Util {
-
     static void checkArgument(Object arg, String argName) {
         if (Objects.isNull(arg)) {
             throw new IllegalArgumentException(

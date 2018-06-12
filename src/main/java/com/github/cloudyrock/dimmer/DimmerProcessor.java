@@ -9,6 +9,17 @@ import java.util.function.Function;
 
 import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
 
+/**
+ * Singleton class to configure feature's behaviour.
+ * <p>
+ * Threadsafe.
+ *
+ * @author Antonio Perez Dieppa
+ * @see Function
+ * @see DimmerConfigException
+ * @see FeatureInvocation
+ * @since 11/06/2018
+ */
 public class DimmerProcessor {
 
     private static final SingletonBuilder builder = new SingletonBuilder();
@@ -18,6 +29,11 @@ public class DimmerProcessor {
     private final Map<String, Function<FeatureInvocation, ? extends Object>> behaviours =
             new ConcurrentHashMap<>();
 
+    /**
+     * Singleton builder for DimmerProcessor
+     *
+     * @return Singleton DimmerProcessor builder
+     */
     public final static SingletonBuilder builder() {
         return builder;
     }
@@ -27,32 +43,74 @@ public class DimmerProcessor {
         this.defaultExceptionType = defaultExceptionType;
     }
 
-    //TODO: Java doc to specify whatever the function returns, must be compatible with the real method
+    /**
+     * If the specified feature is not already associated with a behaviour(or is mapped to null),
+     * associates it with the given (@{@link Function}) that represents the desired behaviour
+     * and returns true, else returns false.
+     * <p>
+     * Notice that the function that represents the feature's behaviour must ensure compatibility
+     * with the real method's returning type or a (@{@link DimmerConfigException}) will be thrown.
+     *
+     * @param feature   feature with which the specified behaviour is to be associated
+     * @param behaviour (@{@link Function}) to be associated with the specified key as behaviour
+     * @return true, or false if the key was already associated to a behaviour.
+     * @see Function
+     * @see DimmerConfigException
+     */
     public boolean featureWithBehaviour(
-            String featureId,
+            String feature,
             Function<FeatureInvocation, ? extends Object> behaviour) {
         Util.checkArgument(behaviour, "behaviour");
-        return putBehaviour(featureId, behaviour);
+        return putBehaviour(feature, behaviour);
     }
 
-    public boolean featureWithDefaultException(String featureId) {
-        return featureWithException(featureId, defaultExceptionType);
+    /**
+     * If the specified feature is not already associated with a behaviour(or is mapped to null),
+     * associates it with the default exception and returns true, else returns false.
+     *
+     * @param feature feature with which the specified behaviour is to be associated
+     * @return true, or false if the key was already associated to a behaviour.
+     */
+    public boolean featureWithDefaultException(String feature) {
+        return featureWithException(feature, defaultExceptionType);
     }
 
-    //exceptionType must have an empty constructor
+    /**
+     * If the specified feature is not already associated with a behaviour(or is mapped to null),
+     * associates it with the given exception and returns true, else returns false.
+     * <p>
+     * Notice the exception type must have either an empty constructor or a contractor with only
+     * one parameter, (@{@link FeatureInvocation})
+     *
+     * @param feature       feature with which the specified behaviour is to be associated
+     * @param exceptionType exception type to be associated with the specified key
+     * @return true, or false if the key was already associated to a behaviour.
+     * @see FeatureInvocation
+     */
     public boolean featureWithException(
-            String featureId,
+            String feature,
             Class<? extends RuntimeException> exceptionType) {
 
         final ExceptionConstructorType constructorType =
                 ExceptionUtil.checkAndGetExceptionConstructorType(exceptionType);
-        return putBehaviour(featureId,
+        return putBehaviour(feature,
                 f -> ExceptionUtil.throwException(exceptionType, constructorType, f));
     }
 
-    //TODO: Java doc to specify whatever the value's type is, must be compatible with the real method
-    public boolean featureWithValue(String featureId, Object valueToReturn) {
-        return putBehaviour(featureId, signature -> valueToReturn);
+    /**
+     * If the specified feature is not already associated with a behaviour(or is mapped to null),
+     * associates it with the given value and returns true, else returns false.
+     * <p>
+     * Notice that the value must be compatibility with the real method's returning type
+     * or a (@{@link DimmerConfigException}) will be thrown.
+     *
+     * @param feature       feature with which the specified behaviour is to be associated
+     * @param valueToReturn value to be associated with the specified key
+     * @return true, or false if the key was already associated to a behaviour.
+     */
+    public boolean featureWithValue(String feature, Object valueToReturn) {
+
+        return putBehaviour(feature, signature -> valueToReturn);
     }
 
     Object executeDimmerFeature(
@@ -122,10 +180,11 @@ public class DimmerProcessor {
     }
 
     /**
-     * Extra mechanism to implement the singleton pattern.
-     * This "kind of builder" is to be able to add properties that won't be changeable post-initialization.
-     * Although doesn't need to be a inner class(could just be static methods), this way helps to
-     * encapsulate the initialization.
+     * Singleton builder to configure (@{@link DimmerProcessor}).
+     * <p>
+     * Threadsafe
+     *
+     * @see DimmerProcessor
      */
     public static class SingletonBuilder {
 
@@ -137,6 +196,15 @@ public class DimmerProcessor {
         private SingletonBuilder() {
         }
 
+        /**
+         * Set the default exception type to be thrown as behaviour.
+         * <p>
+         * Notice the exception type must have either an empty constructor or a contractor with only
+         * one parameter, (@{@link FeatureInvocation})
+         *
+         * @param newDefaultExceptionType new default exception type
+         * @return Singleton DimmerProcessor builder
+         */
         public SingletonBuilder setDefaultExceptionType(
                 Class<? extends RuntimeException> newDefaultExceptionType) {
             Util.checkArgument(newDefaultExceptionType, "defaultExceptionType");
@@ -144,10 +212,19 @@ public class DimmerProcessor {
             return this;
         }
 
+        /**
+         * @return If the singleton DimmerProcessor instance has been already initialised
+         */
         public boolean isInitialised() {
             return instance != null;
         }
 
+        /**
+         * If not initialised yet, it build a the singleton DimmerProcessor instance
+         * with the configured parameters.
+         *
+         * @return the DimmerProcessor instance.
+         */
         public synchronized DimmerProcessor build() {
             if (!isInitialised()) {
                 instance = new DimmerProcessor(defaultExceptionType);
