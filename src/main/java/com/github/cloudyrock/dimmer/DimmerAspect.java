@@ -4,7 +4,13 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-
+/**
+ * This aspect intercepts all the calls to methods annotated with (@{@link DimmerFeature})
+ *
+ * @author Antonio Perez Dieppa
+ * @see DimmerFeature
+ * @since 11/06/2018
+ */
 @Aspect
 public class DimmerAspect {
 
@@ -23,13 +29,14 @@ public class DimmerAspect {
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
         return dimmerProcessor.executeDimmerFeature(
                 dimmerFeatureAnn,
-                generateFeatureInvocation(joinPoint),
+                generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
                 joinPoint
         );
     }
 
-    private FeatureInvocation generateFeatureInvocation(ProceedingJoinPoint joinPoint) {
+    private FeatureInvocation generateFeatureInvocation(String feature, ProceedingJoinPoint joinPoint) {
         return new FeatureInvocation(
+                feature,
                 joinPoint.getSignature().getName(),
                 joinPoint.getSignature().getDeclaringType(),
                 joinPoint.getArgs()
