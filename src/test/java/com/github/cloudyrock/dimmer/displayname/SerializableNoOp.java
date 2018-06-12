@@ -7,7 +7,7 @@ import net.sf.cglib.proxy.NoOp;
 import java.io.Serializable;
 
 /**
- * @author dieppa
+ * @author Antonio Perez Dieppa
  * @since 04/04/2018
  */
 class SerializableNoOp implements NoOp, Serializable {

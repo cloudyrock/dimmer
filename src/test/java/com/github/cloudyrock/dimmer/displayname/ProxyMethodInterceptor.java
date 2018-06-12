@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.Set;
 
 /**
- * @author dieppa
+ * @author Antonio Perez Dieppa
  * @since 04/04/2018
  */
 class ProxyMethodInterceptor implements MethodInterceptor {

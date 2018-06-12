@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Proxy wrapper generator
  *
- * @author dieppa
+ * @author Antonio Perez Dieppa
  * @since 04/04/2018
  */
 class ProxyFactory {
