@@ -29,13 +29,14 @@ public class DimmerAspect {
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
         return dimmerProcessor.executeDimmerFeature(
                 dimmerFeatureAnn,
-                generateFeatureInvocation(joinPoint),
+                generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
                 joinPoint
         );
     }
 
-    private FeatureInvocation generateFeatureInvocation(ProceedingJoinPoint joinPoint) {
+    private FeatureInvocation generateFeatureInvocation(String feature, ProceedingJoinPoint joinPoint) {
         return new FeatureInvocation(
+                feature,
                 joinPoint.getSignature().getName(),
                 joinPoint.getSignature().getDeclaringType(),
                 joinPoint.getArgs()
