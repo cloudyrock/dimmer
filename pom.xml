@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.cloudyrock</groupId>
-    <artifactId>dimmer</artifactId>
+    <artifactId>dimmer-core</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Dimmer</name>
+    <name>dimmer-core</name>
     <!-- Web site not created yet -->
     <url>http://cloudyrock.github.com/dimmer</url>
     <description>
