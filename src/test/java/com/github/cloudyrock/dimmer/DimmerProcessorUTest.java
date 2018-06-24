@@ -11,27 +11,31 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.util.UUID;
 import java.util.function.Function;
+
 import static org.hamcrest.Matchers.hasProperty;
 
 import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
 import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.DEFAULT;
 import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.RETURN_NULL;
 import static com.github.cloudyrock.dimmer.DimmerFeature.DimmerBehaviour.THROW_EXCEPTION;
+import static com.github.cloudyrock.dimmer.DimmerProcessor.DIMMER_RETURN_TYPE_EXCEPTION_MESSAGE;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class DimmerProcessorUTest extends DimmerTestBase {
 
-    @Rule public ExpectedException exception = ExpectedException.none();
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Mock
     private DimmerFeature dimmerFeature;
@@ -172,29 +176,41 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     @Test
     @DisplayName("Should run behaviour when FEATURE and behaviour is DEFAULT")
     public void featureAndConfiguredWithBehaviour() throws Throwable {
-        dimmerProcessor.featureWithBehaviour(feature, s-> "VALUE");
+
+        when(featureInvocation.getReturnType()).thenReturn(new String());
+        when(jointPoint.getTarget()).thenReturn(new String());
+
+        dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
         givenDimmerFeature(feature, DEFAULT, false);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, null, null);
+                dimmerFeature, featureInvocation, jointPoint);
         assertEquals("VALUE", actualResult);
     }
 
     @Test
     @DisplayName("Should return value when FEATURE is configured to return value and behaviour is DEFAULT")
     public void featureAndConfiguredWithValue() throws Throwable {
+
+        when(featureInvocation.getReturnType()).thenReturn(new String());
+        when(jointPoint.getTarget()).thenReturn(new String());
+
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature, DEFAULT, false);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, null, null);
+                dimmerFeature, featureInvocation, jointPoint);
         assertEquals("VALUE", actualResult);
     }
 
     @Test(expected = DefaultException.class)
     @DisplayName("Should throw default exception when FEATURE is configured to throw default exception and behaviour is DEFAULT")
     public void featureAndConfiguredWithDefaultException() throws Throwable {
+
+        when(featureInvocation.getReturnType()).thenReturn(new String());
+        when(jointPoint.getTarget()).thenReturn(new String());
+
         dimmerProcessor.featureWithDefaultException(feature);
         givenDimmerFeature(feature, DEFAULT, false);
-        dimmerProcessor.executeDimmerFeature(dimmerFeature, null, null);
+        dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocation, jointPoint);
     }
 
     @Test(expected = DimmerConfigException.class)
@@ -224,15 +240,17 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     @DisplayName("Should pass FeatureInvocation parameter to behaviour")
     public void ensureFeatureInvocationParameter() throws Throwable {
 
-        FeatureInvocation featureInvocationMock = mock(FeatureInvocation.class);
+        when(featureInvocation.getReturnType()).thenReturn(new String());
+        when(jointPoint.getTarget()).thenReturn(new String());
+
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("BEHAVIOUR");
         givenDimmerFeature(feature, DEFAULT, false);
 
         dimmerProcessor.featureWithBehaviour(feature, behaviour);
         dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, featureInvocationMock, null);
+                dimmerFeature, featureInvocation, jointPoint);
 
-        then(behaviour).should().apply(featureInvocationMock);
+        then(behaviour).should().apply(featureInvocation);
     }
 
     @Test
@@ -276,6 +294,40 @@ public class DimmerProcessorUTest extends DimmerTestBase {
                 String.format("Value %s for feature not allowed", ALWAYS_OFF));
 
         dimmerProcessor.featureWithValue(ALWAYS_OFF, "VALUE");
+    }
+
+
+    @Test(expected = DimmerConfigException.class)
+    @DisplayName(value = "Should throw DimmerConfigException if class types between config and invocation are different")
+    public void when_differentClassTypesConfigurationException() throws Throwable {
+
+        when(featureInvocation.getReturnType()).thenReturn(new String());
+        when(jointPoint.getTarget()).thenReturn(new Integer(0));
+
+        dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
+        givenDimmerFeature(feature, DEFAULT, false);
+
+        try {
+            dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocation, jointPoint);
+        } catch (DimmerConfigException e) {
+            if (e.getMessage().equals(DIMMER_RETURN_TYPE_EXCEPTION_MESSAGE)) {
+                throw e;
+            } else {
+                throw new RuntimeException("Unexpected exception message");
+            }
+        }
+    }
+
+    @Test
+    @DisplayName(value = "Should not throw any exception if class types and subtypes are matching")
+    public void when_hierarchicalClassTypesMatch_execute() throws Throwable {
+
+        when(featureInvocation.getReturnType()).thenReturn(new Object());
+        when(jointPoint.getTarget()).thenReturn(new Integer(0));
+
+        dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
+        givenDimmerFeature(feature, DEFAULT, false);
+        dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocation, jointPoint);
     }
 
 }

@@ -94,6 +94,13 @@ public class DimmerAspectITest extends DimmerTestBase {
         dummyClass.featureAndCustomException();
     }
 
+
+    @Test(expected = DimmerConfigException.class)
+    @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
+    public void featureAndDimmerConfigException() {
+        //TODO: @Dhivesh to finish this test
+    }
+
     @Test
     @DisplayName("Should call real method when FEATURE and runRealMethod is true")
     public void featureAndDisabled() {

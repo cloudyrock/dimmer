@@ -19,16 +19,21 @@ public class FeatureInvocation {
     private final Class declaringType;
 
     /**
+     * Returning type of the method
+     */
+    private final Object returnType;
+
+    /**
      * The arguments which the method was invoked with
      */
     private final Object[] args;
 
-    public FeatureInvocation(String feature, String methodName, Class declaringType, Object[] args) {
+    public FeatureInvocation(String feature, String methodName, Class declaringType, Object[] args, Object returnType) {
         this.feature = feature;
         this.methodName = methodName;
         this.declaringType = declaringType;
         this.args = args;
-
+        this.returnType = returnType;
     }
 
     public String getFeature() {
@@ -47,4 +52,7 @@ public class FeatureInvocation {
         return args;
     }
 
+    public Object getReturnType() {
+        return returnType;
+    }
 }

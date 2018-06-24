@@ -4,6 +4,7 @@ import org.aspectj.lang.Aspects;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -21,6 +22,8 @@ import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
  * @since 11/06/2018
  */
 public class DimmerProcessor {
+
+    protected static final String DIMMER_RETURN_TYPE_EXCEPTION_MESSAGE = "Expected return type doesn't match with DimmerConfiguration";
 
     private static final SingletonBuilder builder = new SingletonBuilder();
 
@@ -172,10 +175,21 @@ public class DimmerProcessor {
                             featureInvocation);
                 case DEFAULT:
                 default:
+                    checkFeatureInvocationType(featureInvocation, realMethod);
                     return behaviours.get(feature).apply(featureInvocation);
             }
         } else {
             return realMethod.proceed();
+        }
+    }
+
+    private static void checkFeatureInvocationType(FeatureInvocation featureInvocation, ProceedingJoinPoint realMethod) throws DimmerConfigException{
+
+        Objects.requireNonNull(featureInvocation.getReturnType(),"Can't be null");
+        Objects.requireNonNull(realMethod.getTarget(),"Can't be null");
+
+        if (!featureInvocation.getReturnType().getClass().isAssignableFrom(realMethod.getTarget().getClass())){
+            throw new DimmerConfigException(DIMMER_RETURN_TYPE_EXCEPTION_MESSAGE);
         }
     }
 

@@ -39,7 +39,8 @@ public class DimmerAspect {
                 feature,
                 joinPoint.getSignature().getName(),
                 joinPoint.getSignature().getDeclaringType(),
-                joinPoint.getArgs()
+                joinPoint.getArgs(),
+                joinPoint.getTarget()
         );
     }
 
