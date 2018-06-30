@@ -1,7 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
-
 /**
  * Default exception that will be thrown if no other is configured in (@{@link DimmerProcessor}).
  * It's thrown at runtime represents a desired behaviour of throwing an exception.
@@ -11,6 +9,7 @@ import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
  */
 public class DimmerInvocationException extends RuntimeException {
 
+    private static final long serialVersionUID = 159403250595728227L;
     private final FeatureInvocation invocationInfo;
 
     public DimmerInvocationException(FeatureInvocation featureInvocation) {
@@ -23,16 +22,10 @@ public class DimmerInvocationException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        if (ALWAYS_OFF.equals(invocationInfo.getFeature())) {
-            return String.format(">>> %s.%s(...) is ALWAYS_OFFf",
-                    invocationInfo.getDeclaringType().getCanonicalName(),
-                    invocationInfo.getMethodName());
-        } else {
-            return String.format(">>> Feature %s not available for %s.%s(...)",
-                    invocationInfo.getFeature(),
-                    invocationInfo.getDeclaringType().getCanonicalName(),
-                    invocationInfo.getMethodName());
-        }
+        return String.format(">>> Feature %s not available for %s.%s(...)",
+                invocationInfo.getFeature(),
+                invocationInfo.getDeclaringType().getCanonicalName(),
+                invocationInfo.getMethodName());
     }
 
 }
