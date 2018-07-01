@@ -60,9 +60,16 @@ public class DimmerProcessor {
      * @see Function
      * @see DimmerConfigException
      */
+//    public boolean featureWithBehaviour(
+//            String feature,
+//            Function<FeatureInvocation, ? extends Object> behaviour) {
+//        Util.checkArgument(behaviour, "behaviour");
+//        return putBehaviour(feature, behaviour);
+//    }
+//
     public boolean featureWithBehaviour(
             String feature,
-            Function<FeatureInvocation, ? extends Object> behaviour) {
+            Function behaviour) {
         Util.checkArgument(behaviour, "behaviour");
         return putBehaviour(feature, behaviour);
     }

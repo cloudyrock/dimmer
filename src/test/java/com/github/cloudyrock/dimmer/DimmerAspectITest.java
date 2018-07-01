@@ -32,6 +32,8 @@ public class DimmerAspectITest extends DimmerTestBase {
         throw new NotImplementedException();
     };
 
+    Function differentReturnTypeInvocation = f -> new Integer(0);
+
     @Test(expected = DefaultException.class)
     @DisplayName("Should throw default exception when ALWAYS_OFF and behaviour is DEFAULT")
     public void offAndDefault() {
@@ -66,8 +68,7 @@ public class DimmerAspectITest extends DimmerTestBase {
     @DisplayName("Should run behaviour when FEATURE and behaviour is DEFAULT")
     public void featureAndDefault() {
         dimmerProcessor.featureWithBehaviour(
-                FEATURE_AND_DEFAULT,
-                FeatureInvocation::getMethodName);
+                FEATURE_AND_DEFAULT, f ->  "featureAndDefault");
         assertEquals("featureAndDefault", dummyClass.featureAndDefault());
     }
 
@@ -94,12 +95,12 @@ public class DimmerAspectITest extends DimmerTestBase {
         dummyClass.featureAndCustomException();
     }
 
-
-    @Test(expected = DimmerConfigException.class)
-    @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
-    public void featureAndDimmerConfigException() {
-        //TODO: @Dhivesh to finish this test
-    }
+//
+//    @Test(expected = DimmerConfigException.class)
+//    @DisplayName("Should throw DimmerConfigException when expected return type of the caller and the configuration are mismatched")
+//    public void featureAndDimmerConfigException() {
+//        dimmerProcessor.featureWithBehaviour("THROW_DIMMER_EXCEPTION", differentReturnTypeInvocation);
+//    }
 
     @Test
     @DisplayName("Should call real method when FEATURE and runRealMethod is true")
@@ -166,6 +167,11 @@ public class DimmerAspectITest extends DimmerTestBase {
         @DimmerFeature(value = ALWAYS_OFF, runRealMethod = true)
         public String methodWithArguments(String value, DummyClass obj) {
             return value + " enhanced " + obj.getValue();
+        }
+
+        @DimmerFeature(value = "THROW_DIMMER_EXCEPTION")
+        public void methodDimmerException() {
+            return;
         }
 
     }

@@ -81,7 +81,7 @@ public @interface DimmerFeature {
      *
      * RETURN_NULL: Overwrite the default behaviour with null.
      *
-     * Al these values will no have any effect if parameter runRealMethod is true.
+     * All these values will no have any effect if parameter runRealMethod is true.
      */
     enum DimmerBehaviour {DEFAULT, THROW_EXCEPTION, RETURN_NULL}
 

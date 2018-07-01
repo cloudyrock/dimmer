@@ -6,7 +6,7 @@ package com.github.cloudyrock.dimmer;
  * @author Antonio Perez Dieppa
  * @since 11/06/2018
  */
-public class FeatureInvocation {
+class FeatureInvocation {
     /**
      * Method's name
      */

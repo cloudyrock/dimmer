@@ -4,14 +4,12 @@ import com.github.cloudyrock.dimmer.exceptions.DefaultException;
 import com.github.cloudyrock.dimmer.exceptions.DummyException;
 import com.github.cloudyrock.dimmer.displayname.DisplayName;
 import com.github.cloudyrock.dimmer.exceptions.DummyNoConstructorException;
-import com.github.cloudyrock.dimmer.exceptions.ExceptionWithFeatureInvocation;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.util.UUID;
 import java.util.function.Function;
