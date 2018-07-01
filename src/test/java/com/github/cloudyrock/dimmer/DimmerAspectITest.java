@@ -27,8 +27,12 @@ public class DimmerAspectITest extends DimmerTestBase {
     private static final String FEATURE4 = "FEATURE4";
     private static final String FEATURE5 = "FEATURE5";
     private static final String FEATURE6 = "FEATURE6";
+    private static final String FEATURE7 = "FEATURE7";
 
     private static final String VALUE1 = "VALUE1";
+    public static final String FEATURE8 = "FEATURE8";
+    public static final String FEATURE9 = "FEATURE9";
+    public static final String FEATURE10 = "FEATURE10";
     private final AnnotatedClass annotatedClass = new AnnotatedClass();
 
     @Rule public ExpectedException exception = ExpectedException.none();
@@ -84,6 +88,35 @@ public class DimmerAspectITest extends DimmerTestBase {
     public void featureWithException() {
         dimmerProcessor.featureWithException(FEATURE5, DummyException.class);
         annotatedClass.methodForFeature5();
+    }
+
+
+    @Test(expected = DimmerConfigException.class)
+    @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
+    public void featureAndDimmerConfigException() {
+        dimmerProcessor.featureWithValue(FEATURE7, 1);
+        annotatedClass.methodForFeature7();
+    }
+
+    @Test
+    @DisplayName("Should return a NULL value")
+    public void featureNullMismatch() {
+        dimmerProcessor.featureWithValue(FEATURE8, null);
+        annotatedClass.methodForFeature8();
+    }
+
+    @Test
+    @DisplayName("Behaviour should return child class when executing parent compatible type")
+    public void featureAndDimmerSubtypeClass() {
+        dimmerProcessor.featureWithValue(FEATURE9, new Child());
+        annotatedClass.methodForFeature9();
+    }
+
+    @Test(expected = DimmerConfigException.class)
+    @DisplayName("Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type")
+    public void featureAndDimmerConfigExceptionWhenRealMethodIsVoid() {
+        dimmerProcessor.featureWithValue(FEATURE10, "VALUE");
+        annotatedClass.methodForFeature10();
     }
 
     @Test
@@ -150,7 +183,28 @@ public class DimmerAspectITest extends DimmerTestBase {
             return REAL_VALUE;
         }
 
+        @DimmerFeature(value = FEATURE7)
+        String methodForFeature7() {
+            return REAL_VALUE;
+        }
+
+        @DimmerFeature(value = FEATURE8)
+        String methodForFeature8() {
+            return null;
+        }
+
+        @DimmerFeature(value = FEATURE9)
+        Parent methodForFeature9() {
+            return new Parent();
+        }
+
+        @DimmerFeature(value = FEATURE10)
+        public void methodForFeature10() {
+        }
     }
+
+    public class Parent{}
+    public class Child extends Parent{}
 
 }
 

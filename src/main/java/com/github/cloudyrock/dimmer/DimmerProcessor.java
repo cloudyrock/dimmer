@@ -4,6 +4,7 @@ import org.aspectj.lang.Aspects;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -22,6 +23,7 @@ import java.util.function.Function;
 public class DimmerProcessor {
 
     private static final SingletonBuilder builder = new SingletonBuilder();
+    public static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
@@ -117,11 +119,21 @@ public class DimmerProcessor {
             ProceedingJoinPoint realMethod) throws Throwable {
         final String feature = dimmerFeature.value();
         if (behaviours.containsKey(feature)) {
-            return behaviours.get(feature).apply(featureInvocation);
+            final Object result = behaviours.get(feature).apply(featureInvocation);
+
+            checkReturnType(featureInvocation.getReturnType(), result);
+            return result;
         } else {
             return realMethod.proceed();
         }
+    }
 
+//    @SuppressWarnings("unchecked")
+    private static void checkReturnType(Class returnType, Object behaviourResult) {
+        if (!Objects.isNull(behaviourResult)
+                && !returnType.isAssignableFrom(behaviourResult.getClass())) {
+            throw new DimmerConfigException(EXCEPTION_MESSAGE_CAST);
+        }
     }
 
     private boolean putBehaviour(String featureId,
