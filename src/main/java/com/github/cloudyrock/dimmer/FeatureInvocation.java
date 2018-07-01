@@ -6,7 +6,7 @@ package com.github.cloudyrock.dimmer;
  * @author Antonio Perez Dieppa
  * @since 11/06/2018
  */
-class FeatureInvocation {
+public class FeatureInvocation {
     /**
      * Method's name
      */
@@ -21,14 +21,14 @@ class FeatureInvocation {
     /**
      * Returning type of the method
      */
-    private final Object returnType;
+    private final Class returnType;
 
     /**
      * The arguments which the method was invoked with
      */
     private final Object[] args;
 
-    public FeatureInvocation(String feature, String methodName, Class declaringType, Object[] args, Object returnType) {
+    public FeatureInvocation(String feature, String methodName, Class declaringType, Object[] args, Class returnType) {
         this.feature = feature;
         this.methodName = methodName;
         this.declaringType = declaringType;
@@ -52,7 +52,7 @@ class FeatureInvocation {
         return args;
     }
 
-    public Object getReturnType() {
+    public Class getReturnType() {
         return returnType;
     }
 }

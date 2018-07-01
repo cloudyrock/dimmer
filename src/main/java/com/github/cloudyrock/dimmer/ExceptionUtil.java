@@ -56,20 +56,4 @@ final class ExceptionUtil {
         return constructorType;
     }
 
-    static Object checkAndThrowException(
-            Class<? extends RuntimeException> exceptionTypeFromAn,
-            Class<? extends RuntimeException> defaultExceptionType,
-            FeatureInvocation featureInvocation) {
-
-        Class<? extends RuntimeException> exType =
-                exceptionTypeFromAn != DimmerFeature.NULL_EXCEPTION.class
-                        ? exceptionTypeFromAn
-                        : defaultExceptionType;
-
-        ExceptionConstructorType constructorType = ExceptionUtil.
-                checkAndGetExceptionConstructorType(exType);
-        return ExceptionUtil.throwException(exType, constructorType, featureInvocation);
-    }
-
-
 }

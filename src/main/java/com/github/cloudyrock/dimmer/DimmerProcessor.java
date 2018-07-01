@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
 
 /**
  * Singleton class to configure feature's behaviour.
@@ -23,9 +22,8 @@ import static com.github.cloudyrock.dimmer.DimmerFeature.ALWAYS_OFF;
  */
 public class DimmerProcessor {
 
-    protected static final String DIMMER_RETURN_TYPE_EXCEPTION_MESSAGE = "Expected return type doesn't match with DimmerConfiguration";
-
     private static final SingletonBuilder builder = new SingletonBuilder();
+    public static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
@@ -60,16 +58,9 @@ public class DimmerProcessor {
      * @see Function
      * @see DimmerConfigException
      */
-//    public boolean featureWithBehaviour(
-//            String feature,
-//            Function<FeatureInvocation, ? extends Object> behaviour) {
-//        Util.checkArgument(behaviour, "behaviour");
-//        return putBehaviour(feature, behaviour);
-//    }
-//
     public boolean featureWithBehaviour(
             String feature,
-            Function behaviour) {
+            Function<FeatureInvocation, ? extends Object> behaviour) {
         Util.checkArgument(behaviour, "behaviour");
         return putBehaviour(feature, behaviour);
     }
@@ -119,7 +110,6 @@ public class DimmerProcessor {
      * @return true, or false if the key was already associated to a behaviour.
      */
     public boolean featureWithValue(String feature, Object valueToReturn) {
-
         return putBehaviour(feature, signature -> valueToReturn);
     }
 
@@ -127,78 +117,31 @@ public class DimmerProcessor {
             DimmerFeature dimmerFeature,
             FeatureInvocation featureInvocation,
             ProceedingJoinPoint realMethod) throws Throwable {
+        final String feature = dimmerFeature.value();
+        if (behaviours.containsKey(feature)) {
+            final Object result = behaviours.get(feature).apply(featureInvocation);
 
-        if (dimmerFeature.runRealMethod()) {
-            return realMethod.proceed();
+            checkReturnType(featureInvocation.getReturnType(), result);
+            return result;
         } else {
-            switch (dimmerFeature.value()) {
-                case ALWAYS_OFF:
-                    return processAlwaysOff(dimmerFeature, featureInvocation);
-                default:
-                    return processFeature(dimmerFeature, featureInvocation, realMethod);
-            }
+            return realMethod.proceed();
         }
+    }
 
+//    @SuppressWarnings("unchecked")
+    private static void checkReturnType(Class returnType, Object behaviourResult) {
+        if (!Objects.isNull(behaviourResult)
+                && !returnType.isAssignableFrom(behaviourResult.getClass())) {
+            throw new DimmerConfigException(EXCEPTION_MESSAGE_CAST);
+        }
     }
 
     private boolean putBehaviour(String featureId,
-                                 Function<FeatureInvocation, ? extends Object> behaviour) {
+                                 Function<FeatureInvocation, ?> behaviour) {
         Util.checkArgument(featureId, "featureId");
-        if (ALWAYS_OFF.equals(featureId)) {
-            throw new IllegalArgumentException(
-                    String.format("Value %s for feature not allowed", ALWAYS_OFF)
-            );
-        }
         return behaviours.putIfAbsent(featureId, behaviour) == null;
     }
 
-    private Object processAlwaysOff(DimmerFeature dimmerFeature,
-                                    FeatureInvocation featureInvocation) throws Exception {
-        switch (dimmerFeature.behaviour()) {
-            case RETURN_NULL:
-                return null;
-            case THROW_EXCEPTION:
-            case DEFAULT:
-            default:
-                return ExceptionUtil.checkAndThrowException(
-                        dimmerFeature.exception(),
-                        defaultExceptionType,
-                        featureInvocation);
-        }
-    }
-
-    private Object processFeature(DimmerFeature dimmerFeature,
-                                  FeatureInvocation featureInvocation,
-                                  ProceedingJoinPoint realMethod) throws Throwable {
-        final String feature = dimmerFeature.value();
-        if (behaviours.containsKey(feature)) {
-            switch (dimmerFeature.behaviour()) {
-                case RETURN_NULL:
-                    return null;
-                case THROW_EXCEPTION:
-                    ExceptionUtil.checkAndThrowException(
-                            dimmerFeature.exception(),
-                            defaultExceptionType,
-                            featureInvocation);
-                case DEFAULT:
-                default:
-                    checkFeatureInvocationType(featureInvocation, realMethod);
-                    return behaviours.get(feature).apply(featureInvocation);
-            }
-        } else {
-            return realMethod.proceed();
-        }
-    }
-
-    private static void checkFeatureInvocationType(FeatureInvocation featureInvocation, ProceedingJoinPoint realMethod) throws DimmerConfigException{
-
-        Objects.requireNonNull(featureInvocation.getReturnType(),"Can't be null");
-        Objects.requireNonNull(realMethod.getTarget(),"Can't be null");
-
-        if (!featureInvocation.getReturnType().getClass().isAssignableFrom(realMethod.getTarget().getClass())){
-            throw new DimmerConfigException(DIMMER_RETURN_TYPE_EXCEPTION_MESSAGE);
-        }
-    }
 
     /**
      * Singleton builder to configure (@{@link DimmerProcessor}).

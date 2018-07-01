@@ -3,6 +3,7 @@ package com.github.cloudyrock.dimmer;
 import com.github.cloudyrock.dimmer.displayname.DisplayName;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -22,7 +23,7 @@ public class DimmerAspectUTest {
     private String feature;
 
     @Mock
-    private Signature signatureMock;
+    private MethodSignature signatureMock;
 
     @Mock
     private ProceedingJoinPoint jointPointMock;
@@ -53,6 +54,7 @@ public class DimmerAspectUTest {
 
         given(signatureMock.getName()).willReturn(methodName);
         given(signatureMock.getDeclaringType()).willReturn(ArrayList.class);
+        given(signatureMock.getReturnType()).willReturn(String.class);
         given(jointPointMock.getSignature()).willReturn(signatureMock);
         given(jointPointMock.getArgs()).willReturn(expectedArgs);
         given(dimmerFeatureMock.value()).willReturn(feature);
