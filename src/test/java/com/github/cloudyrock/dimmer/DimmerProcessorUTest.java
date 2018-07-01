@@ -30,12 +30,16 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     @Mock
     private Function<FeatureInvocation, String> behaviour;
 
+    @Mock
+    private FeatureInvocation featureInvocationMock;
+
     private String feature;
 
     @Before
     public void setUp() {
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
+        given(featureInvocationMock.getReturnType()).willReturn(String.class);
     }
 
     private void givenDimmerFeature(String value) {
@@ -48,7 +52,7 @@ public class DimmerProcessorUTest extends DimmerTestBase {
         dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
         givenDimmerFeature(feature);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, null, null);
+                dimmerFeature, featureInvocationMock, null);
         assertEquals("VALUE", actualResult);
     }
 
@@ -58,7 +62,7 @@ public class DimmerProcessorUTest extends DimmerTestBase {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         givenDimmerFeature(feature);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, null, null);
+                dimmerFeature, featureInvocationMock, null);
         assertEquals("VALUE", actualResult);
     }
 
@@ -67,14 +71,12 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     public void featureAndConfiguredWithDefaultException() throws Throwable {
         dimmerProcessor.featureWithDefaultException(feature);
         givenDimmerFeature(feature);
-        dimmerProcessor.executeDimmerFeature(dimmerFeature, null, null);
+        dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocationMock, null);
     }
 
     @Test
     @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
-
-        FeatureInvocation featureInvocationMock = mock(FeatureInvocation.class);
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
         givenDimmerFeature(feature);
 
