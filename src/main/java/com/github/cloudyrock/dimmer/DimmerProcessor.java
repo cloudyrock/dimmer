@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import org.aspectj.lang.Aspects;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Map;
@@ -22,7 +21,8 @@ import java.util.function.Function;
  */
 public class DimmerProcessor {
 
-    private static final SingletonBuilder builder = new SingletonBuilder();
+    private static final DimmerProcessorClientBuilder
+            builder = new DimmerProcessorClientBuilder();
     public static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
@@ -35,11 +35,11 @@ public class DimmerProcessor {
      *
      * @return Singleton DimmerProcessor builder
      */
-    public final static SingletonBuilder builder() {
+    public final static DimmerProcessorClientBuilder builder() {
         return builder;
     }
 
-    private DimmerProcessor(Class<? extends RuntimeException> defaultExceptionType) {
+    DimmerProcessor(Class<? extends RuntimeException> defaultExceptionType) {
         ExceptionUtil.checkAndGetExceptionConstructorType(defaultExceptionType);
         this.defaultExceptionType = defaultExceptionType;
     }
@@ -143,59 +143,5 @@ public class DimmerProcessor {
     }
 
 
-    /**
-     * Singleton builder to configure (@{@link DimmerProcessor}).
-     * <p>
-     * Threadsafe
-     *
-     * @see DimmerProcessor
-     */
-    public static class SingletonBuilder {
-
-        private DimmerProcessor instance;
-
-        private Class<? extends RuntimeException> defaultExceptionType =
-                DimmerInvocationException.class;
-
-        private SingletonBuilder() {
-        }
-
-        /**
-         * Set the default exception type to be thrown as behaviour.
-         * <p>
-         * Notice the exception type must have either an empty constructor or a contractor with only
-         * one parameter, (@{@link FeatureInvocation})
-         *
-         * @param newDefaultExceptionType new default exception type
-         * @return Singleton DimmerProcessor builder
-         */
-        public SingletonBuilder setDefaultExceptionType(
-                Class<? extends RuntimeException> newDefaultExceptionType) {
-            Util.checkArgument(newDefaultExceptionType, "defaultExceptionType");
-            this.defaultExceptionType = newDefaultExceptionType;
-            return this;
-        }
-
-        /**
-         * @return If the singleton DimmerProcessor instance has been already initialised
-         */
-        public boolean isInitialised() {
-            return instance != null;
-        }
-
-        /**
-         * If not initialised yet, it build a the singleton DimmerProcessor instance
-         * with the configured parameters.
-         *
-         * @return the DimmerProcessor instance.
-         */
-        public synchronized DimmerProcessor build() {
-            if (!isInitialised()) {
-                instance = new DimmerProcessor(defaultExceptionType);
-                Aspects.aspectOf(DimmerAspect.class).setDimmerProcessor(instance);
-            }
-            return instance;
-        }
-    }
 
 }
