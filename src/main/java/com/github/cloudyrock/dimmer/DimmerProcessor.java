@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import org.aspectj.lang.Aspects;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Map;
@@ -22,7 +21,8 @@ import java.util.function.Function;
  */
 public class DimmerProcessor {
 
-    private static final SingletonBuilder builder = new SingletonBuilder();
+    private static final DimmerProcessorClientBuilder
+            builder = new DimmerProcessorClientBuilder();
     public static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
@@ -35,7 +35,7 @@ public class DimmerProcessor {
      *
      * @return Singleton DimmerProcessor builder
      */
-    public final static SingletonBuilder builder() {
+    public final static DimmerProcessorClientBuilder builder() {
         return builder;
     }
 

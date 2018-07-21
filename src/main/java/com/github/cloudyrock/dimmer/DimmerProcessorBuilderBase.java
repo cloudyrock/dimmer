@@ -1,17 +1,16 @@
 package com.github.cloudyrock.dimmer;
 
-import org.aspectj.lang.Aspects;
+import java.util.Map;
 
-public class SingletonBuilder {
+public abstract class DimmerProcessorBuilderBase {
 
+    Map<String, FeatureMetadata> configMetadata;
 
-    private DimmerProcessor instance;
+    protected DimmerProcessor instance;
 
-    private Class<? extends RuntimeException> defaultExceptionType =
+    protected Class<? extends RuntimeException> defaultExceptionType =
             DimmerInvocationException.class;
 
-    SingletonBuilder() {
-    }
 
     /**
      * Set the default exception type to be thrown as behaviour.
@@ -22,7 +21,7 @@ public class SingletonBuilder {
      * @param newDefaultExceptionType new default exception type
      * @return Singleton DimmerProcessor builder
      */
-    public SingletonBuilder setDefaultExceptionType(
+    public DimmerProcessorBuilderBase setDefaultExceptionType(
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Util.checkArgument(newDefaultExceptionType, "defaultExceptionType");
         this.defaultExceptionType = newDefaultExceptionType;
@@ -37,16 +36,11 @@ public class SingletonBuilder {
     }
 
     /**
-     * If not initialised yet, it build a the singleton DimmerProcessor instance
+     * TODO change doc
+     * If not initialised yet, it builds a the singleton DimmerProcessor instance
      * with the configured parameters.
      *
      * @return the DimmerProcessor instance.
      */
-    public synchronized DimmerProcessor build() {
-        if (!isInitialised()) {
-            instance = new DimmerProcessor(defaultExceptionType);
-            Aspects.aspectOf(DimmerAspect.class).setDimmerProcessor(instance);
-        }
-        return instance;
-    }
+    public abstract  DimmerProcessor build();
 }
