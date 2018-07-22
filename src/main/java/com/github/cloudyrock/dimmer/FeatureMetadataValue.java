@@ -9,7 +9,7 @@ public final class FeatureMetadataValue extends FeatureMetadata {
         this.valueToReturn = valueToReturn;
     }
 
-    public Object getException() {
+    public Object getValueToReturn() {
         return valueToReturn;
     }
 }

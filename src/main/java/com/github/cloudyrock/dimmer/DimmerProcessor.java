@@ -27,7 +27,7 @@ class DimmerProcessor {
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
-    private final Map<String, Function<FeatureInvocation, ? extends Object>> behaviours =
+    private final Map<String, Function<FeatureInvocation, ?>> behaviours =
             new ConcurrentHashMap<>();
 
     DimmerProcessor(Class<? extends RuntimeException> defaultExceptionType) {
@@ -86,7 +86,10 @@ class DimmerProcessor {
         final ExceptionConstructorType constructorType =
                 ExceptionUtil.checkAndGetExceptionConstructorType(exceptionType);
         return putBehaviour(feature,
-                f -> ExceptionUtil.throwException(exceptionType, constructorType, f));
+                featureInvocation -> ExceptionUtil.throwException(
+                        exceptionType,
+                        constructorType,
+                        featureInvocation));
     }
 
     /**

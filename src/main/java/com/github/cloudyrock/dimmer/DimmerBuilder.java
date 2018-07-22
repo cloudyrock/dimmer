@@ -1,32 +1,17 @@
 package com.github.cloudyrock.dimmer;
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 
-public abstract class DimmerBuilder {
+public final class DimmerBuilder {
 
-
-    public static DimmerRemoteBuilder remote() {
-        return new DimmerRemoteBuilder();
+    public static DimmerEnvironmentConfigurable configure() {
+        return envList ->
+                new DimmerConfigurableRunner(Arrays.asList(envList), new HashMap<>());
     }
 
-
-    public static DimmerLocalBuilder local() {
-        return new DimmerLocalBuilder(new HashSet<>(), new HashMap<>());
+    public static DimmerRemoteRunner runAsRemote(String uri) {
+        return new DimmerRemoteRunner(uri);
     }
 
-
-    public static DimmerServerBuilder server() {
-        return new DimmerServerBuilder(new HashSet<>(), new HashMap<>());
-    }
-
-
-    /**
-     * TODO change doc
-     * If not initialised yet, it builds a the singleton DimmerProcessor instance
-     * with the configured parameters.
-     *
-     * @return the DimmerProcessor instance.
-     */
-    public abstract  DimmerProcessor build();
 }
