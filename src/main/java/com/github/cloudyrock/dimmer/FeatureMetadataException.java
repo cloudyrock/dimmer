@@ -4,7 +4,9 @@ public final class FeatureMetadataException extends FeatureMetadata {
 
     private final Class<? extends RuntimeException> exceptionType;
 
-    public FeatureMetadataException(Class<? extends RuntimeException> exceptionType) {
+    public FeatureMetadataException(String feature,
+                                    Class<? extends RuntimeException> exceptionType) {
+        super(feature);
         this.exceptionType = exceptionType;
     }
 

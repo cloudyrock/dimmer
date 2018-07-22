@@ -2,6 +2,8 @@ package com.github.cloudyrock.dimmer;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,8 +23,8 @@ import java.util.function.Function;
  */
 public class DimmerProcessor {
 
-    private static final DimmerProcessorClientBuilder
-            builder = new DimmerProcessorClientBuilder();
+    private static final DimmerLocalBuilder
+            builder = new DimmerLocalBuilder(new HashSet<>(), new HashMap<>());
     public static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
@@ -35,7 +37,7 @@ public class DimmerProcessor {
      *
      * @return Singleton DimmerProcessor builder
      */
-    public final static DimmerProcessorClientBuilder builder() {
+    public final static DimmerLocalBuilder builder() {
         return builder;
     }
 
@@ -60,7 +62,7 @@ public class DimmerProcessor {
      */
     public boolean featureWithBehaviour(
             String feature,
-            Function<FeatureInvocation, ? extends Object> behaviour) {
+            Function<FeatureInvocation, ?> behaviour) {
         Util.checkArgument(behaviour, "behaviour");
         return putBehaviour(feature, behaviour);
     }

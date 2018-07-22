@@ -4,13 +4,15 @@ import java.util.function.Function;
 
 public final class FeatureMetadataBehaviour extends FeatureMetadata{
 
-    private final Function<String, Object> behaviour;
+    private final Function<FeatureInvocation, ?> behaviour;
 
-    public FeatureMetadataBehaviour(Function<String, Object> behaviour) {
+    public FeatureMetadataBehaviour(String feature,
+                                    Function<FeatureInvocation, ?> behaviour) {
+        super(feature);
         this.behaviour = behaviour;
     }
 
-    public Function<String, Object> getBehaviour() {
+    public Function<FeatureInvocation, ?> getBehaviour() {
         return behaviour;
     }
 }

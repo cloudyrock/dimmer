@@ -4,7 +4,8 @@ public final class FeatureMetadataValue extends FeatureMetadata {
 
     private final Object valueToReturn;
 
-    public FeatureMetadataValue(Object valueToReturn) {
+    public FeatureMetadataValue(String feature, Object valueToReturn) {
+        super(feature);
         this.valueToReturn = valueToReturn;
     }
 
