@@ -21,9 +21,9 @@ import java.util.function.Function;
  * @see FeatureInvocation
  * @since 11/06/2018
  */
-public class DimmerProcessor {
+class DimmerProcessor {
 
-    public static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
+    private static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
@@ -49,7 +49,7 @@ public class DimmerProcessor {
      * @see Function
      * @see DimmerConfigException
      */
-    public boolean featureWithBehaviour(
+    boolean featureWithBehaviour(
             String feature,
             Function<FeatureInvocation, ?> behaviour) {
         Util.checkArgument(behaviour, "behaviour");
@@ -63,7 +63,7 @@ public class DimmerProcessor {
      * @param feature feature with which the specified behaviour is to be associated
      * @return true, or false if the key was already associated to a behaviour.
      */
-    public boolean featureWithDefaultException(String feature) {
+    boolean featureWithDefaultException(String feature) {
         return featureWithException(feature, defaultExceptionType);
     }
 
@@ -79,7 +79,7 @@ public class DimmerProcessor {
      * @return true, or false if the key was already associated to a behaviour.
      * @see FeatureInvocation
      */
-    public boolean featureWithException(
+    boolean featureWithException(
             String feature,
             Class<? extends RuntimeException> exceptionType) {
 
@@ -100,7 +100,7 @@ public class DimmerProcessor {
      * @param valueToReturn value to be associated with the specified key
      * @return true, or false if the key was already associated to a behaviour.
      */
-    public boolean featureWithValue(String feature, Object valueToReturn) {
+    boolean featureWithValue(String feature, Object valueToReturn) {
         return putBehaviour(feature, signature -> valueToReturn);
     }
 
@@ -119,7 +119,7 @@ public class DimmerProcessor {
         }
     }
 
-//    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     private static void checkReturnType(Class returnType, Object behaviourResult) {
         if (!Objects.isNull(behaviourResult)
                 && !returnType.isAssignableFrom(behaviourResult.getClass())) {
