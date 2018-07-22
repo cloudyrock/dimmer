@@ -23,23 +23,12 @@ import java.util.function.Function;
  */
 public class DimmerProcessor {
 
-    private static final DimmerLocalBuilder
-            builder = new DimmerLocalBuilder(new HashSet<>(), new HashMap<>());
     public static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
     private final Map<String, Function<FeatureInvocation, ? extends Object>> behaviours =
             new ConcurrentHashMap<>();
-
-    /**
-     * Singleton builder for DimmerProcessor
-     *
-     * @return Singleton DimmerProcessor builder
-     */
-    public final static DimmerLocalBuilder builder() {
-        return builder;
-    }
 
     DimmerProcessor(Class<? extends RuntimeException> defaultExceptionType) {
         ExceptionUtil.checkAndGetExceptionConstructorType(defaultExceptionType);

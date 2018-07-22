@@ -17,7 +17,7 @@ public abstract class DimmerTestBase {
                 .featureWithValue("FEATURE1", "value1_1")
                 .build();
 
-        dimmerProcessor = DimmerProcessor.builder()
+        dimmerProcessor = DimmerBuilder.local()
                 .setDefaultExceptionType(DefaultException.class)
                 .build();
     }
