@@ -2,8 +2,6 @@ package com.github.cloudyrock.dimmer;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,7 +50,7 @@ class DimmerProcessor {
     boolean featureWithBehaviour(
             String feature,
             Function<FeatureInvocation, ?> behaviour) {
-        Util.checkArgument(behaviour, "behaviour");
+        Util.checkArgumentNullEmpty(behaviour, "behaviour");
         return putBehaviour(feature, behaviour);
     }
 
@@ -132,7 +130,7 @@ class DimmerProcessor {
 
     private boolean putBehaviour(String featureId,
                                  Function<FeatureInvocation, ?> behaviour) {
-        Util.checkArgument(featureId, "featureId");
+        Util.checkArgumentNullEmpty(featureId, "featureId");
         return behaviours.putIfAbsent(featureId, behaviour) == null;
     }
 

@@ -1,7 +1,7 @@
 package com.github.cloudyrock.dimmer;
 
-public interface DimmerEnvironmentConfigurable {
+public interface DimmerEnvironmentConfigurable<CONFIGURABLE extends DimmerConfigurableRunner<CONFIGURABLE>> {
 
-    DimmerConfigurableRunner environments(String... environments);
+    CONFIGURABLE environments(String... environments);
 
 }

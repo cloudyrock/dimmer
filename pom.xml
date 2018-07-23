@@ -31,10 +31,6 @@
             <version>3.2.6</version>
         </dependency>
 
-
-
-
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -117,6 +113,9 @@
     </build>
 
     <developers>
+        <developer>
+            <name>Antonio Perez Dieppa</name>
+        </developer>
         <developer>
             <name>Antonio Perez Dieppa</name>
         </developer>

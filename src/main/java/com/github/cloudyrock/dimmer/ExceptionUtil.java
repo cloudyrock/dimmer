@@ -34,7 +34,7 @@ final class ExceptionUtil {
 
     static ExceptionConstructorType checkAndGetExceptionConstructorType(
             Class<? extends RuntimeException> exceptionType) {
-        Util.checkArgument(exceptionType, "exceptionType");
+        Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
         ExceptionConstructorType constructorType = NO_COMPATIBLE_CONSTRUCTOR;
         for (Constructor<?> c : constructors) {
