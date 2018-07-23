@@ -41,7 +41,7 @@ public class DimmerAspectITest extends DimmerTestBase {
     @DisplayName("Should run behaviour when featureWithBehaviour")
     public void featureWithBehaviour() {
         final String value = "feature1_value";
-        dimmerProcessor.featureWithBehaviour(FEATURE1, f -> value);
+        DimmerTestBase.dimmerProcessor.featureWithBehaviour(FEATURE1, f -> value);
         assertEquals(value, annotatedClass.methodForFeature1());
     }
 
@@ -54,7 +54,7 @@ public class DimmerAspectITest extends DimmerTestBase {
                 .willReturn("not_checked");
 
         //when
-        dimmerProcessor.featureWithBehaviour(FEATURE2, mockBehaviour);
+        DimmerTestBase.dimmerProcessor.featureWithBehaviour(FEATURE2, mockBehaviour);
         final String param1 = "parameter1";
         final int param2 = 2;
         annotatedClass.methodForFeature2(param1, param2);
@@ -70,7 +70,7 @@ public class DimmerAspectITest extends DimmerTestBase {
     @Test(expected = DummyException.class)
     @DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
     public void featureWithExceptionInnBehaviour() {
-        dimmerProcessor.featureWithBehaviour(FEATURE3, f -> {
+        DimmerTestBase.dimmerProcessor.featureWithBehaviour(FEATURE3, f -> {
             throw new DummyException();
         });
         assertNull(annotatedClass.methodForFeature3());
@@ -79,14 +79,14 @@ public class DimmerAspectITest extends DimmerTestBase {
     @Test
     @DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
     public void featureWithValue() {
-        dimmerProcessor.featureWithValue(FEATURE4, VALUE1);
+        DimmerTestBase.dimmerProcessor.featureWithValue(FEATURE4, VALUE1);
         assertEquals(VALUE1, annotatedClass.methodForFeature4());
     }
 
     @Test(expected = DummyException.class)
     @DisplayName("Should throw DummyException when featureWithException")
     public void featureWithException() {
-        dimmerProcessor.featureWithException(FEATURE5, DummyException.class);
+        DimmerTestBase.dimmerProcessor.featureWithException(FEATURE5, DummyException.class);
         annotatedClass.methodForFeature5();
     }
 
@@ -94,35 +94,35 @@ public class DimmerAspectITest extends DimmerTestBase {
     @Test(expected = DimmerConfigException.class)
     @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
     public void featureAndDimmerConfigException() {
-        dimmerProcessor.featureWithValue(FEATURE7, 1);
+        DimmerTestBase.dimmerProcessor.featureWithValue(FEATURE7, 1);
         annotatedClass.methodForFeature7();
     }
 
     @Test
     @DisplayName("Should return a NULL value")
     public void featureNullMismatch() {
-        dimmerProcessor.featureWithValue(FEATURE8, null);
+        DimmerTestBase.dimmerProcessor.featureWithValue(FEATURE8, null);
         annotatedClass.methodForFeature8();
     }
 
     @Test
     @DisplayName("Behaviour should return child class when executing parent compatible type")
     public void featureAndDimmerSubtypeClass() {
-        dimmerProcessor.featureWithValue(FEATURE9, new Child());
+        DimmerTestBase.dimmerProcessor.featureWithValue(FEATURE9, new Child());
         annotatedClass.methodForFeature9();
     }
 
     @Test(expected = DimmerConfigException.class)
     @DisplayName("Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type")
     public void featureAndDimmerConfigExceptionWhenRealMethodIsVoid() {
-        dimmerProcessor.featureWithValue(FEATURE10, "VALUE");
+        DimmerTestBase.dimmerProcessor.featureWithValue(FEATURE10, "VALUE");
         annotatedClass.methodForFeature10();
     }
 
     @Test
     @DisplayName("Should exception should get FeatureInvocation as parameter when featureWithException")
     public void passingFeatureInvocationToException() {
-        dimmerProcessor.featureWithException(FEATURE6,
+        DimmerTestBase.dimmerProcessor.featureWithException(FEATURE6,
                 DummyExceptionWithFeatureInvocation.class);
         final String param1 = "parameter1";
         final int param2 = 2;

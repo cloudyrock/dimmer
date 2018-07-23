@@ -59,7 +59,7 @@ public class DimmerAspectUTest {
         given(jointPointMock.getArgs()).willReturn(expectedArgs);
         given(dimmerFeatureMock.value()).willReturn(feature);
         given(dimmerProcessor.executeDimmerFeature(
-                any(DimmerFeature.class),
+                any(String.class),
                 any(FeatureInvocation.class),
                 any(ProceedingJoinPoint.class))).willReturn(expectedReturnedValue);
 
@@ -70,8 +70,8 @@ public class DimmerAspectUTest {
         //then
         ArgumentCaptor<FeatureInvocation> featureInvocationCaptor =
                 ArgumentCaptor.forClass(FeatureInvocation.class);
-        ArgumentCaptor<DimmerFeature> dimmerFeatureCaptor =
-                ArgumentCaptor.forClass(DimmerFeature.class);
+        ArgumentCaptor<String> dimmerFeatureCaptor =
+                ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<ProceedingJoinPoint> jointPointCaptor =
                 ArgumentCaptor.forClass(ProceedingJoinPoint.class);
 
@@ -82,7 +82,7 @@ public class DimmerAspectUTest {
                         jointPointCaptor.capture()
                 );
         assertEquals(expectedReturnedValue, actualReturnedValue);
-        assertEquals(dimmerFeatureMock, dimmerFeatureCaptor.getValue());
+        assertEquals(dimmerFeatureMock.value(), dimmerFeatureCaptor.getValue());
         assertEquals(jointPointMock, jointPointCaptor.getValue());
 
         FeatureInvocation invocation = featureInvocationCaptor.getValue();

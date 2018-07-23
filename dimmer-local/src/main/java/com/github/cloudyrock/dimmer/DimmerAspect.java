@@ -30,7 +30,7 @@ public class DimmerAspect {
     public Object dimmerFeatureAdvice(ProceedingJoinPoint joinPoint,
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
         return dimmerProcessor.executeDimmerFeature(
-                dimmerFeatureAnn,
+                dimmerFeatureAnn.value(),
                 generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
                 joinPoint
         );

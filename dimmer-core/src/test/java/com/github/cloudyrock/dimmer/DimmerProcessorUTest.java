@@ -21,11 +21,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class DimmerProcessorUTest extends DimmerTestBase {
+public class DimmerProcessorUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
-    @Mock
-    private DimmerFeature dimmerFeature;
+
+    protected DimmerProcessor dimmerProcessor;
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
@@ -37,22 +37,20 @@ public class DimmerProcessorUTest extends DimmerTestBase {
 
     @Before
     public void setUp() {
+
+        dimmerProcessor = new DimmerProcessor(DefaultException.class);
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(featureInvocationMock.getReturnType()).willReturn(String.class);
     }
 
-    private void givenDimmerFeature(String value) {
-        given(dimmerFeature.value()).willReturn(value);
-    }
 
     @Test
     @DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
     public void featureAndConfiguredWithBehaviour() throws Throwable {
         dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
-        givenDimmerFeature(feature);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, featureInvocationMock, null);
+                feature, featureInvocationMock, null);
         assertEquals("VALUE", actualResult);
     }
 
@@ -60,28 +58,25 @@ public class DimmerProcessorUTest extends DimmerTestBase {
     @DisplayName("Should return value when featureWithValue")
     public void featureAndConfiguredWithValue() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
-        givenDimmerFeature(feature);
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                dimmerFeature, featureInvocationMock, null);
+                feature, featureInvocationMock, null);
         assertEquals("VALUE", actualResult);
     }
 
     @Test(expected = DefaultException.class)
     @DisplayName("Should throw default exception when featureWithDefaultException")
     public void featureAndConfiguredWithDefaultException() throws Throwable {
-        dimmerProcessor.featureWithDefaultException(feature);
-        givenDimmerFeature(feature);
-        dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocationMock, null);
+        dimmerProcessor.featureWithDefaultException(feature);;
+        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock, null);
     }
 
     @Test
     @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
-        givenDimmerFeature(feature);
 
         dimmerProcessor.featureWithBehaviour(feature, behaviour);
-        dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocationMock, null);
+        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock, null);
 
         then(behaviour).should().apply(featureInvocationMock);
     }
@@ -92,7 +87,7 @@ public class DimmerProcessorUTest extends DimmerTestBase {
 
         FeatureInvocation featureInvocationMock = mock(FeatureInvocation.class);
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
-        givenDimmerFeature(feature);
+        
 
         dimmerProcessor.featureWithException(
                 feature,
@@ -101,6 +96,6 @@ public class DimmerProcessorUTest extends DimmerTestBase {
         exception.expect(DummyExceptionWithFeatureInvocation.class);
         exception.expect(hasProperty("featureInvocation", is(featureInvocationMock)));
 
-        dimmerProcessor.executeDimmerFeature(dimmerFeature, featureInvocationMock, null);
+        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock, null);
     }
 }

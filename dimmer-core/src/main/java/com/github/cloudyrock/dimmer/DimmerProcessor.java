@@ -106,10 +106,9 @@ class DimmerProcessor {
     }
 
     Object executeDimmerFeature(
-            DimmerFeature dimmerFeature,
+            String feature,
             FeatureInvocation featureInvocation,
             ProceedingJoinPoint realMethod) throws Throwable {
-        final String feature = dimmerFeature.value();
         if (behaviours.containsKey(feature)) {
             final Object result = behaviours.get(feature).apply(featureInvocation);
 

@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer.displayname;
 
+import com.github.cloudyrock.dimmer.DimmerFeature;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -15,9 +16,10 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 /**
- * This aspect intercepts all the calls to methods annotated with
+ * This aspect intercepts all the calls to methods annotated with (@{@link DimmerFeature})
  *
  * @author Antonio Perez Dieppa
+ * @see DimmerFeature
  * @since 11/06/2018
  */
 @Aspect
