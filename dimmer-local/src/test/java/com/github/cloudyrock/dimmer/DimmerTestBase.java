@@ -8,6 +8,6 @@ public abstract class DimmerTestBase {
 
     static {
         dimmerProcessor = new DimmerProcessor(DefaultException.class);
-        Aspects.aspectOf(DimmerAspect.class).setDimmerProcessor(dimmerProcessor);
+        Aspects.aspectOf(DimmerLocalAspect.class).setDimmerProcessor(dimmerProcessor);
     }
 }

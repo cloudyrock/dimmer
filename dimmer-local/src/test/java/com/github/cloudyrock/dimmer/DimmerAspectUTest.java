@@ -2,7 +2,6 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.displayname.DisplayName;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,13 +33,13 @@ public class DimmerAspectUTest {
     @Mock
     private DimmerFeature dimmerFeatureMock;
 
-    private DimmerAspect dimmerAspect;
+    private DimmerLocalAspect dimmerAspect;
 
     @Before
     public void setUp() {
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
-        dimmerAspect = new DimmerAspect();
+        dimmerAspect = new DimmerLocalAspect();
         dimmerAspect.setDimmerProcessor(dimmerProcessor);
     }
 

@@ -50,7 +50,7 @@ public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunne
             final DimmerProcessor processor = new DimmerProcessor(defaultExceptionType);
             Set<FeatureMetadata> featureMetadataSet = configMetadata.get(environment);
             applyFeatures(processor, featureMetadataSet);
-            Aspects.aspectOf(DimmerAspect.class).setDimmerProcessor(processor);
+            Aspects.aspectOf(DimmerLocalAspect.class).setDimmerProcessor(processor);
         }
 
     }

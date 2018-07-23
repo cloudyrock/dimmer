@@ -14,7 +14,7 @@ import org.aspectj.lang.reflect.MethodSignature;
  * @since 11/06/2018
  */
 @Aspect
-public class DimmerAspect {
+public class DimmerLocalAspect {
 
     private DimmerProcessor dimmerProcessor;
 
@@ -36,7 +36,8 @@ public class DimmerAspect {
         );
     }
 
-    private FeatureInvocation generateFeatureInvocation(String feature, ProceedingJoinPoint joinPoint) {
+    private FeatureInvocation generateFeatureInvocation(String feature,
+                                                        ProceedingJoinPoint joinPoint) {
         final MethodSignature p = (MethodSignature)joinPoint.getSignature();
         return new FeatureInvocation(
                 feature,
