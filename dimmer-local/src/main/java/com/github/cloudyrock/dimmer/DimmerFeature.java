@@ -1,5 +1,7 @@
 package com.github.cloudyrock.dimmer;
 
+import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

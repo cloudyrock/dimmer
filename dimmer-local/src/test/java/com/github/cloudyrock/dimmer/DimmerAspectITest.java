@@ -1,6 +1,7 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.displayname.DisplayName;
+import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
 import com.github.cloudyrock.dimmer.exceptions.DummyException;
 import com.github.cloudyrock.dimmer.exceptions.DummyExceptionWithFeatureInvocation;
 import org.junit.Rule;

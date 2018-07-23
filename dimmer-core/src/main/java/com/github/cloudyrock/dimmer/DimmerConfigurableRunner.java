@@ -1,5 +1,8 @@
 package com.github.cloudyrock.dimmer;
 
+import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
+import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;

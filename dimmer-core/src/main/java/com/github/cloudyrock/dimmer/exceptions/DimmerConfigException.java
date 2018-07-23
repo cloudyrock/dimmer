@@ -1,4 +1,4 @@
-package com.github.cloudyrock.dimmer;
+package com.github.cloudyrock.dimmer.exceptions;
 
 /**
  * If thrown indicates an error when configuring feature behaviours.
