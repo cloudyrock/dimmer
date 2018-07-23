@@ -32,7 +32,7 @@ public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunne
                 Arrays.asList(environments),
                 this.configMetadata,
                 this.defaultExceptionType,
-                alreadyRun);
+                alreadyRunning);
     }
 
     @Override
@@ -41,12 +41,12 @@ public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunne
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
         return new DimmerLocalRunner(environments, configMetadata, defaultExceptionType,
-                alreadyRun);
+                alreadyRunning);
     }
 
     public synchronized void run(String environment) {
-        if (!alreadyRun) {
-            alreadyRun = true;
+        if (!alreadyRunning) {
+            alreadyRunning = true;
             final DimmerProcessor processor = new DimmerProcessor(defaultExceptionType);
             Set<FeatureMetadata> featureMetadataSet = configMetadata.get(environment);
             applyFeatures(processor, featureMetadataSet);
