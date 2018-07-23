@@ -8,11 +8,13 @@ import java.util.function.Function;
 
 abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner> {
 
+
+    protected boolean alreadyRun = false;
+
     protected final Collection<String> environments;
 
     protected final Map<String, Set<FeatureMetadata>> configMetadata;
 
-    protected DimmerProcessor instance;
 
     protected Class<? extends RuntimeException> defaultExceptionType =
             DimmerInvocationException.class;
@@ -20,15 +22,18 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
     protected DimmerConfigurableRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType) {
+            Class<? extends RuntimeException> defaultExceptionType,
+            boolean alreadyRun) {
         this.environments = environments;
         this.configMetadata = configMetadata;
         this.defaultExceptionType = defaultExceptionType;
+        this.alreadyRun = alreadyRun;
     }
 
     public RUNNER featureWithBehaviour(
             String feature,
             Function<FeatureInvocation, ?> behaviour) {
+        checkRun();
         final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
                 feature,
                 behaviour
@@ -40,6 +45,7 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
     }
 
     public RUNNER featureWithDefaultException(String feature) {
+        checkRun();
         final FeatureMetadata metadata = new FeatureMetadataDefaultException(
                 feature
         );
@@ -51,6 +57,7 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
     public RUNNER featureWithException(
             String feature,
             Class<? extends RuntimeException> exceptionType) {
+        checkRun();
         final FeatureMetadata metadata = new FeatureMetadataException(
                 feature,
                 exceptionType
@@ -62,6 +69,7 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
 
     public RUNNER featureWithValue(String feature,
                                    Object valueToReturn) {
+        checkRun();
         final FeatureMetadata metadata = new FeatureMetadataValue(
                 feature,
                 valueToReturn
@@ -102,4 +110,11 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType);
+
+
+    protected void checkRun() {
+        if(alreadyRun) {
+            throw new DimmerConfigException("Runner already alreadyRun.");
+        }
+    }
 }

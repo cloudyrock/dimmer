@@ -8,22 +8,21 @@ import java.util.Map;
 import java.util.Set;
 
 public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
-implements DimmerEnvironmentConfigurable<DimmerLocalRunner>{
-
+        implements DimmerEnvironmentConfigurable<DimmerLocalRunner> {
 
     DimmerLocalRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
-        super(environments, configMetadata, DimmerInvocationException.class);
+        super(environments, configMetadata, DimmerInvocationException.class, false);
     }
 
     DimmerLocalRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType) {
-        super(environments, configMetadata, newDefaultExceptionType);
+            Class<? extends RuntimeException> newDefaultExceptionType,
+            boolean alreadyRun) {
+        super(environments, configMetadata, newDefaultExceptionType, alreadyRun);
     }
-
 
     @Override
     public DimmerLocalRunner environments(String... environments) {
@@ -31,7 +30,8 @@ implements DimmerEnvironmentConfigurable<DimmerLocalRunner>{
         return new DimmerLocalRunner(
                 Arrays.asList(environments),
                 this.configMetadata,
-                this.defaultExceptionType);
+                this.defaultExceptionType,
+                alreadyRun);
     }
 
     @Override
@@ -39,22 +39,20 @@ implements DimmerEnvironmentConfigurable<DimmerLocalRunner>{
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
-        return new DimmerLocalRunner(environments, configMetadata, defaultExceptionType);
-    }
-
-    private boolean isInitialised() {
-        return instance != null;
+        return new DimmerLocalRunner(environments, configMetadata, defaultExceptionType,
+                alreadyRun);
     }
 
     public synchronized void run(String environment) {
-        if (!isInitialised()) {
-            instance = new DimmerProcessor(defaultExceptionType);
+        if (!alreadyRun) {
+            alreadyRun = true;
+            final DimmerProcessor processor = new DimmerProcessor(defaultExceptionType);
             Set<FeatureMetadata> featureMetadataSet = configMetadata.get(environment);
-            applyFeatures(instance, featureMetadataSet);
-            Aspects.aspectOf(DimmerAspect.class).setDimmerProcessor(instance);
+            applyFeatures(processor, featureMetadataSet);
+            Aspects.aspectOf(DimmerAspect.class).setDimmerProcessor(processor);
         }
-    }
 
+    }
 
     private void applyFeatures(DimmerProcessor processor,
                                Set<FeatureMetadata> featureMetadataSet) {
