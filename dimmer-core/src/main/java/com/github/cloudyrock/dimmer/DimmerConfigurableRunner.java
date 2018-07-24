@@ -9,15 +9,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner> {
-    
+abstract class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner> {
+
     protected static final Class<? extends RuntimeException> DEFAULT_EXCEPTION_TYPE =
             DimmerInvocationException.class;
 
     protected final Collection<String> environments;
 
     protected final Map<String, Set<FeatureMetadata>> configMetadata;
-
 
     protected final Class<? extends RuntimeException> defaultExceptionType;
 
@@ -41,7 +40,6 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
     public RUNNER featureWithBehaviour(
             String feature,
             Function<FeatureInvocation, ?> behaviour) {
-        checkConfigurationAccess();
         final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
                 feature,
                 behaviour
@@ -53,7 +51,6 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
     }
 
     public RUNNER featureWithDefaultException(String feature) {
-        checkConfigurationAccess();
         final FeatureMetadata metadata = new FeatureMetadataDefaultException(
                 feature
         );
@@ -65,7 +62,6 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
     public RUNNER featureWithException(
             String feature,
             Class<? extends RuntimeException> exceptionType) {
-        checkConfigurationAccess();
         final FeatureMetadata metadata = new FeatureMetadataException(
                 feature,
                 exceptionType
@@ -77,7 +73,6 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
 
     public RUNNER featureWithValue(String feature,
                                    Object valueToReturn) {
-        checkConfigurationAccess();
         final FeatureMetadata metadata = new FeatureMetadataValue(
                 feature,
                 valueToReturn
@@ -113,12 +108,8 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
                 newDefaultExceptionType);
     }
 
-
     protected abstract RUNNER newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType);
-
-
-    protected abstract void checkConfigurationAccess();
 }

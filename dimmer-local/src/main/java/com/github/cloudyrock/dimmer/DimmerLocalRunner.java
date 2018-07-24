@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 import org.aspectj.lang.Aspects;
 
@@ -11,12 +10,10 @@ import java.util.Set;
 public final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
         implements DimmerEnvironmentConfigurable<DimmerLocalRunner> {
 
-    private static boolean alreadyRunning = false;
-
     DimmerLocalRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
-        super(environments, configMetadata, DimmerInvocationException.class);
+        this(environments, configMetadata, DimmerInvocationException.class);
     }
 
     DimmerLocalRunner(
@@ -24,6 +21,7 @@ public final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLoca
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType) {
         super(environments, configMetadata, newDefaultExceptionType);
+
     }
 
     @Override
@@ -34,28 +32,15 @@ public final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLoca
         return new DimmerLocalRunner(environments, configMetadata, defaultExceptionType);
     }
 
-    @Override
-    protected void checkConfigurationAccess() {
-        if (alreadyRunning) {
-            throw new DimmerConfigException("Runner already running.");
-        }
-    }
-
     public void run(String environment) {
-        synchronized (DimmerLocalRunner.class) {
-            if (!alreadyRunning) {
-                alreadyRunning = true;
-                final Class<? extends RuntimeException> defaultExceptionType =
-                        this.defaultExceptionType != null
-                                ? this.defaultExceptionType
-                                : DEFAULT_EXCEPTION_TYPE;
-                final DimmerProcessor processor =
-                        new DimmerProcessor(defaultExceptionType);
-                Set<FeatureMetadata> featureMetadataSet = configMetadata.get(environment);
-                applyFeatures(processor, featureMetadataSet);
-                Aspects.aspectOf(DimmerLocalAspect.class).setDimmerProcessor(processor);
-            }
-        }
+        final Class<? extends RuntimeException> exceptionType =
+                this.defaultExceptionType != null
+                        ? this.defaultExceptionType
+                        : DEFAULT_EXCEPTION_TYPE;
+        final DimmerProcessor processor = new DimmerProcessor(exceptionType);
+        applyFeatures(processor, configMetadata.get(environment));
+        Aspects.aspectOf(DimmerLocalAspect.class).setDimmerProcessor(processor);
+
     }
 
     private void applyFeatures(DimmerProcessor processor,
