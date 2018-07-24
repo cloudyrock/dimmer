@@ -33,13 +33,13 @@ public class DimmerAspectUTest {
     @Mock
     private DimmerFeature dimmerFeatureMock;
 
-    private DimmerLocalAspect dimmerAspect;
+    private DimmerAspect dimmerAspect;
 
     @Before
     public void setUp() {
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
-        dimmerAspect = new DimmerLocalAspect();
+        dimmerAspect = new DimmerAspect();
         dimmerAspect.setDimmerProcessor(dimmerProcessor);
     }
 

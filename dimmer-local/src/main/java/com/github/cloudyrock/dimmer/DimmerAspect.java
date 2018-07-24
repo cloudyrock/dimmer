@@ -14,7 +14,7 @@ import org.aspectj.lang.reflect.MethodSignature;
  * @since 11/06/2018
  */
 @Aspect
-public class DimmerLocalAspect {
+public class DimmerAspect {
 
     private DimmerProcessor dimmerProcessor;
 
