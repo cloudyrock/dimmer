@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
+public final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
         implements DimmerEnvironmentConfigurable<DimmerLocalRunner> {
 
     private static boolean alreadyRunning = false;
