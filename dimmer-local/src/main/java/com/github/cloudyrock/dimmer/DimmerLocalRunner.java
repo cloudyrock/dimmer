@@ -26,16 +26,6 @@ public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunne
     }
 
     @Override
-    public DimmerLocalRunner environments(String... environments) {
-        Util.checkArgumentNullEmpty(environments, "environments");
-        return new DimmerLocalRunner(
-                Arrays.asList(environments),
-                this.configMetadata,
-                this.defaultExceptionType,
-                alreadyRunning);
-    }
-
-    @Override
     protected DimmerLocalRunner newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,

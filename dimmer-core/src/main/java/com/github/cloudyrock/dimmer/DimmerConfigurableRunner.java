@@ -3,6 +3,7 @@ package com.github.cloudyrock.dimmer;
 import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,6 +32,15 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
         this.configMetadata = configMetadata;
         this.defaultExceptionType = defaultExceptionType;
         this.alreadyRunning = alreadyRunning;
+    }
+
+    public RUNNER environments(String... environments) {
+        Util.checkArgumentNullEmpty(environments, "environments");
+        return newInstance(
+                Arrays.asList(environments),
+                this.configMetadata,
+                this.defaultExceptionType,
+                alreadyRunning);
     }
 
     public RUNNER featureWithBehaviour(
