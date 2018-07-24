@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
+final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
         implements DimmerEnvironmentConfigurable<DimmerLocalRunner> {
 
     DimmerLocalRunner(

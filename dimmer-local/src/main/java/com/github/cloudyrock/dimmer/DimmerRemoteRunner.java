@@ -1,6 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
-public final class DimmerRemoteRunner {
+final class DimmerRemoteRunner {
 
     private final String url;
     private boolean alreadyRun = false;
