@@ -36,7 +36,7 @@ public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunne
 
     @Override
     protected void checkConfigurationAccess() {
-        if(alreadyRunning) {
+        if (alreadyRunning) {
             throw new DimmerConfigException("Runner already running.");
         }
     }
@@ -45,7 +45,12 @@ public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunne
         synchronized (DimmerLocalRunner.class) {
             if (!alreadyRunning) {
                 alreadyRunning = true;
-                final DimmerProcessor processor = new DimmerProcessor(defaultExceptionType);
+                final Class<? extends RuntimeException> defaultExceptionType =
+                        this.defaultExceptionType != null
+                                ? this.defaultExceptionType
+                                : DEFAULT_EXCEPTION_TYPE;
+                final DimmerProcessor processor =
+                        new DimmerProcessor(defaultExceptionType);
                 Set<FeatureMetadata> featureMetadataSet = configMetadata.get(environment);
                 applyFeatures(processor, featureMetadataSet);
                 Aspects.aspectOf(DimmerLocalAspect.class).setDimmerProcessor(processor);

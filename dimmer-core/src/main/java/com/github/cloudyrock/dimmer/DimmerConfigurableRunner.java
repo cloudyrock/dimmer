@@ -11,14 +11,15 @@ import java.util.function.Function;
 
 abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner> {
     
+    protected static final Class<? extends RuntimeException> DEFAULT_EXCEPTION_TYPE =
+            DimmerInvocationException.class;
 
     protected final Collection<String> environments;
 
     protected final Map<String, Set<FeatureMetadata>> configMetadata;
 
 
-    protected Class<? extends RuntimeException> defaultExceptionType =
-            DimmerInvocationException.class;
+    protected final Class<? extends RuntimeException> defaultExceptionType;
 
     protected DimmerConfigurableRunner(
             Collection<String> environments,
