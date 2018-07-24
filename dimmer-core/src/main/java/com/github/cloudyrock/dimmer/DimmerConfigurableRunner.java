@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 
 import java.util.Arrays;
@@ -11,9 +10,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner> {
-
-
-    protected boolean alreadyRunning = false;
+    
 
     protected final Collection<String> environments;
 
@@ -26,12 +23,10 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
     protected DimmerConfigurableRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType,
-            boolean alreadyRunning) {
+            Class<? extends RuntimeException> defaultExceptionType) {
         this.environments = environments;
         this.configMetadata = configMetadata;
         this.defaultExceptionType = defaultExceptionType;
-        this.alreadyRunning = alreadyRunning;
     }
 
     public RUNNER environments(String... environments) {
@@ -39,57 +34,56 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
         return newInstance(
                 Arrays.asList(environments),
                 this.configMetadata,
-                this.defaultExceptionType,
-                alreadyRunning);
+                this.defaultExceptionType);
     }
 
     public RUNNER featureWithBehaviour(
             String feature,
             Function<FeatureInvocation, ?> behaviour) {
-        checkAlreadyRunning();
+        checkConfigurationAccess();
         final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
                 feature,
                 behaviour
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType, alreadyRunning);
+                this.defaultExceptionType);
 
     }
 
     public RUNNER featureWithDefaultException(String feature) {
-        checkAlreadyRunning();
+        checkConfigurationAccess();
         final FeatureMetadata metadata = new FeatureMetadataDefaultException(
                 feature
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType, alreadyRunning);
+                this.defaultExceptionType);
     }
 
     public RUNNER featureWithException(
             String feature,
             Class<? extends RuntimeException> exceptionType) {
-        checkAlreadyRunning();
+        checkConfigurationAccess();
         final FeatureMetadata metadata = new FeatureMetadataException(
                 feature,
                 exceptionType
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType, alreadyRunning);
+                this.defaultExceptionType);
     }
 
     public RUNNER featureWithValue(String feature,
                                    Object valueToReturn) {
-        checkAlreadyRunning();
+        checkConfigurationAccess();
         final FeatureMetadata metadata = new FeatureMetadataValue(
                 feature,
                 valueToReturn
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType, alreadyRunning);
+                this.defaultExceptionType);
 
     }
 
@@ -115,20 +109,15 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Util.checkArgumentNullEmpty(newDefaultExceptionType, "defaultExceptionType");
         return newInstance(this.environments, this.configMetadata,
-                newDefaultExceptionType, alreadyRunning);
+                newDefaultExceptionType);
     }
 
 
     protected abstract RUNNER newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType,
-            boolean alreadyRunning);
+            Class<? extends RuntimeException> newDefaultExceptionType);
 
 
-    protected void checkAlreadyRunning() {
-        if(alreadyRunning) {
-            throw new DimmerConfigException("Runner already alreadyRunning.");
-        }
-    }
+    protected abstract void checkConfigurationAccess();
 }
