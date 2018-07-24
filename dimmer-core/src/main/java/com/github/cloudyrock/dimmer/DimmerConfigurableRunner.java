@@ -43,7 +43,7 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+                this.defaultExceptionType, alreadyRunning);
 
     }
 
@@ -54,7 +54,7 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+                this.defaultExceptionType, alreadyRunning);
     }
 
     public RUNNER featureWithException(
@@ -67,7 +67,7 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+                this.defaultExceptionType, alreadyRunning);
     }
 
     public RUNNER featureWithValue(String feature,
@@ -79,7 +79,7 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
         );
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+                this.defaultExceptionType, alreadyRunning);
 
     }
 
@@ -105,14 +105,15 @@ abstract  class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Util.checkArgumentNullEmpty(newDefaultExceptionType, "defaultExceptionType");
         return newInstance(this.environments, this.configMetadata,
-                newDefaultExceptionType);
+                newDefaultExceptionType, alreadyRunning);
     }
 
 
     protected abstract RUNNER newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType);
+            Class<? extends RuntimeException> newDefaultExceptionType,
+            boolean alreadyRunning);
 
 
     protected void checkAlreadyRunning() {

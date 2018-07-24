@@ -39,7 +39,8 @@ public class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunne
     protected DimmerLocalRunner newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType) {
+            Class<? extends RuntimeException> defaultExceptionType,
+            boolean alreadyRunning) {
         return new DimmerLocalRunner(environments, configMetadata, defaultExceptionType,
                 alreadyRunning);
     }
