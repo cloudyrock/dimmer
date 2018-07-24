@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-
 /**
  * Singleton class to configure feature's behaviour.
  * <p>
@@ -20,16 +19,17 @@ import java.util.function.Function;
  * @see FeatureInvocation
  * @since 11/06/2018
  */
-class DimmerProcessor {
+class DimmerLocalProcessor implements FeatureExecutor {
 
-    private static final String EXCEPTION_MESSAGE_CAST = "The expected return types between the real method and the configured function are mismatched";
+    private static final String EXCEPTION_MESSAGE_CAST =
+            "The expected return types between the real method and the configured function are mismatched";
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
     private final Map<String, Function<FeatureInvocation, ?>> behaviours =
             new ConcurrentHashMap<>();
 
-    DimmerProcessor(Class<? extends RuntimeException> defaultExceptionType) {
+    DimmerLocalProcessor(Class<? extends RuntimeException> defaultExceptionType) {
         ExceptionUtil.checkAndGetExceptionConstructorType(defaultExceptionType);
         this.defaultExceptionType = defaultExceptionType;
     }
@@ -106,20 +106,6 @@ class DimmerProcessor {
         return putBehaviour(feature, signature -> valueToReturn);
     }
 
-    Object executeDimmerFeature(
-            String feature,
-            FeatureInvocation featureInvocation,
-            ProceedingJoinPoint realMethod) throws Throwable {
-        if (behaviours.containsKey(feature)) {
-            final Object result = behaviours.get(feature).apply(featureInvocation);
-
-            checkReturnType(featureInvocation.getReturnType(), result);
-            return result;
-        } else {
-            return realMethod.proceed();
-        }
-    }
-
     @SuppressWarnings("unchecked")
     private static void checkReturnType(Class returnType, Object behaviourResult) {
         if (!Objects.isNull(behaviourResult)
@@ -134,6 +120,18 @@ class DimmerProcessor {
         return behaviours.putIfAbsent(featureId, behaviour) == null;
     }
 
+    @Override
+    public Object executeDimmerFeature(String feature,
+                                       FeatureInvocation featureInvocation,
+                                       ProceedingJoinPoint realMethod) throws Throwable {
+        if (behaviours.containsKey(feature)) {
+            final Object result = behaviours.get(feature).apply(featureInvocation);
 
+            checkReturnType(featureInvocation.getReturnType(), result);
+            return result;
+        } else {
+            return realMethod.proceed();
+        }
+    }
 
 }

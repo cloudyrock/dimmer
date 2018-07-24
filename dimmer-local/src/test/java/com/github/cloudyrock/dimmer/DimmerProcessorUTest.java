@@ -25,7 +25,7 @@ public class DimmerProcessorUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
 
-    protected DimmerProcessor dimmerProcessor;
+    protected DimmerLocalProcessor dimmerProcessor;
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
@@ -38,7 +38,7 @@ public class DimmerProcessorUTest {
     @Before
     public void setUp() {
 
-        dimmerProcessor = new DimmerProcessor(DefaultException.class);
+        dimmerProcessor = new DimmerLocalProcessor(DefaultException.class);
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(featureInvocationMock.getReturnType()).willReturn(String.class);

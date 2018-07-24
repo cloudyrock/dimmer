@@ -28,7 +28,7 @@ public class DimmerAspectUTest {
     private ProceedingJoinPoint jointPointMock;
 
     @Mock
-    private DimmerProcessor dimmerProcessor;
+    private DimmerLocalProcessor dimmerProcessor;
 
     @Mock
     private DimmerFeature dimmerFeatureMock;
@@ -40,7 +40,7 @@ public class DimmerAspectUTest {
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         dimmerAspect = new DimmerAspect();
-        dimmerAspect.setDimmerProcessor(dimmerProcessor);
+        dimmerAspect.setFeatureExecutor(dimmerProcessor);
     }
 
     @Test

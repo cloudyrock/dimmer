@@ -16,10 +16,10 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Aspect
 public class DimmerAspect {
 
-    private DimmerProcessor dimmerProcessor;
+    private FeatureExecutor featureExecutor;
 
-    void setDimmerProcessor(DimmerProcessor dimmerProcessor) {
-        this.dimmerProcessor = dimmerProcessor;
+    void setFeatureExecutor(DimmerLocalProcessor featureExecutor) {
+        this.featureExecutor = featureExecutor;
     }
 
     @Pointcut("@annotation(dimmerFeatureAnnotation) && execution(* *(..))")
@@ -29,7 +29,7 @@ public class DimmerAspect {
     @Around("dimmerFeaturePointCutDef(dimmerFeatureAnn)")
     public Object dimmerFeatureAdvice(ProceedingJoinPoint joinPoint,
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
-        return dimmerProcessor.executeDimmerFeature(
+        return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
                 generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
                 joinPoint

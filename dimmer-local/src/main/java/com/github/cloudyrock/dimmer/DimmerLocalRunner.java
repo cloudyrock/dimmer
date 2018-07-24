@@ -37,13 +37,13 @@ public final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLoca
                 this.defaultExceptionType != null
                         ? this.defaultExceptionType
                         : DEFAULT_EXCEPTION_TYPE;
-        final DimmerProcessor processor = new DimmerProcessor(exceptionType);
+        final DimmerLocalProcessor processor = new DimmerLocalProcessor(exceptionType);
         applyFeatures(processor, configMetadata.get(environment));
-        Aspects.aspectOf(DimmerAspect.class).setDimmerProcessor(processor);
+        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(processor);
 
     }
 
-    private void applyFeatures(DimmerProcessor processor,
+    private void applyFeatures(DimmerLocalProcessor processor,
                                Set<FeatureMetadata> featureMetadataSet) {
 
         if (featureMetadataSet == null) {
