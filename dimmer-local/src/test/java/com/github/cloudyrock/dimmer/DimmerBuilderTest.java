@@ -14,12 +14,18 @@ public class DimmerBuilderTest {
                          " DimmerLocalRunner with the environment passed when call " +
                          "to local()")
     public void local() throws Exception {
-        DimmerEnvironmentConfigurable obj = DimmerBuilder.local();
-        assertNotNull(obj);
-        final DimmerConfigurableRunner runner = obj.environments("env");
+        DimmerDefaultEnvironmentConfigurable envConfigurable = DimmerBuilder.local();
+        assertNotNull(envConfigurable);
+        final DimmerConfigurableRunner runner = envConfigurable.environments("env");
         assertTrue(runner instanceof DimmerLocalRunner);
         assertEquals(1, runner.environments.size());
         assertTrue(runner.environments.contains("env"));
+
+
+        final DimmerConfigurableRunner runner2 = envConfigurable.defaultEnvironment();
+        assertTrue(runner2 instanceof DimmerLocalRunner);
+        assertEquals(1, runner2.environments.size());
+        assertTrue(runner2.environments.contains("DEFAULT_DIMMER_ENV"));
     }
 
     @Test

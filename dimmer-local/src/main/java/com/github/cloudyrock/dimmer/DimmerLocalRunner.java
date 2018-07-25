@@ -3,39 +3,53 @@ package com.github.cloudyrock.dimmer;
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 import org.aspectj.lang.Aspects;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
-        implements DimmerDefaultEnvironmentConfigurable<DimmerLocalRunner> {
+        implements DimmerEnvironmentConfigurable<DimmerLocalRunner> {
 
     private static final String DEFAULT_ENV = "DEFAULT_DIMMER_ENV";
 
-    DimmerLocalRunner(
+    static DimmerLocalRunner withDefaultEnviroment() {
+        return new DimmerLocalRunner();
+    }
+
+    static DimmerLocalRunner withEnvsAndMetadata(
+            Collection<String> environments,
+            Map<String, Set<FeatureMetadata>> configMetadata) {
+        return new DimmerLocalRunner(environments, configMetadata);
+    }
+
+    static DimmerLocalRunner withEnvsMetadataAndException(
+            Collection<String> environments,
+            Map<String, Set<FeatureMetadata>> configMetadata,
+            Class<? extends RuntimeException> newDefaultExceptionType) {
+        return new DimmerLocalRunner(environments, configMetadata,
+                newDefaultExceptionType);
+    }
+
+    private DimmerLocalRunner() {
+        this(Collections.singleton(DEFAULT_ENV), new HashMap<>(),
+                DimmerInvocationException.class);
+    }
+
+    private DimmerLocalRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
         this(environments, configMetadata, DimmerInvocationException.class);
     }
 
-    DimmerLocalRunner(
+    private DimmerLocalRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType) {
         super(environments, configMetadata, newDefaultExceptionType);
 
     }
-
-    @Override
-    public DimmerLocalRunner defaultEnvironment() {
-        return newInstance(
-                Collections.singletonList(DEFAULT_ENV),
-                this.configMetadata,
-                this.defaultExceptionType);
-    }
-
 
     @Override
     protected DimmerLocalRunner newInstance(

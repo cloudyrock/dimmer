@@ -1,11 +1,13 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.displayname.DisplayName;
-import org.junit.Before;
+import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -13,97 +15,74 @@ import static org.junit.Assert.assertEquals;
 
 public class DimmerLocalRunnerTest {
 
-    private DimmerLocalRunner runner;
+    @Test
+    @DisplayName("Constructors")
+    public void constructors() {
+        final Collection<String> envs = new HashSet<>();
+        final Map<String, Set<FeatureMetadata>> configMetadata = new HashMap<>();
 
-    @Before
-    public void setUp() {
-        runner = new DimmerLocalRunner(new ArrayList<>(), new HashMap<>());
+        final DimmerLocalRunner runner = DimmerLocalRunner
+                .withEnvsAndMetadata(envs, configMetadata);
+        assertEquals(envs, runner.environments);
+        assertEquals(configMetadata, runner.configMetadata);
+        assertEquals(DimmerInvocationException.class, runner.defaultExceptionType);
+
+        Class<? extends RuntimeException> exceptionType = RuntimeException.class;
+        final DimmerLocalRunner runner2 = DimmerLocalRunner
+                .withEnvsMetadataAndException(envs, configMetadata, exceptionType);
+        assertEquals(envs, runner2.environments);
+        assertEquals(configMetadata, runner2.configMetadata);
+        assertEquals(exceptionType, runner2.defaultExceptionType);
     }
 
     @Test
-    @DisplayName("Should apply config to previous set environment")
-    public void shouldApplyConfigToRightEnvironment() {
-
-        final Function<FeatureInvocation, ?> behaviour1 = FeatureInvocation::getArgs;
-        final String value = "VALUE";
+    @DisplayName("Default environment")
+    public void defaultEnvironment() {
 
         final String feature1 = "feature1";
         final String feature2 = "feature2";
         final String feature3 = "feature3";
         final String feature4 = "feature4";
-
-        runner.environments("env1", "env2")
-                .featureWithBehaviour(feature1, behaviour1)
-                .environments("env3")
+        final Function<FeatureInvocation, ?> behaviour = FeatureInvocation::getMethodName;
+        final Object value = "VALUE";
+        final Class<? extends RuntimeException> exceptionType = RuntimeException.class;
+        final DimmerLocalRunner runner = DimmerLocalRunner
+                .withDefaultEnviroment()
+                .featureWithBehaviour(feature1, behaviour)
                 .featureWithValue(feature2, value)
-                .environments("env4")
-                .featureWithBehaviour(feature1, behaviour1)
-                .featureWithValue(feature2, value)
-                .featureWithException(feature3, RuntimeException.class)
+                .featureWithException(feature3, exceptionType)
                 .featureWithDefaultException(feature4);
+        final Set<FeatureMetadata> metadata =
+                runner.configMetadata.get("DEFAULT_DIMMER_ENV");
+        //then
+        assertEquals(4, metadata.size());
+        long count = metadata.stream()
+                .filter(m-> feature1.equals(m.getFeature()))
+                .map(m-> (FeatureMetadataBehaviour)m)
+                .filter(m-> behaviour.equals(m.getBehaviour()))
+                .count();
+        assertEquals(1, count);
 
-        final Set<FeatureMetadata> env1Metadata = runner.configMetadata.get("env1");
-        assertEquals(1, env1Metadata.size());
-        env1Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                .map(fm -> (FeatureMetadataBehaviour) fm)
-                .filter(fm -> fm.getBehaviour().equals(behaviour1))
-                .filter(fm -> feature1.equals(fm.getFeature()))
-                .findAny()
-                .get();
+        count = metadata.stream()
+                .filter(m-> feature2.equals(m.getFeature()))
+                .map(m-> (FeatureMetadataValue)m)
+                .filter(m-> value.equals(m.getValueToReturn()))
+                .count();
+        assertEquals(1, count);
 
-        final Set<FeatureMetadata> env2Metadata = runner.configMetadata.get("env2");
-        assertEquals(1, env2Metadata.size());
-        env2Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                .map(fm -> (FeatureMetadataBehaviour) fm)
-                .filter(fm -> fm.getBehaviour().equals(behaviour1))
-                .filter(fm -> feature1.equals(fm.getFeature()))
-                .findAny()
-                .get();
+        count = metadata.stream()
+                .filter(m-> feature3.equals(m.getFeature()))
+                .map(m-> (FeatureMetadataException)m)
+                .filter(m-> exceptionType.equals(m.getException()))
+                .count();
+        assertEquals(1, count);
 
-        final Set<FeatureMetadata> env3Metadata = runner.configMetadata.get("env3");
-        assertEquals(1, env3Metadata.size());
-        env3Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataValue)
-                .map(fm -> (FeatureMetadataValue) fm)
-                .filter(fm -> value.equals(fm.getValueToReturn()))
-                .filter(fm -> feature2.equals(fm.getFeature()))
-                .findAny()
-                .get();
 
-        final Set<FeatureMetadata> env4Metadata = runner.configMetadata.get("env4");
-        assertEquals(4, env4Metadata.size());
-        env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataValue)
-                .map(fm -> (FeatureMetadataValue) fm)
-                .filter(fm -> value.equals(fm.getValueToReturn()))
-                .filter(fm -> feature2.equals(fm.getFeature()))
-                .findAny()
-                .get();
-
-        env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                .map(fm -> (FeatureMetadataBehaviour) fm)
-                .filter(fm -> fm.getBehaviour().equals(behaviour1))
-                .filter(fm -> feature1.equals(fm.getFeature()))
-                .findAny()
-                .get();
-
-        env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataException)
-                .map(fm -> (FeatureMetadataException) fm)
-                .filter(fm -> RuntimeException.class.equals(fm.getException()))
-                .filter(fm -> feature3.equals(fm.getFeature()))
-                .findAny()
-                .get();
-
-        env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataDefaultException)
-                .map(fm -> (FeatureMetadataDefaultException) fm)
-                .filter(fm -> feature4.equals(fm.getFeature()))
-                .findAny()
-                .get();
+        count = metadata.stream()
+                .filter(m-> feature4.equals(m.getFeature()))
+                .map(m-> (FeatureMetadataDefaultException)m)
+                .count();
+        assertEquals(1, count);
 
     }
 
