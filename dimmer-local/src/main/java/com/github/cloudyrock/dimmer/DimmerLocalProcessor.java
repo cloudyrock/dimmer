@@ -1,6 +1,8 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Map;
 import java.util.Objects;

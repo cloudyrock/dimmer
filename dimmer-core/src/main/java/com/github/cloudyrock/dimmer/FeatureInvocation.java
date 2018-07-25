@@ -79,11 +79,8 @@ public class FeatureInvocation {
         if (!methodName.equals(that.methodName)) {
             return false;
         }
-        if (!declaringType.equals(that.declaringType)) {
-            return false;
-        }
-        // Probably incorrect - comparing Object[] arrays with Arrays.equals
-        return Arrays.equals(args, that.args);
+
+        return declaringType.equals(that.declaringType);
     }
 
     @Override
@@ -91,7 +88,6 @@ public class FeatureInvocation {
         int result = feature.hashCode();
         result = 31 * result + methodName.hashCode();
         result = 31 * result + declaringType.hashCode();
-        result = 31 * result + Arrays.hashCode(args);
         return result;
     }
 }

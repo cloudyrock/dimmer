@@ -32,8 +32,18 @@ public class DimmerAspect {
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
                 generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
-                joinPoint::proceed
+                createCallerInstance(joinPoint)
         );
+    }
+
+    private MethodCaller createCallerInstance(ProceedingJoinPoint joinPoint) throws Throwable {
+        //for some reasons doesn't work when using lambda
+        return new MethodCaller() {
+                @Override
+                public Object call() throws Throwable {
+                    return joinPoint.proceed();
+                }
+            };
     }
 
     private FeatureInvocation generateFeatureInvocation(String feature,
