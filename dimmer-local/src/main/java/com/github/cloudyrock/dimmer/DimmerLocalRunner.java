@@ -9,22 +9,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+//TODO move javadoc from processor to here
 final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner>
         implements DimmerEnvironmentConfigurable<DimmerLocalRunner> {
 
     private static final String DEFAULT_ENV = "DEFAULT_DIMMER_ENV";
 
-    static DimmerLocalRunner withDefaultEnviroment() {
+    static DimmerLocalRunner withDefaultEnvironment() {
         return new DimmerLocalRunner();
     }
 
-    static DimmerLocalRunner withEnvsAndMetadata(
+    static DimmerLocalRunner withEnvironmentsAndMetadata(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
         return new DimmerLocalRunner(environments, configMetadata);
     }
 
-    static DimmerLocalRunner withEnvsMetadataAndException(
+    static DimmerLocalRunner withEnvironmentsMetadataAndException(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType) {
@@ -64,11 +65,7 @@ final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner
     }
 
     public void run(String environment) {
-        final Class<? extends RuntimeException> exceptionType =
-                this.defaultExceptionType != null
-                        ? this.defaultExceptionType
-                        : DEFAULT_EXCEPTION_TYPE;
-        final DimmerLocalProcessor processor = new DimmerLocalProcessor(exceptionType);
+        final DimmerLocalProcessor processor = new DimmerLocalProcessor();
         applyFeatures(processor, configMetadata.get(environment));
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(processor);
 
@@ -95,11 +92,13 @@ final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner
                         fme.getException()
                 ));
 
+        final Class<? extends RuntimeException> exceptionType = getDefaultExceptionType();
+
         featureMetadataSet.stream()
                 .filter(fm -> fm instanceof FeatureMetadataDefaultException)
                 .map(fm -> (FeatureMetadataDefaultException) fm)
-                .forEach(
-                        fmde -> processor.featureWithDefaultException(fmde.getFeature()));
+                .forEach(fmde -> processor
+                                .featureWithException(fmde.getFeature(), exceptionType));
 
         featureMetadataSet.stream()
                 .filter(fm -> fm instanceof FeatureMetadataValue)
@@ -109,6 +108,12 @@ final class DimmerLocalRunner extends DimmerConfigurableRunner<DimmerLocalRunner
                         fmv.getValueToReturn())
                 );
 
+    }
+
+    private Class<? extends RuntimeException> getDefaultExceptionType() {
+        return this.defaultExceptionType != null
+                ? this.defaultExceptionType
+                : DEFAULT_EXCEPTION_TYPE;
     }
 
 }

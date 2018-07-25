@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import static java.util.Arrays.asList;
@@ -12,13 +11,13 @@ public class DimmerBuilder {
         return new DimmerDefaultEnvironmentConfigurable<DimmerLocalRunner>() {
             @Override
             public DimmerLocalRunner defaultEnvironment() {
-                return DimmerLocalRunner.withDefaultEnviroment();
+                return DimmerLocalRunner.withDefaultEnvironment();
             }
 
             @Override
             public DimmerLocalRunner environments(String... environments) {
                 return DimmerLocalRunner
-                        .withEnvsAndMetadata(asList(environments), new HashMap<>());
+                        .withEnvironmentsAndMetadata(asList(environments), new HashMap<>());
             }
         };
     }

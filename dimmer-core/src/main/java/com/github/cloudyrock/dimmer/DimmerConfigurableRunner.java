@@ -62,6 +62,7 @@ abstract class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner>
     public RUNNER featureWithException(
             String feature,
             Class<? extends RuntimeException> exceptionType) {
+        ExceptionUtil.checkExceptionConstructorType(exceptionType);
         final FeatureMetadata metadata = new FeatureMetadataException(
                 feature,
                 exceptionType
@@ -104,6 +105,7 @@ abstract class DimmerConfigurableRunner<RUNNER extends DimmerConfigurableRunner>
     public RUNNER setDefaultExceptionType(
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Util.checkArgumentNullEmpty(newDefaultExceptionType, "defaultExceptionType");
+        ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
         return newInstance(this.environments, this.configMetadata,
                 newDefaultExceptionType);
     }

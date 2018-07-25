@@ -10,10 +10,10 @@ import static com.github.cloudyrock.dimmer.ExceptionConstructorType.FEATURE_INVO
 import static com.github.cloudyrock.dimmer.ExceptionConstructorType.NO_COMPATIBLE_CONSTRUCTOR;
 
 final class ExceptionUtil {
-    
     static Object throwException(Class<? extends RuntimeException> exceptionType,
-                          ExceptionConstructorType constructorType,
-                          FeatureInvocation f) {
+                                 FeatureInvocation f) {
+        final ExceptionConstructorType constructorType =
+                getExceptionConstructorType(exceptionType);
         try {
             switch (constructorType) {
                 case EMPTY_CONSTRUCTOR:
@@ -34,7 +34,25 @@ final class ExceptionUtil {
         }
     }
 
-    static ExceptionConstructorType checkAndGetExceptionConstructorType(
+    static void checkExceptionConstructorType(
+            Class<? extends RuntimeException> exceptionType) {
+        Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
+        final Constructor<?>[] constructors = exceptionType.getConstructors();
+        for (Constructor<?> c : constructors) {
+            if (c.getParameterCount() == 1 && FeatureInvocation.class
+                    .equals(c.getParameterTypes()[0])) {
+                return;
+            } else if (c.getParameterCount() == 0) {
+                return;
+            }
+        }
+        throw new DimmerConfigException(String.format(
+                "Exception %s must have either empty constructor or with " +
+                        "FeatureInvocation argument",
+                exceptionType.getSimpleName()));
+    }
+
+    static ExceptionConstructorType getExceptionConstructorType(
             Class<? extends RuntimeException> exceptionType) {
         Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();

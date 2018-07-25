@@ -22,7 +22,6 @@ import static org.mockito.Mockito.mock;
 
 public class DimmerAspectITest {
 
-    
     private final AnnotatedClass annotatedClass = new AnnotatedClass();
 
     @Rule public ExpectedException exception = ExpectedException.none();
@@ -30,13 +29,11 @@ public class DimmerAspectITest {
     private static final String ENV = "ENV";
     private DimmerLocalRunner runner;
 
-
     @Before
     public void setUp() {
         runner = DimmerBuilder.local().environments(ENV);
 
     }
-
 
     @Test
     @DisplayName("Should run behaviour when featureWithBehaviour")
@@ -54,6 +51,7 @@ public class DimmerAspectITest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     @DisplayName("Behaviour should get FeatureInvocation as parameter when featureWithBehaviour")
     public void passingFeatureInvocationToBehaviour() {
         //given
@@ -72,7 +70,8 @@ public class DimmerAspectITest {
         ArgumentCaptor<FeatureInvocation> captor =
                 ArgumentCaptor.forClass(FeatureInvocation.class);
         then(mockBehaviour).should().apply(captor.capture());
-        assertFeatureInvocation(captor.getValue(), AnnotatedClass.FEATURE2, "methodForFeature2", param1,
+        assertFeatureInvocation(captor.getValue(), AnnotatedClass.FEATURE2,
+                "methodForFeature2", param1,
                 param2);
     }
 
@@ -106,7 +105,6 @@ public class DimmerAspectITest {
         runner.run(ENV);
         annotatedClass.methodForFeature5();
     }
-
 
     @Test(expected = DimmerConfigException.class)
     @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
@@ -173,8 +171,6 @@ public class DimmerAspectITest {
         assertEquals(param1, actualFeatureInvocation.getArgs()[0]);
         assertEquals(param2, actualFeatureInvocation.getArgs()[1]);
     }
-
-
 
 }
 

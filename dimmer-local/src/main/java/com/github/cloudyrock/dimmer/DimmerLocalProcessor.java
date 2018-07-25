@@ -1,14 +1,11 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * Singleton class to configure feature's behaviour.
@@ -26,14 +23,12 @@ class DimmerLocalProcessor implements FeatureExecutor {
     private static final String EXCEPTION_MESSAGE_CAST =
             "The expected return types between the real method and the configured function are mismatched";
 
-    private final Class<? extends RuntimeException> defaultExceptionType;
+//    private final Class<? extends RuntimeException> defaultExceptionType;
 
     private final Map<String, Function<FeatureInvocation, ?>> behaviours =
             new ConcurrentHashMap<>();
 
-    DimmerLocalProcessor(Class<? extends RuntimeException> defaultExceptionType) {
-        ExceptionUtil.checkAndGetExceptionConstructorType(defaultExceptionType);
-        this.defaultExceptionType = defaultExceptionType;
+    DimmerLocalProcessor() {
     }
 
     /**
@@ -64,9 +59,9 @@ class DimmerLocalProcessor implements FeatureExecutor {
      * @param feature feature with which the specified behaviour is to be associated
      * @return true, or false if the key was already associated to a behaviour.
      */
-    boolean featureWithDefaultException(String feature) {
-        return featureWithException(feature, defaultExceptionType);
-    }
+//    boolean featureWithDefaultException(String feature) {
+//        return featureWithException(feature, defaultExceptionType);
+//    }
 
     /**
      * If the specified feature is not already associated with a behaviour(or is mapped to null),
@@ -80,17 +75,12 @@ class DimmerLocalProcessor implements FeatureExecutor {
      * @return true, or false if the key was already associated to a behaviour.
      * @see FeatureInvocation
      */
-    boolean featureWithException(
-            String feature,
-            Class<? extends RuntimeException> exceptionType) {
+    boolean featureWithException(String feature,
+                                 Class<? extends RuntimeException> exceptionType) {
 
-        final ExceptionConstructorType constructorType =
-                ExceptionUtil.checkAndGetExceptionConstructorType(exceptionType);
-        return putBehaviour(feature,
-                featureInvocation -> ExceptionUtil.throwException(
-                        exceptionType,
-                        constructorType,
-                        featureInvocation));
+        return putBehaviour(
+                feature,
+                featureInv -> ExceptionUtil.throwException(exceptionType, featureInv));
     }
 
     /**

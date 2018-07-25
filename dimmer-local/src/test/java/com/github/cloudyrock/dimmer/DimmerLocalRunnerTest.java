@@ -22,14 +22,14 @@ public class DimmerLocalRunnerTest {
         final Map<String, Set<FeatureMetadata>> configMetadata = new HashMap<>();
 
         final DimmerLocalRunner runner = DimmerLocalRunner
-                .withEnvsAndMetadata(envs, configMetadata);
+                .withEnvironmentsAndMetadata(envs, configMetadata);
         assertEquals(envs, runner.environments);
         assertEquals(configMetadata, runner.configMetadata);
         assertEquals(DimmerInvocationException.class, runner.defaultExceptionType);
 
         Class<? extends RuntimeException> exceptionType = RuntimeException.class;
         final DimmerLocalRunner runner2 = DimmerLocalRunner
-                .withEnvsMetadataAndException(envs, configMetadata, exceptionType);
+                .withEnvironmentsMetadataAndException(envs, configMetadata, exceptionType);
         assertEquals(envs, runner2.environments);
         assertEquals(configMetadata, runner2.configMetadata);
         assertEquals(exceptionType, runner2.defaultExceptionType);
@@ -47,7 +47,7 @@ public class DimmerLocalRunnerTest {
         final Object value = "VALUE";
         final Class<? extends RuntimeException> exceptionType = RuntimeException.class;
         final DimmerLocalRunner runner = DimmerLocalRunner
-                .withDefaultEnviroment()
+                .withDefaultEnvironment()
                 .featureWithBehaviour(feature1, behaviour)
                 .featureWithValue(feature2, value)
                 .featureWithException(feature3, exceptionType)
