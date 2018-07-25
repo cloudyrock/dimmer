@@ -5,7 +5,7 @@ abstract class FeatureMetadata {
     private final String feature;
 
     protected FeatureMetadata(String feature) {
-        if(feature == null || feature.isEmpty()) {
+        if (feature == null || feature.isEmpty()) {
             throw new IllegalArgumentException("Feature cannot be null or empty");
         }
         this.feature = feature;
@@ -17,12 +17,10 @@ abstract class FeatureMetadata {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        return this == o
+                || o != null && getClass() == o.getClass()
+                && feature.equals(((FeatureMetadata) o).feature);
 
-        FeatureMetadata that = (FeatureMetadata) o;
-
-        return feature.equals(that.feature);
     }
 
     @Override
