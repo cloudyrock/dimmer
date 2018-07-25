@@ -1,12 +1,12 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DimmerConfigException;
-import org.aspectj.lang.ProceedingJoinPoint;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Singleton class to configure feature's behaviour.
@@ -123,14 +123,14 @@ class DimmerLocalProcessor implements FeatureExecutor {
     @Override
     public Object executeDimmerFeature(String feature,
                                        FeatureInvocation featureInvocation,
-                                       ProceedingJoinPoint realMethod) throws Throwable {
+                                       MethodCaller realMethod) throws Throwable {
         if (behaviours.containsKey(feature)) {
             final Object result = behaviours.get(feature).apply(featureInvocation);
 
             checkReturnType(featureInvocation.getReturnType(), result);
             return result;
         } else {
-            return realMethod.proceed();
+            return realMethod.call();
         }
     }
 

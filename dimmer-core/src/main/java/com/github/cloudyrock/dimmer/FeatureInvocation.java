@@ -1,5 +1,7 @@
 package com.github.cloudyrock.dimmer;
 
+import java.util.Arrays;
+
 /**
  * Represents method call with all its information.
  *
@@ -28,7 +30,11 @@ public class FeatureInvocation {
      */
     private final Object[] args;
 
-    public FeatureInvocation(String feature, String methodName, Class declaringType, Object[] args, Class returnType) {
+    public FeatureInvocation(String feature,
+                             String methodName,
+                             Class declaringType,
+                             Object[] args,
+                             Class returnType) {
         this.feature = feature;
         this.methodName = methodName;
         this.declaringType = declaringType;
@@ -54,5 +60,38 @@ public class FeatureInvocation {
 
     public Class getReturnType() {
         return returnType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final FeatureInvocation that = (FeatureInvocation) o;
+
+        if (!feature.equals(that.feature)) {
+            return false;
+        }
+        if (!methodName.equals(that.methodName)) {
+            return false;
+        }
+        if (!declaringType.equals(that.declaringType)) {
+            return false;
+        }
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(args, that.args);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = feature.hashCode();
+        result = 31 * result + methodName.hashCode();
+        result = 31 * result + declaringType.hashCode();
+        result = 31 * result + Arrays.hashCode(args);
+        return result;
     }
 }

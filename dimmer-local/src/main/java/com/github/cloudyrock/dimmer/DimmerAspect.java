@@ -32,7 +32,7 @@ public class DimmerAspect {
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
                 generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
-                joinPoint
+                joinPoint::proceed
         );
     }
 
