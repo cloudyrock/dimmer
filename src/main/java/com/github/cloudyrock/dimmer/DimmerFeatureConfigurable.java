@@ -110,7 +110,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 newDefaultExceptionType);
     }
 
-    private FeatureExecutor newExecutor(Set<FeatureMetadata> featureMetadataSet) {
+    FeatureExecutor newExecutor(Set<FeatureMetadata> featureMetadataSet) {
 
         DimmerProcessor processor = new DimmerProcessor();
         if (featureMetadataSet == null) {
