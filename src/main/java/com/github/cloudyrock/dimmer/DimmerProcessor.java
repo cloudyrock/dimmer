@@ -113,7 +113,7 @@ class DimmerProcessor implements FeatureExecutor {
     @Override
     public Object executeDimmerFeature(String feature,
                                        FeatureInvocation featureInvocation,
-                                       MethodCaller realMethod) throws Throwable {
+                                       MethodCaller realMethod) {
         if (behaviours.containsKey(feature)) {
             final Object result = behaviours.get(feature).apply(featureInvocation);
 
