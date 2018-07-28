@@ -110,9 +110,9 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 newDefaultExceptionType);
     }
 
-    FeatureExecutor newExecutor(Set<FeatureMetadata> featureMetadataSet) {
+    FeatureProcessorBase newFeatureProcessor(Set<FeatureMetadata> featureMetadataSet) {
 
-        DimmerProcessor processor = new DimmerProcessor();
+        FeatureProcessorBase processor = newFeatureProcessorInstance();
         if (featureMetadataSet == null) {
             featureMetadataSet.stream()
                     .filter(fm -> fm instanceof FeatureMetadataBehaviour)
@@ -160,4 +160,6 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType);
+
+    protected abstract FeatureProcessorBase newFeatureProcessorInstance();
 }

@@ -26,4 +26,10 @@ public class DummyConfigurableRunner extends DimmerFeatureConfigurable<DummyConf
             Class<? extends RuntimeException> defaultExcType) {
         return new DummyConfigurableRunner(environments, configMetadata, defaultExcType);
     }
+
+    @Override
+    protected FeatureProcessorBase newFeatureProcessorInstance() {
+        return new DummyFeatureProcessor();
+    }
+
 }
