@@ -19,35 +19,6 @@
     </description>
 
 
-    <!--<dependencies>-->
-
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/cglib/cglib &ndash;&gt;-->
-        <!--<dependency>-->
-            <!--<groupId>cglib</groupId>-->
-            <!--<artifactId>cglib</artifactId>-->
-            <!--<version>3.2.6</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>junit</groupId>-->
-            <!--<artifactId>junit</artifactId>-->
-            <!--<version>4.12</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.mockito</groupId>-->
-            <!--<artifactId>mockito-all</artifactId>-->
-            <!--<version>1.10.19</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.hamcrest</groupId>-->
-            <!--<artifactId>hamcrest-junit</artifactId>-->
-            <!--<version>2.0.0.0</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-    <!--</dependencies>-->
 
 
     <licenses>
@@ -62,7 +33,7 @@
         <connection>scm:git:git@github.com:cloudyrock/dimmer-core.git</connection>
         <developerConnection>scm:git:git@github.com:cloudyrock/dimmer-core.git</developerConnection>
         <url>https://github.com/cloudyrock/dimmer-core.git</url>
-        <tag>dimmer</tag>
+        <tag>dimmer-core-1.4.4</tag>
     </scm>
 
     <distributionManagement>
