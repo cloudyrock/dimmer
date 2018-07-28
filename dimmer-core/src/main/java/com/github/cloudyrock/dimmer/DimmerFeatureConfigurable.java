@@ -113,7 +113,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     FeatureProcessorBase newFeatureProcessor(Set<FeatureMetadata> featureMetadataSet) {
 
         FeatureProcessorBase processor = newFeatureProcessorInstance();
-        if (featureMetadataSet == null) {
+        if (featureMetadataSet != null) {
             featureMetadataSet.stream()
                     .filter(fm -> fm instanceof FeatureMetadataBehaviour)
                     .map(fm -> (FeatureMetadataBehaviour) fm)
