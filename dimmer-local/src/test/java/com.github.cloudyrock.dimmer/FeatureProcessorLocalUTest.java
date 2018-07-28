@@ -23,7 +23,7 @@ public class FeatureProcessorLocalUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
 
-    protected FeatureProcessorLocal FeatureProcessorLocal;
+    protected FeatureLocalProcessor FeatureProcessorLocal;
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
@@ -36,7 +36,7 @@ public class FeatureProcessorLocalUTest {
     @Before
     public void setUp() {
 
-        FeatureProcessorLocal = new FeatureProcessorLocal();
+        FeatureProcessorLocal = new FeatureLocalProcessor();
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(featureInvocationMock.getReturnType()).willReturn(String.class);
@@ -44,7 +44,7 @@ public class FeatureProcessorLocalUTest {
 
 
     @Test
-    //@DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
+    //@DisplayName("Should buildAndRun behaviour when FEATURE when featureWithBehaviour")
     public void featureAndConfiguredWithBehaviour() throws Throwable {
         FeatureProcessorLocal.featureWithBehaviour(feature, s -> "VALUE");
         Object actualResult = FeatureProcessorLocal.executeDimmerFeature(

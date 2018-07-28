@@ -10,41 +10,41 @@ import java.util.Map;
 import java.util.Set;
 
 //TODO move javadoc from processor to here
-public final class DimmerLocalRunner extends DimmerFeatureConfigurable<DimmerLocalRunner>
-        implements DimmerEnvironmentConfigurable<DimmerLocalRunner> {
+public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<FeatureLocalBuilder>
+        implements DimmerEnvironmentConfigurable<FeatureLocalBuilder> {
 
     private static final String DEFAULT_ENV = "DEFAULT_DIMMER_ENV";
 
-    static DimmerLocalRunner withDefaultEnvironment() {
-        return new DimmerLocalRunner();
+    static FeatureLocalBuilder withDefaultEnvironment() {
+        return new FeatureLocalBuilder();
     }
 
-    static DimmerLocalRunner withEnvironmentsAndMetadata(
+    static FeatureLocalBuilder withEnvironmentsAndMetadata(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
-        return new DimmerLocalRunner(environments, configMetadata);
+        return new FeatureLocalBuilder(environments, configMetadata);
     }
 
-    static DimmerLocalRunner withEnvironmentsMetadataAndException(
+    static FeatureLocalBuilder withEnvironmentsMetadataAndException(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType) {
-        return new DimmerLocalRunner(environments, configMetadata,
+        return new FeatureLocalBuilder(environments, configMetadata,
                 newDefaultExceptionType);
     }
 
-    private DimmerLocalRunner() {
+    private FeatureLocalBuilder() {
         this(Collections.singleton(DEFAULT_ENV), new HashMap<>(),
                 DimmerInvocationException.class);
     }
 
-    private DimmerLocalRunner(
+    private FeatureLocalBuilder(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
         this(environments, configMetadata, DimmerInvocationException.class);
     }
 
-    private DimmerLocalRunner(
+    private FeatureLocalBuilder(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType) {
@@ -53,27 +53,35 @@ public final class DimmerLocalRunner extends DimmerFeatureConfigurable<DimmerLoc
     }
 
     @Override
-    protected DimmerLocalRunner newInstance(
+    protected FeatureLocalBuilder newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
-        return new DimmerLocalRunner(environments, configMetadata, defaultExceptionType);
+        return new FeatureLocalBuilder(environments, configMetadata,
+                defaultExceptionType);
     }
 
     @Override
     protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new FeatureProcessorLocal();
+        return new FeatureLocalProcessor();
     }
 
-    public void runWithDefaultEnvironment() {
-        run(DEFAULT_ENV);
-    }
-
-    public void run(String environment) {
-        final FeatureProcessorLocal processor = (FeatureProcessorLocal)
+    public void buildAndRun(String environment) {
+        final FeatureLocalProcessor processor = (FeatureLocalProcessor)
                 newFeatureProcessor(configMetadata.get(environment));
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(processor);
+    }
 
+    public void buildAndWithDefaultEnvironment() {
+        buildAndRun(DEFAULT_ENV);
+    }
+
+    public DimmerSpringBean buildSpringBean(String environment) {
+        return () -> buildAndRun(environment);
+    }
+
+    public DimmerSpringBean buildSpringBeanWithDefaultEnvironment() {
+        return buildSpringBean(DEFAULT_ENV);
     }
 
 }

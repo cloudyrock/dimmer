@@ -6,23 +6,23 @@ import static java.util.Arrays.asList;
 
 public class DimmerBuilder {
 
-    public static DimmerDefaultEnvironmentConfigurable<DimmerLocalRunner> local() {
+    public static DimmerDefaultEnvironmentConfigurable<FeatureLocalBuilder> local() {
 
-        return new DimmerDefaultEnvironmentConfigurable<DimmerLocalRunner>() {
+        return new DimmerDefaultEnvironmentConfigurable<FeatureLocalBuilder>() {
             @Override
-            public DimmerLocalRunner defaultEnvironment() {
-                return DimmerLocalRunner.withDefaultEnvironment();
+            public FeatureLocalBuilder defaultEnvironment() {
+                return FeatureLocalBuilder.withDefaultEnvironment();
             }
 
             @Override
-            public DimmerLocalRunner environments(String... environments) {
-                return DimmerLocalRunner
+            public FeatureLocalBuilder environments(String... environments) {
+                return FeatureLocalBuilder
                         .withEnvironmentsAndMetadata(asList(environments), new HashMap<>());
             }
         };
     }
 
-    public static DimmerRemoteRunner remote(String url) {
-        return new DimmerRemoteRunner(url);
+    public static FeatureRemoteBuilder remote(String url) {
+        return new FeatureRemoteBuilder(url);
     }
 }
