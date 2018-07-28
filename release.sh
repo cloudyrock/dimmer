@@ -1,8 +1,9 @@
 #! /bin/sh
 
+
+//TODO get version from pom, instead of parameter. and work out the type of release(breaking change, minor, hotfix) from branch
 #$1 release version
 #$2 dev version
-
 if [ -z "$1" ] || [ -z "$2" ]; then
     echo "var is blank";
 else
