@@ -4,7 +4,7 @@
 
     <groupId>com.github.cloudyrock.dimmer</groupId>
     <artifactId>dimmer-core</artifactId>
-    <version>1.4.3</version>
+    <version>1.4.4-SNAPSHOT</version>
     <modules>
         <module>dimmer-core2</module>
     </modules>
@@ -62,7 +62,7 @@
         <connection>scm:git:git@github.com:cloudyrock/dimmer-core.git</connection>
         <developerConnection>scm:git:git@github.com:cloudyrock/dimmer-core.git</developerConnection>
         <url>https://github.com/cloudyrock/dimmer-core.git</url>
-        <tag>dimmer-core-1.4.3</tag>
+        <tag>dimmer</tag>
     </scm>
 
     <distributionManagement>
