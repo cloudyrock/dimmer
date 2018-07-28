@@ -10,7 +10,7 @@
 
     <packaging>jar</packaging>
     <name>dimmer-local</name>
-    <!-- Web site not created yet -->
+
     <url>https://github.com/cloudyrock/dimmer.git</url>
     <description>
         Lightweight library to manage feature toggling. Unlike others Dimmer doesn't work
