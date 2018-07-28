@@ -9,8 +9,12 @@ if [ -z "$1" ] || [ -z "$2" ]; then
 else
     mvn --batch-mode \
         -Dtag=dimmer-$1 \
-        -Dproject.rel.com.github.cloudyrock.dimmer:dimmer-core2=$1 \
-        -Dproject.dev.com.github.cloudyrock.dimmer:dimmer-core2=$2-SNAPSHOT \
+        -Dproject.rel.com.github.cloudyrock.dimmer:dimmer-parent=$1 \
+        -Dproject.dev.com.github.cloudyrock.dimmer:dimmer-parent=$2-SNAPSHOT \
+        -Dproject.rel.com.github.cloudyrock.dimmer:dimmer-core=$1 \
+        -Dproject.dev.com.github.cloudyrock.dimmer:dimmer-core=$2-SNAPSHOT \
+        -Dproject.rel.com.github.cloudyrock.dimmer:dimmer-local=$1 \
+        -Dproject.dev.com.github.cloudyrock.dimmer:dimmer-local=$2-SNAPSHOT \
         release:prepare
     if [ $? -eq 0 ]; then
         mvn release:perform
