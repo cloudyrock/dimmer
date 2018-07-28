@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.github.cloudyrock.dimmer</groupId>
         <artifactId>dimmer-parent</artifactId>
-        <version>1.4.11</version>
+        <version>1.4.11-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>dimmer-local</artifactId>
@@ -73,7 +73,7 @@
         <connection>scm:git:git@github.com:cloudyrock/dimmer.git</connection>
         <developerConnection>scm:git:git@github.com:cloudyrock/dimmer.git</developerConnection>
         <url>https://github.com/cloudyrock/dimmer.git</url>
-        <tag>dimmer-1.4.11</tag>
+        <tag>dimmer-1.4.5</tag>
     </scm>
 
     <distributionManagement>
