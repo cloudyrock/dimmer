@@ -24,7 +24,7 @@ public class DimmerProcessorUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
 
-    protected DimmerProcessor dimmerProcessor;
+    protected DummyFeatureProcessor dimmerProcessor;
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
@@ -37,7 +37,7 @@ public class DimmerProcessorUTest {
     @Before
     public void setUp() {
 
-        dimmerProcessor = new DimmerProcessor();
+        dimmerProcessor = new DummyFeatureProcessor();
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(featureInvocationMock.getReturnType()).willReturn(String.class);
@@ -49,7 +49,7 @@ public class DimmerProcessorUTest {
     public void featureAndConfiguredWithBehaviour() throws Throwable {
         dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                feature, featureInvocationMock, null);
+                feature, featureInvocationMock);
         assertEquals("VALUE", actualResult);
     }
 
@@ -58,7 +58,7 @@ public class DimmerProcessorUTest {
     public void featureAndConfiguredWithValue() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                feature, featureInvocationMock, null);
+                feature, featureInvocationMock);
         assertEquals("VALUE", actualResult);
     }
 
@@ -76,7 +76,7 @@ public class DimmerProcessorUTest {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
 
         dimmerProcessor.featureWithBehaviour(feature, behaviour);
-        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock, null);
+        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock);
 
         then(behaviour).should().apply(featureInvocationMock);
     }
@@ -96,6 +96,6 @@ public class DimmerProcessorUTest {
         exception.expect(DummyExceptionWithFeatureInvocation.class);
         exception.expect(hasProperty("featureInvocation", is(featureInvocationMock)));
 
-        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock, null);
+        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock);
     }
 }
