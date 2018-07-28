@@ -6,9 +6,9 @@
     <artifactId>dimmer-parent</artifactId>
     <version>1.4.13-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>dimmer-parent</name>
+    <name>parent</name>
     <!-- Web site not created yet -->
-    <url>https://github.com/cloudyrock/dimmer-parent.git</url>
+    <url>https://github.com/cloudyrock/dimmer.git</url>
     <description>
         Lightweight library to manage feature toggling. Unlike others Dimmer doesn't work
         in switch mode, black or white, It provides a flexible way to respond to disabled
@@ -31,9 +31,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:cloudyrock/dimmer-parent.git</connection>
-        <developerConnection>scm:git:git@github.com:cloudyrock/dimmer-parent.git</developerConnection>
-        <url>https://github.com/cloudyrock/dimmer-parent.git</url>
+        <connection>scm:git:git@github.com:cloudyrock/dimmer.git</connection>
+        <developerConnection>scm:git:git@github.com:cloudyrock/dimmer.git</developerConnection>
+        <url>https://github.com/cloudyrock/dimmer.git</url>
         <tag>dimmer-1.4.5</tag>
     </scm>
 
