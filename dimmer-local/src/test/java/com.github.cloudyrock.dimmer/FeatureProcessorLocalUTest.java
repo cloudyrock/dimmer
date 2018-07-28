@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.displayname.DisplayName;
 import com.github.cloudyrock.dimmer.exceptions.DummyExceptionWithFeatureInvocation;
 import org.junit.Before;
 import org.junit.Rule;
@@ -45,7 +44,7 @@ public class FeatureProcessorLocalUTest {
 
 
     @Test
-    @DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
+    //@DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
     public void featureAndConfiguredWithBehaviour() throws Throwable {
         FeatureProcessorLocal.featureWithBehaviour(feature, s -> "VALUE");
         Object actualResult = FeatureProcessorLocal.executeDimmerFeature(
@@ -54,7 +53,7 @@ public class FeatureProcessorLocalUTest {
     }
 
     @Test
-    @DisplayName("Should return value when featureWithValue")
+    //@DisplayName("Should return value when featureWithValue")
     public void featureAndConfiguredWithValue() throws Throwable {
         FeatureProcessorLocal.featureWithValue(feature, "VALUE");
         Object actualResult = FeatureProcessorLocal.executeDimmerFeature(
@@ -64,14 +63,14 @@ public class FeatureProcessorLocalUTest {
 
     //TODO replace this test
 //    @Test(expected = DefaultException.class)
-//    @DisplayName("Should throw default exception when featureWithDefaultException")
+//    //@DisplayName("Should throw default exception when featureWithDefaultException")
 //    public void featureAndConfiguredWithDefaultException() throws Throwable {
 //        FeatureProcessorLocal.featureWithDefaultException(feature);;
 //        FeatureProcessorLocal.executeDimmerFeature(feature, featureInvocationMock, null);
 //    }
 
     @Test
-    @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
+    //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
 
@@ -82,7 +81,7 @@ public class FeatureProcessorLocalUTest {
     }
 
     @Test
-    @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
+    //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenException() throws Throwable {
 
         FeatureInvocation featureInvocationMock = mock(FeatureInvocation.class);
