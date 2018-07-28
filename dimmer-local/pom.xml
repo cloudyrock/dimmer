@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>dimmer-core</artifactId>
         <groupId>com.github.cloudyrock.dimmer</groupId>
+        <artifactId>dimmer-parent</artifactId>
         <version>1.4.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>dimmer-local</artifactId>
 
-    <artifactId>test</artifactId>
-
-
-
+    <packaging>jar</packaging>
+    <name>dimmer-local</name>
     <!-- Web site not created yet -->
-    <url>https://github.com/cloudyrock/dimmer-core.git</url>
+    <url>https://github.com/cloudyrock/dimmer.git</url>
     <description>
         Lightweight library to manage feature toggling. Unlike others Dimmer doesn't work
         in switch mode, black or white, It provides a flexible way to respond to disabled
@@ -20,10 +19,20 @@
     </description>
 
 
-
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/cglib/cglib -->
+        <dependency>
+            <groupId>com.github.cloudyrock.dimmer</groupId>
+            <artifactId>dimmer-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
@@ -61,12 +70,11 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:git@github.com:cloudyrock/dimmer-core.git</connection>
-        <developerConnection>scm:git:git@github.com:cloudyrock/dimmer-core.git</developerConnection>
-        <url>https://github.com/cloudyrock/dimmer-core.git</url>
+        <connection>scm:git:git@github.com:cloudyrock/dimmer.git</connection>
+        <developerConnection>scm:git:git@github.com:cloudyrock/dimmer.git</developerConnection>
+        <url>https://github.com/cloudyrock/dimmer.git</url>
         <tag>dimmer-1.4.5</tag>
     </scm>
-
 
     <distributionManagement>
         <snapshotRepository>
@@ -93,10 +101,32 @@
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>aspectj-maven-plugin</artifactId>
+                    <version>1.7</version>
+                    <configuration>
+                        <complianceLevel>1.8</complianceLevel>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>test-compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -209,6 +239,5 @@
             <name>Dhivesh Sadhwani</name>
         </developer>
     </developers>
-
 
 </project>
