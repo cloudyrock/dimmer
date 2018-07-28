@@ -2,7 +2,6 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 import org.aspectj.lang.Aspects;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -58,7 +57,8 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
-        return new FeatureLocalBuilder(environments, configMetadata, defaultExceptionType);
+        return new FeatureLocalBuilder(environments, configMetadata,
+                defaultExceptionType);
     }
 
     @Override
@@ -76,11 +76,11 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
         buildAndRun(DEFAULT_ENV);
     }
 
-    public InitializingBean buildSpringBean(String environment) {
+    public DimmerSpringBean buildSpringBean(String environment) {
         return () -> buildAndRun(environment);
     }
 
-    public InitializingBean buildSpringBeanWithDefaultEnvironment() {
+    public DimmerSpringBean buildSpringBeanWithDefaultEnvironment() {
         return buildSpringBean(DEFAULT_ENV);
     }
 
