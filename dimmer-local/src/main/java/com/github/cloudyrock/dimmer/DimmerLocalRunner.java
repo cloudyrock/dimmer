@@ -70,55 +70,10 @@ public final class DimmerLocalRunner extends DimmerFeatureConfigurable<DimmerLoc
     }
 
     public void run(String environment) {
-        final FeatureProcessorLocal processor = new FeatureProcessorLocal();
-        applyFeatures(processor, configMetadata.get(environment));
+        final FeatureProcessorLocal processor = (FeatureProcessorLocal)
+                newFeatureProcessor(configMetadata.get(environment));
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(processor);
 
-    }
-
-    private void applyFeatures(FeatureProcessorLocal processor,
-                               Set<FeatureMetadata> featureMetadataSet) {
-
-        if (featureMetadataSet == null) {
-            return;
-        }
-        featureMetadataSet.stream()
-                .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                .map(fm -> (FeatureMetadataBehaviour) fm)
-                .forEach(fmb -> processor.featureWithBehaviour(
-                        fmb.getFeature(),
-                        fmb.getBehaviour()));
-
-        featureMetadataSet.stream()
-                .filter(fm -> fm instanceof FeatureMetadataException)
-                .map(fm -> (FeatureMetadataException) fm)
-                .forEach(fme -> processor.featureWithException(
-                        fme.getFeature(),
-                        fme.getException()
-                ));
-
-        final Class<? extends RuntimeException> exceptionType = getDefaultExceptionType();
-
-        featureMetadataSet.stream()
-                .filter(fm -> fm instanceof FeatureMetadataDefaultException)
-                .map(fm -> (FeatureMetadataDefaultException) fm)
-                .forEach(fmde -> processor
-                                .featureWithException(fmde.getFeature(), exceptionType));
-
-        featureMetadataSet.stream()
-                .filter(fm -> fm instanceof FeatureMetadataValue)
-                .map(fm -> (FeatureMetadataValue) fm)
-                .forEach(fmv -> processor.featureWithValue(
-                        fmv.getFeature(),
-                        fmv.getValueToReturn())
-                );
-
-    }
-
-    private Class<? extends RuntimeException> getDefaultExceptionType() {
-        return this.defaultExceptionType != null
-                ? this.defaultExceptionType
-                : DEFAULT_EXCEPTION_TYPE;
     }
 
 }
