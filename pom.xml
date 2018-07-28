@@ -4,7 +4,7 @@
 
     <groupId>com.github.cloudyrock.dimmer</groupId>
     <artifactId>dimmer-parent</artifactId>
-    <version>1.4.7</version>
+    <version>1.4.8-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>dimmer-parent</name>
     <!-- Web site not created yet -->
@@ -34,7 +34,7 @@
         <connection>scm:git:git@github.com:cloudyrock/dimmer-parent.git</connection>
         <developerConnection>scm:git:git@github.com:cloudyrock/dimmer-parent.git</developerConnection>
         <url>https://github.com/cloudyrock/dimmer-parent.git</url>
-        <tag>dimmer-1.4.7</tag>
+        <tag>dimmer-1.4.5</tag>
     </scm>
 
     <distributionManagement>
