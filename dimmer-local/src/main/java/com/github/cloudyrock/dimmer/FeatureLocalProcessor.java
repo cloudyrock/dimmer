@@ -1,6 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
-public class FeatureProcessorLocal extends FeatureProcessorBase
+public class FeatureLocalProcessor extends FeatureProcessorBase
         implements FeatureExecutor {
 
     @Override
