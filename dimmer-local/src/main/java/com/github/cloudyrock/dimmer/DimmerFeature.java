@@ -3,6 +3,7 @@ package com.github.cloudyrock.dimmer;
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -18,6 +19,7 @@ import java.lang.annotation.Target;
  * @author Antonio Perez Dieppa
  * @since 11/06/2018
  */
+@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface DimmerFeature {
