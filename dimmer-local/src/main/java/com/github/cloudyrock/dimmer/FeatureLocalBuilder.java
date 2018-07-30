@@ -25,14 +25,6 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
         return new FeatureLocalBuilder(environments, configMetadata);
     }
 
-    static FeatureLocalBuilder withEnvironmentsMetadataAndException(
-            Collection<String> environments,
-            Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType) {
-        return new FeatureLocalBuilder(environments, configMetadata,
-                newDefaultExceptionType);
-    }
-
     private FeatureLocalBuilder() {
         this(Collections.singleton(DEFAULT_ENV), new HashMap<>(),
                 DimmerInvocationException.class);
