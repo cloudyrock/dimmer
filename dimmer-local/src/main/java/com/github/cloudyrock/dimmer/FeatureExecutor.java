@@ -1,6 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
-interface FeatureExecutor {
+public interface FeatureExecutor {
 
     Object executeDimmerFeature(
             String feature,

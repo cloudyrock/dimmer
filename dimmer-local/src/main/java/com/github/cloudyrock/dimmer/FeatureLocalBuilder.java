@@ -63,25 +63,20 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
 
     @Override
     protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new FeatureLocalProcessor();
+        return new FeatureLocalExecutor();
     }
 
-    public void buildAndRun(String environment) {
-        final FeatureLocalProcessor processor = (FeatureLocalProcessor)
+    public FeatureLocalExecutor build(String environment) {
+        final FeatureLocalExecutor executor = (FeatureLocalExecutor)
                 newFeatureProcessor(configMetadata.get(environment));
-        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(processor);
+        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
+        return executor;
     }
 
-    public void buildAndWithDefaultEnvironment() {
-        buildAndRun(DEFAULT_ENV);
+    public FeatureLocalExecutor buildWithDefaultEnvironment() {
+        return build(DEFAULT_ENV);
     }
 
-    public DimmerSpringBean buildSpringBean(String environment) {
-        return () -> buildAndRun(environment);
-    }
 
-    public DimmerSpringBean buildSpringBeanWithDefaultEnvironment() {
-        return buildSpringBean(DEFAULT_ENV);
-    }
 
 }
