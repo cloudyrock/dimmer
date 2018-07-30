@@ -29,6 +29,6 @@ public class DummyConfigurableRunner extends DimmerFeatureConfigurable<DummyConf
 
     @Override
     protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new FeatureLocalProcessor();
+        return new FeatureLocalExecutor();
     }
 }
