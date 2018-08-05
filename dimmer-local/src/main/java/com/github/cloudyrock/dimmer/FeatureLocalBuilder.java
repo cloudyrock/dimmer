@@ -27,20 +27,22 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
 
     private FeatureLocalBuilder() {
         this(Collections.singleton(DEFAULT_ENV), new HashMap<>(),
-                DimmerInvocationException.class);
+                DimmerInvocationException.class, DimmerSlf4j.nullLogger());
     }
 
     private FeatureLocalBuilder(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
-        this(environments, configMetadata, DimmerInvocationException.class);
+        this(environments, configMetadata, DimmerInvocationException.class,
+                DimmerSlf4j.nullLogger());
     }
 
     private FeatureLocalBuilder(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType) {
-        super(environments, configMetadata, newDefaultExceptionType);
+            Class<? extends RuntimeException> newDefaultExceptionType,
+            DimmerSlf4j logger) {
+        super(environments, configMetadata, newDefaultExceptionType, logger);
 
     }
 
@@ -48,9 +50,10 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
     protected FeatureLocalBuilder newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType) {
-        return new FeatureLocalBuilder(environments, configMetadata,
-                defaultExceptionType);
+            Class<? extends RuntimeException> defaultExceptionType,
+            DimmerSlf4j logger) {
+        return new FeatureLocalBuilder(environments, configMetadata, defaultExceptionType,
+                logger);
     }
 
     @Override
@@ -68,7 +71,5 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
     public FeatureLocalExecutor buildWithDefaultEnvironment() {
         return build(DEFAULT_ENV);
     }
-
-
 
 }

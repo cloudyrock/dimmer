@@ -1,7 +1,10 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
+import org.slf4j.Logger;
+import org.slf4j.event.Level;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,13 +23,18 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     protected final Class<? extends RuntimeException> defaultExceptionType;
 
+    protected final DimmerSlf4j logger;
+
     protected DimmerFeatureConfigurable(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType) {
+            Class<? extends RuntimeException> defaultExceptionType,
+            DimmerSlf4j logger) {
+
         this.environments = environments;
         this.configMetadata = configMetadata;
         this.defaultExceptionType = defaultExceptionType;
+        this.logger = logger;
     }
 
     public RUNNER environments(String... environments) {
@@ -34,18 +42,21 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(
                 Arrays.asList(environments),
                 this.configMetadata,
-                this.defaultExceptionType);
+                this.defaultExceptionType,
+                logger);
     }
 
     public RUNNER featureWithBehaviour(
             boolean condition,
             String feature,
             Function<FeatureInvocation, ?> behaviour) {
-        if(condition) {
+        if (condition) {
             return featureWithBehaviour(feature, behaviour);
         } else {
-            return newInstance(this.environments, this.configMetadata,
-                    this.defaultExceptionType);
+            return newInstance(this.environments,
+                    configMetadata,
+                    defaultExceptionType,
+                    logger);
         }
 
     }
@@ -58,18 +69,17 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 behaviour
         );
         addFeatureMetadata(metadata);
-        return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+        return newInstance(this.environments, configMetadata,
+                this.defaultExceptionType, logger);
 
     }
 
-
     public RUNNER featureWithDefaultException(boolean condition, String feature) {
-        if(condition) {
+        if (condition) {
             return featureWithDefaultException(feature);
         } else {
-            return newInstance(this.environments, this.configMetadata,
-                    this.defaultExceptionType);
+            return newInstance(environments, configMetadata,
+                    defaultExceptionType, logger);
         }
 
     }
@@ -79,19 +89,19 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 feature
         );
         addFeatureMetadata(metadata);
-        return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+        return newInstance(environments, configMetadata,
+                defaultExceptionType, logger);
     }
 
     public RUNNER featureWithException(
             boolean condition,
             String feature,
             Class<? extends RuntimeException> exceptionType) {
-        if(condition) {
+        if (condition) {
             return featureWithException(feature, exceptionType);
         } else {
-            return newInstance(this.environments, this.configMetadata,
-                    this.defaultExceptionType);
+            return newInstance(environments, configMetadata,
+                    defaultExceptionType, logger);
         }
     }
 
@@ -104,18 +114,18 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 exceptionType
         );
         addFeatureMetadata(metadata);
-        return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+        return newInstance(environments, configMetadata,
+                defaultExceptionType, logger);
     }
 
     public RUNNER featureWithValue(boolean condition,
                                    String feature,
                                    Object valueToReturn) {
-        if(condition) {
+        if (condition) {
             return featureWithValue(feature, valueToReturn);
         } else {
-            return newInstance(this.environments, this.configMetadata,
-                    this.defaultExceptionType);
+            return newInstance(environments, configMetadata,
+                    defaultExceptionType, logger);
         }
     }
 
@@ -126,8 +136,8 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 valueToReturn
         );
         addFeatureMetadata(metadata);
-        return newInstance(this.environments, this.configMetadata,
-                this.defaultExceptionType);
+        return newInstance(environments, configMetadata,
+                defaultExceptionType, logger);
 
     }
 
@@ -153,11 +163,11 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Util.checkArgumentNullEmpty(newDefaultExceptionType, "defaultExceptionType");
         ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
-        return newInstance(this.environments, this.configMetadata,
-                newDefaultExceptionType);
+        return newInstance(environments, configMetadata,
+                newDefaultExceptionType, logger);
     }
 
-    FeatureProcessorBase newFeatureProcessor(Set<FeatureMetadata> featureMetadataSet) {
+                                                                                                                                                                                                                                                                                                                FeatureProcessorBase newFeatureProcessor(Set<FeatureMetadata> featureMetadataSet) {
 
         FeatureProcessorBase processor = newFeatureProcessorInstance();
         if (featureMetadataSet != null) {
@@ -206,7 +216,8 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     protected abstract RUNNER newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType);
+            Class<? extends RuntimeException> newDefaultExceptionType,
+            DimmerSlf4j logger);
 
     protected abstract FeatureProcessorBase newFeatureProcessorInstance();
 }
