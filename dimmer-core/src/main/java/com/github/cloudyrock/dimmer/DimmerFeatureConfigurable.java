@@ -38,6 +38,19 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     }
 
     public RUNNER featureWithBehaviour(
+            boolean condition,
+            String feature,
+            Function<FeatureInvocation, ?> behaviour) {
+        if(condition) {
+            return featureWithBehaviour(feature, behaviour);
+        } else {
+            return newInstance(this.environments, this.configMetadata,
+                    this.defaultExceptionType);
+        }
+
+    }
+
+    public RUNNER featureWithBehaviour(
             String feature,
             Function<FeatureInvocation, ?> behaviour) {
         final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
@@ -47,6 +60,17 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
                 this.defaultExceptionType);
+
+    }
+
+
+    public RUNNER featureWithDefaultException(boolean condition, String feature) {
+        if(condition) {
+            return featureWithDefaultException(feature);
+        } else {
+            return newInstance(this.environments, this.configMetadata,
+                    this.defaultExceptionType);
+        }
 
     }
 
@@ -60,6 +84,18 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     }
 
     public RUNNER featureWithException(
+            boolean condition,
+            String feature,
+            Class<? extends RuntimeException> exceptionType) {
+        if(condition) {
+            return featureWithException(feature, exceptionType);
+        } else {
+            return newInstance(this.environments, this.configMetadata,
+                    this.defaultExceptionType);
+        }
+    }
+
+    public RUNNER featureWithException(
             String feature,
             Class<? extends RuntimeException> exceptionType) {
         ExceptionUtil.checkExceptionConstructorType(exceptionType);
@@ -70,6 +106,17 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         addFeatureMetadata(metadata);
         return newInstance(this.environments, this.configMetadata,
                 this.defaultExceptionType);
+    }
+
+    public RUNNER featureWithValue(boolean condition,
+                                   String feature,
+                                   Object valueToReturn) {
+        if(condition) {
+            return featureWithValue(feature, valueToReturn);
+        } else {
+            return newInstance(this.environments, this.configMetadata,
+                    this.defaultExceptionType);
+        }
     }
 
     public RUNNER featureWithValue(String feature,
