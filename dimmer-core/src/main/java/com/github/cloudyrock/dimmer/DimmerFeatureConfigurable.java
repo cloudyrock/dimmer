@@ -64,8 +64,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 behaviour
         );
         addFeatureMetadata(metadata);
-        return newInstance(this.environments, configMetadata,
-                this.defaultExceptionType, logger);
+        return newInstance(environments, configMetadata, defaultExceptionType, logger);
 
     }
 
@@ -119,7 +118,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     }
 
     private void addFeatureMetadata(FeatureMetadata metadata) {
-        this.environments.forEach(env -> {
+        environments.forEach(env -> {
             if (!configMetadata.containsKey(env)) {
                 configMetadata.put(env, new HashSet<>());
             }
@@ -197,7 +196,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     private Class<? extends RuntimeException> getDefaultExceptionType() {
         return this.defaultExceptionType != null
-                ? this.defaultExceptionType
+                ? defaultExceptionType
                 : DEFAULT_EXCEPTION_TYPE;
     }
 
