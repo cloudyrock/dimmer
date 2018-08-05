@@ -18,7 +18,7 @@ public class DimmerSlf4j {
 
     static DimmerSlf4j nullLogger() {
         Logger logger = null;
-        return new DimmerSlf4j(logger, null);
+        return new DimmerSlf4j(logger, ERROR);
     }
 
     public DimmerSlf4j() {
@@ -38,7 +38,7 @@ public class DimmerSlf4j {
     }
 
     DimmerSlf4j(Logger logger, Level logLevel) {
-        this.minLogLevel = logLevel;
+        this.minLogLevel = logger != null ? logLevel : ERROR;
         this.logger = logger;
     }
 
