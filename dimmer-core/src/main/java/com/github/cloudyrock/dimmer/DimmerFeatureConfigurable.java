@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import static org.slf4j.event.Level.INFO;
 import static org.slf4j.event.Level.TRACE;
 
 abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurable> {
@@ -191,7 +192,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     }
 
     private void logFeature(String format, String feature, Object... args) {
-        logger.logWithPrefix(TRACE, format, feature, args);
+        logger.logWithPrefix(INFO, format, feature, args);
     }
 
     private Class<? extends RuntimeException> getDefaultExceptionType() {

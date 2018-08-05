@@ -2,12 +2,15 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 import org.aspectj.lang.Aspects;
+import org.slf4j.event.Level;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import static org.slf4j.event.Level.INFO;
 
 //TODO move javadoc from processor to here
 public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<FeatureLocalBuilder>
@@ -58,13 +61,15 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
 
     @Override
     protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new FeatureLocalExecutor();
+        return new FeatureLocalExecutor(logger);
     }
 
     public FeatureLocalExecutor build(String environment) {
+        logger.logWithPrefix(INFO, "Building local executor");
         final FeatureLocalExecutor executor = (FeatureLocalExecutor)
                 newFeatureProcessor(configMetadata.get(environment));
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
+        logger.logWithPrefix(INFO, "Dimmer Aspect running");
         return executor;
     }
 
