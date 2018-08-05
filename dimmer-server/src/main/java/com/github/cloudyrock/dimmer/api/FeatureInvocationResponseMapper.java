@@ -1,4 +1,4 @@
-package dimmer.api;
+package com.github.cloudyrock.dimmer.api;
 
 final class FeatureInvocationResponseMapper {
     protected final static FeatureInvocationResponse mapResponse(Object object) {

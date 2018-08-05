@@ -1,4 +1,4 @@
-package dimmer.api;
+package com.github.cloudyrock.dimmer.api;
 
 import com.github.cloudyrock.dimmer.DimmerFeatureService;
 
@@ -16,7 +16,7 @@ public class DimmerFeatureServiceApi {
     public FeatureInvocationResponse executeFeature(FeatureInvocationRequest featureInvocationRequest) {
 
         Object object = dimmerFeatureService
-                .invokeFeatureConfigurationForEnvironment(
+                .invokeFeatureForEnvironment(
                         featureInvocationRequest.getEnvironment(),
                         featureInvocationRequest.getFeatureName(),
                         featureInvocationRequest.getFeatureInvocation());

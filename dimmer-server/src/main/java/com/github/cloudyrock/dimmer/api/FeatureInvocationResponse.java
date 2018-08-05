@@ -1,4 +1,4 @@
-package dimmer.api;
+package com.github.cloudyrock.dimmer.api;
 
 public class FeatureInvocationResponse {
 
