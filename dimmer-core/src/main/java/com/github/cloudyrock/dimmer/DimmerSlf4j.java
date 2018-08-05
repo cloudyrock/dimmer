@@ -10,6 +10,8 @@ import static org.slf4j.event.Level.ERROR;
 
 public class DimmerSlf4j {
 
+    private static final String PREFIX = "[DIMMER] ";
+
     private final Logger logger;
 
     private final Level minLogLevel;
@@ -42,7 +44,13 @@ public class DimmerSlf4j {
 
     public void log(Level logLevel, String format, Object... args) {
         if (isLoggeable(logLevel)) {
-            getLoggerConsumer(logLevel).accept(format, args);
+            getLoggerConsumer("", logLevel).accept(format, args);
+        }
+    }
+
+    public void logWithPrefix(Level logLevel, String format, Object... args) {
+        if (isLoggeable(logLevel)) {
+            getLoggerConsumer(PREFIX, logLevel).accept(format, args);
         }
     }
 
@@ -50,19 +58,19 @@ public class DimmerSlf4j {
         return logger != null && logLevel.toInt() >= minLogLevel.toInt();
     }
 
-    private BiConsumer<String, Object[]> getLoggerConsumer(Level level) {
+    private BiConsumer<String, Object[]> getLoggerConsumer(String prefix, Level level) {
         switch (level) {
             case ERROR:
-                return (format, args) -> logger.error(format, (Object[]) args);
+                return (format, args) -> logger.error(prefix + format, (Object[]) args);
             case WARN:
-                return (format, args) -> logger.warn(format, (Object[]) args);
+                return (format, args) -> logger.warn(prefix + format, (Object[]) args);
             case DEBUG:
-                return (format, args) -> logger.debug(format, (Object[]) args);
+                return (format, args) -> logger.debug(prefix + format, (Object[]) args);
             case TRACE:
-                return (format, args) -> logger.trace(format, (Object[]) args);
+                return (format, args) -> logger.trace(prefix + format, (Object[]) args);
             case INFO:
             default:
-                return (format, args) -> logger.info(format, (Object[]) args);
+                return (format, args) -> logger.info(prefix + format, (Object[]) args);
         }
     }
 
