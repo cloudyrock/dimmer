@@ -6,39 +6,38 @@ import org.slf4j.event.Level;
 
 import java.util.function.BiConsumer;
 
+import static org.slf4j.event.Level.DEBUG;
 import static org.slf4j.event.Level.ERROR;
+import static org.slf4j.event.Level.INFO;
+import static org.slf4j.event.Level.TRACE;
+import static org.slf4j.event.Level.WARN;
 
+//TODO add test
 public class DimmerSlf4j {
 
     private static final String PREFIX = "[DIMMER] ";
 
     private final Logger logger;
 
-    private final Level minLogLevel;
-
     static DimmerSlf4j nullLogger() {
         Logger logger = null;
-        return new DimmerSlf4j(logger, ERROR);
+        return new DimmerSlf4j(logger);
     }
+
 
     public DimmerSlf4j() {
-        this(ERROR);
+        this(LoggerFactory.getLogger("DIMMER"));
     }
 
-    public DimmerSlf4j(Level logLevel) {
-        this(LoggerFactory.getLogger("DIMMER"), logLevel);
+    public DimmerSlf4j(Class clazz) {
+        this(LoggerFactory.getLogger(clazz));
     }
 
-    public DimmerSlf4j(Class clazz, Level logLevel) {
-        this(LoggerFactory.getLogger(clazz), logLevel);
+    public DimmerSlf4j(String name) {
+        this(LoggerFactory.getLogger(name));
     }
 
-    public DimmerSlf4j(String name, Level logLevel) {
-        this(LoggerFactory.getLogger(name), logLevel);
-    }
-
-    DimmerSlf4j(Logger logger, Level logLevel) {
-        this.minLogLevel = logger != null ? logLevel : ERROR;
+    DimmerSlf4j(Logger logger) {
         this.logger = logger;
     }
 
@@ -55,7 +54,22 @@ public class DimmerSlf4j {
     }
 
     private boolean isLoggeable(Level logLevel) {
-        return logger != null && logLevel.toInt() >= minLogLevel.toInt();
+        if (logger == null || logLevel == null) {
+            return false;
+        }
+        if (logLevel.toInt() >= TRACE.toInt()) {
+            return logger.isTraceEnabled();
+        }
+        if (logLevel.toInt() >= WARN.toInt()) {
+            return logger.isWarnEnabled();
+        }
+        if (logLevel.toInt() >= DEBUG.toInt()) {
+            return logger.isDebugEnabled();
+        }
+        if (logLevel.toInt() >= INFO.toInt()) {
+            return logger.isInfoEnabled();
+        }
+        return logLevel.toInt() >= ERROR.toInt() && logger.isErrorEnabled();
     }
 
     private BiConsumer<String, Object[]> getLoggerConsumer(String prefix, Level level) {
