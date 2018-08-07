@@ -46,10 +46,10 @@ public class DimmerAspect {
         };
     }
 
-    private FeatureInvocation generateFeatureInvocation(String feature,
-                                                        ProceedingJoinPoint joinPoint) {
+    private FeatureInvocationLocal generateFeatureInvocation(String feature,
+                                                             ProceedingJoinPoint joinPoint) {
         final MethodSignature p = (MethodSignature) joinPoint.getSignature();
-        return new FeatureInvocation(
+        return new FeatureInvocationLocal(
                 feature,
                 joinPoint.getSignature().getName(),
                 joinPoint.getSignature().getDeclaringType(),

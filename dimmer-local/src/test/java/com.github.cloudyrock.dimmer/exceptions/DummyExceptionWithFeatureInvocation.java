@@ -1,16 +1,16 @@
 package com.github.cloudyrock.dimmer.exceptions;
 
-import com.github.cloudyrock.dimmer.FeatureInvocation;
+import com.github.cloudyrock.dimmer.FeatureInvocationBase;
 
 public class DummyExceptionWithFeatureInvocation extends RuntimeException{
 
-    private final FeatureInvocation featureInvocation;
+    private final FeatureInvocationBase featureInvocation;
 
-    public DummyExceptionWithFeatureInvocation(FeatureInvocation featureInvocation) {
+    public DummyExceptionWithFeatureInvocation(FeatureInvocationBase featureInvocation) {
         this.featureInvocation = featureInvocation;
     }
 
-    public FeatureInvocation getFeatureInvocation() {
+    public FeatureInvocationBase getFeatureInvocation() {
         return featureInvocation;
     }
 }

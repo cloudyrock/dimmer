@@ -1,6 +1,6 @@
 package com.github.cloudyrock.dimmer.exceptions;
 
-import com.github.cloudyrock.dimmer.FeatureInvocation;
+import com.github.cloudyrock.dimmer.FeatureInvocationBase;
 
 /**
  * Default exception that will be thrown if no other is configured.
@@ -12,22 +12,20 @@ import com.github.cloudyrock.dimmer.FeatureInvocation;
 public class DimmerInvocationException extends RuntimeException {
 
     private static final long serialVersionUID = 159403250595728227L;
-    private final FeatureInvocation invocationInfo;
+    private final FeatureInvocationBase invocationInfo;
 
-    public DimmerInvocationException(FeatureInvocation featureInvocation) {
+    public DimmerInvocationException(FeatureInvocationBase featureInvocation) {
         this.invocationInfo = featureInvocation;
     }
 
-    public FeatureInvocation getInvocationInfo() {
+    public FeatureInvocationBase getInvocationInfo() {
         return invocationInfo;
     }
 
     @Override
     public String getMessage() {
-        return String.format(">>> Feature %s not available for %s.%s(...)",
-                invocationInfo.getFeature(),
-                invocationInfo.getDeclaringType().getCanonicalName(),
-                invocationInfo.getMethodName());
+        return String.format(">>> Feature %s not available for invocation %s",
+                invocationInfo.getFeature(), invocationInfo.toString());
     }
 
 }

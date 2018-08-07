@@ -40,7 +40,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     public RUNNER featureWithBehaviour(
             boolean condition,
             String feature,
-            Function<FeatureInvocation, ?> behaviour) {
+            Function<FeatureInvocationBase, ?> behaviour) {
         if(condition) {
             return featureWithBehaviour(feature, behaviour);
         } else {
@@ -52,7 +52,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     public RUNNER featureWithBehaviour(
             String feature,
-            Function<FeatureInvocation, ?> behaviour) {
+            Function<FeatureInvocationBase, ?> behaviour) {
         final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
                 feature,
                 behaviour
@@ -144,7 +144,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
      * Set the default exception type to be thrown as behaviour.
      * <p>
      * Notice the exception type must have either an empty constructor or a contractor with only
-     * one parameter, (@{@link FeatureInvocation})
+     * one parameter, (@{@link FeatureInvocationBase})
      *
      * @param newDefaultExceptionType new default exception type
      * @return Singleton DimmerProcessor builder

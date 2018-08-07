@@ -27,10 +27,10 @@ public class DimmerProcessorUTest {
     protected DummyFeatureProcessor dimmerProcessor;
 
     @Mock
-    private Function<FeatureInvocation, String> behaviour;
+    private Function<FeatureInvocationBase, String> behaviour;
 
     @Mock
-    private FeatureInvocation featureInvocationMock;
+    private FeatureInvocationBase featureInvocationMock;
 
     private String feature;
 
@@ -40,7 +40,7 @@ public class DimmerProcessorUTest {
         dimmerProcessor = new DummyFeatureProcessor();
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
-        given(featureInvocationMock.getReturnType()).willReturn(String.class);
+//        given(featureInvocationMock.getReturnType()).willReturn(String.class);
     }
 
 
@@ -73,7 +73,7 @@ public class DimmerProcessorUTest {
     @Test
     //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
-        given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
+        given(behaviour.apply(any(FeatureInvocationBase.class))).willReturn("not_checked");
 
         dimmerProcessor.featureWithBehaviour(feature, behaviour);
         dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock);
@@ -85,8 +85,8 @@ public class DimmerProcessorUTest {
     //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenException() throws Throwable {
 
-        FeatureInvocation featureInvocationMock = mock(FeatureInvocation.class);
-        given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
+        FeatureInvocationBase featureInvocationMock = mock(FeatureInvocationBase.class);
+        given(behaviour.apply(any(FeatureInvocationBase.class))).willReturn("not_checked");
         
 
         dimmerProcessor.featureWithException(

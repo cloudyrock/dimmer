@@ -15,15 +15,15 @@ import java.util.function.Function;
  * @author Antonio Perez Dieppa
  * @see Function
  * @see DimmerConfigException
- * @see FeatureInvocation
+ * @see FeatureInvocationBase
  * @since 11/06/2018
  */
-abstract class FeatureProcessorBase {
+abstract class FeatureProcessorBase<FEATURE_INVOCATION extends FeatureInvocationBase> {
 
     private static final String EXCEPTION_MESSAGE_CAST =
             "The expected return types between the real method and the configured function are mismatched";
 
-    private final Map<String, Function<FeatureInvocation, ?>> behaviours =
+    private final Map<String, Function<FEATURE_INVOCATION, ?>> behaviours =
             new ConcurrentHashMap<>();
 
     FeatureProcessorBase() {
@@ -45,7 +45,7 @@ abstract class FeatureProcessorBase {
      */
     boolean featureWithBehaviour(
             String feature,
-            Function<FeatureInvocation, ?> behaviour) {
+            Function<FEATURE_INVOCATION, ?> behaviour) {
         Util.checkArgumentNullEmpty(behaviour, "behaviour");
         return putBehaviour(feature, behaviour);
     }
@@ -55,12 +55,12 @@ abstract class FeatureProcessorBase {
      * associates it with the given exception and returns true, else returns false.
      * <p>
      * Notice the exception type must have either an empty constructor or a contractor with only
-     * one parameter, (@{@link FeatureInvocation})
+     * one parameter, (@{@link FeatureInvocationBase})
      *
      * @param feature       feature with which the specified behaviour is to be associated
      * @param exceptionType exception type to be associated with the specified key
      * @return true, or false if the key was already associated to a behaviour.
-     * @see FeatureInvocation
+     * @see FeatureInvocationBase
      */
     boolean featureWithException(String feature,
                                  Class<? extends RuntimeException> exceptionType) {
@@ -94,7 +94,7 @@ abstract class FeatureProcessorBase {
     }
 
     private boolean putBehaviour(String featureId,
-                                 Function<FeatureInvocation, ?> behaviour) {
+                                 Function<FEATURE_INVOCATION, ?> behaviour) {
         Util.checkArgumentNullEmpty(featureId, "featureId");
         return behaviours.putIfAbsent(featureId, behaviour) == null;
     }
@@ -103,9 +103,9 @@ abstract class FeatureProcessorBase {
         return behaviours.containsKey(feature);
     }
 
-    protected Object runFeature(String feature, FeatureInvocation featureInvocation) {
+    protected Object runFeature(String feature, FEATURE_INVOCATION featureInvocation) {
         final Object result = behaviours.get(feature).apply(featureInvocation);
-        checkReturnType(featureInvocation.getReturnType(), result);
+//        checkReturnType(featureInvocation.getReturnType(), result);
         return result;
     }
 

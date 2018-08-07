@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  *
  * @author Antonio Perez Dieppa
  * @see FeatureLocalExecutor
- * @see FeatureInvocation
+ * @see FeatureInvocationBase
  * @see DimmerInvocationException
  *
  * @author Antonio Perez Dieppa

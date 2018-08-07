@@ -3,8 +3,6 @@ package com.github.cloudyrock.dimmer;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -23,7 +21,7 @@ public class DimmerConfigurableRunnerTest {
     @Test
     public void shouldApplyConfigToRightEnvironment() {
 
-        final Function<FeatureInvocation, ?> behaviour1 = FeatureInvocation::getArgs;
+        final Function<FeatureInvocationBase, ?> behaviour1 = FeatureInvocationBase::getArgs;
         final String value = "VALUE";
 
         final String feature1 = "feature1";
