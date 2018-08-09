@@ -57,19 +57,11 @@ public class DimmerSlf4j {
         if (logger == null || logLevel == null) {
             return false;
         }
-        if (logLevel.toInt() >= TRACE.toInt()) {
-            return logger.isTraceEnabled();
-        }
-        if (logLevel.toInt() >= WARN.toInt()) {
-            return logger.isWarnEnabled();
-        }
-        if (logLevel.toInt() >= DEBUG.toInt()) {
-            return logger.isDebugEnabled();
-        }
-        if (logLevel.toInt() >= INFO.toInt()) {
-            return logger.isInfoEnabled();
-        }
-        return logLevel.toInt() >= ERROR.toInt() && logger.isErrorEnabled();
+        return (logLevel.toInt() >= TRACE.toInt() && logger.isTraceEnabled() ) ||
+                (logLevel.toInt() >= DEBUG.toInt() && logger.isDebugEnabled()) ||
+                (logLevel.toInt() >= INFO.toInt() && logger.isInfoEnabled()) ||
+                (logLevel.toInt() >= WARN.toInt() && logger.isWarnEnabled()) ||
+                (logLevel.toInt() >= ERROR.toInt() && logger.isErrorEnabled());
     }
 
     private BiConsumer<String, Object[]> getLoggerConsumer(String prefix, Level level) {
@@ -79,7 +71,8 @@ public class DimmerSlf4j {
             case WARN:
                 return (format, args) -> logger.warn(prefix + format, (Object[]) args);
             case DEBUG:
-                return (format, args) -> logger.debug(prefix + format, (Object[]) args);
+                return (format, args) ->
+                        logger.debug(prefix + format, (Object[]) args);
             case TRACE:
                 return (format, args) -> logger.trace(prefix + format, (Object[]) args);
             case INFO:
