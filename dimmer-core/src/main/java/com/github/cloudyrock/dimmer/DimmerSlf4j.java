@@ -71,8 +71,7 @@ public class DimmerSlf4j {
             case WARN:
                 return (format, args) -> logger.warn(prefix + format, (Object[]) args);
             case DEBUG:
-                return (format, args) ->
-                        logger.debug(prefix + format, (Object[]) args);
+                return (format, args) -> logger.debug(prefix + format, (Object[]) args);
             case TRACE:
                 return (format, args) -> logger.trace(prefix + format, (Object[]) args);
             case INFO:
