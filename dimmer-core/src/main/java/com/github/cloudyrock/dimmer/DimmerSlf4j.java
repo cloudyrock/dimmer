@@ -24,7 +24,6 @@ public class DimmerSlf4j {
         return new DimmerSlf4j(logger);
     }
 
-
     public DimmerSlf4j() {
         this(LoggerFactory.getLogger("DIMMER"));
     }
@@ -41,27 +40,19 @@ public class DimmerSlf4j {
         this.logger = logger;
     }
 
-    public void log(Level logLevel, String format, Object... args) {
-        if (isLoggeable(logLevel)) {
-            getLoggerConsumer("", logLevel).accept(format, args);
-        }
-    }
-
-    public void logWithPrefix(Level logLevel, String format, Object... args) {
+    void logWithPrefix(Level logLevel, String format, Object... args) {
         if (isLoggeable(logLevel)) {
             getLoggerConsumer(PREFIX, logLevel).accept(format, args);
         }
     }
 
     private boolean isLoggeable(Level logLevel) {
-        if (logger == null || logLevel == null) {
-            return false;
-        }
-        return (logLevel.toInt() >= TRACE.toInt() && logger.isTraceEnabled() ) ||
+        return logger != null && logLevel != null &&
+                ((logLevel.toInt() >= TRACE.toInt() && logger.isTraceEnabled()) ||
                 (logLevel.toInt() >= DEBUG.toInt() && logger.isDebugEnabled()) ||
                 (logLevel.toInt() >= INFO.toInt() && logger.isInfoEnabled()) ||
                 (logLevel.toInt() >= WARN.toInt() && logger.isWarnEnabled()) ||
-                (logLevel.toInt() >= ERROR.toInt() && logger.isErrorEnabled());
+                (logLevel.toInt() >= ERROR.toInt() && logger.isErrorEnabled()));
     }
 
     private BiConsumer<String, Object[]> getLoggerConsumer(String prefix, Level level) {
