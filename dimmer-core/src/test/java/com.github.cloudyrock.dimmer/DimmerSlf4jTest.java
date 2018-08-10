@@ -22,11 +22,6 @@ public class DimmerSlf4jTest {
     public void setup() {
         slf4jLogger = Mockito.mock(Logger.class);
         dimmerLoger = new DimmerSlf4j(slf4jLogger);
-        given(slf4jLogger.isTraceEnabled()).willReturn(false);
-        given(slf4jLogger.isDebugEnabled()).willReturn(false);
-        given(slf4jLogger.isInfoEnabled()).willReturn(false);
-        given(slf4jLogger.isWarnEnabled()).willReturn(false);
-        given(slf4jLogger.isErrorEnabled()).willReturn(false);
     }
 
     private static String buildFormatMessageWithPrefix(String formatMessage) {
@@ -38,8 +33,7 @@ public class DimmerSlf4jTest {
         given(slf4jLogger.isTraceEnabled()).willReturn(true);
 
         final String formatMessage = "message {}";
-        dimmerLoger
-                .logWithPrefix(Level.TRACE, formatMessage, "value", "value2", "value3");
+        dimmerLoger.trace(formatMessage, "value", "value2", "value3");
 
         then(slf4jLogger).should(times(1))
                 .trace(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
@@ -52,7 +46,7 @@ public class DimmerSlf4jTest {
 
         final String formatMessage = "message {}";
         dimmerLoger
-                .logWithPrefix(Level.DEBUG, formatMessage, "value", "value2", "value3");
+                .debug(formatMessage, "value", "value2", "value3");
 
         then(slf4jLogger).should(times(1))
                 .debug(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
@@ -65,7 +59,7 @@ public class DimmerSlf4jTest {
 
         final String formatMessage = "message {}";
         dimmerLoger
-                .logWithPrefix(Level.INFO, formatMessage, "value", "value2", "value3");
+                .info(formatMessage, "value", "value2", "value3");
 
         then(slf4jLogger).should(times(1))
                 .info(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
@@ -79,7 +73,7 @@ public class DimmerSlf4jTest {
 
         final String formatMessage = "message {}";
         dimmerLoger
-                .logWithPrefix(Level.WARN, formatMessage, "value", "value2", "value3");
+                .warn(formatMessage, "value", "value2", "value3");
 
         then(slf4jLogger).should(times(1))
                 .warn(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
@@ -92,95 +86,9 @@ public class DimmerSlf4jTest {
 
         final String formatMessage = "message {}";
         dimmerLoger
-                .logWithPrefix(Level.ERROR, formatMessage, "value", "value2", "value3");
+                .error(formatMessage, "value", "value2", "value3");
 
         then(slf4jLogger).should(times(1))
-                .error(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
-                        "value3");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Test
-    public void shouldNotLogging_whenTRACE_if_notLevelEnable() {
-        given(slf4jLogger.isWarnEnabled()).willReturn(true);
-        given(slf4jLogger.isDebugEnabled()).willReturn(true);
-        given(slf4jLogger.isInfoEnabled()).willReturn(true);
-        given(slf4jLogger.isErrorEnabled()).willReturn(true);
-
-        final String formatMessage = "message {}";
-        dimmerLoger
-                .logWithPrefix(Level.TRACE, formatMessage, "value", "value2", "value3");
-
-        then(slf4jLogger).should(times(0))
-                .trace(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
-                        "value3");
-    }
-
-    @Test
-    public void shouldNotLogging_whenDEBUG_if_notLevelEnable() {
-        given(slf4jLogger.isInfoEnabled()).willReturn(true);
-        given(slf4jLogger.isErrorEnabled()).willReturn(true);
-
-        final String formatMessage = "message {}";
-        dimmerLoger
-                .logWithPrefix(Level.DEBUG, formatMessage, "value", "value2", "value3");
-
-        then(slf4jLogger).should(times(0))
-                .debug(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
-                        "value3");
-    }
-
-    @Test
-    public void shouldNotLogging_whenINFO_if_notLevelEnable() {
-        given(slf4jLogger.isWarnEnabled()).willReturn(true);
-        given(slf4jLogger.isErrorEnabled()).willReturn(true);
-
-        final String formatMessage = "message {}";
-        dimmerLoger
-                .logWithPrefix(Level.INFO, formatMessage, "value", "value2", "value3");
-
-        then(slf4jLogger).should(times(0))
-                .info(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
-                        "value3");
-    }
-    @Test
-    public void shouldNotLogging_whenWARN_if_notLevelEnable() {
-        given(slf4jLogger.isErrorEnabled()).willReturn(true);
-
-        final String formatMessage = "message {}";
-        dimmerLoger
-                .logWithPrefix(Level.WARN, formatMessage, "value", "value2", "value3");
-
-        then(slf4jLogger).should(times(0))
-                .warn(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
-                        "value3");
-    }
-
-    @Test
-    public void shouldNotLogging_whenERROR_if_notLevelEnable() {
-
-        final String formatMessage = "message {}";
-        dimmerLoger
-                .logWithPrefix(Level.ERROR, formatMessage, "value", "value2", "value3");
-
-        then(slf4jLogger).should(times(0))
                 .error(buildFormatMessageWithPrefix(formatMessage), "value", "value2",
                         "value3");
     }

@@ -30,22 +30,20 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
 
     private FeatureLocalBuilder() {
         this(Collections.singleton(DEFAULT_ENV), new HashMap<>(),
-                DimmerInvocationException.class, DimmerSlf4j.nullLogger());
+                DimmerInvocationException.class);
     }
 
     private FeatureLocalBuilder(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
-        this(environments, configMetadata, DimmerInvocationException.class,
-                DimmerSlf4j.nullLogger());
+        this(environments, configMetadata, DimmerInvocationException.class);
     }
 
     private FeatureLocalBuilder(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType,
-            DimmerSlf4j logger) {
-        super(environments, configMetadata, newDefaultExceptionType, logger);
+            Class<? extends RuntimeException> newDefaultExceptionType) {
+        super(environments, configMetadata, newDefaultExceptionType);
 
     }
 
@@ -55,21 +53,20 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType,
             DimmerSlf4j logger) {
-        return new FeatureLocalBuilder(environments, configMetadata, defaultExceptionType,
-                logger);
+        return new FeatureLocalBuilder(environments, configMetadata, defaultExceptionType);
     }
 
     @Override
     protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new FeatureLocalExecutor(logger);
+        return new FeatureLocalExecutor();
     }
 
     public FeatureLocalExecutor build(String environment) {
-        logger.logWithPrefix(INFO, "Building local executor");
+        logger.info("Building local executor");
         final FeatureLocalExecutor executor = (FeatureLocalExecutor)
                 newFeatureProcessor(configMetadata.get(environment));
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
-        logger.logWithPrefix(INFO, "Dimmer Aspect running");
+        logger.info("Dimmer Aspect running");
         return executor;
     }
 

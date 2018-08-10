@@ -9,16 +9,14 @@ import java.util.Set;
 public class DummyConfigurableRunner extends DimmerFeatureConfigurable<DummyConfigurableRunner> {
 
     DummyConfigurableRunner() {
-        super(new HashSet<>(), new HashMap<>(), RuntimeException.class,
-                DimmerSlf4j.nullLogger());
+        super(new HashSet<>(), new HashMap<>(), RuntimeException.class);
     }
 
     DummyConfigurableRunner(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType,
-            DimmerSlf4j logger) {
-        super(environments, configMetadata, defaultExceptionType, logger);
+            Class<? extends RuntimeException> defaultExceptionType) {
+        super(environments, configMetadata, defaultExceptionType);
     }
 
     @Override
@@ -27,13 +25,12 @@ public class DummyConfigurableRunner extends DimmerFeatureConfigurable<DummyConf
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExcType,
             DimmerSlf4j logger) {
-        return new DummyConfigurableRunner(environments, configMetadata, defaultExcType,
-                logger);
+        return new DummyConfigurableRunner(environments, configMetadata, defaultExcType);
     }
 
     @Override
     protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new DummyFeatureProcessor(logger);
+        return new DummyFeatureProcessor();
     }
 
 }

@@ -19,56 +19,32 @@ public class DimmerSlf4j {
 
     private final Logger logger;
 
-    static DimmerSlf4j nullLogger() {
-        Logger logger = null;
-        return new DimmerSlf4j(logger);
-    }
-
-    public DimmerSlf4j() {
-        this(LoggerFactory.getLogger("DIMMER"));
-    }
-
     public DimmerSlf4j(Class clazz) {
         this(LoggerFactory.getLogger(clazz));
-    }
-
-    public DimmerSlf4j(String name) {
-        this(LoggerFactory.getLogger(name));
     }
 
     DimmerSlf4j(Logger logger) {
         this.logger = logger;
     }
-
-    void logWithPrefix(Level logLevel, String format, Object... args) {
-        if (isLoggeable(logLevel)) {
-            getLoggerConsumer(PREFIX, logLevel).accept(format, args);
-        }
+    public void trace(String message, Object... args) {
+        logger.trace(PREFIX + message, (Object[]) args);
     }
 
-    private boolean isLoggeable(Level logLevel) {
-        return logger != null && logLevel != null &&
-                ((logLevel.toInt() >= TRACE.toInt() && logger.isTraceEnabled()) ||
-                (logLevel.toInt() >= DEBUG.toInt() && logger.isDebugEnabled()) ||
-                (logLevel.toInt() >= INFO.toInt() && logger.isInfoEnabled()) ||
-                (logLevel.toInt() >= WARN.toInt() && logger.isWarnEnabled()) ||
-                (logLevel.toInt() >= ERROR.toInt() && logger.isErrorEnabled()));
+    public void debug(String message, Object... args) {
+        logger.debug(PREFIX + message, (Object[]) args);
     }
 
-    private BiConsumer<String, Object[]> getLoggerConsumer(String prefix, Level level) {
-        switch (level) {
-            case ERROR:
-                return (format, args) -> logger.error(prefix + format, (Object[]) args);
-            case WARN:
-                return (format, args) -> logger.warn(prefix + format, (Object[]) args);
-            case DEBUG:
-                return (format, args) -> logger.debug(prefix + format, (Object[]) args);
-            case TRACE:
-                return (format, args) -> logger.trace(prefix + format, (Object[]) args);
-            case INFO:
-            default:
-                return (format, args) -> logger.info(prefix + format, (Object[]) args);
-        }
+    public void info(String message, Object... args) {
+        logger.info(PREFIX + message, (Object[]) args);
     }
+
+    public void warn(String message, Object... args) {
+        logger.warn(PREFIX + message, (Object[]) args);
+    }
+
+    public void error(String message, Object... args) {
+        logger.error(PREFIX + message, (Object[]) args);
+    }
+
 
 }

@@ -10,9 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import static org.slf4j.event.Level.INFO;
-import static org.slf4j.event.Level.TRACE;
-
 abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurable> {
 
     protected static final Class<? extends RuntimeException> DEFAULT_EXCEPTION_TYPE =
@@ -24,18 +21,17 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     protected final Class<? extends RuntimeException> defaultExceptionType;
 
-    protected final DimmerSlf4j logger;
+    protected static final DimmerSlf4j logger =
+            new DimmerSlf4j(DimmerFeatureConfigurable.class);
 
     protected DimmerFeatureConfigurable(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType,
-            DimmerSlf4j logger) {
+            Class<? extends RuntimeException> defaultExceptionType) {
 
         this.environments = environments;
         this.configMetadata = configMetadata;
         this.defaultExceptionType = defaultExceptionType;
-        this.logger = logger;
     }
 
     public RUNNER environments(String... environments) {
@@ -191,7 +187,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     }
 
     private void logFeature(String format, String feature, Object... args) {
-        logger.logWithPrefix(INFO, format, feature, args);
+        logger.info(format, feature, args);
     }
 
     private Class<? extends RuntimeException> getDefaultExceptionType() {

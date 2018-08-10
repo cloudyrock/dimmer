@@ -9,16 +9,14 @@ import java.util.Set;
 public class DummyConfigurableBuilder extends DimmerFeatureConfigurable<DummyConfigurableBuilder> {
 
     DummyConfigurableBuilder() {
-        super(new HashSet<>(), new HashMap<>(), RuntimeException.class,
-                DimmerSlf4j.nullLogger());
+        super(new HashSet<>(), new HashMap<>(), RuntimeException.class);
     }
 
     DummyConfigurableBuilder(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType,
-            DimmerSlf4j logger) {
-        super(environments, configMetadata, defaultExceptionType, logger);
+            Class<? extends RuntimeException> defaultExceptionType) {
+        super(environments, configMetadata, defaultExceptionType);
     }
 
     @Override
@@ -27,8 +25,7 @@ public class DummyConfigurableBuilder extends DimmerFeatureConfigurable<DummyCon
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExcType,
             DimmerSlf4j logger) {
-        return new DummyConfigurableBuilder(environments, configMetadata, defaultExcType,
-                logger);
+        return new DummyConfigurableBuilder(environments, configMetadata, defaultExcType);
     }
 
     @Override
