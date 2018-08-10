@@ -5,6 +5,9 @@ import static org.slf4j.event.Level.INFO;
 public class FeatureLocalExecutor extends FeatureProcessorBase
         implements FeatureExecutor {
 
+    protected static final DimmerSlf4j logger =
+            new DimmerSlf4j(FeatureLocalBuilder.class);
+
     @Override
     public Object executeDimmerFeature(String feature,
                                        FeatureInvocation featureInvocation,

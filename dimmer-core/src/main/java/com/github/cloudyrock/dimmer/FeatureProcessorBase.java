@@ -25,7 +25,6 @@ abstract class FeatureProcessorBase {
 
     private final Map<String, Function<FeatureInvocation, ?>> behaviours =
             new ConcurrentHashMap<>();
-    protected static final DimmerSlf4j logger = new DimmerSlf4j(FeatureProcessorBase.class);
 
     FeatureProcessorBase() {
     }
