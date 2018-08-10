@@ -23,8 +23,7 @@ public class DummyConfigurableBuilder extends DimmerFeatureConfigurable<DummyCon
     protected DummyConfigurableBuilder newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExcType,
-            DimmerSlf4j logger) {
+            Class<? extends RuntimeException> defaultExcType) {
         return new DummyConfigurableBuilder(environments, configMetadata, defaultExcType);
     }
 

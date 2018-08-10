@@ -21,7 +21,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     protected final Class<? extends RuntimeException> defaultExceptionType;
 
-    protected static final DimmerSlf4j logger =
+    private static final DimmerSlf4j logger =
             new DimmerSlf4j(DimmerFeatureConfigurable.class);
 
     protected DimmerFeatureConfigurable(
@@ -37,7 +37,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     public RUNNER environments(String... environments) {
         Util.checkArgumentNullEmpty(environments, "environments");
         final List<String> envs = Arrays.asList(environments);
-        return newInstance(envs, configMetadata, defaultExceptionType, logger);
+        return newInstance(envs, configMetadata, defaultExceptionType);
     }
 
     public RUNNER featureWithBehaviour(
@@ -47,7 +47,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
         return condition
                 ? featureWithBehaviour(feature, behaviour)
-                : newInstance(environments, configMetadata, defaultExceptionType, logger);
+                : newInstance(environments, configMetadata, defaultExceptionType);
 
     }
 
@@ -60,21 +60,21 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 behaviour
         );
         addFeatureMetadata(metadata);
-        return newInstance(environments, configMetadata, defaultExceptionType, logger);
+        return newInstance(environments, configMetadata, defaultExceptionType);
 
     }
 
     public RUNNER featureWithDefaultException(boolean condition, String feature) {
         return condition
                 ? featureWithDefaultException(feature)
-                : newInstance(environments, configMetadata, defaultExceptionType, logger);
+                : newInstance(environments, configMetadata, defaultExceptionType);
 
     }
 
     public RUNNER featureWithDefaultException(String feature) {
         final FeatureMetadata metadata = new FeatureMetadataDefaultException(feature);
         addFeatureMetadata(metadata);
-        return newInstance(environments, configMetadata, defaultExceptionType, logger);
+        return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
     public RUNNER featureWithException(
@@ -84,7 +84,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
         return condition
                 ? featureWithException(feature, exceptionType)
-                : newInstance(environments, configMetadata, defaultExceptionType, logger);
+                : newInstance(environments, configMetadata, defaultExceptionType);
     }
 
     public RUNNER featureWithException(
@@ -94,7 +94,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         ExceptionUtil.checkExceptionConstructorType(exType);
         final FeatureMetadata metadata = new FeatureMetadataException(feature, exType);
         addFeatureMetadata(metadata);
-        return newInstance(environments, configMetadata, defaultExceptionType, logger);
+        return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
     public RUNNER featureWithValue(boolean condition,
@@ -102,14 +102,14 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                                    Object valueToReturn) {
         return condition
                 ? featureWithValue(feature, valueToReturn)
-                : newInstance(environments, configMetadata, defaultExceptionType, logger);
+                : newInstance(environments, configMetadata, defaultExceptionType);
     }
 
     public RUNNER featureWithValue(String feature,
                                    Object valueToReturn) {
         final FeatureMetadata metadata = new FeatureMetadataValue(feature, valueToReturn);
         addFeatureMetadata(metadata);
-        return newInstance(environments, configMetadata, defaultExceptionType, logger);
+        return newInstance(environments, configMetadata, defaultExceptionType);
 
     }
 
@@ -135,7 +135,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Util.checkArgumentNullEmpty(newDefaultExceptionType, "defaultExceptionType");
         ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
-        return newInstance(environments, configMetadata, newDefaultExceptionType, logger);
+        return newInstance(environments, configMetadata, newDefaultExceptionType);
     }
 
     FeatureProcessorBase newFeatureProcessor(Set<FeatureMetadata> featureMetadataSet) {
@@ -199,8 +199,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     protected abstract RUNNER newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> newDefaultExceptionType,
-            DimmerSlf4j logger);
+            Class<? extends RuntimeException> newDefaultExceptionType);
 
     protected abstract FeatureProcessorBase newFeatureProcessorInstance();
 }

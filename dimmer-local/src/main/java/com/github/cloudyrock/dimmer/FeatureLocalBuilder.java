@@ -18,6 +18,9 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
 
     private static final String DEFAULT_ENV = "DEFAULT_DIMMER_ENV";
 
+    protected static final DimmerSlf4j logger =
+            new DimmerSlf4j(FeatureLocalBuilder.class);
+
     static FeatureLocalBuilder withDefaultEnvironment() {
         return new FeatureLocalBuilder();
     }
@@ -51,8 +54,7 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
     protected FeatureLocalBuilder newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType,
-            DimmerSlf4j logger) {
+            Class<? extends RuntimeException> defaultExceptionType) {
         return new FeatureLocalBuilder(environments, configMetadata, defaultExceptionType);
     }
 

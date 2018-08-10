@@ -23,8 +23,7 @@ public class DummyConfigurableRunner extends DimmerFeatureConfigurable<DummyConf
     protected DummyConfigurableRunner newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
-            Class<? extends RuntimeException> defaultExcType,
-            DimmerSlf4j logger) {
+            Class<? extends RuntimeException> defaultExcType) {
         return new DummyConfigurableRunner(environments, configMetadata, defaultExcType);
     }
 
