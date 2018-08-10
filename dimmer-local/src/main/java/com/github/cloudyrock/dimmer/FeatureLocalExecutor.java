@@ -1,7 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import static org.slf4j.event.Level.INFO;
-
 public class FeatureLocalExecutor extends FeatureProcessorBase
         implements FeatureExecutor {
 
