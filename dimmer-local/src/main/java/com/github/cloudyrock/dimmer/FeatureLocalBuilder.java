@@ -2,15 +2,12 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 import org.aspectj.lang.Aspects;
-import org.slf4j.event.Level;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import static org.slf4j.event.Level.INFO;
 
 //TODO move javadoc from processor to here
 public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<FeatureLocalBuilder>
