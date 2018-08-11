@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.exceptions.DimmerInvocationException;
 import org.aspectj.lang.Aspects;
 
 import java.util.Collection;

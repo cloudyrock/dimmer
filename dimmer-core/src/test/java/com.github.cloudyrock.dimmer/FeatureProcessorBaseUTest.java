@@ -1,6 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.exceptions.DummyExceptionWithFeatureInvocation;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,11 +19,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class FeatureProcessorLocalUTest {
+public class FeatureProcessorBaseUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
 
-    protected FeatureLocalExecutor FeatureProcessorLocal;
+    protected DummyFeatureProcessor dimmerProcessor;
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
@@ -36,7 +36,7 @@ public class FeatureProcessorLocalUTest {
     @Before
     public void setUp() {
 
-        FeatureProcessorLocal = new FeatureLocalExecutor();
+        dimmerProcessor = new DummyFeatureProcessor();
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(featureInvocationMock.getReturnType()).willReturn(String.class);
@@ -44,38 +44,30 @@ public class FeatureProcessorLocalUTest {
 
 
     @Test
-    //@DisplayName("Should build behaviour when FEATURE when featureWithBehaviour")
-    public void featureAndConfiguredWithBehaviour() throws Throwable {
-        FeatureProcessorLocal.featureWithBehaviour(feature, s -> "VALUE");
-        Object actualResult = FeatureProcessorLocal.executeDimmerFeature(
-                feature, featureInvocationMock, null);
+    //@DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
+    public void shouldRunBehaviour() throws Throwable {
+        dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
+        Object actualResult = dimmerProcessor.executeDimmerFeature(
+                feature, featureInvocationMock);
         assertEquals("VALUE", actualResult);
     }
 
     @Test
     //@DisplayName("Should return value when featureWithValue")
-    public void featureAndConfiguredWithValue() throws Throwable {
-        FeatureProcessorLocal.featureWithValue(feature, "VALUE");
-        Object actualResult = FeatureProcessorLocal.executeDimmerFeature(
-                feature, featureInvocationMock, null);
+    public void shouldReturnValue() throws Throwable {
+        dimmerProcessor.featureWithValue(feature, "VALUE");
+        Object actualResult = dimmerProcessor.executeDimmerFeature(
+                feature, featureInvocationMock);
         assertEquals("VALUE", actualResult);
     }
-
-    //TODO replace this test
-//    @Test(expected = DefaultException.class)
-//    //@DisplayName("Should throw default exception when featureWithDefaultException")
-//    public void featureAndConfiguredWithDefaultException() throws Throwable {
-//        FeatureProcessorLocal.featureWithDefaultException(feature);;
-//        FeatureProcessorLocal.executeDimmerFeature(feature, featureInvocationMock, null);
-//    }
 
     @Test
     //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
 
-        FeatureProcessorLocal.featureWithBehaviour(feature, behaviour);
-        FeatureProcessorLocal.executeDimmerFeature(feature, featureInvocationMock, null);
+        dimmerProcessor.featureWithBehaviour(feature, behaviour);
+        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock);
 
         then(behaviour).should().apply(featureInvocationMock);
     }
@@ -88,13 +80,13 @@ public class FeatureProcessorLocalUTest {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
         
 
-        FeatureProcessorLocal.featureWithException(
+        dimmerProcessor.featureWithException(
                 feature,
                 DummyExceptionWithFeatureInvocation.class);
 
         exception.expect(DummyExceptionWithFeatureInvocation.class);
         exception.expect(hasProperty("featureInvocation", is(featureInvocationMock)));
 
-        FeatureProcessorLocal.executeDimmerFeature(feature, featureInvocationMock, null);
+        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock);
     }
 }
