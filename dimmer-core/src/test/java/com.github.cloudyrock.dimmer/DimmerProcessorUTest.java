@@ -1,7 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
 
-import com.github.cloudyrock.dimmer.exceptions.DummyExceptionWithFeatureInvocation;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
