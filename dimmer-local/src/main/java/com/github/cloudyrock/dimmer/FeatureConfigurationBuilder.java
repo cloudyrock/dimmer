@@ -46,15 +46,11 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
                 defaultExceptionType);
     }
 
-    @Override
-    protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new FeatureExecutorImpl();
-    }
-
     public FeatureExecutorImpl build(String environment) {
         logger.info("Building local executor");
-        final FeatureExecutorImpl executor = (FeatureExecutorImpl)
-                newFeatureProcessor(configMetadata.get(environment));
+        final FeatureExecutorImpl executor = new FeatureExecutorImpl(
+                configMetadata.get(environment),
+                getDefaultExceptionType());
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
         logger.info("Dimmer Aspect running");
         return executor;

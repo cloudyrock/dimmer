@@ -2,6 +2,7 @@ package com.github.cloudyrock.dimmer;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -24,7 +25,62 @@ abstract class FeatureProcessorBase {
     private final Map<String, Function<FeatureInvocation, ?>> behaviours =
             new ConcurrentHashMap<>();
 
+
+    private static final DimmerLogger logger =
+            new DimmerLogger(DimmerFeatureConfigurable.class);
+
+
     FeatureProcessorBase() {
+    }
+
+    FeatureProcessorBase(Set<FeatureMetadata> featureMetadataSet,
+                         Class<? extends RuntimeException> defaultException) {
+
+        if (featureMetadataSet != null) {
+            featureMetadataSet.stream()
+                    .filter(fm -> fm instanceof FeatureMetadataBehaviour)
+                    .map(fm -> (FeatureMetadataBehaviour) fm)
+                    .peek(fm -> logFeature("APPLIED feature {} with behaviour",
+                            fm.getFeature()))
+                    .forEach(fmb -> featureWithBehaviour(
+                            fmb.getFeature(),
+                            fmb.getBehaviour()));
+
+            featureMetadataSet.stream()
+                    .filter(fm -> fm instanceof FeatureMetadataException)
+                    .map(fm -> (FeatureMetadataException) fm)
+                    .peek(fm -> logFeature("APPLIED feature {} with exception {}",
+                            fm.getFeature(), fm.getException()))
+                    .forEach(fme -> featureWithException(
+                            fme.getFeature(),
+                            fme.getException()
+                    ));
+
+
+            featureMetadataSet.stream()
+                    .filter(fm -> fm instanceof FeatureMetadataDefaultException)
+                    .map(fm -> (FeatureMetadataDefaultException) fm)
+                    .peek(fm -> logFeature("APPLIED feature {} with default exception {}",
+                            fm.getFeature(), defaultException))
+                    .forEach(fmde ->
+                            featureWithException(fmde.getFeature(), defaultException));
+
+            featureMetadataSet.stream()
+                    .filter(fm -> fm instanceof FeatureMetadataValue)
+                    .map(fm -> (FeatureMetadataValue) fm)
+                    .peek(fm -> logFeature("APPLIED feature {} with value {}",
+                            fm.getFeature(), fm.getValueToReturn()))
+                    .forEach(fmv -> featureWithValue(
+                            fmv.getFeature(),
+                            fmv.getValueToReturn())
+                    );
+        }
+
+    }
+
+
+    private void logFeature(String format, String feature, Object... args) {
+        logger.info(format, feature, args);
     }
 
     /**

@@ -28,9 +28,4 @@ public class DummyDimmerFeatureConfigurable
         return new DummyDimmerFeatureConfigurable(environments, configMetadata, defaultExcType);
     }
 
-    @Override
-    protected FeatureProcessorBase newFeatureProcessorInstance() {
-        return new DummyFeatureProcessor();
-    }
-
 }
