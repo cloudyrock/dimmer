@@ -3,8 +3,6 @@ package com.github.cloudyrock.dimmer;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -13,11 +11,11 @@ import static org.junit.Assert.assertEquals;
 public class DimmerConfigurableRunnerTest {
 
 
-    private DummyConfigurableRunner runner;
+    private DummyConfigurableBuilder runner;
 
     @Before
     public void setUp() {
-        runner = new DummyConfigurableRunner();
+        runner = new DummyConfigurableBuilder();
     }
 
     @Test
