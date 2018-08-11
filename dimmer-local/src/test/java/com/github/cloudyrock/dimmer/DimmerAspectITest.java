@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -30,14 +31,15 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     private static final String FEATURE8 = "FEATURE8";
     private static final String FEATURE9 = "FEATURE9";
     private static final String FEATURE10 = "FEATURE10";
+    private static final String ENV = "environment";
+    private static final String ENV_2 = "environment_other";
     private final AnnotatedClass annotatedClass = new AnnotatedClass();
 
     @Rule public ExpectedException exception = ExpectedException.none();
 
-
     @Test
     //@DisplayName("Should run behaviour when featureWithBehaviour")
-    public void featureWithBehaviour() {
+    public void shouldRunBehaviour() {
         final String value = "feature1_value";
         DimmerBuilder
                 .local()
@@ -45,6 +47,30 @@ public class DimmerAspectITest {//extends DimmerTestBase {
                 .featureWithBehaviour(FEATURE1, f -> value)
                 .buildWithDefaultEnvironment();
         assertEquals(value, annotatedClass.methodForFeature1());
+    }
+
+    @Test
+    //@DisplayName("Should run behaviour when featureWithBehaviour")
+    public void shouldRunBehaviourForEnvironment() {
+        final String value = "feature1_value";
+        DimmerBuilder
+                .local()
+                .environments(ENV)
+                .featureWithBehaviour(FEATURE1, f -> value)
+                .build(ENV);
+        assertEquals(value, annotatedClass.methodForFeature1());
+    }
+
+    @Test
+    //@DisplayName("Should run behaviour when featureWithBehaviour")
+    public void shouldNotRunBehaviourWhenEnvironmentNotCOnfigured() {
+        final String value = "feature1_value";
+        DimmerBuilder
+                .local()
+                .environments(ENV)
+                .featureWithBehaviour(FEATURE1, f -> value)
+                .build(ENV_2);
+        assertEquals(REAL_VALUE, annotatedClass.methodForFeature1());
     }
 
     @Test
@@ -75,7 +101,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
 
     @Test(expected = DummyException.class)
     //@DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
-    public void featureWithExceptionInnBehaviour() {
+    public void shouldThrowExceptionWhenBehaviourThrowsException() {
         DimmerBuilder
                 .local()
                 .defaultEnvironment().featureWithBehaviour(FEATURE3, f -> {
@@ -85,8 +111,21 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
+    //@DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
+    public void shouldNotThrowExceptionWithBehaviourWhenEnvironmentNotConfigured() {
+        DimmerBuilder
+                .local()
+                .environments(ENV)
+                .featureWithBehaviour(FEATURE3, f -> {
+                    throw new DummyException();
+                })
+                .build(ENV_2);
+        assertEquals(REAL_VALUE, annotatedClass.methodForFeature3());
+    }
+
+    @Test
     //@DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
-    public void featureWithValue() {
+    public void shouldReturnValue() {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
@@ -95,9 +134,21 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         assertEquals(VALUE1, annotatedClass.methodForFeature4());
     }
 
+    @Test
+    //@DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
+    public void shouldNotReturnValueWhenEnvironmentNotConfigured() {
+        DimmerBuilder
+                .local()
+                .environments(ENV)
+                .featureWithValue(FEATURE4, VALUE1)
+                .build(ENV_2);
+        assertEquals(REAL_VALUE, annotatedClass.methodForFeature4());
+    }
+
+
     @Test(expected = DummyException.class)
     //@DisplayName("Should throw DummyException when featureWithException")
-    public void featureWithException() {
+    public void shouldThrowException() {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
@@ -106,9 +157,20 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         annotatedClass.methodForFeature5();
     }
 
+    @Test
+    //@DisplayName("Should throw DummyException when featureWithException")
+    public void shouldNotThrowExceptionWhenEnvironmentNotConfigured() {
+        DimmerBuilder
+                .local()
+                .environments(ENV)
+                .featureWithException(FEATURE5, DummyException.class)
+                .build(ENV_2);
+        assertEquals(REAL_VALUE, annotatedClass.methodForFeature5());
+    }
+
     @Test(expected = DimmerConfigException.class)
     //@DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
-    public void featureAndDimmerConfigException() {
+    public void shouldThrowDimmerConfigException() {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
@@ -118,8 +180,19 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
+    //@DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
+    public void shouldNotThrowDimmerConfigException() {
+        DimmerBuilder
+                .local()
+                .environments(ENV)
+                .featureWithValue(FEATURE7, 1)
+                .build(ENV_2);
+        assertEquals(REAL_VALUE, annotatedClass.methodForFeature7());
+    }
+
+    @Test
     //@DisplayName("Should return a NULL value")
-    public void featureNullMismatch() {
+    public void shouldReturnNull() {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
@@ -201,16 +274,17 @@ public class DimmerAspectITest {//extends DimmerTestBase {
 
         @DimmerFeature(value = FEATURE3)
         String methodForFeature3() {
-            return "ERROR";
+            return REAL_VALUE;
         }
 
         @DimmerFeature(value = FEATURE4)
         String methodForFeature4() {
-            return "REAL VALUE";
+            return REAL_VALUE;
         }
 
         @DimmerFeature(value = FEATURE5)
-        void methodForFeature5() {
+        String methodForFeature5() {
+            return REAL_VALUE;
         }
 
         @DimmerFeature(value = FEATURE6)
@@ -225,7 +299,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
 
         @DimmerFeature(value = FEATURE8)
         String methodForFeature8() {
-            return null;
+            return REAL_VALUE;
         }
 
         @DimmerFeature(value = FEATURE9)
