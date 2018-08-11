@@ -34,7 +34,6 @@ public class DimmerAspectITest {//extends DimmerTestBase {
 
     @Rule public ExpectedException exception = ExpectedException.none();
 
-    FeatureLocalExecutor dimmerProcessor;
 
     @Test
     //@DisplayName("Should run behaviour when featureWithBehaviour")
