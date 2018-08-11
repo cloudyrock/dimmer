@@ -14,6 +14,9 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
 
     private static final String DEFAULT_ENV = "DEFAULT_DIMMER_ENV";
 
+    private static final DimmerLogger logger =
+            new DimmerLogger(FeatureLocalBuilder.class);
+
     static FeatureLocalBuilder withDefaultEnvironment() {
         return new FeatureLocalBuilder();
     }
@@ -48,8 +51,7 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
-        return new FeatureLocalBuilder(environments, configMetadata,
-                defaultExceptionType);
+        return new FeatureLocalBuilder(environments, configMetadata, defaultExceptionType);
     }
 
     @Override
@@ -58,16 +60,16 @@ public final class FeatureLocalBuilder extends DimmerFeatureConfigurable<Feature
     }
 
     public FeatureLocalExecutor build(String environment) {
+        logger.info("Building local executor");
         final FeatureLocalExecutor executor = (FeatureLocalExecutor)
                 newFeatureProcessor(configMetadata.get(environment));
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
+        logger.info("Dimmer Aspect running");
         return executor;
     }
 
     public FeatureLocalExecutor buildWithDefaultEnvironment() {
         return build(DEFAULT_ENV);
     }
-
-
 
 }
