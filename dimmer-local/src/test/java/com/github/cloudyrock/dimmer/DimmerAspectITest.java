@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

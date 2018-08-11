@@ -1,4 +1,4 @@
-package com.github.cloudyrock.dimmer;
+package com.github.cloudyrock.dimmer.exceptions;
 
 public class DefaultException extends RuntimeException {
 
