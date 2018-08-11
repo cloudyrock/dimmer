@@ -45,7 +45,7 @@ public class DimmerProcessorUTest {
 
     @Test
     //@DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
-    public void featureAndConfiguredWithBehaviour() throws Throwable {
+    public void shouldRunBehaviour() throws Throwable {
         dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
                 feature, featureInvocationMock);
@@ -54,20 +54,12 @@ public class DimmerProcessorUTest {
 
     @Test
     //@DisplayName("Should return value when featureWithValue")
-    public void featureAndConfiguredWithValue() throws Throwable {
+    public void shouldReturnValue() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
                 feature, featureInvocationMock);
         assertEquals("VALUE", actualResult);
     }
-
-    //TODO replace this test
-//    @Test(expected = DefaultException.class)
-//    //@DisplayName("Should throw default exception when featureWithDefaultException")
-//    public void featureAndConfiguredWithDefaultException() throws Throwable {
-//        dimmerProcessor.featureWithDefaultException(feature);;
-//        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock, null);
-//    }
 
     @Test
     //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")

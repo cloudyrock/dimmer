@@ -27,9 +27,9 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     private static final String FEATURE7 = "FEATURE7";
 
     private static final String VALUE1 = "VALUE1";
-    public static final String FEATURE8 = "FEATURE8";
-    public static final String FEATURE9 = "FEATURE9";
-    public static final String FEATURE10 = "FEATURE10";
+    private static final String FEATURE8 = "FEATURE8";
+    private static final String FEATURE9 = "FEATURE9";
+    private static final String FEATURE10 = "FEATURE10";
     private final AnnotatedClass annotatedClass = new AnnotatedClass();
 
     @Rule public ExpectedException exception = ExpectedException.none();
@@ -81,7 +81,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
                 .defaultEnvironment().featureWithBehaviour(FEATURE3, f -> {
             throw new DummyException();
         }).buildWithDefaultEnvironment();
-        assertNull(annotatedClass.methodForFeature3());
+        annotatedClass.methodForFeature3();
     }
 
     @Test
@@ -125,7 +125,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
                 .defaultEnvironment()
                 .featureWithValue(FEATURE8, null)
                 .buildWithDefaultEnvironment();
-        annotatedClass.methodForFeature8();
+        assertNull(annotatedClass.methodForFeature8());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should exception should get FeatureInvocation as parameter when featureWithException")
+    //@DisplayName("Should get FeatureInvocation as parameter when featureWithException")
     public void passingFeatureInvocationToException() {
         DimmerBuilder
                 .local()
