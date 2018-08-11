@@ -21,7 +21,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class FeatureLocalExecutorUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
-    protected FeatureLocalExecutor dimmerProcessor;
+    private FeatureLocalExecutor dimmerProcessor;
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
