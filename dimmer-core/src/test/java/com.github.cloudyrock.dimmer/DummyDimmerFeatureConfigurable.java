@@ -6,13 +6,14 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class DummyConfigurableRunner extends DimmerFeatureConfigurable<DummyConfigurableRunner> {
+public class DummyDimmerFeatureConfigurable
+        extends DimmerFeatureConfigurable<DummyDimmerFeatureConfigurable> {
 
-    DummyConfigurableRunner() {
+    DummyDimmerFeatureConfigurable() {
         super(new HashSet<>(), new HashMap<>(), RuntimeException.class);
     }
 
-    DummyConfigurableRunner(
+    DummyDimmerFeatureConfigurable(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
@@ -20,11 +21,11 @@ public class DummyConfigurableRunner extends DimmerFeatureConfigurable<DummyConf
     }
 
     @Override
-    protected DummyConfigurableRunner newInstance(
+    protected DummyDimmerFeatureConfigurable newInstance(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExcType) {
-        return new DummyConfigurableRunner(environments, configMetadata, defaultExcType);
+        return new DummyDimmerFeatureConfigurable(environments, configMetadata, defaultExcType);
     }
 
     @Override

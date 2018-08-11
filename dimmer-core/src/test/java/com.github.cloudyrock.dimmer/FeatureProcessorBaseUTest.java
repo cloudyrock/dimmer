@@ -19,7 +19,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class DimmerProcessorUTest {
+public class FeatureProcessorBaseUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
 

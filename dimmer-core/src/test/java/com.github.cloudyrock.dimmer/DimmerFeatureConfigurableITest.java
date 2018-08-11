@@ -3,21 +3,19 @@ package com.github.cloudyrock.dimmer;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 
-public class DimmerConfigurableRunnerTest {
+public class DimmerFeatureConfigurableITest {
 
 
-    private DummyConfigurableRunner runner;
+    private DummyDimmerFeatureConfigurable runner;
 
     @Before
     public void setUp() {
-        runner = new DummyConfigurableRunner();
+        runner = new DummyDimmerFeatureConfigurable();
     }
 
     @Test

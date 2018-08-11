@@ -22,7 +22,4 @@ public class DimmerBuilder {
         };
     }
 
-    public static FeatureRemoteBuilder remote(String url) {
-        return new FeatureRemoteBuilder(url);
-    }
 }
