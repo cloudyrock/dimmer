@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * Annotation containing the feature configuration for a method.
  *
  * @author Antonio Perez Dieppa
- * @see FeatureLocalExecutor
+ * @see FeatureExecutorImpl
  * @see FeatureInvocation
  * @see DimmerInvocationException
  *
@@ -23,10 +23,10 @@ import java.lang.annotation.Target;
 public @interface DimmerFeature {
 
     /**
-     * Indicates the feature, configured via (@{@link FeatureLocalExecutor}), that describes
+     * Indicates the feature, configured via (@{@link FeatureExecutorImpl}), that describes
      * the behaviour instead of invoking the real method
      *
-     * @see FeatureLocalExecutor
+     * @see FeatureExecutorImpl
      * @return feature
      */
     String value();

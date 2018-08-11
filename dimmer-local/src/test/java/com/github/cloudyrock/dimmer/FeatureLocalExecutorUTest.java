@@ -21,7 +21,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class FeatureLocalExecutorUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
-    private FeatureLocalExecutor dimmerProcessor;
+    private FeatureExecutorImpl dimmerProcessor;
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
@@ -36,7 +36,7 @@ public class FeatureLocalExecutorUTest {
     @Before
     public void setUp() throws Throwable {
 
-        dimmerProcessor = new FeatureLocalExecutor();
+        dimmerProcessor = new FeatureExecutorImpl();
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(methodCaller.call()).willReturn(String.class);

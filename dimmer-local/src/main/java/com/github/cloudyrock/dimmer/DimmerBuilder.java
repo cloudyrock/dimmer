@@ -6,17 +6,17 @@ import static java.util.Arrays.asList;
 
 public class DimmerBuilder {
 
-    public static DimmerDefaultEnvironmentConfigurable<FeatureLocalBuilder> local() {
+    public static DimmerDefaultEnvironmentConfigurable<FeatureConfigurationBuilder> local() {
 
-        return new DimmerDefaultEnvironmentConfigurable<FeatureLocalBuilder>() {
+        return new DimmerDefaultEnvironmentConfigurable<FeatureConfigurationBuilder>() {
             @Override
-            public FeatureLocalBuilder defaultEnvironment() {
-                return FeatureLocalBuilder.withDefaultEnvironment();
+            public FeatureConfigurationBuilder defaultEnvironment() {
+                return FeatureConfigurationBuilder.withDefaultEnvironment();
             }
 
             @Override
-            public FeatureLocalBuilder environments(String... environments) {
-                return FeatureLocalBuilder
+            public FeatureConfigurationBuilder environments(String... environments) {
+                return FeatureConfigurationBuilder
                         .withEnvironmentsAndMetadata(asList(environments), new HashMap<>());
             }
         };

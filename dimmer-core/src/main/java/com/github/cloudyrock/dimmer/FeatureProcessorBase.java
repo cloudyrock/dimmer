@@ -97,8 +97,8 @@ abstract class FeatureProcessorBase {
         return behaviours.putIfAbsent(featureId, behaviour) == null;
     }
 
-    protected boolean isFeatureConfigured(String feature) {
-        return behaviours.containsKey(feature);
+    protected boolean isFeatureEnabled(String feature) {
+        return !behaviours.containsKey(feature);
     }
 
     protected Object runFeature(String feature, FeatureInvocation featureInvocation) {

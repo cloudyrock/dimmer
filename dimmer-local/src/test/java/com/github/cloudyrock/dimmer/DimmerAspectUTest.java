@@ -28,7 +28,7 @@ public class DimmerAspectUTest {
     private ProceedingJoinPoint jointPointMock;
 
     @Mock
-    private FeatureLocalExecutor dimmerProcessor;
+    private FeatureExecutorImpl dimmerProcessor;
 
     @Mock
     private DimmerFeature dimmerFeatureMock;
