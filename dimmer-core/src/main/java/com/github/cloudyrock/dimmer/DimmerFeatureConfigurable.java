@@ -21,8 +21,8 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     protected final Class<? extends RuntimeException> defaultExceptionType;
 
-    private static final DimmerSlf4j logger =
-            new DimmerSlf4j(DimmerFeatureConfigurable.class);
+    private static final DimmerLogger logger =
+            new DimmerLogger(DimmerFeatureConfigurable.class);
 
     protected DimmerFeatureConfigurable(
             Collection<String> environments,

@@ -2,28 +2,19 @@ package com.github.cloudyrock.dimmer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
-
-import java.util.function.BiConsumer;
-
-import static org.slf4j.event.Level.DEBUG;
-import static org.slf4j.event.Level.ERROR;
-import static org.slf4j.event.Level.INFO;
-import static org.slf4j.event.Level.TRACE;
-import static org.slf4j.event.Level.WARN;
 
 //TODO add test
-public class DimmerSlf4j {
+public class DimmerLogger {
 
     private static final String PREFIX = "[DIMMER] ";
 
     private final Logger logger;
 
-    public DimmerSlf4j(Class clazz) {
+    public DimmerLogger(Class clazz) {
         this(LoggerFactory.getLogger(clazz));
     }
 
-    DimmerSlf4j(Logger logger) {
+    DimmerLogger(Logger logger) {
         this.logger = logger;
     }
     public void trace(String message, Object... args) {

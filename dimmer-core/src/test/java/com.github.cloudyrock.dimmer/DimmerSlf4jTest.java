@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
-import org.slf4j.event.Level;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -16,12 +15,12 @@ public class DimmerSlf4jTest {
 
     private Logger slf4jLogger;
 
-    private DimmerSlf4j dimmerLoger;
+    private DimmerLogger dimmerLoger;
 
     @Before
     public void setup() {
         slf4jLogger = Mockito.mock(Logger.class);
-        dimmerLoger = new DimmerSlf4j(slf4jLogger);
+        dimmerLoger = new DimmerLogger(slf4jLogger);
     }
 
     private static String buildFormatMessageWithPrefix(String formatMessage) {

@@ -3,8 +3,8 @@ package com.github.cloudyrock.dimmer;
 public class FeatureLocalExecutor extends FeatureProcessorBase
         implements FeatureExecutor {
 
-    private static final DimmerSlf4j logger =
-            new DimmerSlf4j(FeatureLocalBuilder.class);
+    private static final DimmerLogger logger =
+            new DimmerLogger(FeatureLocalBuilder.class);
 
     @Override
     public Object executeDimmerFeature(String feature,
