@@ -320,3 +320,8 @@ public void dimmerConfiguration(boolean toggledOff) {
         .buildWithDefaultEnvironment();
 }
 ```
+
+# STILL PENDING IN THIS PULL REQUEST
+USE CASES
+KNOWN ISSUES -> lombok intellij
+logging-> Just mention that uses slf4j and will print a warning if no binding implementation s provided
