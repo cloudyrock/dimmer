@@ -139,7 +139,7 @@ public class Main {
 
 ## Throwing custom exceptions
 We have seen how to throw a default exception(DimmerExecutionException), but sometimes you
-prefer to return your own exception. That's still possible with Dimmer, however you exception 
+prefer to throw your own exception. That's still possible with Dimmer, however you exception 
 needs to be an unchecked exception(inherits from RuntimeException) and fulfill  at least one 
 of the following requirements, but it will be always a unchecked exception type(RuntimeException):
 
