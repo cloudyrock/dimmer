@@ -18,7 +18,7 @@
 
     <modules>
         <module>dimmer-core</module>
-        <module>dimmer-local</module>
+        <module>dimmer</module>
     </modules>
 
 
