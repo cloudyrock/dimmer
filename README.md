@@ -62,13 +62,11 @@ You can check the last version of the library in this [link](https://search.mave
 
 Using Maven:
 ```xml
-    <dependencies>
-		<dependency>
-			<groupId>com.github.cloudyrock.dimmer</groupId>
-			<artifactId>dimmer-local</artifactId>
-			<version>LATEST_VERSION</version>
-		</dependency>
-    </dependencies>
+<dependency>
+    <groupId>com.github.cloudyrock.dimmer</groupId>
+    <artifactId>dimmer-local</artifactId>
+    <version>LATEST_VERSION</version>
+</dependency>
 ```
 
 Using Gradle:
@@ -132,11 +130,11 @@ Once you have imported the required dependency and configure aspectj plugin, you
 ### Throwing a default exception 
 The most basic scenario is when we just throw a default exception when a feature is called.
 ```java
-        DimmerBuilder
-                .local()
-                .defaultEnvironment()
-                .featureWithDefaultException(FEATURE_NAME)
-                .buildWithDefaultEnvironment();
+DimmerBuilder
+    .local()
+    .defaultEnvironment()
+    .featureWithDefaultException(FEATURE_NAME)
+    .buildWithDefaultEnvironment();
 ```
 
 This will throw a DimmerExecutionException(we'll explain how to thrown your own exception) 
@@ -150,11 +148,11 @@ ensure that it matches whatever the annotated method returns, otherwise it will 
 for casting error. In this context, 'match' does not mean is the same class, it could the method returns an interface 
 and you provide an implementation or it's a parent class and a child class is provided.
 ```java
-        DimmerBuilder
-                .local()
-                .defaultEnvironment()
-                .featureWithValue(FEATURE_NAME, "fake value")
-                .buildWithDefaultEnvironment();
+DimmerBuilder
+    .local()
+    .defaultEnvironment()
+    .featureWithValue(FEATURE_NAME, "fake value")
+    .buildWithDefaultEnvironment();
 ```
 
 ### When exceptions and fixed values are not enough: Behaviours
@@ -167,15 +165,15 @@ Before providing a sample,lets clarify some concepts first.
 - *FeatureInvocation:* It's an object which encapsulates the information regarding the invocation(signature, arguments, etc.). 
 Its structure  looks like this:
 ```java
-    /** Feature covering invoked method */
-    private final String feature;
-    /** Invoked method's name */
-    private final String methodName;
-    /** Owner class of the method */
-    private final Class declaringType;
-    /** Returning type of the method */
-    private final Class returnType;
-    /** The arguments which the method was invoked with */
+/** Feature covering invoked method */
+private final String feature;
+/** Invoked method's name */
+private final String methodName;
+/** Owner class of the method */
+private final Class declaringType;
+/** Returning type of the method */
+private final Class returnType;
+/** The arguments which the method was invoked with */
     private final Object[] args;
 ```
 
