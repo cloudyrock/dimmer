@@ -99,7 +99,7 @@ Its structure  looks like this:
 ```
 
 - *Behaviour:* As its name suggests, provides the capability to perform some dynamic actions for a given feature.
-In Dimmer, a behaviour is Java 8 Function, which takes as input parameter an FeatureInvocation
+In Dimmer, a behaviour is Java 8 Function, which takes a FeatureInvocation as input parameter.
 ```java
 public class Main {
 
@@ -139,8 +139,10 @@ public class Main {
 
 ## Throwing custom exceptions
 We have seen how to throw a default exception(DimmerExecutionException), but sometimes you
-prefer to return your own exception. That's still possible with Dimmer, however you exception needs to fulfill 
-at least one of the following requirements, but it will be always a unchecked exception type(RuntimeException):
+prefer to return your own exception. That's still possible with Dimmer, however you exception 
+needs to be an unchecked exception(inherits from RuntimeException) and fulfill  at least one 
+of the following requirements, but it will be always a unchecked exception type(RuntimeException):
+
 - Provides a constructor wich takes a FeatureInvocation as parameter
 - Provides a default constructor with no parameters
 
