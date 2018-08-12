@@ -312,11 +312,11 @@ However, sometimes this is not enough. Sometimes you want your feature depending
 To solve this, in all the methods provided by the builder to configure features(featureWithValue, featureWithBehaviour, etc.) you can
 add a boolean flag which indicate if you want to provide the given behaviour to the feature(flag is true) or you just want to ignore(flag is false)
 ```java
-public void dimmerConfiguration(boolean featureToggledOff) {
+public void dimmerConfiguration(boolean toggledOff) {
     DimmerBuilder
         .local()
         .defaultEnvironment()
-        .featureWithDefaultException(featureToggledOff, FEATURE_NAME)//Taken into account only if featureToggledOff is true
+        .featureWithDefaultException(toggledOff, FEATURE_NAME)//Taken into account only if toggledOff is true
         .buildWithDefaultEnvironment();
 }
 ```
