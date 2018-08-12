@@ -342,5 +342,12 @@ Dimmer uses slf4j to perform logging. If the importer project does not use slf4j
 Dimmer(slf4j actually) with print some warnings. While this is stopping the application or Dimmer to work, is highly recommended
 to use slf4j as wrapper framework for logging.
 
-# STILL PENDING IN THIS PULL REQUEST
-KNOWN ISSUES -> lombok intellij
+
+# Known issues
+There is a known issue in IDEs like intellij when using any aspectj library together with Lombok. However the application can be run 
+without any issue, the IDE won't compile properly. This is not something that affects only to Dimmer, is an issue between Aspectj and Lombok.
+Possible work-arounds:
+- Create a submodule with all the classes that use lombok, compile it and the bringing to the project. It can be a maven/gradle submodule.
+- Similar to the previous one, but in this case, instead of creating a submodule, just having the classes that use Lombok in a separated package and tell Intellij to compile with a different compiler. 
+- Taking advantage of the full compatibility of Kotlin with Java, use Kotlin instead of Java for those classes using Lombok. Everything Lombok provides, Kotlin does too natively and easier.
+
