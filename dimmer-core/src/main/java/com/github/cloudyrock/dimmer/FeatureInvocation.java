@@ -1,7 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import java.util.Arrays;
-
 /**
  * Represents method call with all its information.
  *
@@ -10,9 +8,13 @@ import java.util.Arrays;
  */
 public class FeatureInvocation {
     /**
-     * Method's name
+     * Feature covering invoked method
      */
     private final String feature;
+
+    /**
+     * Invoked method's name
+     */
     private final String methodName;
 
     /**

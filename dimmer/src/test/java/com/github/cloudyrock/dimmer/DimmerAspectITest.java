@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 
+import java.math.BigDecimal;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
@@ -35,6 +36,26 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     private final AnnotatedClass annotatedClass = new AnnotatedClass();
 
     @Rule public ExpectedException exception = ExpectedException.none();
+
+
+    private static final String FEATURE_NAME = "asdsad";
+
+    @Test
+    public void asdad() {
+
+        DimmerBuilder
+                .local()
+                .defaultEnvironment()
+                .featureWithException(FEATURE_NAME, Main.MyException.class)
+                .buildWithDefaultEnvironment();
+
+        runFeaturedMethod();
+    }
+
+    @DimmerFeature(FEATURE_NAME)
+    private String runFeaturedMethod() {
+        return "real value";
+    }
 
     @Test
     //@DisplayName("Should run behaviour when featureWithBehaviour")
