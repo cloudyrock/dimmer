@@ -75,7 +75,7 @@ compile group: 'com.github.cloudyrock.dimmer', name: 'dimmer-local', version: 'L
 ```
 
 In order to make aspects work, so Dimmer can do its job, you need to add some trivial configuration to your 
-build scripts.
+build script.
 
 Using Maven:
 ```xml
