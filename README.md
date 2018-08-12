@@ -344,7 +344,7 @@ to use slf4j as wrapper framework for logging.
 
 
 # Known issues
-There is a known issue in IDEs like intellij when using any aspectj library together with Lombok. However the application can be run 
+There is a known issue in IDEs like intellij when using any aspectj library together with Lombok. However, while the application can be run 
 without any issue, the IDE won't compile properly. This is not something that affects only to Dimmer, is an issue between Aspectj and Lombok.
 Possible work-arounds:
 - Create a submodule with all the classes that use lombok, compile it and the bringing to the project. It can be a maven/gradle submodule.
