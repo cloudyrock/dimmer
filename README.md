@@ -337,6 +337,10 @@ public void dimmerConfiguration(boolean toggledOff) {
 }
 ```
 
+## Logging
+Dimmer uses slf4j to perform logging. If the importer project does not use slf4j or does not provide a binding implementation,
+Dimmer(slf4j actually) with print some warnings. While this is stopping the application or Dimmer to work, is highly recommended
+to use slf4j as wrapper framework for logging.
+
 # STILL PENDING IN THIS PULL REQUEST
 KNOWN ISSUES -> lombok intellij
-logging-> Just mention that uses slf4j and will print a warning if no binding implementation s provided
