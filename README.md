@@ -139,11 +139,11 @@ public class Main {
 
 ## Throwing custom exceptions
 We have seen how to throw a default exception(DimmerExecutionException), but sometimes you
-prefer to throw your own exception. That's still possible with Dimmer, however you exception 
+prefer to throw your own exception. That's still possible with Dimmer, however it 
 needs to be an unchecked exception(inherits from RuntimeException) and fulfill  at least one 
-of the following requirements, but it will be always a unchecked exception type(RuntimeException):
+of the following requirements:
 
-- Provides a constructor wich takes a FeatureInvocation as parameter
+- Provides a constructor which takes a FeatureInvocation as parameter
 - Provides a default constructor with no parameters
 
 In case that the class provides both constructors, Dimmer will prioritize the one that takes a FeatureInvocation as parameter 
