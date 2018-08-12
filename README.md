@@ -62,7 +62,7 @@ This will throw a DimmerExecutionException(we'll explain how to thrown your own 
 when a method annotated with FEATURE_NAME is invoked.
 
 ### Returning a fixed value
-As you could see in 'How does it work?', the example is using 'featureWithValue'. What this does
+As you can see in 'How does it work?', the example is using 'featureWithValue'. What this does
 is just return the value provided in the configuration every time a annotated method, with the given feature,
 is called. Please notice that the object can be an instance of a custom class, however you should
 ensure that it matches whatever the annotated method returns, otherwise it will throw a DimmerConfigurationException, 
@@ -77,12 +77,13 @@ and you provide an implementation or it's a parent class and a child class is pr
 ```
 
 ### When exceptions and fixed values are not enough: Behaviours
-Sometimes throwing an exception or returning a fixed value is not flexible enough. You need to return a dynamic value 
-or in some scenarios you want to return a value, while  in others you want to throw an exception. It's fine, dimmer gives you 
+Sometimes throwing an exception or returning a fixed value is not flexible enough. You may need to return a dynamic value 
+or, maybe, in some situations you want to return a value, while in others you want to throw an exception. It's fine, dimmer gives you 
 all the flexibility you need with what we call 'behaviours'. 
 
-Before providing some sample,lets clarify some concepts first.
-- FeatureInvocation: It's an object which encapsulates the information regarding the invocation(signature, arguments, etc.). 
+Before providing a sample,lets clarify some concepts first.
+
+- *FeatureInvocation:* It's an object which encapsulates the information regarding the invocation(signature, arguments, etc.). 
 Its structure  looks like this:
 ```java
     /** Feature covering invoked method */
@@ -97,7 +98,7 @@ Its structure  looks like this:
     private final Object[] args;
 ```
 
-- Behaviour: As its name suggests, provides the capability to perform some dynamic actions for a given feature.
+- *Behaviour:* As its name suggests, provides the capability to perform some dynamic actions for a given feature.
 In Dimmer, a behaviour is Java 8 Function, which takes as input parameter an FeatureInvocation
 ```java
 public class Main {
