@@ -136,59 +136,8 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(environments, configMetadata, newDefaultExceptionType);
     }
 
-    FeatureProcessorBase newFeatureProcessor(Set<FeatureMetadata> featureMetadataSet) {
 
-        FeatureProcessorBase processor = newFeatureProcessorInstance();
-        if (featureMetadataSet != null) {
-            featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                    .map(fm -> (FeatureMetadataBehaviour) fm)
-                    .peek(fm -> logFeature("APPLIED feature {} with behaviour",
-                            fm.getFeature()))
-                    .forEach(fmb -> processor.featureWithBehaviour(
-                            fmb.getFeature(),
-                            fmb.getBehaviour()));
-
-            featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataException)
-                    .map(fm -> (FeatureMetadataException) fm)
-                    .peek(fm -> logFeature("APPLIED feature {} with exception {}",
-                            fm.getFeature(), fm.getException()))
-                    .forEach(fme -> processor.featureWithException(
-                            fme.getFeature(),
-                            fme.getException()
-                    ));
-
-            final Class<? extends RuntimeException> exceptionType =
-                    getDefaultExceptionType();
-
-            featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataDefaultException)
-                    .map(fm -> (FeatureMetadataDefaultException) fm)
-                    .peek(fm -> logFeature("APPLIED feature {} with default exception {}",
-                            fm.getFeature(), exceptionType))
-                    .forEach(fmde -> processor
-                            .featureWithException(fmde.getFeature(), exceptionType));
-
-            featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataValue)
-                    .map(fm -> (FeatureMetadataValue) fm)
-                    .peek(fm -> logFeature("APPLIED feature {} with value {}",
-                            fm.getFeature(), fm.getValueToReturn()))
-                    .forEach(fmv -> processor.featureWithValue(
-                            fmv.getFeature(),
-                            fmv.getValueToReturn())
-                    );
-        }
-        return processor;
-
-    }
-
-    private void logFeature(String format, String feature, Object... args) {
-        logger.info(format, feature, args);
-    }
-
-    private Class<? extends RuntimeException> getDefaultExceptionType() {
+    protected Class<? extends RuntimeException> getDefaultExceptionType() {
         return this.defaultExceptionType != null
                 ? defaultExceptionType
                 : DEFAULT_EXCEPTION_TYPE;
@@ -199,5 +148,4 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType);
 
-    protected abstract FeatureProcessorBase newFeatureProcessorInstance();
 }

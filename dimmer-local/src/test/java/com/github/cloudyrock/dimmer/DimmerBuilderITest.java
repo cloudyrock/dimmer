@@ -25,7 +25,7 @@ public class DimmerBuilderITest {
         final String feature3 = "feature3";
         final String feature4 = "feature4";
 
-        final FeatureLocalBuilder builder = DimmerBuilder.local()
+        final FeatureConfigurationBuilder builder = DimmerBuilder.local()
                 .environments(ENV_1, ENV_2)
                 .featureWithBehaviour(feature1, behaviour1)
                 .environments(ENV_3)
