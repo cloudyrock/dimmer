@@ -308,3 +308,17 @@ You may be confused with the use of 'defaultEnvironment()' and 'buildWithDefault
 about environments or all your environments require the same configuration.
 
 
+### Conditional toggling
+We have seen that environments provide some flexible, but still easy, way to deal with environments.
+However, sometimes this is not enough. Sometimes you want your feature depending on a dynamic property, instead of an static environment.
+To solve this, in all the methods provided by the builder to configure features(featureWithValue, featureWithBehaviour, etc.) you can
+add a boolean flag which indicate if you want to provide the given behaviour to the feature(flag is true) or you just want to ignore(flag is false)
+```java
+public void dimmerConfiguration(boolean featureToggledOff) {
+    DimmerBuilder
+        .local()
+        .defaultEnvironment()
+        .featureWithDefaultException(featureToggledOff, FEATURE_NAME)
+        .buildWithDefaultEnvironment();
+}
+```

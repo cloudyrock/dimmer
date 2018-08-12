@@ -11,7 +11,7 @@ public class Main {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithDefaultException(FEATURE_NAME)
+                .featureWithDefaultException(false, FEATURE_NAME)
                 .environments(ENV1, ENV2)
                 .featureWithValue(FEATURE_NAME, "value for environments ENV1 and ENV2")
                 .build(args[0]);
