@@ -15,6 +15,22 @@ just production code ;) ). Some other teams use some 3rd parties, but most of th
 either too big and complex, or too simple and don't provide the flexibility to provide
 different behaviours depending on different scenarios.
 
+## Some uses cases
+- You are working on feature that needs some service from your colleague, which is still under development. 
+However, the interface is defined(Release toggle)
+
+- Your team is using trunk-based development and some feature is partially developed and don't want to expose it yet(Release toggle).
+
+- You are using a 3rd party remote service which is only available in some environments(Ops toggle)
+
+- You want to perform a canary release(Experiment toggle)
+
+- or you want to do A/B testing(Experiment toggle)
+
+- or you want temporally(or not) filter the invocation based on some factors(Permissioning toggle)
+
+
+
 ## How does Dimmer work?
 Dimmer works by processing annotated methods(using aspects), containing the feature which is toggled off.
 This feature is configured with a builder, which is the responsible of providing the 
@@ -322,6 +338,5 @@ public void dimmerConfiguration(boolean toggledOff) {
 ```
 
 # STILL PENDING IN THIS PULL REQUEST
-USE CASES
 KNOWN ISSUES -> lombok intellij
 logging-> Just mention that uses slf4j and will print a warning if no binding implementation s provided
