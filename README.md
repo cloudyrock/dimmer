@@ -316,7 +316,7 @@ public void dimmerConfiguration(boolean featureToggledOff) {
     DimmerBuilder
         .local()
         .defaultEnvironment()
-        .featureWithDefaultException(featureToggledOff, FEATURE_NAME)//Dimmer will take this into account only if featureToggledOff is true
+        .featureWithDefaultException(featureToggledOff, FEATURE_NAME)//Taken into account only if featureToggledOff is true
         .buildWithDefaultEnvironment();
 }
 ```
