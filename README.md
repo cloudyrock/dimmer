@@ -300,7 +300,7 @@ As you can see in the code above, we have configured the feature behaviour depen
 is running on(value of args[0]) to...
 - throw a default exception when ENV1 or ENV2
 - return 'value for environment ENV3' if ENV3
-- and what happens if it's running on ENV_NOT_CONFIGURED?... It just call the real method, so it will return 'real value'
+- and what happens if it's running on ENV_NOT_CONFIGURED?... It just calls the real method, so it will return 'real value'
 
 You may be confused with the use of 'defaultEnvironment()' and 'buildWithDefaultEnvironment()'. This is in the cases you don't care
 about environments or all your environments require the same configuration.
