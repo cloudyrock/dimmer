@@ -32,9 +32,9 @@ different behaviours depending on different scenarios.
 
 ## How does Dimmer work?
 Dimmer works by processing annotated methods(using aspects), containing the feature which is toggled off or on.
-Dimmer works in a two-phases process. First it needs to know if a feature is on or off and then, in case of being off, 
+Dimmer works in a two-phases process. First it finds out if a feature is toggled on or of and then, when off, 
 provides the mocked behaviour(which can variate from throwing an exception to performing an absolutely custom action).
-Both phases are managed by a configuration builderIn the local version(the)
+Both phases are managed by a configuration builder(DimmerBuilder).
 
 In the next section you can see how it looks a basic configuration. Please notice that
 terminal build methods(build and buildWithDefaultEnvironment) will inject the given configuration
