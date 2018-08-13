@@ -16,8 +16,7 @@ either too big and complex, or too simple and don't provide the flexibility to p
 different behaviours depending on different scenarios.
 
 ## Some uses cases
-- You are working on feature that needs some service from your colleague, which is still under development. 
-However, the interface is defined(Release toggle)
+- You are working on a feature that needs some service from your colleague, which is has the interface defined but is still under development(Release toggle)
 
 - Your team is using trunk-based development and some feature is partially developed and don't want to expose it yet(Release toggle).
 
@@ -32,9 +31,10 @@ However, the interface is defined(Release toggle)
 
 
 ## How does Dimmer work?
-Dimmer works by processing annotated methods(using aspects), containing the feature which is toggled off.
-This feature is configured with a builder, which is the responsible of providing the 
-mocked behaviour in a vey simple way.
+Dimmer works by processing annotated methods(using aspects), containing the feature which is toggled off or on.
+Dimmer works in a two-phases process. First it needs to know if a feature is on or off and then, in case of being off, 
+provides the mocked behaviour(which can variate from throwing an exception to performing an absolutely custom action).
+Both phases are managed by a configuration builderIn the local version(the)
 
 In the next section you can see how it looks a basic configuration. Please notice that
 terminal build methods(build and buildWithDefaultEnvironment) will inject the given configuration
@@ -71,7 +71,7 @@ public class Main {
 
 
 The first thing you need to know to use Dimmer is that it requires at least Java8.
-Once you are sure you are using the right version of Java, you nee to import the Dimmer library by using a build framework. 
+Once ensuring you are using the right version of Java, you need to import the Dimmer library by using a build framework. 
 In this documentation we cover Maven and Gradle.
 
 You can check the last version of the library in this [link](https://search.maven.org/search?q=a:dimmer-local)
@@ -90,7 +90,7 @@ Using Gradle:
 compile group: 'com.github.cloudyrock.dimmer', name: 'dimmer-local', version: 'LATEST_VERSION'
 ```
 
-In order to make aspects work, so Dimmer can do its job, you need to add some trivial configuration to your 
+In order to make aspects work(so Dimmer can do its magic), you need to add some trivial configuration to your 
 build script.
 
 Using Maven:
@@ -140,11 +140,11 @@ Using Maven:
 
 
 
-## Lets code see some code?
-Once you have imported the required dependency and configure aspectj plugin, you are ready to code some code
+## Lets see some code!
+Once you have ensured the few requirements, you are ready to write some code
 
 ### Throwing a default exception 
-The most basic scenario is when we just throw a default exception when a feature is called.
+The most basic scenario is just throwing a default exception when a feature is called. It looks like this:
 ```java
 DimmerBuilder
     .local()
@@ -153,16 +153,16 @@ DimmerBuilder
     .buildWithDefaultEnvironment();
 ```
 
-This will throw a DimmerExecutionException(we'll explain how to thrown your own exception) 
+This will throw a DimmerInvocationException(we'll explain how to thrown your own exception) 
 when a method annotated with FEATURE_NAME is invoked.
 
 ### Returning a fixed value
-As you can see in 'How does it work?', the example is using 'featureWithValue'. What this does
-is just return the value provided in the configuration every time a annotated method, with the given feature,
-is called. Please notice that the object can be an instance of a custom class, however you should
-ensure that it matches whatever the annotated method returns, otherwise it will throw a DimmerConfigurationException, 
-for casting error. In this context, 'match' does not mean is the same class, it could the method returns an interface 
-and you provide an implementation or it's a parent class and a child class is provided.
+As you can see in the section 'How does it work?', it uses 'featureWithValue'. What this does
+is just return the value provided in the configuration every time an annotated method, with the given feature,
+is called. Please notice that the object can be an instance of any custom class, however you should
+ensure that it matches whatever the annotated method returns, otherwise, due to a casting error, it will throw a DimmerConfigurationException. 
+In this context, 'match' could mean they are the same class, the injected value is a implementation of the interface returned by the method 
+or even a child of the returning class in the method.
 ```java
 DimmerBuilder
     .local()
@@ -173,13 +173,13 @@ DimmerBuilder
 
 ### When exceptions and fixed values are not enough: Behaviours
 Sometimes throwing an exception or returning a fixed value is not flexible enough. You may need to return a dynamic value 
-or, maybe, in some situations you want to return a value, while in others you want to throw an exception. It's fine, dimmer gives you 
-all the flexibility you need with what we call 'behaviours'. 
+or, maybe, in some situations you want to return a value, while in others you want to throw an exception. Lets say you need a more customizable behaviour. 
+It's fine, Dimmer gives you all the flexibility you need via what we call 'behaviours'. 
 
 Before providing a sample,lets clarify some concepts first.
 
-- *FeatureInvocation:* It's an object which encapsulates the information regarding the invocation(signature, arguments, etc.). 
-Its structure  looks like this:
+- *FeatureInvocation:* It's an object that encapsulates the information regarding the invocation(signature, arguments, etc.). 
+Its structure is:
 ```java
 /** Feature covering invoked method */
 private final String feature;
@@ -195,6 +195,9 @@ private final Class returnType;
 
 - *Behaviour:* As its name suggests, provides the capability to perform some dynamic actions for a given feature.
 In Dimmer, a behaviour is Java 8 Function, which takes a FeatureInvocation as input parameter.
+
+
+So, providing a behaviour to a feature looks like this:
 ```java
 public class Main {
 
@@ -233,7 +236,7 @@ public class Main {
 ```
 
 ## Throwing custom exceptions
-We have seen how to throw a default exception(DimmerExecutionException), but sometimes you
+We have seen how to throw a default exception(DimmerInvocationException), but sometimes you
 may prefer to throw your own exception. That's still possible with Dimmer, however it 
 needs to be an unchecked exception(inherits from RuntimeException) and fulfill  at least one 
 of the following requirements:
@@ -284,8 +287,10 @@ public class Main {
 ```
 
 ### Environments 
-Because any decent project has to deal with environment, Dimmer need to provide support to it.
-The idea is that you configure all the possible environments you may have and then build with the current one.
+Because any decent project has to deal with environments, Dimmer provides support to it too.
+The idea is that you configure all the possible environments you may have, and then you build it with the current one.
+
+It looks lie this:
 ```java
 public class Main {
 
@@ -313,9 +318,9 @@ public class Main {
 }
 ```
 As you can see in the code above, we have configured the feature behaviour depending on the environment the application 
-is running on(value of args[0]) to...
-- throw a default exception when ENV1 or ENV2
-- return 'value for environment ENV3' if ENV3
+is running on(value of args[0]) to perform the following actions:
+- throw a default exception, when ENV1 or ENV2
+- return 'value for environment ENV3', if ENV3
 - and what happens if it's running on ENV_NOT_CONFIGURED?... It just calls the real method, so it will return 'real value'
 
 You may be confused with the use of 'defaultEnvironment()' and 'buildWithDefaultEnvironment()'. This is in the cases you don't care
@@ -323,10 +328,10 @@ about environments or all your environments require the same configuration.
 
 
 ### Conditional toggling
-We have seen that environments provide some flexible, but still easy, way to deal with environments.
-However, sometimes this is not enough. Sometimes you want your feature depending on a dynamic property, instead of an static environment.
-To solve this, in all the methods provided by the builder to configure features(featureWithValue, featureWithBehaviour, etc.) you can
-add a boolean flag which indicate if you want to provide the given behaviour to the feature(flag is true) or you just want to ignore(flag is false)
+We have seen that environments provide flexibility in an easy way, to load different configurations.
+However, sometimes this is not enough. Sometimes you want your feature depending on a dynamic property, instead of an static environment. Or maybe both.
+To solve this, in all the methods to configure features(featureWithValue, featureWithBehaviour, etc.) provided by the builder you can
+add a boolean flag which indicates if you want to provide the given behaviour to the feature(flag is true) or you just want to ignore it(flag is false)
 ```java
 public void dimmerConfiguration(boolean toggledOff) {
     DimmerBuilder
@@ -339,13 +344,15 @@ public void dimmerConfiguration(boolean toggledOff) {
 
 ## Logging
 Dimmer uses slf4j to perform logging. If the importer project does not use slf4j or does not provide a binding implementation,
-Dimmer(slf4j actually) with print some warnings. While this is stopping the application or Dimmer to work, is highly recommended
+Dimmer(slf4j actually) will print some warnings. While this does not stop the application or Dimmer from working, is highly recommended
 to use slf4j as wrapper framework for logging.
 
 
 # Known issues
 There is a known issue in IDEs like intellij when using any aspectj library together with Lombok. However, while the application can be run 
-without any issue, the IDE won't compile properly. This is not something that affects only to Dimmer, is an issue between Aspectj and Lombok.
+without any issue, the IDE won't compile properly, so you cannot debug your application in your IDE, for example. 
+This is not something affecting only to Dimmer, is an issue between Aspectj and Lombok.
+
 Possible work-arounds:
 - Create a submodule with all the classes that use lombok, compile it and the bringing to the project. It can be a maven/gradle submodule.
 - Similar to the previous one, but in this case, instead of creating a submodule, just having the classes that use Lombok in a separated package and tell Intellij to compile with a different compiler. 
