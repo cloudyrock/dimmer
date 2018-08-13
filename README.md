@@ -42,7 +42,7 @@ to the aspect, which then will be ready, working and able to process the annotat
 
 
 
-## How it looks?
+## How does it look?
 ```java
 public class Main {
 
