@@ -416,3 +416,5 @@ Possible work-arounds:
 - Similar to the previous one, but in this case, instead of creating a submodule, just having the classes that use Lombok in a separated package and tell Intellij to compile with a different compiler. 
 - Taking advantage of the full compatibility of Kotlin with Java, use Kotlin instead of Java for those classes using Lombok. Everything Lombok provides, Kotlin does too natively and easier.
 
+## LICENSE
+This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](./LICENSE.md) file for details
