@@ -166,8 +166,7 @@ Code explanation:
 method annotated with @DimmerFeature(FEATURE_NAME) is invoked.
 
 
-[Here you can see how to throw custom exceptions](#throwing-custom-exceptions)
-Notice that this document will explain how to throw custom exceptions, as well as work with environments.
+Notice that this document will explain [how to throw custom exceptions](#throwing-custom-exceptions), as well as [work with environments](#nvironments).
 
 ### Returning a fixed value
 As shown in the section 'How does it work?', it uses 'featureWithValue'. This returns the value 
