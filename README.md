@@ -165,6 +165,7 @@ Code explanation:
 - featureWithDefaultException(FEATURE_NAME) tells Dimmer to throw a default exception(DimmerInvocationException) whenever a 
 method annotated with @DimmerFeature(FEATURE_NAME) is invoked.
 
+Notice that this document will explain how to throw your own exception, instead of the default one.
 
 ### Returning a fixed value
 As you can see in the section 'How does it work?', it uses 'featureWithValue'. What this does
