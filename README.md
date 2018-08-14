@@ -417,4 +417,4 @@ Possible work-arounds:
 - Taking advantage of the full compatibility of Kotlin with Java, use Kotlin instead of Java for those classes using Lombok. Everything Lombok provides, Kotlin does too natively and easier.
 
 ## LICENSE
-This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](./LICENSE.md) file for details
+This project is licensed under the [GNU Global Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), Version 3.0 - see the [LICENSE](./LICENSE.md) file for details
