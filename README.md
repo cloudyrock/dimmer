@@ -150,7 +150,8 @@ Using Maven:
 Once you have ensured the few requirements, you are ready to write some code
 
 ### Throwing a default exception 
-The most basic scenario is just throwing a default exception when a feature is called. It looks like this:
+The most basic scenario is just throwing a default exception when a feature is called. 
+The Dimmer configuration looks like this:
 ```java
 DimmerBuilder
     .local()
