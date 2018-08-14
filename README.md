@@ -74,8 +74,8 @@ public class Main {
 ```
 ## Prerequisites
 In order to use Dimmer you need:
-- At least [Java 8 ](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- Build automation tools like [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/) 
+- At least [JDK 8 ](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- Build automation tool like [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/) 
 
 
 ## Getting started
@@ -149,7 +149,7 @@ Using Maven:
 ## Lets see some code!
 Once you have ensured the few requirements, you are ready to write some code
 
-### Throwing a default exception 
+## Throwing a default exception 
 The most basic scenario is just throwing a default exception when a feature is called. 
 The Dimmer configuration looks like this:
 ```java
@@ -160,15 +160,15 @@ DimmerBuilder
     .buildWithDefaultEnvironment();
 ```
 Code explanation:
-- local() indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
-- defaultEnvironment() and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
-- featureWithDefaultException(FEATURE_NAME) tells Dimmer to throw a default exception(DimmerInvocationException) whenever a 
-method annotated with @DimmerFeature(FEATURE_NAME) is invoked.
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
+- `.featureWithDefaultException(FEATURE_NAME)` tells Dimmer to throw a default exception(DimmerInvocationException) whenever a 
+method annotated with `@DimmerFeature(FEATURE_NAME)` is invoked.
 
 
-Notice that this document will explain [how to throw custom exceptions](#throwing-custom-exceptions), as well as [work with environments](#nvironments).
+Related to this section may be interesting [how to throw custom exceptions](#throwing-custom-exceptions) or [how to work with environments](#nvironments).
 
-### Returning a fixed value
+## Returning a fixed value
 As shown in the section 'How does it work?', it uses 'featureWithValue'. This returns the value 
 provided in the configuration every time an annotated method for the given feature id is called.
 Please notice that the object can be an instance of any custom class. However, it is recommended 
@@ -204,14 +204,14 @@ public ClassA methodIWantToToggleOff() {
 }
 ```
 Code explanation:
-- local() indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
-- defaultEnvironment() and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
-- featureWithValue(FEATURE_NAME, object) tells Dimmer to return the object passed as second parameter when a method annotated 
-with @DimmerFeature(FEATURE_NAME) is invoked.
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
+- `.featureWithValue(FEATURE_NAME, object)` tells Dimmer to return the object passed as second parameter when a method annotated 
+with `@DimmerFeature(FEATURE_NAME)` is invoked.
 
-Notice that this document will explain how to work with environments.
+Related to this section may be interesting [how to work with environments](#nvironments).
 
-### Behaviours: When exceptions and fixed values are not enough
+## Behaviours: When exceptions and fixed values are not enough
 Sometimes throwing an exception or returning a fixed value is not flexible enough. You may need to return a dynamic value 
 or, maybe, in some situations you want to return a value, while in others you want to throw an exception. Lets say you need a more customizable behaviour. 
 That's ok! Dimmer gives you all the flexibility you need via what we call 'behaviours'. 
@@ -280,12 +280,12 @@ public class Main {
 }
 ```
 Code explanation:
-- local() indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
-- defaultEnvironment() and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
-- featureWithBehaviour(FEATURE_NAME, behaviour) this line tells Dimmer to execute the function passed as second parameter(behaviour) when a method annotated 
-with @DimmerFeature(FEATURE_NAME) is invoked, instead of the actual method. Basically it replaces the method invocation with the behaviour.
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
+- `.featureWithBehaviour(FEATURE_NAME, behaviour)` this line tells Dimmer to execute the function passed as second parameter(behaviour) when a method annotated 
+with `@DimmerFeature(FEATURE_NAME)` is invoked, instead of the actual method. Basically it replaces the method invocation with the behaviour.
 
-Notice that this document will explain how to work with environments.
+Related to this section may be interesting [how to work with environments](#nvironments).
 
 
 ## Throwing custom exceptions
@@ -339,15 +339,15 @@ public class Main {
 }
 ```
 Code explanation:
-- local() indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
-- defaultEnvironment() and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
-- featureWithException(FEATURE_NAME, MyException.class) tells Dimmer to throw an instance of the exception MyException whenever a 
-method annotated with @DimmerFeature(FEATURE_NAME) is invoked.
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
+- `.featureWithException(FEATURE_NAME, MyException.class)` tells Dimmer to throw an instance of the exception MyException whenever a 
+method annotated with `@DimmerFeature(FEATURE_NAME)` is invoked.
 
 
-Notice the next section explains how to work with environments.
+Related to this section may be interesting [how to work with environments](#nvironments).
 
-### Environments 
+## Environments 
 Because any project has to deal with environments, Dimmer supports it too.
 The idea is that you configure all the possible environments you may have, and then you build it with the current one.
 
@@ -379,14 +379,13 @@ public class Main {
 }
 ```
 Code explanation:
-As you can see in the code above, we have configured the feature behaviour depending on the environment the application 
-is running on(value of args[0]) to perform the following actions:
-- throw a default exception, when ENV1 or ENV2
-- return 'value for environment ENV3', if ENV3
+- `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
+- with the line `.environments(ENV1, ENV2)` followed by `.featureWithDefaultException(FEATURE_NAME)` we tell Dimmer to throw a default exception, when ENV1 or ENV2
+- with the line `.environments(ENV3)` followed by `.featureWithValue(FEATURE_NAME, "value for environment ENV3")` we tell Dimmer to return 'value for environment ENV3', if ENV3
 - and what happens if it's running on ENV_NOT_CONFIGURED?... It just calls the real method, so it will return 'real value'
 
 
-### Conditional toggling
+## Conditional toggling
 We have seen that environments provide flexibility in an easy way, to load different configurations.
 However, sometimes this is not enough. Sometimes you want your feature depending on a dynamic property, instead of an static environment. Or maybe both.
 To solve this, in all the methods to configure features(featureWithValue, featureWithBehaviour, etc.) provided by the builder you can
@@ -405,11 +404,6 @@ public void dimmerConfiguration(boolean toggledOff) {
 Dimmer uses slf4j to perform logging. If the importer project does not use slf4j or does not provide a binding implementation,
 Dimmer(slf4j actually) will print some warnings. While this does not stop the application or Dimmer from working, is highly recommended
 to use slf4j as wrapper framework for logging.
-
-
-## NOTES
-- You may be confused with the use of 'defaultEnvironment()' and 'buildWithDefaultEnvironment()'. This is in the cases you don't care
-about environments or all your environments require the same configuration.
 
 
 ## Known issues
