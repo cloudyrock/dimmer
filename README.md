@@ -72,13 +72,13 @@ public class Main {
 
 }
 ```
+## Prerequisites
+In order to use Dimmer you need:
+- At least [Java 8 ](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- Build automation tools like [Maven](https://maven.apache.org/) or [Gradle](https://gradle.org/) 
 
-## Using Dimmer library
 
-
-The first thing you need to know to use Dimmer is that it requires at least Java8.
-Once ensuring you are using the right version of Java, you need to import the Dimmer library by using a build framework. 
-In this documentation we cover Maven and Gradle.
+## Getting started
 
 You can check the last version of the library in this [link](https://search.maven.org/search?q=a:dimmer-local)
 
