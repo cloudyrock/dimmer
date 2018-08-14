@@ -1,13 +1,19 @@
 # Dimmer: Lightweight Java library for flexible feature toggling
-Dimmer is a lightweight Java library to manage feature toggling. Unlike others Dimmer does not work 
-just in switch mode, black or white. It provides a flexible way to respond to disabled
-features by adding customizable behaviours and pre-configured responses.
+Dimmer is a lightweight Java library to manage customisable feature toggling. 
+In addition to the traditional feature toggle on/off functionalities, Dimmer offers 
+developers to configure a custom response for a feature with a simple Java annotation. 
+This additional flexibility enables the developers to configure custom behaviours for specific environments.
 
 ## Why Dimmer?
-As developer we all have found that toggling off features in some stages of the project 
-is needed. Sometimes is not about to temporally toggle off some features, but providing 
-some mocked for specific environments, for example when a 3rd party remote service is not
-available.
+During the development lifecycle, there are some scenarios when enabling/disabling a particular 
+feature in environment is needed. Feature toggling comes handy to grant this ability without 
+code changes but, how can we achieve providing a custom behaviour of a feature for a particular 
+environment without a production code change?
+
+Sometimes is not about temporarily disabling some features, but providing
+a custom behaviour for a specific environments. For example, when we would like to mock a 
+3rd party remote service in an environment without depending on an external component, 
+returning specific values or throwing exceptions for a specific feature in an environment.
 
 Most of teams just use a home-made solution which normally implies the use of if-else 
 in production code, which for obvious reasons is not ideal(production code should contain
@@ -56,7 +62,7 @@ public class Main {
                 .buildWithDefaultEnvironment();
 
         final String result = new Main().runFeaturedMethod();
-        System.out.println(result); //It prints 'fake value'
+        System.out.println(result);
     }
 
     @DimmerFeature(FEATURE_NAME)
@@ -152,9 +158,12 @@ DimmerBuilder
     .featureWithDefaultException(FEATURE_NAME)
     .buildWithDefaultEnvironment();
 ```
+Code explanation:
+- local() indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- defaultEnvironment() is used when we don't want to deal with different environments.
+- featureWithDefaultException(FEATURE_NAME) tells Dimmer to throw a default exception(DimmerInvocationException) whenever a 
+method annotated with @DimmerFeature(FEATURE_NAME) is invoked.
 
-This will throw a DimmerInvocationException(we'll explain how to thrown your own exception) 
-when a method annotated with FEATURE_NAME is invoked.
 
 ### Returning a fixed value
 As you can see in the section 'How does it work?', it uses 'featureWithValue'. What this does
