@@ -44,7 +44,7 @@ public class DimmerAspectUTest {
     }
 
     @Test
-//    @DisplayName("Aspect should delegate to dimmerProcessor")
+    @DisplayName("Aspect should delegate to dimmerProcessor")
     public void aspect_delegate_dimmerProcessor_with_right_parameters() throws Throwable {
 
         final Object expectedReturnedValue = "returnedValue";

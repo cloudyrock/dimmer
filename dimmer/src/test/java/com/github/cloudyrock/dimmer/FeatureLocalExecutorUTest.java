@@ -50,7 +50,7 @@ public class FeatureLocalExecutorUTest {
     }
 
     @Test
-    //@DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
+    @DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
     public void shouldRunBehaviour() throws Throwable {
         dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
@@ -59,7 +59,7 @@ public class FeatureLocalExecutorUTest {
     }
 
     @Test
-    //@DisplayName("Should return value when featureWithValue")
+    @DisplayName("Should return value when featureWithValue")
     public void shouldReturnValue() throws Throwable {
         dimmerProcessor.featureWithValue(feature, "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
@@ -68,7 +68,7 @@ public class FeatureLocalExecutorUTest {
     }
 
     @Test
-    //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
+    @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
 
@@ -79,7 +79,7 @@ public class FeatureLocalExecutorUTest {
     }
 
     @Test
-    //@DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
+    @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
     public void ensureFeatureInvocationParameterWhenException() throws Throwable {
         dimmerProcessor.featureWithException(
                 feature,

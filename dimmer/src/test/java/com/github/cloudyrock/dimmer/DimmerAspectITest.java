@@ -37,7 +37,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     @Rule public ExpectedException exception = ExpectedException.none();
 
     @Test
-    //@DisplayName("Should run behaviour when featureWithBehaviour")
+    @DisplayName("Should run behaviour when featureWithBehaviour")
     public void shouldRunBehaviour() {
         final String value = "feature1_value";
         DimmerBuilder
@@ -49,7 +49,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should run behaviour when featureWithBehaviour")
+    @DisplayName("Should run behaviour when featureWithBehaviour")
     public void shouldRunBehaviourForEnvironment() {
         final String value = "feature1_value";
         DimmerBuilder
@@ -61,7 +61,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should run behaviour when featureWithBehaviour")
+    @DisplayName("Should run behaviour when featureWithBehaviour")
     public void shouldNotRunBehaviourWhenEnvironmentNotCOnfigured() {
         final String value = "feature1_value";
         DimmerBuilder
@@ -73,7 +73,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Behaviour should get FeatureInvocation as parameter when featureWithBehaviour")
+    @DisplayName("Behaviour should get FeatureInvocation as parameter when featureWithBehaviour")
     public void passingFeatureInvocationToBehaviour() {
         //given
         Function<FeatureInvocation, Object> mockBehaviour = mock(Function.class);
@@ -99,7 +99,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test(expected = DummyException.class)
-    //@DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
+    @DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
     public void shouldThrowExceptionWhenBehaviourThrowsException() {
         DimmerBuilder
                 .local()
@@ -110,7 +110,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
+    @DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
     public void shouldNotThrowExceptionWithBehaviourWhenEnvironmentNotConfigured() {
         DimmerBuilder
                 .local()
@@ -123,7 +123,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
+    @DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
     public void shouldReturnValue() {
         DimmerBuilder
                 .local()
@@ -134,7 +134,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
+    @DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
     public void shouldNotReturnValueWhenEnvironmentNotConfigured() {
         DimmerBuilder
                 .local()
@@ -145,7 +145,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test(expected = DummyException.class)
-    //@DisplayName("Should throw DummyException when featureWithException")
+    @DisplayName("Should throw DummyException when featureWithException")
     public void shouldThrowException() {
         DimmerBuilder
                 .local()
@@ -156,7 +156,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should throw DummyException when featureWithException")
+    @DisplayName("Should throw DummyException when featureWithException")
     public void shouldNotThrowExceptionWhenEnvironmentNotConfigured() {
         DimmerBuilder
                 .local()
@@ -167,7 +167,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test(expected = DimmerConfigException.class)
-    //@DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
+    @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
     public void shouldThrowDimmerConfigException() {
         DimmerBuilder
                 .local()
@@ -178,7 +178,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
+    @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
     public void shouldNotThrowDimmerConfigException() {
         DimmerBuilder
                 .local()
@@ -189,7 +189,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should return a NULL value")
+    @DisplayName("Should return a NULL value")
     public void shouldReturnNull() {
         DimmerBuilder
                 .local()
@@ -200,7 +200,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Behaviour should return child class when executing parent compatible type")
+    @DisplayName("Behaviour should return child class when executing parent compatible type")
     public void featureAndDimmerSubtypeClass() {
         DimmerBuilder
                 .local()
@@ -211,7 +211,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test(expected = DimmerConfigException.class)
-    //@DisplayName("Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type")
+    @DisplayName("Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type")
     public void featureAndDimmerConfigExceptionWhenRealMethodIsVoid() {
         DimmerBuilder
                 .local()
@@ -222,7 +222,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     }
 
     @Test
-    //@DisplayName("Should get FeatureInvocation as parameter when featureWithException")
+    @DisplayName("Should get FeatureInvocation as parameter when featureWithException")
     public void passingFeatureInvocationToException() {
         DimmerBuilder
                 .local()
