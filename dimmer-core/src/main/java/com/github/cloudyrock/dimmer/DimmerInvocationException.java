@@ -1,7 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.FeatureInvocation;
-
 /**
  * Default exception that will be thrown if no other is configured.
  * It's thrown at runtime represents a desired behaviour of throwing an exception.
