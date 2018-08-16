@@ -9,11 +9,13 @@ import static org.junit.Assert.assertNotEquals;
 
 public class FeatureMetadataBehaviourTest {
 
+    private final String operation = "operation";
+
     @Test
     public void equals() {
-        final FeatureMetadataBehaviour m1 = new FeatureMetadataBehaviour("F1", null);
-        final FeatureMetadataBehaviour m2 = new FeatureMetadataBehaviour("F1", null);
-        final FeatureMetadataBehaviour m3 = new FeatureMetadataBehaviour("F2", null);
+        final FeatureMetadataBehaviour m1 = new FeatureMetadataBehaviour("F1", operation, null);
+        final FeatureMetadataBehaviour m2 = new FeatureMetadataBehaviour("F1", operation, null);
+        final FeatureMetadataBehaviour m3 = new FeatureMetadataBehaviour("F2", operation,null);
 
         assertEquals(m1, m2);
         assertNotEquals(m1, m3);
@@ -23,7 +25,7 @@ public class FeatureMetadataBehaviourTest {
     @Test
     public void constructor() {
         Function<FeatureInvocation, ?> behaviour = FeatureInvocation::getMethodName;
-        final FeatureMetadataBehaviour m1 = new FeatureMetadataBehaviour("F1", behaviour);
+        final FeatureMetadataBehaviour m1 = new FeatureMetadataBehaviour("F1", operation, behaviour);
         assertEquals("F1", m1.getFeature());
         assertEquals(behaviour, m1.getBehaviour());
     }

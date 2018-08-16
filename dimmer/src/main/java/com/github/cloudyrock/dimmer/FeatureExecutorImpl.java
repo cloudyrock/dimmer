@@ -12,6 +12,7 @@ public class FeatureExecutorImpl extends FeatureProcessorBase
     FeatureExecutorImpl() {
         this(new HashSet<>(), DimmerInvocationException.class);
     }
+
     FeatureExecutorImpl(Set<FeatureMetadata> featureMetadataSet,
                         Class<? extends RuntimeException> defaultException) {
         super(featureMetadataSet, defaultException);
@@ -19,24 +20,27 @@ public class FeatureExecutorImpl extends FeatureProcessorBase
 
     @Override
     public Object executeDimmerFeature(String feature,
+                                       String operation,
                                        FeatureInvocation featureInvocation,
                                        MethodCaller realMethod) throws Throwable {
-        if (isFeatureEnabled(feature)) {
+        if (isFeatureEnabled(feature, operation)) {
             logger.trace("Dimmer ignored due to feature {} is not configured", feature);
             return realMethod.call();
         } else {
-            logDimmerInterception(feature, featureInvocation);
-            return runFeature(feature, featureInvocation);
+            logDimmerInterception(feature, operation,  featureInvocation);
+            return runFeature(feature, operation, featureInvocation);
         }
     }
 
     private void logDimmerInterception(String feature,
+                                       String operation,
                                        FeatureInvocation featureInvocation) {
         logger.info(
-                "Intercepted method {}.{}() for feature {}",
+                "Intercepted method {}.{}() for feature {} and operation {}",
                 featureInvocation.getDeclaringType(),
                 featureInvocation.getMethodName(),
-                feature);
+                feature,
+                operation);
     }
 
 }

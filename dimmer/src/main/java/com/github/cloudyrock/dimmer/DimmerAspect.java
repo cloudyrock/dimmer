@@ -31,6 +31,7 @@ public class DimmerAspect {
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
+                dimmerFeatureAnn.op(),
                 generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
                 createCallerInstance(joinPoint)
         );

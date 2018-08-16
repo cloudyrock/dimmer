@@ -28,16 +28,17 @@ public class DimmerFeatureConfigurableITest {
         final String feature2 = "feature2";
         final String feature3 = "feature3";
         final String feature4 = "feature4";
+        final String operation = "opertaion";
 
         runner.environments("env1", "env2")
-                .featureWithBehaviour(feature1, behaviour1)
+                .featureWithBehaviour(feature1, operation, behaviour1)
                 .environments("env3")
-                .featureWithValue(feature2, value)
+                .featureWithValue(feature2, operation, value)
                 .environments("env4")
-                .featureWithBehaviour(feature1, behaviour1)
-                .featureWithValue(feature2, value)
-                .featureWithException(feature3, RuntimeException.class)
-                .featureWithDefaultException(feature4);
+                .featureWithBehaviour(feature1, operation, behaviour1)
+                .featureWithValue(feature2, operation, value)
+                .featureWithException(feature3, operation, RuntimeException.class)
+                .featureWithDefaultException(feature4, operation);
 
         final Set<FeatureMetadata> env1Metadata = runner.configMetadata.get("env1");
         assertEquals(1, env1Metadata.size());

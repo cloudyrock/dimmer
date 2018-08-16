@@ -1,16 +1,17 @@
 package com.github.cloudyrock.dimmer;
 
-abstract class FeatureMetadata {
+class BehaviourKey {
 
+    private static final String DEFAULT_OPERATION = "";
     private final String feature;
     private final String operation;
 
-    protected FeatureMetadata(String feature, String operation) {
-        if (feature == null || feature.isEmpty()) {
-            throw new IllegalArgumentException("Feature cannot be null or empty");
+    BehaviourKey(String feature, String operation) {
+        if(feature == null || feature.isEmpty()) {
+            throw new IllegalArgumentException("Feature cannot be null");
         }
         this.feature = feature;
-        this.operation = operation != null ? operation : "";
+        this.operation = operation != null ? operation : DEFAULT_OPERATION;
     }
 
     public String getFeature() {
@@ -26,7 +27,7 @@ abstract class FeatureMetadata {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FeatureMetadata that = (FeatureMetadata) o;
+        BehaviourKey that = (BehaviourKey) o;
 
         if (!feature.equals(that.feature)) return false;
         return operation.equals(that.operation);

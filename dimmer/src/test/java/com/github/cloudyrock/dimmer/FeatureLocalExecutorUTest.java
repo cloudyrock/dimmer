@@ -21,6 +21,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class FeatureLocalExecutorUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
+    private static final String operation = "operation";
+
     private FeatureExecutorImpl dimmerProcessor;
 
     @Mock
@@ -52,18 +54,18 @@ public class FeatureLocalExecutorUTest {
     @Test
     @DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
     public void shouldRunBehaviour() throws Throwable {
-        dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
+        dimmerProcessor.featureWithBehaviour(feature, operation, s -> "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                feature, featureInvocation, methodCaller);
+                feature, operation, featureInvocation, methodCaller);
         assertEquals("VALUE", actualResult);
     }
 
     @Test
     @DisplayName("Should return value when featureWithValue")
     public void shouldReturnValue() throws Throwable {
-        dimmerProcessor.featureWithValue(feature, "VALUE");
+        dimmerProcessor.featureWithValue(feature, operation, "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                feature, featureInvocation, methodCaller);
+                feature, operation, featureInvocation, methodCaller);
         assertEquals("VALUE", actualResult);
     }
 
@@ -72,8 +74,8 @@ public class FeatureLocalExecutorUTest {
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
 
-        dimmerProcessor.featureWithBehaviour(feature, behaviour);
-        dimmerProcessor.executeDimmerFeature(feature, featureInvocation, methodCaller);
+        dimmerProcessor.featureWithBehaviour(feature, operation, behaviour);
+        dimmerProcessor.executeDimmerFeature(feature, operation, featureInvocation, methodCaller);
 
         then(behaviour).should().apply(featureInvocation);
     }
@@ -83,11 +85,12 @@ public class FeatureLocalExecutorUTest {
     public void ensureFeatureInvocationParameterWhenException() throws Throwable {
         dimmerProcessor.featureWithException(
                 feature,
+                operation,
                 DummyExceptionWithFeatureInvocation.class);
 
         exception.expect(DummyExceptionWithFeatureInvocation.class);
         exception.expect(hasProperty("featureInvocation", is(featureInvocation)));
 
-        dimmerProcessor.executeDimmerFeature(feature, featureInvocation, methodCaller);
+        dimmerProcessor.executeDimmerFeature(feature, operation, featureInvocation, methodCaller);
     }
 }
