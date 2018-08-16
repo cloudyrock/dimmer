@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+import org.aspectj.lang.Aspects;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -37,6 +38,11 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     private final AnnotatedClass annotatedClass = new AnnotatedClass();
 
     @Rule public ExpectedException exception = ExpectedException.none();
+
+    @Test
+    public void hasAspect() {
+        assertTrue(Aspects.hasAspect(DimmerAspect.class));
+    }
 
     @Test
     @DisplayName("Should run behaviour when featureWithBehaviour")
