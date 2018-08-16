@@ -24,19 +24,21 @@ class BehaviourKey {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         BehaviourKey that = (BehaviourKey) o;
 
-        if (!feature.equals(that.feature)) return false;
-        return operation.equals(that.operation);
+        return feature.equals(that.feature) && operation.equals(that.operation);
     }
 
     @Override
     public int hashCode() {
-        int result = feature.hashCode();
-        result = 31 * result + operation.hashCode();
-        return result;
+        return 31 * feature.hashCode() + operation.hashCode();
     }
 }
