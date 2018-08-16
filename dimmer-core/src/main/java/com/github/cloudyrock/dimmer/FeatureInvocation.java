@@ -66,23 +66,17 @@ public class FeatureInvocation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FeatureInvocation that = (FeatureInvocation) o;
+
+        if (!feature.equals(that.feature)
+                || !methodName.equals(that.methodName)
+                || !declaringType.equals(that.declaringType)) {
             return false;
         }
-
-        final FeatureInvocation that = (FeatureInvocation) o;
-
-        if (!feature.equals(that.feature)) {
-            return false;
-        }
-        if (!methodName.equals(that.methodName)) {
-            return false;
-        }
-
-        return declaringType.equals(that.declaringType);
+        return returnType.equals(that.returnType);
     }
 
     @Override
@@ -90,6 +84,7 @@ public class FeatureInvocation {
         int result = feature.hashCode();
         result = 31 * result + methodName.hashCode();
         result = 31 * result + declaringType.hashCode();
+        result = 31 * result + returnType.hashCode();
         return result;
     }
 }
