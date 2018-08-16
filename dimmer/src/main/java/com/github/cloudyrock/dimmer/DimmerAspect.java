@@ -32,7 +32,8 @@ public class DimmerAspect {
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
                 dimmerFeatureAnn.op(),
-                generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
+                generateFeatureInvocation(dimmerFeatureAnn.value(), dimmerFeatureAnn.op(),
+                        joinPoint),
                 createCallerInstance(joinPoint)
         );
     }
@@ -48,10 +49,12 @@ public class DimmerAspect {
     }
 
     private FeatureInvocation generateFeatureInvocation(String feature,
+                                                        String operation,
                                                         ProceedingJoinPoint joinPoint) {
         final MethodSignature p = (MethodSignature) joinPoint.getSignature();
         return new FeatureInvocation(
                 feature,
+                operation,
                 joinPoint.getSignature().getName(),
                 joinPoint.getSignature().getDeclaringType(),
                 joinPoint.getArgs(),

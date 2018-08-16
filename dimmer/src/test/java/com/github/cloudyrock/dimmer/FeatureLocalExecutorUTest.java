@@ -44,7 +44,9 @@ public class FeatureLocalExecutorUTest {
         given(methodCaller.call()).willReturn(String.class);
 
         featureInvocation = new FeatureInvocation(
-                feature, "method",
+                feature,
+                operation,
+                "method",
                 FeatureLocalExecutorUTest.class,
                 new Object[]{"value1"},
                 String.class
