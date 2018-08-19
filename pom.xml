@@ -19,6 +19,7 @@
     <modules>
         <module>dimmer-core</module>
         <module>dimmer</module>
+        <module>dimmer-samples</module>
     </modules>
 
 
