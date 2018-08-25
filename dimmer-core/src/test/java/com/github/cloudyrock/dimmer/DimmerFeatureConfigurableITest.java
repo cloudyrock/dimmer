@@ -60,14 +60,14 @@ public class DimmerFeatureConfigurableITest {
 
     private void setConfigWithFlag(boolean intercepting) {
         runner.environments("env1", "env2")
-                .featureWithBehaviour(intercepting, feature1, operation, behaviour1)
+                .featureWithBehaviourIf(intercepting, feature1, operation, behaviour1)
                 .environments("env3")
-                .featureWithValue(intercepting, feature2, operation, value)
+                .featureWithValueIf(intercepting, feature2, operation, value)
                 .environments("env4")
-                .featureWithBehaviour(intercepting, feature1, operation, behaviour1)
-                .featureWithValue(intercepting, feature2, operation, value)
-                .featureWithException(intercepting, feature3, operation, RuntimeException.class)
-                .featureWithDefaultException(intercepting, feature4, operation);
+                .featureWithBehaviourIf(intercepting, feature1, operation, behaviour1)
+                .featureWithValueIf(intercepting, feature2, operation, value)
+                .featureWithExceptionIf(intercepting, feature3, operation, RuntimeException.class)
+                .featureWithDefaultExceptionIf(intercepting, feature4, operation);
 
     }
 

@@ -19,9 +19,6 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     protected final Class<? extends RuntimeException> defaultExceptionType;
 
-    private static final DimmerLogger logger =
-            new DimmerLogger(DimmerFeatureConfigurable.class);
-
     protected DimmerFeatureConfigurable(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
@@ -38,7 +35,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(envs, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithBehaviour(
+    public RUNNER featureWithBehaviourIf(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -65,8 +62,9 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     }
 
-    public RUNNER featureWithDefaultException(boolean interceptingFeature, String feature,
-                                              String operation) {
+    public RUNNER featureWithDefaultExceptionIf(boolean interceptingFeature,
+                                                String feature,
+                                                String operation) {
         return interceptingFeature
                 ? featureWithDefaultException(feature, operation)
                 : newInstance(environments, configMetadata, defaultExceptionType);
@@ -81,7 +79,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithException(
+    public RUNNER featureWithExceptionIf(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -104,10 +102,10 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithValue(boolean interceptingFeature,
-                                   String feature,
-                                   String operation,
-                                   Object valueToReturn) {
+    public RUNNER featureWithValueIf(boolean interceptingFeature,
+                                     String feature,
+                                     String operation,
+                                     Object valueToReturn) {
         return interceptingFeature
                 ? featureWithValue(feature, operation, valueToReturn)
                 : newInstance(environments, configMetadata, defaultExceptionType);

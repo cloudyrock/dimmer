@@ -14,15 +14,13 @@ public class BehaviourKeyTest {
         assertEquals("operation", obj.getOperation());
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void operationShouldBeEmpty_ifNullIsPassed_WhenConstructor() {
         final BehaviourKey obj = new BehaviourKey("feature", null);
-        assertEquals("feature", obj.getFeature());
-        assertTrue(obj.getOperation().isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shoudlThrowException_ifFeatureIsNull_WhenConstructor() {
+    public void shouldThrowException_ifFeatureIsNull_WhenConstructor() {
         final BehaviourKey obj = new BehaviourKey(null, "operation");
     }
 

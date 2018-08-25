@@ -127,6 +127,7 @@ abstract class FeatureProcessorBase {
                                  String operation,
                                  Class<? extends RuntimeException> exceptionType) {
 
+        Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
         return putBehaviour(
                 feature,
                 operation,
@@ -160,12 +161,13 @@ abstract class FeatureProcessorBase {
                                  String operation,
                                  Function<FeatureInvocation, ?> behaviour) {
         Util.checkArgumentNullEmpty(feature, "featureId");
+        Util.checkArgumentNullEmpty(feature, "operation");
         if(operation == null || operation.isEmpty()) {
             logger.warn("Adding behaviour to feature {} with empty operation", feature);
         }
         final BehaviourKey behaviourKey = new BehaviourKey(
                 feature,
-                operation != null ? operation : ""
+                operation
         );
         return behaviours.putIfAbsent(behaviourKey, behaviour) == null;
     }

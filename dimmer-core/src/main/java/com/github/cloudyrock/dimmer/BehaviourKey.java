@@ -2,16 +2,18 @@ package com.github.cloudyrock.dimmer;
 
 class BehaviourKey {
 
-    private static final String DEFAULT_OPERATION = "";
     private final String feature;
     private final String operation;
 
     BehaviourKey(String feature, String operation) {
         if(feature == null || feature.isEmpty()) {
-            throw new IllegalArgumentException("Feature cannot be null");
+            throw new IllegalArgumentException("Feature cannot be empty");
+        }
+        if(operation == null || operation.isEmpty()) {
+            throw new IllegalArgumentException("Operation cannot be empty");
         }
         this.feature = feature;
-        this.operation = operation != null ? operation : DEFAULT_OPERATION;
+        this.operation = operation;
     }
 
     public String getFeature() {
@@ -32,7 +34,7 @@ class BehaviourKey {
             return false;
         }
 
-        BehaviourKey that = (BehaviourKey) o;
+        final BehaviourKey that = (BehaviourKey) o;
 
         return feature.equals(that.feature) && operation.equals(that.operation);
     }
