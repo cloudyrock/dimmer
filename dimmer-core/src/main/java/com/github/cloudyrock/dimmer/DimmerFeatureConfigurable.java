@@ -29,6 +29,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         this.defaultExceptionType = defaultExceptionType;
     }
 
+
     public RUNNER environments(String... environments) {
         Util.checkArgumentNullEmpty(environments, "environments");
         final List<String> envs = Arrays.asList(environments);
@@ -134,7 +135,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
      * Set the default exception type to be thrown as behaviour.
      * <p>
      * Notice the exception type must have either an empty constructor or a contractor with only
-     * one parameter, (@{@link FeatureInvocation})
+     * one parameter, {@link FeatureInvocation}
      *
      * @param newDefaultExceptionType new default exception type
      * @return Singleton DimmerProcessor builder

@@ -6,17 +6,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-/**
- * Singleton class to configure feature's behaviour.
- * <p>
- * Threadsafe.
- *
- * @author Antonio Perez Dieppa
- * @see Function
- * @see DimmerConfigException
- * @see FeatureInvocation
- * @since 11/06/2018
- */
+
 abstract class FeatureProcessorBase {
 
     private static final String EXCEPTION_MESSAGE_CAST =
@@ -91,14 +81,14 @@ abstract class FeatureProcessorBase {
 
     /**
      * If the specified feature is not already associated with a behaviour(or is mapped to null),
-     * associates it with the given (@{@link Function}) that represents the desired behaviour
+     * associates it with the given {@link Function} that represents the desired behaviour
      * and returns true, else returns false.
      * <p>
      * Notice that the function that represents the feature's behaviour must ensure compatibility
-     * with the real method's returning type or a (@{@link DimmerConfigException}) will be thrown.
+     * with the real method's returning type or a {@link DimmerConfigException} will be thrown.
      *
      * @param feature   feature with which the specified behaviour is to be associated
-     * @param behaviour (@{@link Function}) to be associated with the specified key as behaviour
+     * @param behaviour {@link Function} to be associated with the specified key as behaviour
      * @return true, or false if the key was already associated to a behaviour.
      * @see Function
      * @see DimmerConfigException
@@ -116,7 +106,7 @@ abstract class FeatureProcessorBase {
      * associates it with the given exception and returns true, else returns false.
      * <p>
      * Notice the exception type must have either an empty constructor or a contractor with only
-     * one parameter, (@{@link FeatureInvocation})
+     * one parameter, {@link FeatureInvocation}
      *
      * @param feature       feature with which the specified behaviour is to be associated
      * @param exceptionType exception type to be associated with the specified key
@@ -139,7 +129,7 @@ abstract class FeatureProcessorBase {
      * associates it with the given value and returns true, else returns false.
      * <p>
      * Notice that the value must be compatibility with the real method's returning type
-     * or a (@{@link DimmerConfigException}) will be thrown.
+     * or a {@link DimmerConfigException} will be thrown.
      *
      * @param feature       feature with which the specified behaviour is to be associated
      * @param valueToReturn value to be associated with the specified key

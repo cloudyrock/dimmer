@@ -8,7 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-//TODO move javadoc from processor to here
+/**
+ * Builder to configure the feature behaviours.
+ *
+ * @see DimmerConfigException
+ * @see DimmerFeature
+ * @since 11/06/2018
+ */
 public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<FeatureConfigurationBuilder>
         implements DimmerEnvironmentConfigurable<FeatureConfigurationBuilder> {
 
@@ -46,6 +52,14 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
                 defaultExceptionType);
     }
 
+    /**
+     * Builds a feature executor with the given environment, inject it to the
+     * dimmer aspect (which will intercept the calls to all methods annotated
+     * with {@link DimmerFeature}) and return it.
+     *
+     * @param environment Environment to build
+     * @return Feature executor
+     */
     public FeatureExecutorImpl build(String environment) {
         logger.info("Building local executor");
         final FeatureExecutorImpl executor = new FeatureExecutorImpl(
@@ -56,6 +70,14 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
         return executor;
     }
 
+
+    /**
+     * Builds a feature executor with the default environment, inject it to the
+     * dimmer aspect (which will intercept the calls to all methods annotated
+     * with {@link DimmerFeature}) and return it.
+     *
+     * @return Feature executor
+     */
     public FeatureExecutorImpl buildWithDefaultEnvironment() {
         return build(DEFAULT_ENV);
     }
