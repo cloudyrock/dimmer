@@ -18,15 +18,15 @@ import java.lang.annotation.Target;
 public @interface DimmerFeature {
 
     /**
-     * Name of the feature for a a global functionality covering a set of methods.
+     * Name of the feature covering the set of methods that define an entire functionality.
      * This feature can be shared for a set of methods that conforms a functionality.
      * @return Name of the feature
      */
     String value();
 
     /**
-     * Name of the operation for the annotated method. This operation shouldn't shared
-     * among other methods, as it's used to configure the specific method's behaviour.
+     * Name of the operation for the annotated method. This operation should be unique
+     * within a feature bound, as it's used to configure the specific method's behaviour.
      * <p/>
      * It must be unique within a feature
      * @return Name of the operation
