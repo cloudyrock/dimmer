@@ -35,7 +35,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(envs, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithBehaviourIf(
+    public RUNNER featureWithBehaviourConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -62,9 +62,9 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     }
 
-    public RUNNER featureWithDefaultExceptionIf(boolean interceptingFeature,
-                                                String feature,
-                                                String operation) {
+    public RUNNER featureWithDefaultExceptionConditional(boolean interceptingFeature,
+                                                         String feature,
+                                                         String operation) {
         return interceptingFeature
                 ? featureWithDefaultException(feature, operation)
                 : newInstance(environments, configMetadata, defaultExceptionType);
@@ -79,7 +79,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithExceptionIf(
+    public RUNNER featureWithExceptionConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -102,10 +102,10 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithValueIf(boolean interceptingFeature,
-                                     String feature,
-                                     String operation,
-                                     Object valueToReturn) {
+    public RUNNER featureWithValueConditional(boolean interceptingFeature,
+                                              String feature,
+                                              String operation,
+                                              Object valueToReturn) {
         return interceptingFeature
                 ? featureWithValue(feature, operation, valueToReturn)
                 : newInstance(environments, configMetadata, defaultExceptionType);
@@ -114,7 +114,8 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     public RUNNER featureWithValue(String feature,
                                    String operation,
                                    Object valueToReturn) {
-        final FeatureMetadata metadata = new FeatureMetadataValue(feature, operation, valueToReturn);
+        final FeatureMetadata metadata =
+                new FeatureMetadataValue(feature, operation, valueToReturn);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
 
