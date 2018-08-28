@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>dimmer-standalone-configuration</module>
+        <module>dimmer-spring-boot-configuration</module>
     </modules>
 
 
