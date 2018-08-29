@@ -73,7 +73,7 @@ public class DimmerFeatureConfigurableITest {
 
     private void checkFeatureConfigApplied() {
         final Set<FeatureMetadata> env1Metadata = runner.configMetadata.get("env1");
-        assertEquals(1, env1Metadata.size());
+         assertEquals(1, env1Metadata.size());
         env1Metadata.stream()
                 .filter(fm -> fm instanceof FeatureMetadataBehaviour)
                 .map(fm -> (FeatureMetadataBehaviour) fm)

@@ -28,12 +28,12 @@ public class FeatureExecutorImpl extends FeatureProcessorBase
                                        String operation,
                                        FeatureInvocation featureInvocation,
                                        MethodCaller realMethod) throws Throwable {
-        if (isFeatureEnabled(feature, operation)) {
+        if (isConditionPresent(feature, operation)) {
+            logDimmerInterception(feature, operation, featureInvocation);
+            return runFeature(feature, operation, featureInvocation);
+        } else {
             logger.trace("Dimmer ignored due to feature {} is not configured", feature);
             return realMethod.call();
-        } else {
-            logDimmerInterception(feature, operation,  featureInvocation);
-            return runFeature(feature, operation, featureInvocation);
         }
     }
 
