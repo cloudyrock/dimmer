@@ -61,6 +61,7 @@ public class DimmerAspectUTest {
         given(dimmerFeatureMock.value()).willReturn(feature);
         given(dimmerProcessor.executeDimmerFeature(
                 anyString(),
+                anyString(),
                 any(FeatureInvocation.class),
                 any(MethodCaller.class))).willReturn(expectedReturnedValue);
 
@@ -73,11 +74,14 @@ public class DimmerAspectUTest {
                 ArgumentCaptor.forClass(FeatureInvocation.class);
         ArgumentCaptor<String> featureCaptor =
                 ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> operationCaptor =
+                ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<MethodCaller> methodCallerCaptor =
                 ArgumentCaptor.forClass(MethodCaller.class);
 
         then(dimmerProcessor).should().executeDimmerFeature(
                 featureCaptor.capture(),
+                operationCaptor.capture(),
                 featureInvocationCaptor.capture(),
                 methodCallerCaptor.capture()
         );

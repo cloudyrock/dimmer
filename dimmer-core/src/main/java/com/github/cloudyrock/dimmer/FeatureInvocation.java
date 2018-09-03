@@ -11,6 +11,10 @@ public class FeatureInvocation {
      * Feature covering invoked method
      */
     private final String feature;
+    /**
+     * Operation covering invoked method
+     */
+    private final String operation;
 
     /**
      * Invoked method's name
@@ -33,11 +37,13 @@ public class FeatureInvocation {
     private final Object[] args;
 
     public FeatureInvocation(String feature,
+                             String operation,
                              String methodName,
                              Class declaringType,
                              Object[] args,
                              Class returnType) {
         this.feature = feature;
+        this.operation = operation;
         this.methodName = methodName;
         this.declaringType = declaringType;
         this.args = args;
@@ -46,6 +52,10 @@ public class FeatureInvocation {
 
     public String getFeature() {
         return feature;
+    }
+
+    public String getOperation() {
+        return operation;
     }
 
     public String getMethodName() {
@@ -66,30 +76,27 @@ public class FeatureInvocation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FeatureInvocation that = (FeatureInvocation) o;
+
+        if (!feature.equals(that.feature)
+                || !operation.equals(that.operation)
+                || !methodName.equals(that.methodName)
+                || !declaringType.equals(that.declaringType)) {
             return false;
         }
-
-        final FeatureInvocation that = (FeatureInvocation) o;
-
-        if (!feature.equals(that.feature)) {
-            return false;
-        }
-        if (!methodName.equals(that.methodName)) {
-            return false;
-        }
-
-        return declaringType.equals(that.declaringType);
+        return returnType.equals(that.returnType);
     }
 
     @Override
     public int hashCode() {
         int result = feature.hashCode();
+        result = 31 * result + operation.hashCode();
         result = 31 * result + methodName.hashCode();
         result = 31 * result + declaringType.hashCode();
+        result = 31 * result + returnType.hashCode();
         return result;
     }
 }

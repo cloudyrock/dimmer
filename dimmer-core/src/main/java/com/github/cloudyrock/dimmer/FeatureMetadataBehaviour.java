@@ -7,8 +7,9 @@ public final class FeatureMetadataBehaviour extends FeatureMetadata{
     private final Function<FeatureInvocation, ?> behaviour;
 
     public FeatureMetadataBehaviour(String feature,
+                                    String operation,
                                     Function<FeatureInvocation, ?> behaviour) {
-        super(feature);
+        super(feature, operation);
         this.behaviour = behaviour;
     }
 

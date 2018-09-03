@@ -23,6 +23,8 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class FeatureProcessorBaseUTest {
     @Rule public ExpectedException exception = ExpectedException.none();
 
+    private final String operation = "operation";
+
 
     protected DummyFeatureProcessor dimmerProcessor;
 
@@ -47,18 +49,18 @@ public class FeatureProcessorBaseUTest {
     @Test
     @DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
     public void shouldRunBehaviour() throws Throwable {
-        dimmerProcessor.featureWithBehaviour(feature, s -> "VALUE");
+        dimmerProcessor.featureWithBehaviour(feature, operation, s -> "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                feature, featureInvocationMock);
+                feature, operation, featureInvocationMock);
         assertEquals("VALUE", actualResult);
     }
 
     @Test
     @DisplayName("Should return value when featureWithValue")
     public void shouldReturnValue() throws Throwable {
-        dimmerProcessor.featureWithValue(feature, "VALUE");
+        dimmerProcessor.featureWithValue(feature, operation, "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
-                feature, featureInvocationMock);
+                feature, operation, featureInvocationMock);
         assertEquals("VALUE", actualResult);
     }
 
@@ -67,8 +69,8 @@ public class FeatureProcessorBaseUTest {
     public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
         given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
 
-        dimmerProcessor.featureWithBehaviour(feature, behaviour);
-        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock);
+        dimmerProcessor.featureWithBehaviour(feature, operation, behaviour);
+        dimmerProcessor.executeDimmerFeature(feature, operation, featureInvocationMock);
 
         then(behaviour).should().apply(featureInvocationMock);
     }
@@ -83,11 +85,12 @@ public class FeatureProcessorBaseUTest {
 
         dimmerProcessor.featureWithException(
                 feature,
+                operation,
                 DummyExceptionWithFeatureInvocation.class);
 
         exception.expect(DummyExceptionWithFeatureInvocation.class);
         exception.expect(hasProperty("featureInvocation", is(featureInvocationMock)));
 
-        dimmerProcessor.executeDimmerFeature(feature, featureInvocationMock);
+        dimmerProcessor.executeDimmerFeature(feature, operation, featureInvocationMock);
     }
 }

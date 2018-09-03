@@ -31,4 +31,6 @@ public @interface DimmerFeature {
      */
     String value();
 
+    String op();
+
 }

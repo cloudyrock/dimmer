@@ -19,9 +19,6 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     protected final Class<? extends RuntimeException> defaultExceptionType;
 
-    private static final DimmerLogger logger =
-            new DimmerLogger(DimmerFeatureConfigurable.class);
-
     protected DimmerFeatureConfigurable(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
@@ -38,23 +35,26 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(envs, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithBehaviour(
-            boolean condition,
+    public RUNNER featureWithBehaviourIf(
+            boolean interceptingFeature,
             String feature,
+            String operation,
             Function<FeatureInvocation, ?> behaviour) {
 
-        return condition
-                ? featureWithBehaviour(feature, behaviour)
+        return interceptingFeature
+                ? featureWithBehaviour(feature, operation, behaviour)
                 : newInstance(environments, configMetadata, defaultExceptionType);
 
     }
 
     public RUNNER featureWithBehaviour(
             String feature,
+            String operation,
             Function<FeatureInvocation, ?> behaviour) {
 
         final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
                 feature,
+                operation,
                 behaviour
         );
         addFeatureMetadata(metadata);
@@ -62,50 +62,59 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     }
 
-    public RUNNER featureWithDefaultException(boolean condition, String feature) {
-        return condition
-                ? featureWithDefaultException(feature)
+    public RUNNER featureWithDefaultExceptionIf(boolean interceptingFeature,
+                                                String feature,
+                                                String operation) {
+        return interceptingFeature
+                ? featureWithDefaultException(feature, operation)
                 : newInstance(environments, configMetadata, defaultExceptionType);
 
     }
 
-    public RUNNER featureWithDefaultException(String feature) {
-        final FeatureMetadata metadata = new FeatureMetadataDefaultException(feature);
+    public RUNNER featureWithDefaultException(String feature, String operation) {
+        final FeatureMetadata metadata = new FeatureMetadataDefaultException(
+                feature,
+                operation);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithException(
-            boolean condition,
+    public RUNNER featureWithExceptionIf(
+            boolean interceptingFeature,
             String feature,
+            String operation,
             Class<? extends RuntimeException> exceptionType) {
 
-        return condition
-                ? featureWithException(feature, exceptionType)
+        return interceptingFeature
+                ? featureWithException(feature, operation, exceptionType)
                 : newInstance(environments, configMetadata, defaultExceptionType);
     }
 
     public RUNNER featureWithException(
             String feature,
+            String operation,
             Class<? extends RuntimeException> exType) {
 
         ExceptionUtil.checkExceptionConstructorType(exType);
-        final FeatureMetadata metadata = new FeatureMetadataException(feature, exType);
+        final FeatureMetadata metadata = new FeatureMetadataException(
+                feature, operation, exType);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithValue(boolean condition,
-                                   String feature,
-                                   Object valueToReturn) {
-        return condition
-                ? featureWithValue(feature, valueToReturn)
+    public RUNNER featureWithValueIf(boolean interceptingFeature,
+                                     String feature,
+                                     String operation,
+                                     Object valueToReturn) {
+        return interceptingFeature
+                ? featureWithValue(feature, operation, valueToReturn)
                 : newInstance(environments, configMetadata, defaultExceptionType);
     }
 
     public RUNNER featureWithValue(String feature,
+                                   String operation,
                                    Object valueToReturn) {
-        final FeatureMetadata metadata = new FeatureMetadataValue(feature, valueToReturn);
+        final FeatureMetadata metadata = new FeatureMetadataValue(feature, operation, valueToReturn);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
 
@@ -135,7 +144,6 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
         return newInstance(environments, configMetadata, newDefaultExceptionType);
     }
-
 
     protected Class<? extends RuntimeException> getDefaultExceptionType() {
         return this.defaultExceptionType != null

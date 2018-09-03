@@ -4,6 +4,7 @@ public interface FeatureExecutor {
 
     Object executeDimmerFeature(
             String feature,
+            String operation,
             FeatureInvocation featureInvocation,
             MethodCaller realMethod) throws Throwable;
 }
