@@ -1,3 +1,5 @@
+
+![Dimmer](https://raw.githubusercontent.com/cloudyrock/dimmer-project/master/misc/logo.png)
 # Dimmer: Lightweight Java library for flexible feature toggling
 Dimmer is a lightweight Java library to manage customisable feature toggling. 
 In addition to the traditional feature toggle on/off functionalities, Dimmer offers 
