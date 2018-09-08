@@ -13,7 +13,6 @@ import java.util.Set;
  *
  * @see DimmerConfigException
  * @see DimmerFeature
- * @since 11/06/2018
  */
 public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<FeatureConfigurationBuilder>
         implements DimmerEnvironmentConfigurable<FeatureConfigurationBuilder> {

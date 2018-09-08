@@ -9,8 +9,6 @@ import java.lang.annotation.Target;
 /**
  * Method annotation to indicates the method is suitable for Dimmer to intercept and
  * run the configuration applied in the builder
- *
- * @since 11/06/2018
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)

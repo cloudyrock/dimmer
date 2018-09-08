@@ -3,8 +3,6 @@ package com.github.cloudyrock.dimmer;
 /**
  * Default exception that will be thrown if no other is configured.
  * If thrown at runtime represents a desired behaviour of throwing an exception.
- *
- * @since 11/06/2018
  */
 public class DimmerInvocationException extends RuntimeException {
 

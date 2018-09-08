@@ -10,8 +10,6 @@ import org.aspectj.lang.reflect.MethodSignature;
  * This aspect intercepts all methods annotated with {@link DimmerFeature}
  *
  * @see DimmerFeature
- *
- * @since 11/06/2018
  */
 @Aspect
 public class DimmerAspect {

@@ -7,8 +7,6 @@ import static java.util.Arrays.asList;
 /**
  * Builder to configure the initial environment.
  * This forces to select a environment before starting to add configuration.
- *
- * @since 11/06/2018
  */
 public class DimmerBuilder {
 
