@@ -16,7 +16,7 @@ public class DimmerInvocationException extends RuntimeException {
 
     /**
      * Constructor with a featureInvocation as parameter
-     * @param featureInvocation
+     * @param featureInvocation real method's invocation metadata
      */
     public DimmerInvocationException(FeatureInvocation featureInvocation) {
         this.invocationInfo = featureInvocation;

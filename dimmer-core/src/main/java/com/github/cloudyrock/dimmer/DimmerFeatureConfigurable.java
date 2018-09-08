@@ -264,7 +264,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(environments, configMetadata, newDefaultExceptionType);
     }
 
-    protected Class<? extends RuntimeException> getDefaultExceptionType() {
+    Class<? extends RuntimeException> getDefaultExceptionType() {
         return this.defaultExceptionType != null
                 ? defaultExceptionType
                 : DEFAULT_EXCEPTION_TYPE;

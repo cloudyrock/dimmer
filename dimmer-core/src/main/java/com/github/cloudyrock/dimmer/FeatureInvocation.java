@@ -36,7 +36,7 @@ public class FeatureInvocation {
      */
     private final Object[] args;
 
-    public FeatureInvocation(String feature,
+    FeatureInvocation(String feature,
                              String operation,
                              String methodName,
                              Class declaringType,
