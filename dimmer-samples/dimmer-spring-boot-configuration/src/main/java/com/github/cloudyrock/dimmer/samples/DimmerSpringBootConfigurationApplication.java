@@ -9,4 +9,5 @@ public class DimmerSpringBootConfigurationApplication {
     public static void main(String[] args) {
         SpringApplication.run(DimmerSpringBootConfigurationApplication.class, args);
     }
+
 }
