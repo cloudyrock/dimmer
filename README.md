@@ -1,8 +1,8 @@
 
-<table>
+<table border="0">
 <tr>
 <td><img src="https://raw.githubusercontent.com/cloudyrock/dimmer-project/master/misc/logo.png" width="150"></td>
-<td># Dimmer: Lightweight Java library for flexible feature toggling</td>
+<td><h1>Dimmer: Lightweight Java library for flexible feature toggling</h1></td>
 </tr>
 </table>
  
