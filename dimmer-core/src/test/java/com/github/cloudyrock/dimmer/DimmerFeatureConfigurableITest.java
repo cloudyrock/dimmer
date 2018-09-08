@@ -60,20 +60,20 @@ public class DimmerFeatureConfigurableITest {
 
     private void setConfigWithFlag(boolean intercepting) {
         runner.environments("env1", "env2")
-                .featureWithBehaviourIf(intercepting, feature1, operation, behaviour1)
+                .featureWithBehaviourConditional(intercepting, feature1, operation, behaviour1)
                 .environments("env3")
-                .featureWithValueIf(intercepting, feature2, operation, value)
+                .featureWithValueConditional(intercepting, feature2, operation, value)
                 .environments("env4")
-                .featureWithBehaviourIf(intercepting, feature1, operation, behaviour1)
-                .featureWithValueIf(intercepting, feature2, operation, value)
-                .featureWithExceptionIf(intercepting, feature3, operation, RuntimeException.class)
-                .featureWithDefaultExceptionIf(intercepting, feature4, operation);
+                .featureWithBehaviourConditional(intercepting, feature1, operation, behaviour1)
+                .featureWithValueConditional(intercepting, feature2, operation, value)
+                .featureWithExceptionConditional(intercepting, feature3, operation, RuntimeException.class)
+                .featureWithDefaultExceptionConditional(intercepting, feature4, operation);
 
     }
 
     private void checkFeatureConfigApplied() {
         final Set<FeatureMetadata> env1Metadata = runner.configMetadata.get("env1");
-        assertEquals(1, env1Metadata.size());
+         assertEquals(1, env1Metadata.size());
         env1Metadata.stream()
                 .filter(fm -> fm instanceof FeatureMetadataBehaviour)
                 .map(fm -> (FeatureMetadataBehaviour) fm)

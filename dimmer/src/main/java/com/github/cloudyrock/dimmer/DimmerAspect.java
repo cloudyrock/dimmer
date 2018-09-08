@@ -7,11 +7,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 /**
- * This aspect intercepts all the calls to methods annotated with (@{@link DimmerFeature})
+ * This aspect intercepts all methods annotated with {@link DimmerFeature}
  *
- * @author Antonio Perez Dieppa
  * @see DimmerFeature
- * @since 11/06/2018
  */
 @Aspect
 public class DimmerAspect {

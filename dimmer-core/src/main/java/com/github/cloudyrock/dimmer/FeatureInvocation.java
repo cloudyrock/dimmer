@@ -2,17 +2,15 @@ package com.github.cloudyrock.dimmer;
 
 /**
  * Represents method call with all its information.
- *
- * @author Antonio Perez Dieppa
- * @since 11/06/2018
  */
 public class FeatureInvocation {
     /**
-     * Feature covering invoked method
+     * Name of the feature covering the set of methods that define an entire functionality.
      */
     private final String feature;
     /**
-     * Operation covering invoked method
+     * Name of the operation for the annotated method. This operation should be unique
+     * within a feature bound
      */
     private final String operation;
 
@@ -36,7 +34,7 @@ public class FeatureInvocation {
      */
     private final Object[] args;
 
-    public FeatureInvocation(String feature,
+    FeatureInvocation(String feature,
                              String operation,
                              String methodName,
                              Class declaringType,

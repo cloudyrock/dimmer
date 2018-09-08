@@ -29,13 +29,34 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         this.defaultExceptionType = defaultExceptionType;
     }
 
+    /**
+     * Indicates the list of environments for which the following set of configuration will be applied to
+     * @param environments List of environments
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     */
     public RUNNER environments(String... environments) {
         Util.checkArgumentNullEmpty(environments, "environments");
         final List<String> envs = Arrays.asList(environments);
         return newInstance(envs, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithBehaviourIf(
+    /**
+     * If interceptingFeature is true and the specified feature is not already associated
+     * with a behaviour(or is mapped to null), associates it with the given {@link Function}
+     * that represents the desired behaviour, otherwise it's ignored.
+     * <p>
+     * Notice that the function that represents the feature's behaviour must ensure compatibility
+     * with the real method's returning type or a {@link DimmerConfigException} will be thrown.
+     *
+     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @param behaviour {@link Function} to be associated with the specified key as behaviour
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     * @see Function
+     * @see DimmerConfigException
+     */
+    public RUNNER featureWithBehaviourConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -47,6 +68,22 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     }
 
+
+    /**
+     * If the specified feature is not already associated
+     * with a behaviour(or is mapped to null), associates it with the given {@link Function}
+     * that represents the desired behaviour, otherwise it's ignored.
+     * <p>
+     * Notice that the function that represents the feature's behaviour must ensure compatibility
+     * with the real method's returning type or a {@link DimmerConfigException} will be thrown.
+     *
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @param behaviour {@link Function} to be associated with the specified key as behaviour
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     * @see Function
+     * @see DimmerConfigException
+     */
     public RUNNER featureWithBehaviour(
             String feature,
             String operation,
@@ -62,15 +99,35 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
 
     }
 
-    public RUNNER featureWithDefaultExceptionIf(boolean interceptingFeature,
-                                                String feature,
-                                                String operation) {
+
+    /**
+     * If interceptingFeature is true and the specified feature is not already associated 
+     * with a behaviour(or is mapped to null), associates it with the default exception, 
+     * otherwise it's ignored.
+     *
+     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     */
+    public RUNNER featureWithDefaultExceptionConditional(boolean interceptingFeature,
+                                                         String feature,
+                                                         String operation) {
         return interceptingFeature
                 ? featureWithDefaultException(feature, operation)
                 : newInstance(environments, configMetadata, defaultExceptionType);
 
     }
 
+    /**
+     * If the specified feature is not already associated
+     * with a behaviour(or is mapped to null), associates it with the default exception,
+     * otherwise it's ignored.
+     *
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     */
     public RUNNER featureWithDefaultException(String feature, String operation) {
         final FeatureMetadata metadata = new FeatureMetadataDefaultException(
                 feature,
@@ -78,8 +135,24 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
-
-    public RUNNER featureWithExceptionIf(
+    
+    /**
+     * If interceptingFeature is true and the specified feature is not already associated 
+     * with a behaviour(or is mapped to null), associates it with the given exception and 
+     * returns true, otherwise it's ignored.
+     * <p>
+     * Notice the exception type must have either an empty constructor or a contractor with only
+     * one parameter, {@link FeatureInvocation}
+     *
+     *
+     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @param exceptionType exception type to be associated with the specified key
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     * @see FeatureInvocation
+     */
+    public RUNNER featureWithExceptionConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -90,31 +163,75 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                 : newInstance(environments, configMetadata, defaultExceptionType);
     }
 
+    /**
+     * If the specified feature is not already associated 
+     * with a behaviour(or is mapped to null), associates it with the given exception and 
+     * returns true, otherwise it's ignored.
+     * <p>
+     * Notice the exception type must have either an empty constructor or a contractor with only
+     * one parameter, {@link FeatureInvocation}
+     *
+     *
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @param exceptionType exception type to be associated with the specified key
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     * @see FeatureInvocation
+     */
     public RUNNER featureWithException(
             String feature,
             String operation,
-            Class<? extends RuntimeException> exType) {
+            Class<? extends RuntimeException> exceptionType) {
 
-        ExceptionUtil.checkExceptionConstructorType(exType);
+        ExceptionUtil.checkExceptionConstructorType(exceptionType);
         final FeatureMetadata metadata = new FeatureMetadataException(
-                feature, operation, exType);
+                feature, operation, exceptionType);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
     }
 
-    public RUNNER featureWithValueIf(boolean interceptingFeature,
-                                     String feature,
-                                     String operation,
-                                     Object valueToReturn) {
+
+    /**
+     * If interceptingFeature is true and the specified feature is not already associated 
+     * with a behaviour(or is mapped to null), associates it with the given value and returns 
+     * true, otherwise it's ignored.
+     * <p>
+     * Notice that the value must be compatibility with the real method's returning type
+     * or a {@link DimmerConfigException} will be thrown.
+     *
+     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @param valueToReturn value to be associated with the specified key
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     */
+    public RUNNER featureWithValueConditional(boolean interceptingFeature,
+                                              String feature,
+                                              String operation,
+                                              Object valueToReturn) {
         return interceptingFeature
                 ? featureWithValue(feature, operation, valueToReturn)
                 : newInstance(environments, configMetadata, defaultExceptionType);
     }
 
+    /**
+     * If the specified feature is not already associated 
+     * with a behaviour(or is mapped to null), associates it with the given value and returns 
+     * true, otherwise it's ignored.
+     * <p>
+     * Notice that the value must be compatibility with the real method's returning type
+     * or a {@link DimmerConfigException} will be thrown.
+     *
+     * @param feature feature covering the generic functionality
+     * @param operation operation representing the specific method
+     * @param valueToReturn value to be associated with the specified key
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
+     */
     public RUNNER featureWithValue(String feature,
                                    String operation,
                                    Object valueToReturn) {
-        final FeatureMetadata metadata = new FeatureMetadataValue(feature, operation, valueToReturn);
+        final FeatureMetadata metadata =
+                new FeatureMetadataValue(feature, operation, valueToReturn);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
 
@@ -130,13 +247,15 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     }
 
     /**
-     * Set the default exception type to be thrown as behaviour.
-     * <p>
+     * Switch the default exception to the given one. This method can be executed several
+     * times, but only the last one will be taken into account.
+     * <p/>
      * Notice the exception type must have either an empty constructor or a contractor with only
-     * one parameter, (@{@link FeatureInvocation})
+     * one parameter, {@link FeatureInvocation}
      *
      * @param newDefaultExceptionType new default exception type
-     * @return Singleton DimmerProcessor builder
+     *
+     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
     public RUNNER setDefaultExceptionType(
             Class<? extends RuntimeException> newDefaultExceptionType) {
@@ -145,7 +264,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
         return newInstance(environments, configMetadata, newDefaultExceptionType);
     }
 
-    protected Class<? extends RuntimeException> getDefaultExceptionType() {
+    Class<? extends RuntimeException> getDefaultExceptionType() {
         return this.defaultExceptionType != null
                 ? defaultExceptionType
                 : DEFAULT_EXCEPTION_TYPE;

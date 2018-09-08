@@ -3,6 +3,11 @@ package com.github.cloudyrock.dimmer;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class in charge of executing the Dimmer feature. It doesn't get involve in
+ * intercepting, it just execute a feature with the given information matching
+ * the metadata injected by the builder.
+ */
 public class FeatureExecutorImpl extends FeatureProcessorBase
         implements FeatureExecutor {
 
@@ -23,12 +28,12 @@ public class FeatureExecutorImpl extends FeatureProcessorBase
                                        String operation,
                                        FeatureInvocation featureInvocation,
                                        MethodCaller realMethod) throws Throwable {
-        if (isFeatureEnabled(feature, operation)) {
+        if (isConditionPresent(feature, operation)) {
+            logDimmerInterception(feature, operation, featureInvocation);
+            return runFeature(feature, operation, featureInvocation);
+        } else {
             logger.trace("Dimmer ignored due to feature {} is not configured", feature);
             return realMethod.call();
-        } else {
-            logDimmerInterception(feature, operation,  featureInvocation);
-            return runFeature(feature, operation, featureInvocation);
         }
     }
 
