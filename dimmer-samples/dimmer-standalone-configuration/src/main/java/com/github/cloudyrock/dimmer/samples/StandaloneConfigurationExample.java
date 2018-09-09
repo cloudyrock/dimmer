@@ -4,6 +4,8 @@ import com.github.cloudyrock.dimmer.DimmerBuilder;
 import com.github.cloudyrock.dimmer.DimmerFeature;
 import com.github.cloudyrock.dimmer.FeatureExecutor;
 
+import java.util.Optional;
+
 /**
  * This example provides a basic configuration for using the Dimmer project in your application without any external
  * requirements.
