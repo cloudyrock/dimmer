@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://raw.githubusercontent.com/cloudyrock/dimmer-project/master/misc/logo.png" width="100"></img>
+    <img src="https://raw.githubusercontent.com/cloudyrock/dimmer-project/master/misc/logo.png" width="200"></img>
 </p>
 
 # Dimmer: Lightweight Java library for flexible feature toggling
