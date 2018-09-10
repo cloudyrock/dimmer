@@ -7,11 +7,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 /**
- * This aspect intercepts all the calls to methods annotated with (@{@link DimmerFeature})
+ * This aspect intercepts all methods annotated with {@link DimmerFeature}
  *
- * @author Antonio Perez Dieppa
  * @see DimmerFeature
- * @since 11/06/2018
  */
 @Aspect
 public class DimmerAspect {
@@ -31,7 +29,9 @@ public class DimmerAspect {
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
-                generateFeatureInvocation(dimmerFeatureAnn.value(), joinPoint),
+                dimmerFeatureAnn.op(),
+                generateFeatureInvocation(dimmerFeatureAnn.value(), dimmerFeatureAnn.op(),
+                        joinPoint),
                 createCallerInstance(joinPoint)
         );
     }
@@ -47,10 +47,12 @@ public class DimmerAspect {
     }
 
     private FeatureInvocation generateFeatureInvocation(String feature,
+                                                        String operation,
                                                         ProceedingJoinPoint joinPoint) {
         final MethodSignature p = (MethodSignature) joinPoint.getSignature();
         return new FeatureInvocation(
                 feature,
+                operation,
                 joinPoint.getSignature().getName(),
                 joinPoint.getSignature().getDeclaringType(),
                 joinPoint.getArgs(),

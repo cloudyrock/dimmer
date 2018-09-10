@@ -9,7 +9,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
-public class DimmerSlf4jTest {
+public class DimmerLoggerTest {
 
     private static final String PREFIX = "[DIMMER] ";
 

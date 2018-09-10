@@ -7,9 +7,17 @@ import java.util.Set;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class DimmerFeatureConfigurableITest {
 
+    private final Function<FeatureInvocation, ?> behaviour1 = FeatureInvocation::getArgs;
+    private final String value = "VALUE";
+    private final String feature1 = "feature1";
+    private final String feature2 = "feature2";
+    private final String feature3 = "feature3";
+    private final String feature4 = "feature4";
+    private final String operation = "opertaion";
 
     private DummyDimmerFeatureConfigurable runner;
 
@@ -19,28 +27,53 @@ public class DimmerFeatureConfigurableITest {
     }
 
     @Test
-    public void shouldApplyConfigToRightEnvironment() {
-
-        final Function<FeatureInvocation, ?> behaviour1 = FeatureInvocation::getArgs;
-        final String value = "VALUE";
-
-        final String feature1 = "feature1";
-        final String feature2 = "feature2";
-        final String feature3 = "feature3";
-        final String feature4 = "feature4";
+    public void shouldApplyConfigToRightEnvironment_ifNoFlag_WhenSettingConfiguration() {
 
         runner.environments("env1", "env2")
-                .featureWithBehaviour(feature1, behaviour1)
+                .featureWithBehaviour(feature1, operation, behaviour1)
                 .environments("env3")
-                .featureWithValue(feature2, value)
+                .featureWithValue(feature2, operation, value)
                 .environments("env4")
-                .featureWithBehaviour(feature1, behaviour1)
-                .featureWithValue(feature2, value)
-                .featureWithException(feature3, RuntimeException.class)
-                .featureWithDefaultException(feature4);
+                .featureWithBehaviour(feature1, operation, behaviour1)
+                .featureWithValue(feature2, operation, value)
+                .featureWithException(feature3, operation, RuntimeException.class)
+                .featureWithDefaultException(feature4, operation);
 
+        checkFeatureConfigApplied();
+
+    }
+
+    @Test
+    public void shouldApplyConfigToRightEnvironment_ifFlagTrue_WhenSettingConfiguration() {
+        setConfigWithFlag(true);
+        checkFeatureConfigApplied();
+    }
+
+    @Test
+    public void shouldNotApplyConfigToRightEnvironment_ifFlagFalse_WhenSettingConfiguration() {
+        setConfigWithFlag(false);
+        assertNull(runner.configMetadata.get("env1"));
+        assertNull(runner.configMetadata.get("env2"));
+        assertNull(runner.configMetadata.get("env3"));
+        assertNull(runner.configMetadata.get("env4"));
+    }
+
+    private void setConfigWithFlag(boolean intercepting) {
+        runner.environments("env1", "env2")
+                .featureWithBehaviourConditional(intercepting, feature1, operation, behaviour1)
+                .environments("env3")
+                .featureWithValueConditional(intercepting, feature2, operation, value)
+                .environments("env4")
+                .featureWithBehaviourConditional(intercepting, feature1, operation, behaviour1)
+                .featureWithValueConditional(intercepting, feature2, operation, value)
+                .featureWithExceptionConditional(intercepting, feature3, operation, RuntimeException.class)
+                .featureWithDefaultExceptionConditional(intercepting, feature4, operation);
+
+    }
+
+    private void checkFeatureConfigApplied() {
         final Set<FeatureMetadata> env1Metadata = runner.configMetadata.get("env1");
-        assertEquals(1, env1Metadata.size());
+         assertEquals(1, env1Metadata.size());
         env1Metadata.stream()
                 .filter(fm -> fm instanceof FeatureMetadataBehaviour)
                 .map(fm -> (FeatureMetadataBehaviour) fm)
@@ -101,6 +134,5 @@ public class DimmerFeatureConfigurableITest {
                 .filter(fm -> feature4.equals(fm.getFeature()))
                 .findAny()
                 .get();
-
     }
 }

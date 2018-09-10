@@ -4,10 +4,6 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Objects;
 
-/**
- * @author Antonio Perez Dieppa
- * @since 11/06/2018
- */
 final class Util {
     static void checkArgumentNullEmpty(Object arg, String argName) {
         if (Objects.isNull(arg)) {

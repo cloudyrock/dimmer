@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+import org.aspectj.lang.Aspects;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -16,6 +17,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 
 public class DimmerAspectITest {//extends DimmerTestBase {
+
+    private static final String operation = "operation";
 
     private static final String REAL_VALUE = "real_value";
     private static final String FEATURE1 = "FEATURE1";
@@ -37,13 +40,18 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     @Rule public ExpectedException exception = ExpectedException.none();
 
     @Test
+    public void hasAspect() {
+        assertTrue(Aspects.hasAspect(DimmerAspect.class));
+    }
+
+    @Test
     @DisplayName("Should run behaviour when featureWithBehaviour")
     public void shouldRunBehaviour() {
         final String value = "feature1_value";
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithBehaviour(FEATURE1, f -> value)
+                .featureWithBehaviour(FEATURE1, operation, f -> value)
                 .buildWithDefaultEnvironment();
         assertEquals(value, annotatedClass.methodForFeature1());
     }
@@ -55,7 +63,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .environments(ENV)
-                .featureWithBehaviour(FEATURE1, f -> value)
+                .featureWithBehaviour(FEATURE1, operation, f -> value)
                 .build(ENV);
         assertEquals(value, annotatedClass.methodForFeature1());
     }
@@ -67,7 +75,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .environments(ENV)
-                .featureWithBehaviour(FEATURE1, f -> value)
+                .featureWithBehaviour(FEATURE1, operation, f -> value)
                 .build(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature1());
     }
@@ -84,7 +92,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithBehaviour(FEATURE2, mockBehaviour)
+                .featureWithBehaviour(FEATURE2, operation, mockBehaviour)
                 .buildWithDefaultEnvironment();
         final String param1 = "parameter1";
         final int param2 = 2;
@@ -103,7 +111,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
     public void shouldThrowExceptionWhenBehaviourThrowsException() {
         DimmerBuilder
                 .local()
-                .defaultEnvironment().featureWithBehaviour(FEATURE3, f -> {
+                .defaultEnvironment().featureWithBehaviour(FEATURE3, operation, f -> {
             throw new DummyException();
         }).buildWithDefaultEnvironment();
         annotatedClass.methodForFeature3();
@@ -115,7 +123,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .environments(ENV)
-                .featureWithBehaviour(FEATURE3, f -> {
+                .featureWithBehaviour(FEATURE3, operation, f -> {
                     throw new DummyException();
                 })
                 .build(ENV_2);
@@ -128,7 +136,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithValue(FEATURE4, VALUE1)
+                .featureWithValue(FEATURE4, operation, VALUE1)
                 .buildWithDefaultEnvironment();
         assertEquals(VALUE1, annotatedClass.methodForFeature4());
     }
@@ -139,7 +147,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .environments(ENV)
-                .featureWithValue(FEATURE4, VALUE1)
+                .featureWithValue(FEATURE4, operation, VALUE1)
                 .build(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature4());
     }
@@ -150,7 +158,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithException(FEATURE5, DummyException.class)
+                .featureWithException(FEATURE5, operation, DummyException.class)
                 .buildWithDefaultEnvironment();
         annotatedClass.methodForFeature5();
     }
@@ -161,7 +169,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .environments(ENV)
-                .featureWithException(FEATURE5, DummyException.class)
+                .featureWithException(FEATURE5, operation, DummyException.class)
                 .build(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature5());
     }
@@ -172,7 +180,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithValue(FEATURE7, 1)
+                .featureWithValue(FEATURE7, operation, 1)
                 .buildWithDefaultEnvironment();
         annotatedClass.methodForFeature7();
     }
@@ -183,7 +191,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .environments(ENV)
-                .featureWithValue(FEATURE7, 1)
+                .featureWithValue(FEATURE7, operation, 1)
                 .build(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature7());
     }
@@ -194,7 +202,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithValue(FEATURE8, null)
+                .featureWithValue(FEATURE8, operation, null)
                 .buildWithDefaultEnvironment();
         assertNull(annotatedClass.methodForFeature8());
     }
@@ -205,7 +213,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithValue(FEATURE9, new Child())
+                .featureWithValue(FEATURE9, operation, new Child())
                 .buildWithDefaultEnvironment();
         annotatedClass.methodForFeature9();
     }
@@ -216,7 +224,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithValue(FEATURE10, "VALUE")
+                .featureWithValue(FEATURE10, operation, "VALUE")
                 .buildWithDefaultEnvironment();
         annotatedClass.methodForFeature10();
     }
@@ -227,7 +235,7 @@ public class DimmerAspectITest {//extends DimmerTestBase {
         DimmerBuilder
                 .local()
                 .defaultEnvironment()
-                .featureWithException(FEATURE6,
+                .featureWithException(FEATURE6, operation,
                         DummyExceptionWithFeatureInvocation.class)
                 .buildWithDefaultEnvironment();
         final String param1 = "parameter1";
@@ -260,52 +268,52 @@ public class DimmerAspectITest {//extends DimmerTestBase {
 
     class AnnotatedClass {
 
-        @DimmerFeature(value = FEATURE1)
+        @DimmerFeature(value = FEATURE1, op = operation)
         String methodForFeature1() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE2)
+        @DimmerFeature(value = FEATURE2, op = operation)
         String methodForFeature2(String param1, Integer param2) {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE3)
+        @DimmerFeature(value = FEATURE3, op = operation)
         String methodForFeature3() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE4)
+        @DimmerFeature(value = FEATURE4, op = operation)
         String methodForFeature4() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE5)
+        @DimmerFeature(value = FEATURE5, op = operation)
         String methodForFeature5() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE6)
+        @DimmerFeature(value = FEATURE6, op = operation)
         String methodForFeature6(String param1, Integer param2) {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE7)
+        @DimmerFeature(value = FEATURE7, op = operation)
         String methodForFeature7() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE8)
+        @DimmerFeature(value = FEATURE8, op = operation)
         String methodForFeature8() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE9)
+        @DimmerFeature(value = FEATURE9, op = operation)
         Parent methodForFeature9() {
             return new Parent();
         }
 
-        @DimmerFeature(value = FEATURE10)
+        @DimmerFeature(value = FEATURE10, op = operation)
         public void methodForFeature10() {
         }
     }

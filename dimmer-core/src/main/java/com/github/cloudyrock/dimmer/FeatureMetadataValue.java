@@ -1,15 +1,15 @@
 package com.github.cloudyrock.dimmer;
 
-public final class FeatureMetadataValue extends FeatureMetadata {
+final class FeatureMetadataValue extends FeatureMetadata {
 
     private final Object valueToReturn;
 
-    public FeatureMetadataValue(String feature, Object valueToReturn) {
-        super(feature);
+    FeatureMetadataValue(String feature, String operation, Object valueToReturn) {
+        super(feature, operation);
         this.valueToReturn = valueToReturn;
     }
 
-    public Object getValueToReturn() {
+    Object getValueToReturn() {
         return valueToReturn;
     }
 }

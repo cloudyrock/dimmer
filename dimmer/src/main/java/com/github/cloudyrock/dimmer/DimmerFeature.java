@@ -7,15 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation containing the feature configuration for a method.
- *
- * @author Antonio Perez Dieppa
- * @see FeatureExecutorImpl
- * @see FeatureInvocation
- * @see DimmerInvocationException
- *
- * @author Antonio Perez Dieppa
- * @since 11/06/2018
+ * Method annotation to indicates the method is suitable for Dimmer to intercept and
+ * run the configuration applied in the builder
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
@@ -23,12 +16,19 @@ import java.lang.annotation.Target;
 public @interface DimmerFeature {
 
     /**
-     * Indicates the feature, configured via (@{@link FeatureExecutorImpl}), that describes
-     * the behaviour instead of invoking the real method
-     *
-     * @see FeatureExecutorImpl
-     * @return feature
+     * Name of the feature covering the set of methods that define an entire functionality.
+     * This feature can be shared for a set of methods that conforms a functionality.
+     * @return Name of the feature
      */
     String value();
+
+    /**
+     * Name of the operation for the annotated method. This operation should be unique
+     * within a feature bound, as it's used to configure the specific method's behaviour.
+     * <p/>
+     * It must be unique within a feature
+     * @return Name of the operation
+     */
+    String op();
 
 }

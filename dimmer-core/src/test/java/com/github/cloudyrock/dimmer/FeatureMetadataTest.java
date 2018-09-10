@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNotEquals;
 
 public class FeatureMetadataTest {
 
+    private final String operation = "operation";
+
     @Test
     public void equals() {
         final DummyFeatureMeatadata m1 = new DummyFeatureMeatadata("F1");
@@ -27,7 +29,7 @@ public class FeatureMetadataTest {
     class DummyFeatureMeatadata extends FeatureMetadata{
 
         protected DummyFeatureMeatadata(String feature) {
-            super(feature);
+            super(feature, operation);
         }
     }
 
