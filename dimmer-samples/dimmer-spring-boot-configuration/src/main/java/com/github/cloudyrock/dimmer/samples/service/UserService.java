@@ -10,4 +10,5 @@ public interface UserService {
     List<User> getListOfUsers();
 
     User createUser(User user);
+
 }

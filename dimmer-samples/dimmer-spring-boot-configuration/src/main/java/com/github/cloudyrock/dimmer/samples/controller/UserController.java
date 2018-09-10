@@ -29,13 +29,15 @@ public class UserController {
 
     @DimmerFeature(GET_USERS)
     @RequestMapping(path = USERS_PATH, method = RequestMethod.GET)
-    public @ResponseBody List<UserApiResponse> getUsers() {
+    public
+    @ResponseBody
+    List<UserApiResponse> getUsers() {
         LOGGER.info("Called the GET /users endpoint");
         return convertToListUserApiResponse(userService.getListOfUsers());
     }
 
     @DimmerFeature(ADD_USER)
-    @RequestMapping(path = "/users", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = USERS_PATH, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UserApiResponse addUser(@RequestBody UserApiRequest userApiRequest) {
         LOGGER.info("Called the POST /users endpoint");
