@@ -4,8 +4,6 @@ import com.github.cloudyrock.dimmer.DimmerBuilder;
 import com.github.cloudyrock.dimmer.DimmerFeature;
 import com.github.cloudyrock.dimmer.FeatureExecutor;
 
-import java.util.Optional;
-
 /**
  * This example provides a basic configuration for using the Dimmer project in your application without any external
  * requirements.
@@ -20,13 +18,14 @@ import java.util.Optional;
  */
 public class StandaloneConfigurationExample {
 
-    protected static final String USER_MANAGEMENT_GET_USERS = "USER_MANAGEMENT_GET_USERS";
-    protected static final String USER_MANAGEMENT_ADD_USER = "USER_MANAGEMENT_ADD_USER";
-    protected static final String USER_MANAGEMENT_GET_USER_DETAILS = "USER_MANAGEMENT_GET_USER_DETAILS";
-    protected static final String USER_MANAGEMENT_UPDATE_USER_DETAILS = "USER_MANAGEMENT_UPDATE_USER_DETAILS";
-    protected static final String USER_MANAGEMENT_REMOVE_USER = "USER_MANAGEMENT_REMOVE_USER";
+    protected static final String GET_USERS = "GET_USERS";
+    protected static final String ADD_USER = "ADD_USER";
+    protected static final String GET_USER_DETAILS = "GET_USER_DETAILS";
+    protected static final String UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
+    protected static final String REMOVE_USER = "REMOVE_USER";
     protected static final String MOCKED_BEHAVIOUR_VALUE = "Mocked behaviour value";
     protected static final String REAL_VALUE = "Real Value";
+    protected static final String USER_MANAGEMENT = "USER_MANAGEMENT";
 
     protected enum Environment {DEFAULT, DEV, INT, PREPROD, PROD}
 
@@ -54,10 +53,10 @@ public class StandaloneConfigurationExample {
         // Provides the next configuration for any environment it has been deployed to
         return DimmerBuilder.local()
                 .defaultEnvironment()
-                .featureWithValue(USER_MANAGEMENT_ADD_USER, MOCKED_BEHAVIOUR_VALUE)
-                .featureWithBehaviour(USER_MANAGEMENT_GET_USER_DETAILS, featureInvocation -> MOCKED_BEHAVIOUR_VALUE)
-                .featureWithDefaultException(USER_MANAGEMENT_UPDATE_USER_DETAILS)
-                .featureWithException(USER_MANAGEMENT_REMOVE_USER, MyRuntimeException.class)
+                .featureWithValue(USER_MANAGEMENT, ADD_USER, MOCKED_BEHAVIOUR_VALUE)
+                .featureWithBehaviour(USER_MANAGEMENT, GET_USER_DETAILS, featureInvocation -> MOCKED_BEHAVIOUR_VALUE)
+                .featureWithDefaultException(USER_MANAGEMENT, UPDATE_USER_DETAILS)
+                .featureWithException(USER_MANAGEMENT, REMOVE_USER, MyRuntimeException.class)
                 .buildWithDefaultEnvironment();
     }
 
@@ -66,44 +65,44 @@ public class StandaloneConfigurationExample {
         return DimmerBuilder.local()
                 .environments(Environment.DEV.name())
                     // Run features only for a mocked environment
-                    // If the value is not configured for an environment, it will run the real method (i.e. USER_MANAGEMENT_GET_USERS feature)
-                    .featureWithValue(USER_MANAGEMENT_ADD_USER, MOCKED_BEHAVIOUR_VALUE)
-                    .featureWithBehaviour(USER_MANAGEMENT_GET_USER_DETAILS, featureInvocation -> MOCKED_BEHAVIOUR_VALUE)
-                    .featureWithDefaultException(USER_MANAGEMENT_UPDATE_USER_DETAILS)
-                    .featureWithException(USER_MANAGEMENT_REMOVE_USER, MyRuntimeException.class)
+                    // If the value is not configured for an environment, it will run the real method (i.e. GET_USERS feature)
+                    .featureWithValue(USER_MANAGEMENT, ADD_USER, MOCKED_BEHAVIOUR_VALUE)
+                    .featureWithBehaviour(USER_MANAGEMENT, GET_USER_DETAILS, featureInvocation -> MOCKED_BEHAVIOUR_VALUE)
+                    .featureWithDefaultException(USER_MANAGEMENT, UPDATE_USER_DETAILS)
+                    .featureWithException(USER_MANAGEMENT, REMOVE_USER, MyRuntimeException.class)
                 .environments(Environment.INT.name())
                     // Conditionals! Run real features when values are false. Custom logic could be applied here.
-                    .featureWithValue(activateFeatureForAdminUsers(), USER_MANAGEMENT_ADD_USER, MOCKED_BEHAVIOUR_VALUE)
-                    .featureWithException(false, USER_MANAGEMENT_REMOVE_USER, MyRuntimeException.class)
+                    .featureWithValueConditional(activateFeatureForAdminUsers(), USER_MANAGEMENT, ADD_USER, MOCKED_BEHAVIOUR_VALUE)
+                    .featureWithExceptionConditional(false, USER_MANAGEMENT, REMOVE_USER, MyRuntimeException.class)
                 .environments(Environment.PREPROD.name(), Environment.PROD.name())
                     //Disable one of the features, but run the rest
-                    .featureWithException(activateFeatureForAdminUsers(), USER_MANAGEMENT_REMOVE_USER, MyRuntimeException.class)
+                    .featureWithExceptionConditional(activateFeatureForAdminUsers(), USER_MANAGEMENT, REMOVE_USER, MyRuntimeException.class)
                 .build(env.name());
     }
 
-    @DimmerFeature(USER_MANAGEMENT_GET_USERS)
+    @DimmerFeature(value = USER_MANAGEMENT, op = GET_USERS)
     protected String getUserList() {
-        return USER_MANAGEMENT_GET_USERS + REAL_VALUE;
+        return GET_USERS + REAL_VALUE;
     }
 
-    @DimmerFeature(USER_MANAGEMENT_ADD_USER)
+    @DimmerFeature(value = USER_MANAGEMENT, op = ADD_USER)
     protected String addUser() {
-        return USER_MANAGEMENT_ADD_USER + REAL_VALUE;
+        return ADD_USER + REAL_VALUE;
     }
 
-    @DimmerFeature(USER_MANAGEMENT_GET_USER_DETAILS)
+    @DimmerFeature(value = USER_MANAGEMENT, op = GET_USER_DETAILS)
     protected String getUserDetails()  {
-        return USER_MANAGEMENT_GET_USER_DETAILS + REAL_VALUE;
+        return GET_USER_DETAILS + REAL_VALUE;
     }
 
-    @DimmerFeature(USER_MANAGEMENT_UPDATE_USER_DETAILS)
+    @DimmerFeature(value = USER_MANAGEMENT, op = UPDATE_USER_DETAILS)
     protected String updateUser() {
-        return USER_MANAGEMENT_UPDATE_USER_DETAILS + REAL_VALUE;
+        return UPDATE_USER_DETAILS + REAL_VALUE;
     }
 
-    @DimmerFeature(USER_MANAGEMENT_REMOVE_USER)
+    @DimmerFeature(value = USER_MANAGEMENT, op = REMOVE_USER)
     protected String removeUser() {
-        return USER_MANAGEMENT_REMOVE_USER + REAL_VALUE;
+        return REMOVE_USER + REAL_VALUE;
     }
 
     private static Environment extractEnvironmentFromArg(String[] environmentArg) {

@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 public class DimmerApplicationIntegrationTestDev extends DimmerApplicationIntegrationTest {
 
     @Test
-    public void testGetUsersFeatureIsActive() throws Exception {
+    public void testGetUsersFeatureIsThrowsCustomException() throws Exception {
         final ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_IMPLEMENTED));
     }
