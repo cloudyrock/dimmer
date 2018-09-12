@@ -22,7 +22,6 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @ActiveProfiles(DEFAULT)
 public class DimmerApplicationIntegrationTestDefault extends DimmerApplicationIntegrationTest {

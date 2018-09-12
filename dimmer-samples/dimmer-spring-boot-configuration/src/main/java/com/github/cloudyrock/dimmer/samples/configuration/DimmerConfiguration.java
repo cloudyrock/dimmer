@@ -20,6 +20,10 @@ public class DimmerConfiguration {
     public static final String ADD_USER = "ADD_USER";
     public static final String GET_USERS = "GET_USERS";
 
+    public static final String GET_USERS_CONTROLLER = "getUsersController";
+    public static final String CREATE_USER_CONTROLLER = "createUserController";
+
+
     public static final String DEV = "dev";
     public static final String DEFAULT = "default";
     public static final String PROD = "prod";
@@ -34,7 +38,7 @@ public class DimmerConfiguration {
     @Bean
     @Profile(DEFAULT)
     public FeatureExecutor dimmerBuilderDev(Environment environment) {
-        LOGGER.debug("Starting Dimmer Builder on environment {}", environment.getActiveProfiles()[0]);
+        LOGGER.info("Starting Dimmer Builder on environment {}", environment.getActiveProfiles()[0]);
         return DimmerBuilder.local()
                 .defaultEnvironment()
                 .buildWithDefaultEnvironment();
@@ -43,21 +47,21 @@ public class DimmerConfiguration {
     @Bean
     @Profile(DEV)
     public FeatureExecutor dimmerBuilderDefault(Environment environment) {
-        LOGGER.debug("Starting Dimmer Builder on environment {}", environment.getActiveProfiles()[0]);
+        LOGGER.info("Starting Dimmer Builder on environment {}", environment.getActiveProfiles()[0]);
         return DimmerBuilder.local()
                 .environments(DEV)
-                    .featureWithException(GET_USERS, NotImplementedException.class)
-                    .featureWithValue(ADD_USER, new UserApiResponse(1L, "MOCKED VALUE"))
+                    .featureWithException(GET_USERS, GET_USERS_CONTROLLER, NotImplementedException.class)
+                    .featureWithValue(ADD_USER, CREATE_USER_CONTROLLER, new UserApiResponse(1L, "MOCKED VALUE"))
                 .build(DEV);
     }
 
     @Bean
     @Profile(PROD)
     public FeatureExecutor dimmerBuilderProd(Environment environment) {
-        LOGGER.debug("Starting Dimmer Builder on environment {}", environment.getActiveProfiles()[0]);
+        LOGGER.info("Starting Dimmer Builder on environment {}", environment.getActiveProfiles()[0]);
         return DimmerBuilder.local()
                 .environments(PROD)
-                .featureWithDefaultException(isIntegrationAvailable(), ADD_USER)
+                .featureWithDefaultExceptionConditional(isIntegrationAvailable(), ADD_USER, CREATE_USER_CONTROLLER)
                 .build(PROD);
     }
 

@@ -78,11 +78,11 @@ public class StandaloneConfigurationExampleTest {
     @Test
     public void testThatIntEnvironmentExecutesRealMethods() {
         StandaloneConfigurationExample.main(new String[]{"INT"});
-        verify(printStreamMock).println(USER_MANAGEMENT_GET_USERS + REAL_VALUE);
-        verify(printStreamMock).println(USER_MANAGEMENT_GET_USER_DETAILS + REAL_VALUE);
+        verify(printStreamMock).println(GET_USERS + REAL_VALUE);
+        verify(printStreamMock).println(GET_USER_DETAILS + REAL_VALUE);
         verify(printStreamMock).println(MOCKED_BEHAVIOUR_VALUE);
-        verify(printStreamMock).println(USER_MANAGEMENT_REMOVE_USER + REAL_VALUE);
-        verify(printStreamMock).println(USER_MANAGEMENT_UPDATE_USER_DETAILS + REAL_VALUE);
+        verify(printStreamMock).println(REMOVE_USER + REAL_VALUE);
+        verify(printStreamMock).println(UPDATE_USER_DETAILS + REAL_VALUE);
     }
 
     @Test(expected = MyRuntimeException.class)
@@ -90,17 +90,17 @@ public class StandaloneConfigurationExampleTest {
         try {
             StandaloneConfigurationExample.main(new String[]{"PROD"});
         }catch (MyRuntimeException e) {
-            verify(printStreamMock).println(USER_MANAGEMENT_GET_USERS + REAL_VALUE);
-            verify(printStreamMock).println(USER_MANAGEMENT_ADD_USER + REAL_VALUE);
-            verify(printStreamMock).println(USER_MANAGEMENT_GET_USER_DETAILS + REAL_VALUE);
-            verify(printStreamMock).println(USER_MANAGEMENT_UPDATE_USER_DETAILS + REAL_VALUE);
+            verify(printStreamMock).println(GET_USERS + REAL_VALUE);
+            verify(printStreamMock).println(ADD_USER + REAL_VALUE);
+            verify(printStreamMock).println(GET_USER_DETAILS + REAL_VALUE);
+            verify(printStreamMock).println(UPDATE_USER_DETAILS + REAL_VALUE);
             throw e;
         }
     }
 
 
     private void verifyDefaultEnvironmentCall(RuntimeException e) {
-        verify(printStreamMock).println(USER_MANAGEMENT_GET_USERS + REAL_VALUE);
+        verify(printStreamMock).println(GET_USERS + REAL_VALUE);
         verify(printStreamMock, times(2)).println(MOCKED_BEHAVIOUR_VALUE);
         throw e;
     }
