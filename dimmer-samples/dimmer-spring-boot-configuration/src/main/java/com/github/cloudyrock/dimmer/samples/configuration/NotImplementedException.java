@@ -5,7 +5,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_IMPLEMENTED)
 public class NotImplementedException extends RuntimeException {
+
+    public static final String FEATURE_IS_WORK_IN_PROGRESS = "Feature is work in progress :)";
+
     public NotImplementedException() {
-        super("Feature is work in progress :)");
+        super(FEATURE_IS_WORK_IN_PROGRESS);
     }
 }

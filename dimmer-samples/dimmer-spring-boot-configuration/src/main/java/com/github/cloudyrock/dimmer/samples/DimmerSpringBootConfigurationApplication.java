@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer.samples;
 
+import com.github.cloudyrock.dimmer.samples.controller.UserControllerMapper;
 import com.github.cloudyrock.dimmer.samples.service.UserService;
 import com.github.cloudyrock.dimmer.samples.service.UserServiceImpl;
 import org.springframework.boot.SpringApplication;
@@ -16,5 +17,10 @@ public class DimmerSpringBootConfigurationApplication {
     @Bean
     public UserService userServiceBean(){
         return new UserServiceImpl();
+    }
+
+    @Bean
+    public UserControllerMapper userControllerMapper(){
+        return new UserControllerMapper();
     }
 }

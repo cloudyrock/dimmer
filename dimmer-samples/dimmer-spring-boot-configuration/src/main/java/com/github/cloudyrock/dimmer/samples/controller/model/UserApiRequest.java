@@ -1,12 +1,18 @@
 package com.github.cloudyrock.dimmer.samples.controller.model;
 
-import org.springframework.boot.jackson.JsonComponent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
+public final class UserApiRequest {
 
-@JsonComponent
-public class UserApiRequest implements Serializable{
+    @JsonProperty("name")
     private String name;
+
+    public UserApiRequest() {
+    }
+
+    public UserApiRequest(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -15,4 +21,5 @@ public class UserApiRequest implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
 }

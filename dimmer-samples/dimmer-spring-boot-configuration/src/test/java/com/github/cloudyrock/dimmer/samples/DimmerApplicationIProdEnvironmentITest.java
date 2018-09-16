@@ -4,19 +4,22 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.github.cloudyrock.dimmer.samples.configuration.DimmerConfiguration.PROD;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @ActiveProfiles(PROD)
-public class DimmerApplicationIntegrationTestProd extends DimmerApplicationIntegrationTest {
+public class DimmerApplicationIProdEnvironmentITest extends DimmerApplicationITest {
 
     @Test
     public void testGetUsersFeatureIsActive() throws Exception {
