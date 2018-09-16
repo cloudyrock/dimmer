@@ -10,7 +10,7 @@ The following is a set of guidelines for contributing to Dimmer project which is
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Dimmer Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [dev@cloudyrock.io][dev_email].
+This project and everyone participating in it is governed by the [Dimmer Code of Conduct](./community/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [dev@cloudyrock.io][dev_email].
 
 ## It's just a question, I don't want to read this whole thing!!!
 
@@ -31,7 +31,7 @@ Dimmer project contains 4 main areas.
 
 This section guides you through submitting a bug report for Dimmer project. 
 
-Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](./community/ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
@@ -43,7 +43,7 @@ Before creating bug reports, please check [this list](#before-submitting-a-bug-r
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the main repository referencing the specific module(by the right label) and provide the required information by filling in [the template](ISSUE_TEMPLATE.md).
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the main repository referencing the specific module(by the right label) and provide the required information by filling in [the template](./community/ISSUE_TEMPLATE.md).
 
 Please use the `bug` label and the module label for the issue. For instance, a bug in dimmer local should contain, at least, the label `bug` and `LOCAL-MODULE`.
 
@@ -61,7 +61,7 @@ This section guides you through submitting an enhancement suggestion for Dimmer 
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
-Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information  by filling in [the template](ENHANCEMENT_TEMPLATE.md).
+Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information  by filling in [the template](./community/ENHANCENMENT_TEMPLATE.md).
 
 Please use at least the module label for the enhancement. For instance, a enhancement in dimmer local should contain, at least, `LOCAL-MODULE`.
 

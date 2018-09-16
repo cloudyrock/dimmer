@@ -449,7 +449,7 @@ Workarounds:
 - Taking advantage of the full compatibility of Kotlin with Java, use Kotlin instead of Java for those classes using Lombok. Everything Lombok provides, Kotlin does too natively and easier.
 
 ## Code of conduct 
-Please read the [code of conduct](./CODE_OF_CONDUCT.md) for details on our code of conduct.
+Please read the [code of conduct](././community/CODE_OF_CONDUCT.md) for details on our code of conduct.
  
 
 ## LICENSE
