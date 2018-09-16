@@ -94,7 +94,29 @@ Unsure where to begin contributing to Atom? You can start by looking through the
 
 
 
+### Code style
+- No comments, only when it's very complex
+- finals
 
+### Test
+- Keep test coverage
+- UTest and ITest
+- Unit and integrations tests
+- test names convention 
+
+
+### Java docs
+When affects to API
+
+### steps
+- fork repository
+- do the change
+    - code
+    - tests
+    - Java docs
+    - Update readme
+- Pull request
+- CI and sonar check
 
 
 
