@@ -3,6 +3,7 @@ package com.github.cloudyrock.dimmer.samples;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -13,6 +14,7 @@ import static org.junit.Assert.assertThat;
 
 @EnableAutoConfiguration
 @ActiveProfiles(DEV)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class DimmerApplicationIntegrationTestDev extends DimmerApplicationIntegrationTest {
 
     @Test

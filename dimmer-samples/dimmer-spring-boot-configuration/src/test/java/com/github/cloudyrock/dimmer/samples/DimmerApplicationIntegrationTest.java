@@ -16,7 +16,6 @@ import static com.github.cloudyrock.dimmer.samples.controller.UserController.USE
 
 @RunWith(SpringRunner.class)
 @TestConfiguration(value = "DimmerConfiguration")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public abstract class DimmerApplicationIntegrationTest {
 
     @LocalServerPort

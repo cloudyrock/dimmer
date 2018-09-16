@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @ActiveProfiles(PROD)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class DimmerApplicationIntegrationTestProd extends DimmerApplicationIntegrationTest {
 
     @Test
