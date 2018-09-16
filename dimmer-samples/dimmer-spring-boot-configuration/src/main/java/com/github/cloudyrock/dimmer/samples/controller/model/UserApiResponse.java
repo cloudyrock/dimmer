@@ -1,36 +1,26 @@
 package com.github.cloudyrock.dimmer.samples.controller.model;
 
-import org.springframework.boot.jackson.JsonComponent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
+public final class UserApiResponse {
 
-@JsonComponent
-public class UserApiResponse implements Serializable {
+    @JsonProperty("id")
+    private final Long id;
 
-    private Long id;
-    private String name;
+    @JsonProperty("name")
+    private final String name;
 
-    public UserApiResponse(){}
-
-    public UserApiResponse(Long id, String name){
+    public UserApiResponse(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }

@@ -5,35 +5,28 @@ import com.github.cloudyrock.dimmer.samples.controller.model.UserApiResponse;
 import com.github.cloudyrock.dimmer.samples.repository.User;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public final class UserControllerMapper {
+public class UserControllerMapper {
 
-    final static Function<User, UserApiResponse> userUserApiResponseFunction =
-            user -> createNewUserApiResponseFromUser(user);
-
-    public static User convertUserApiRequestToUser(UserApiRequest userApiRequest) {
+    public User fromRequest(UserApiRequest userApiRequest) {
         final User user = new User();
         user.setName(userApiRequest.getName());
         return user;
     }
 
-    public static UserApiResponse convertToUserResponse(User user) {
+    public UserApiResponse toResponse(User user) {
         return createNewUserApiResponseFromUser(user);
     }
 
-    public static List<UserApiResponse> convertToListUserApiResponse(List<User> listOfUsers) {
+    public List<UserApiResponse> toResponse(List<User> listOfUsers) {
 
         return listOfUsers.stream().
-                map(userUserApiResponseFunction)
+                map(user -> createNewUserApiResponseFromUser(user))
                 .collect(Collectors.toList());
     }
 
     private static UserApiResponse createNewUserApiResponseFromUser(User user){
-        final UserApiResponse userApiResponse = new UserApiResponse();
-        userApiResponse.setName(user.getName());
-        userApiResponse.setId(user.getId());
-        return userApiResponse;
+        return new UserApiResponse(user.getId(),user.getName());
     }
 }

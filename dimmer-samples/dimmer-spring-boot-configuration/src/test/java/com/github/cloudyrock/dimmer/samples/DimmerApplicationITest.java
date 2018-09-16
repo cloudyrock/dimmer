@@ -3,7 +3,6 @@ package com.github.cloudyrock.dimmer.samples;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -16,8 +15,8 @@ import static com.github.cloudyrock.dimmer.samples.controller.UserController.USE
 
 @RunWith(SpringRunner.class)
 @TestConfiguration(value = "DimmerConfiguration")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public abstract class DimmerApplicationIntegrationTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public abstract class DimmerApplicationITest {
 
     @LocalServerPort
     private int port = 8080;

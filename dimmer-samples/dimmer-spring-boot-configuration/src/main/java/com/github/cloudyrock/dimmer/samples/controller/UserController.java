@@ -15,32 +15,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static com.github.cloudyrock.dimmer.samples.configuration.DimmerConfiguration.*;
-import static com.github.cloudyrock.dimmer.samples.controller.UserControllerMapper.*;
+import static com.github.cloudyrock.dimmer.samples.controller.UserController.USERS_PATH;
 
 @RestController
+@RequestMapping(path = USERS_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
-    public static final String USERS_PATH = "/users";
+    public static final String USERS_PATH= "/users";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserControllerMapper controllerMapper;
+
     @DimmerFeature(value = GET_USERS, op = GET_USERS_CONTROLLER)
-    @RequestMapping(path = USERS_PATH, method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<UserApiResponse> getUsers() {
+    @GetMapping
+    public List<UserApiResponse> getUsers() {
         LOGGER.info("Called the GET /users endpoint");
-        return convertToListUserApiResponse(userService.getListOfUsers());
+        return controllerMapper.toResponse(userService.getListOfUsers());
     }
 
     @DimmerFeature(value = ADD_USER, op = CREATE_USER_CONTROLLER)
-    @RequestMapping(path = USERS_PATH, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserApiResponse addUser(@RequestBody UserApiRequest userApiRequest) {
         LOGGER.info("Called the POST /users endpoint");
-        final User user = convertUserApiRequestToUser(userApiRequest);
-        return convertToUserResponse(userService.createUser(user));
+        final User user = controllerMapper.fromRequest(userApiRequest);
+        return controllerMapper.toResponse(userService.createUser(user));
     }
 }
