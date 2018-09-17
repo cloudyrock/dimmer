@@ -53,7 +53,7 @@ Dimmer project contains 4 main areas.
 
 This section guides you through submitting a bug report for Dimmer project. 
 
-Before creating bug reports, please check the section [before submitting a bug report](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](./community/ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, please check the section [before submitting a bug report](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](community/ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
