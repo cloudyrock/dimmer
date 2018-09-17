@@ -122,7 +122,7 @@ While we improve this section, please adhere to the [Google Style guide](http://
 
 ##### JavaDocs and general documentation
 
-We believe in self explanatory code, so please prioritize the readable code over documentation. However, as we are developing 
+We believe in self explanatory code, so please prioritize a readable code over documentation. However, as we are developing 
 a library, please ensure you provide(and update) the javaDocs for the public API. 
 
 #### How Do I perform A (Good) Pull Request?
