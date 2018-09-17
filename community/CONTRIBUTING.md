@@ -60,7 +60,7 @@ This section guides you through submitting a bug report for Dimmer project.
 
 #### Before Submitting A Bug Report
 
-* **Check the [FAQ page](FAQ.md)** for a list of common questions and problems. You might find out that issue/question is clarified in this page.
+* **Check the [FAQ page](FAQ.md)** for a list of common questions and problems. You might find out your issue/question is clarified in this page.
 * **Perform a [cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+archived%3Afalse+repo%3Acloudyrock%2Fdimmer-project+)** 
 to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
