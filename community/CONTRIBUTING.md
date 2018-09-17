@@ -4,9 +4,31 @@
 
 The following is a set of guidelines for contributing to Dimmer project which is hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-## Table Of Contents
 
+## Table of contents
 
+   * [Code of Conduct](#code-of-conduct)
+   * [It's just a question, I don't want to read this whole thing!!!](#its-just-a-question-i-dont-want-to-read-this-whole-thing)
+   * [Dimmer project packages](#dimmer-project-packages)
+   * [How Can I Contribute?](#how-can-i-contribute)
+      * [Reporting Bugs](#reporting-bugs)
+         * [Before Submitting A Bug Report](#before-submitting-a-bug-report)
+         * [How Do I Submit A (Good) Bug Report?](#how-do-i-submit-a-good-bug-report)
+      * [Suggesting Enhancements](#suggesting-enhancements)
+         * [Before Submitting An Enhancement Suggestion](#before-submitting-an-enhancement-suggestion)
+         * [How Do I Submit A (Good) Enhancement Suggestion?](#how-do-i-submit-a-good-enhancement-suggestion)
+      * [Your First Code Contribution](#your-first-code-contribution)
+         * [Before creating a pull request](#before-creating-a-pull-request)
+            * [Code style](#code-style)
+            * [Tests](#tests)
+            * [JavaDocs and general documentation](#javadocs-and-general-documentation)
+         * [How Do I perform A (Good) Pull Request?](#how-do-i-perform-a-good-pull-request)
+      * [Issue and Pull Request Labels](#issue-and-pull-request-labels)
+         * [Type of issue](#type-of-issue)
+         * [Module](#module)
+         * [Severity](#severity)
+         * [Complexity](#complexity)
+         * [Others](#others)
 
 ## Code of Conduct
 
@@ -75,13 +97,13 @@ Unsure where to begin contributing to Dimmer project? You can start by looking t
 * [Intermediate issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Aadvance) - issues which should be a bit more involved than `beginner` issues.
 
 
-### Before creating a pull request
+#### Before creating a pull request
 
-#### Code style
+##### Code style
 
 While we improve this section, please adhere to the [Google Style guide](http://google.github.io/styleguide/javaguide.html)
 
-#### Tests
+##### Tests
 
 - Any code delivered should be covered by unit and integration tests.
 
@@ -91,12 +113,12 @@ While we improve this section, please adhere to the [Google Style guide](http://
 
 - Ensure the test coverage fits the threshold 
 
-#### JavaDocs and general documentation
+##### JavaDocs and general documentation
 
 We believe in self explanatory code, so please prioritize the readable code over documentation. However, as we are developing 
 a library, please ensure you provide(and update) the javaDocs for the public API. 
 
-#### steps
+#### How Do I perform A (Good) Pull Request?
 - Fork repository to
 - Checkout a new branch called feature/issue-XXX
 - Perform the change
