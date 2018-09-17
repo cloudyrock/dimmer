@@ -69,261 +69,115 @@ In addition, if you believe you have the knowledge to evaluate the issue complex
 
 ### Your First Code Contribution
 
-Unsure where to begin contributing to Atom? You can start by looking through these `beginner` and `intermediate` issues:
+Unsure where to begin contributing to Dimmer project? You can start by looking through these `beginner` and `intermediate` issues:
 
 * [Beginner issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Abeginner) - issues which should only require a few lines of code, and a test or two.
 * [Intermediate issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Aadvance) - issues which should be a bit more involved than `beginner` issues.
 
 
+### Before creating a pull request
 
+#### Code style
 
+While we improve this section, please adhere to the [Google Style guide](http://google.github.io/styleguide/javaguide.html)
 
+#### Tests
 
+- Any code delivered should be covered by unit and integration tests.
 
+- Unit test files should end with the sufix `UTest` and integration tests with `ITest`.
 
+- We use the shouldXXX_whenXXX_ifXXXXX for test names. Something like shouldReturn4_whenSum_ifParametersAre2And2()
 
+- Ensure the test coverage fits the threshold 
 
+#### JavaDocs and general documentation
 
+We believe in self explanatory code, so please prioritize the readable code over documentation. However, as we are developing 
+a library, please ensure you provide(and update) the javaDocs for the public API. 
 
+#### steps
+- Fork repository to
+- Checkout a new branch called feature/issue-XXX
+- Perform the change
+    - Actual code change
+    - Tests
+    - Java docs for public API
+    - Update readme if needed
+- Perform pull request, filling in [the required template](PULL_REQUEST_TEMPLATE.md)
+- Check travis and sonar are passing
 
-
-
-
-
-
-
-
-
-### Code style
-- No comments, only when it's very complex
-- finals
-
-### Test
-- Keep test coverage
-- UTest and ITest
-- Unit and integrations tests
-- test names convention 
-
-
-### Java docs
-When affects to API
-
-### steps
-- fork repository
-- do the change
-    - code
-    - tests
-    - Java docs
-    - Update readme
-- Pull request
-- CI and sonar check
-
-
-
-
-### Pull Requests
-
-* Fill in [the required template](PULL_REQUEST_TEMPLATE.md)
-* Do not include issue numbers in the PR title
-* Include screenshots and animated GIFs in your pull request whenever possible.
-* Follow the [JavaScript](#javascript-styleguide) and [CoffeeScript](#coffeescript-styleguide) styleguides.
-* Include thoughtfully-worded, well-structured [Jasmine](https://jasmine.github.io/) specs in the `./spec` folder. Run them using `atom --test spec`. See the [Specs Styleguide](#specs-styleguide) below.
-* Document new code based on the [Documentation Styleguide](#documentation-styleguide)
-* End all files with a newline
-* [Avoid platform-dependent code](https://flight-manual.atom.io/hacking-atom/sections/cross-platform-compatibility/)
-* Place requires in the following order:
-    * Built in Node Modules (such as `path`)
-    * Built in Atom and Electron Modules (such as `atom`, `remote`)
-    * Local Modules (using relative paths)
-* Place class properties in the following order:
-    * Class methods and properties (methods starting with a `@` in CoffeeScript or `static` in JavaScript)
-    * Instance methods and properties
-
-## Styleguides
-
-### Git Commit Messages
-
-* Use the present tense ("Add feature" not "Added feature")
-* Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-* Limit the first line to 72 characters or less
-* Reference issues and pull requests liberally after the first line
-* When only changing documentation, include `[ci skip]` in the commit title
-* Consider starting the commit message with an applicable emoji:
-    * :art: `:art:` when improving the format/structure of the code
-    * :racehorse: `:racehorse:` when improving performance
-    * :non-potable_water: `:non-potable_water:` when plugging memory leaks
-    * :memo: `:memo:` when writing docs
-    * :penguin: `:penguin:` when fixing something on Linux
-    * :apple: `:apple:` when fixing something on macOS
-    * :checkered_flag: `:checkered_flag:` when fixing something on Windows
-    * :bug: `:bug:` when fixing a bug
-    * :fire: `:fire:` when removing code or files
-    * :green_heart: `:green_heart:` when fixing the CI build
-    * :white_check_mark: `:white_check_mark:` when adding tests
-    * :lock: `:lock:` when dealing with security
-    * :arrow_up: `:arrow_up:` when upgrading dependencies
-    * :arrow_down: `:arrow_down:` when downgrading dependencies
-    * :shirt: `:shirt:` when removing linter warnings
-
-### JavaScript Styleguide
-
-All JavaScript must adhere to [JavaScript Standard Style](https://standardjs.com/).
-
-* Prefer the object spread operator (`{...anotherObj}`) to `Object.assign()`
-* Inline `export`s with expressions whenever possible
-  ```js
-  // Use this:
-  export default class ClassName {
-
-  }
-
-  // Instead of:
-  class ClassName {
-
-  }
-  export default ClassName
-  ```
-
-### CoffeeScript Styleguide
-
-* Set parameter defaults without spaces around the equal sign
-    * `clear = (count=1) ->` instead of `clear = (count = 1) ->`
-* Use spaces around operators
-    * `count + 1` instead of `count+1`
-* Use spaces after commas (unless separated by newlines)
-* Use parentheses if it improves code clarity.
-* Prefer alphabetic keywords to symbolic keywords:
-    * `a is b` instead of `a == b`
-* Avoid spaces inside the curly-braces of hash literals:
-    * `{a: 1, b: 2}` instead of `{ a: 1, b: 2 }`
-* Include a single line of whitespace between methods.
-* Capitalize initialisms and acronyms in names, except for the first word, which
-  should be lower-case:
-  * `getURI` instead of `getUri`
-  * `uriToOpen` instead of `URIToOpen`
-* Use `slice()` to copy an array
-* Add an explicit `return` when your function ends with a `for`/`while` loop and
-  you don't want it to return a collected array.
-* Use `this` instead of a standalone `@`
-  * `return this` instead of `return @`
-
-### Specs Styleguide
-
-- Include thoughtfully-worded, well-structured [Jasmine](https://jasmine.github.io/) specs in the `./spec` folder.
-- Treat `describe` as a noun or situation.
-- Treat `it` as a statement about state or how an operation changes state.
-
-#### Example
-
-```coffee
-describe 'a dog', ->
- it 'barks', ->
- # spec here
- describe 'when the dog is happy', ->
-  it 'wags its tail', ->
-  # spec here
-```
-
-### Documentation Styleguide
-
-* Use [AtomDoc](https://github.com/atom/atomdoc).
-* Use [Markdown](https://daringfireball.net/projects/markdown).
-* Reference methods and classes in markdown with the custom `{}` notation:
-    * Reference classes with `{ClassName}`
-    * Reference instance methods with `{ClassName::methodName}`
-    * Reference class methods with `{ClassName.methodName}`
-
-#### Example
-
-```coffee
-# Public: Disable the package with the given name.
-#
-# * `name`    The {String} name of the package to disable.
-# * `options` (optional) The {Object} with disable options (default: {}):
-#   * `trackTime`     A {Boolean}, `true` to track the amount of time taken.
-#   * `ignoreErrors`  A {Boolean}, `true` to catch and ignore errors thrown.
-# * `callback` The {Function} to call after the package has been disabled.
-#
-# Returns `undefined`.
-disablePackage: (name, options, callback) ->
-```
-
-## Additional Notes
 
 ### Issue and Pull Request Labels
 
-This section lists the labels we use to help us track and manage issues and pull requests. Most labels are used across all Atom repositories, but some are specific to `atom/atom`.
+This section lists the labels we use to help us track and manage issues and pull requests. 
 
-[GitHub search](https://help.github.com/articles/searching-issues/) makes it easy to use labels for finding groups of issues or pull requests you're interested in. For example, you might be interested in [open issues across `atom/atom` and all Atom-owned packages which are labeled as bugs, but still need to be reliably reproduced](https://github.com/search?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue+user%3Aatom+label%3Abug+label%3Aneeds-reproduction) or perhaps [open pull requests in `atom/atom` which haven't been reviewed yet](https://github.com/search?utf8=%E2%9C%93&q=is%3Aopen+is%3Apr+repo%3Aatom%2Fatom+comments%3A0). To help you find issues and pull requests, each label is listed with search links for finding open items with that label in `atom/atom` only and also across all Atom repositories. We  encourage you to read about [other search filters](https://help.github.com/articles/searching-issues/) which will help you write more focused queries.
-
-The labels are loosely grouped by their purpose, but it's not required that every issue have a label from every group or that an issue can't have more than one label from the same group.
+The labels are loosely grouped by their purpose, but it's not required that every issue have a label from every group or that an issue can't have more than one label from the same group. However,
+the more you provide, the easier and faster the issue can be fixed.
 
 Please open an issue on `atom/atom` if you have suggestions for new labels, and if you notice some labels are missing on some repositories, then please open an issue on that repository.
 
-#### Type of Issue and Issue State
 
-| Label name | `atom/atom` :mag_right: | `atom`‑org :mag_right: | Description |
-| --- | --- | --- | --- |
-| `enhancement` | [search][search-atom-repo-label-enhancement] | [search][search-atom-org-label-enhancement] | Feature requests. |
-| `bug` | [search][search-atom-repo-label-bug] | [search][search-atom-org-label-bug] | Confirmed bugs or reports that are very likely to be bugs. |
-| `question` | [search][search-atom-repo-label-question] | [search][search-atom-org-label-question] | Questions more than bug reports or feature requests (e.g. how do I do X). |
-| `feedback` | [search][search-atom-repo-label-feedback] | [search][search-atom-org-label-feedback] | General feedback more than bug reports or feature requests. |
-| `help-wanted` | [search][search-atom-repo-label-help-wanted] | [search][search-atom-org-label-help-wanted] | The Atom core team would appreciate help from the community in resolving these issues. |
-| `beginner` | [search][search-atom-repo-label-beginner] | [search][search-atom-org-label-beginner] | Less complex issues which would be good first issues to work on for users who want to contribute to Atom. |
-| `more-information-needed` | [search][search-atom-repo-label-more-information-needed] | [search][search-atom-org-label-more-information-needed] | More information needs to be collected about these problems or feature requests (e.g. steps to reproduce). |
-| `needs-reproduction` | [search][search-atom-repo-label-needs-reproduction] | [search][search-atom-org-label-needs-reproduction] | Likely bugs, but haven't been reliably reproduced. |
-| `blocked` | [search][search-atom-repo-label-blocked] | [search][search-atom-org-label-blocked] | Issues blocked on other issues. |
-| `duplicate` | [search][search-atom-repo-label-duplicate] | [search][search-atom-org-label-duplicate] | Issues which are duplicates of other issues, i.e. they have been reported before. |
-| `wontfix` | [search][search-atom-repo-label-wontfix] | [search][search-atom-org-label-wontfix] | The Atom core team has decided not to fix these issues for now, either because they're working as intended or for some other reason. |
-| `invalid` | [search][search-atom-repo-label-invalid] | [search][search-atom-org-label-invalid] | Issues which aren't valid (e.g. user errors). |
-| `package-idea` | [search][search-atom-repo-label-package-idea] | [search][search-atom-org-label-package-idea] | Feature request which might be good candidates for new packages, instead of extending Atom or core Atom packages. |
-| `wrong-repo` | [search][search-atom-repo-label-wrong-repo] | [search][search-atom-org-label-wrong-repo] | Issues reported on the wrong repository (e.g. a bug related to the [Settings View package](https://github.com/atom/settings-view) was reported on [Atom core](https://github.com/atom/atom)). |
+#### Type of issue
 
-#### Topic Categories
+| Label name | `Search in github` :mag_right: | Description |
+| --- | --- | --- |
+| `BUG` | [search][search-repo-label-bug] | Bug issues |
+| `feature` | [search][search-repo-label-feature] | Feature issues |
+| `docs/ops` | [search][search-repo-label-docs-ops] | Issues which just require documentation or some management work |
 
-| Label name | `atom/atom` :mag_right: | `atom`‑org :mag_right: | Description |
-| --- | --- | --- | --- |
-| `windows` | [search][search-atom-repo-label-windows] | [search][search-atom-org-label-windows] | Related to Atom running on Windows. |
-| `linux` | [search][search-atom-repo-label-linux] | [search][search-atom-org-label-linux] | Related to Atom running on Linux. |
-| `mac` | [search][search-atom-repo-label-mac] | [search][search-atom-org-label-mac] | Related to Atom running on macOS. |
-| `documentation` | [search][search-atom-repo-label-documentation] | [search][search-atom-org-label-documentation] | Related to any type of documentation (e.g. [API documentation](https://atom.io/docs/api/latest/) and the [flight manual](https://flight-manual.atom.io/)). |
-| `performance` | [search][search-atom-repo-label-performance] | [search][search-atom-org-label-performance] | Related to performance. |
-| `security` | [search][search-atom-repo-label-security] | [search][search-atom-org-label-security] | Related to security. |
-| `ui` | [search][search-atom-repo-label-ui] | [search][search-atom-org-label-ui] | Related to visual design. |
-| `api` | [search][search-atom-repo-label-api] | [search][search-atom-org-label-api] | Related to Atom's public APIs. |
-| `uncaught-exception` | [search][search-atom-repo-label-uncaught-exception] | [search][search-atom-org-label-uncaught-exception] | Issues about uncaught exceptions, normally created from the [Notifications package](https://github.com/atom/notifications). |
-| `crash` | [search][search-atom-repo-label-crash] | [search][search-atom-org-label-crash] | Reports of Atom completely crashing. |
-| `auto-indent` | [search][search-atom-repo-label-auto-indent] | [search][search-atom-org-label-auto-indent] | Related to auto-indenting text. |
-| `encoding` | [search][search-atom-repo-label-encoding] | [search][search-atom-org-label-encoding] | Related to character encoding. |
-| `network` | [search][search-atom-repo-label-network] | [search][search-atom-org-label-network] | Related to network problems or working with remote files (e.g. on network drives). |
-| `git` | [search][search-atom-repo-label-git] | [search][search-atom-org-label-git] | Related to Git functionality (e.g. problems with gitignore files or with showing the correct file status). |
 
-#### `atom/atom` Topic Categories
+#### Module
 
-| Label name | `atom/atom` :mag_right: | `atom`‑org :mag_right: | Description |
-| --- | --- | --- | --- |
-| `editor-rendering` | [search][search-atom-repo-label-editor-rendering] | [search][search-atom-org-label-editor-rendering] | Related to language-independent aspects of rendering text (e.g. scrolling, soft wrap, and font rendering). |
-| `build-error` | [search][search-atom-repo-label-build-error] | [search][search-atom-org-label-build-error] | Related to problems with building Atom from source. |
-| `error-from-pathwatcher` | [search][search-atom-repo-label-error-from-pathwatcher] | [search][search-atom-org-label-error-from-pathwatcher] | Related to errors thrown by the [pathwatcher library](https://github.com/atom/node-pathwatcher). |
-| `error-from-save` | [search][search-atom-repo-label-error-from-save] | [search][search-atom-org-label-error-from-save] | Related to errors thrown when saving files. |
-| `error-from-open` | [search][search-atom-repo-label-error-from-open] | [search][search-atom-org-label-error-from-open] | Related to errors thrown when opening files. |
-| `installer` | [search][search-atom-repo-label-installer] | [search][search-atom-org-label-installer] | Related to the Atom installers for different OSes. |
-| `auto-updater` | [search][search-atom-repo-label-auto-updater] | [search][search-atom-org-label-auto-updater] | Related to the auto-updater for different OSes. |
-| `deprecation-help` | [search][search-atom-repo-label-deprecation-help] | [search][search-atom-org-label-deprecation-help] | Issues for helping package authors remove usage of deprecated APIs in packages. |
-| `electron` | [search][search-atom-repo-label-electron] | [search][search-atom-org-label-electron] | Issues that require changes to [Electron](https://electron.atom.io) to fix or implement. |
+| Label name | `Search in github` :mag_right: | Description |
+| --- | --- | --- |
+| `CORE-MODULE` | [search][search-repo-label-core-module] | issues to be fixed in the core |
+| `LOCAL-MODULE` | [search][search-repo-label-local-module] | issues to be fixed in the local module |
+| `SERVER-MODULE` | [search][search-repo-label-server-module] | issues to be fixed in the server module |
+| `samples-MODULE` | [search][search-repo-label-samples-module] | issues to be fixed in one of the sample apps|
 
-#### Pull Request Labels
+#### Severity
 
-| Label name | `atom/atom` :mag_right: | `atom`‑org :mag_right: | Description
-| --- | --- | --- | --- |
-| `work-in-progress` | [search][search-atom-repo-label-work-in-progress] | [search][search-atom-org-label-work-in-progress] | Pull requests which are still being worked on, more changes will follow. |
-| `needs-review` | [search][search-atom-repo-label-needs-review] | [search][search-atom-org-label-needs-review] | Pull requests which need code review, and approval from maintainers or Atom core team. |
-| `under-review` | [search][search-atom-repo-label-under-review] | [search][search-atom-org-label-under-review] | Pull requests being reviewed by maintainers or Atom core team. |
-| `requires-changes` | [search][search-atom-repo-label-requires-changes] | [search][search-atom-org-label-requires-changes] | Pull requests which need to be updated based on review comments and then reviewed again. |
-| `needs-testing` | [search][search-atom-repo-label-needs-testing] | [search][search-atom-org-label-needs-testing] | Pull requests which need manual testing. |
+| Label name | `Search in github` :mag_right: | Description |
+| --- | --- | --- |
+| `CRITICAL` | [search][search-repo-label-critical] | Critical issues stopping Dimmer from being used |
+| `normal` | [search][search-repo-label-normal] | normal issues that needs to be fixed, but doesn't stop the application from being used  |
+| `minor` | [search][search-repo-label-minor] | issues that can wait or it's a nice to have feature |
+
+#### Complexity
+
+| Label name | `Search in github` :mag_right: | Description |
+| --- | --- | --- |
+| `beginner` | [search][search-repo-label-beginner] | issues which should only require a few lines of code, and a test or two |
+| `intermediate` | [search][search-repo-label-intermediate] | issues which should be a bit more involved than `beginner` issues  |
+| `advance` | [search][search-repo-label-advance] | issues that require some deep knowledge, expertise or just time consuming |
+
+#### Others
+
+| Label name | `Search in github` :mag_right: | Description |
+| --- | --- | --- |
+| `invalid/won't fix` | [search][search-repo-label-wont-fix] | issues which won't be worked on|
+
 
 
 [dev_email]: mailto:dev@cloudyrock.io
 
 
+[search-repo-label-bug]:https://github.com/cloudyrock/dimmer-project/labels/bug
+[search-repo-label-feature]:https://github.com/cloudyrock/dimmer-project/labels/feature
+[search-repo-label-docs-ops]:https://github.com/cloudyrock/dimmer-project/labels/docs%2Fops
 
+[search-repo-label-core-module]:https://github.com/cloudyrock/dimmer-project/labels/core-module
+[search-repo-label-local-module]:https://github.com/cloudyrock/dimmer-project/labels/local-module
+[search-repo-label-server-module]:https://github.com/cloudyrock/dimmer-project/labels/server-module
+[search-repo-label-samples-module]:https://github.com/cloudyrock/dimmer-project/labels/samples-module
+
+[search-repo-label-critical]:https://github.com/cloudyrock/dimmer-project/labels/critical
+[search-repo-label-normal]:https://github.com/cloudyrock/dimmer-project/labels/normal
+[search-repo-label-minor]:https://github.com/cloudyrock/dimmer-project/labels/minor
+
+[search-repo-label-beginner]:https://github.com/cloudyrock/dimmer-project/labels/beginner
+[search-repo-label-intermediate]:https://github.com/cloudyrock/dimmer-project/labels/intermediate
+[search-repo-label-advance]:https://github.com/cloudyrock/dimmer-project/labels/advance
+
+[search-repo-label-wont-fix]:https://github.com/cloudyrock/dimmer-project/labels/invalid%2Fwon%27t%20fix
