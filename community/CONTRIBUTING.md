@@ -53,7 +53,9 @@ Dimmer project contains 4 main areas.
 
 This section guides you through submitting a bug report for Dimmer project. 
 
-Before creating bug reports, please check the section [before submitting a bug report](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, first follow the suggested checks in section [before submitting a bug report](#before-submitting-a-bug-report) as you might find out that you don't need to create one. 
+When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
+
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
@@ -64,7 +66,7 @@ Before creating bug reports, please check the section [before submitting a bug r
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the main repository referencing the specific module(by the right label) and provide the required information by filling in [the template](ISSUE_TEMPLATE.md).
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the Dimmer repository referencing the specific module(by the right label) and provide the required information by filling in [the template](ISSUE_TEMPLATE.md).
 
 Please use the `bug` label and the module label for the issue. For instance, a bug in dimmer local should contain, at least, the label `bug` and `LOCAL-MODULE`.
 
