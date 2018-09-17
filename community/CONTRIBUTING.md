@@ -67,7 +67,7 @@ to see if the problem has already been reported. If it has **and the issue is st
 #### How Do I Submit A (Good) Bug Report?
 
 Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the Dimmer repository following the
-[the issue template](ISSUE_TEMPLATE.md). Please provide as much information as you can and add the following labels to make easier to categorise issues: 
+[issue template](ISSUE_TEMPLATE.md). Please provide as much information as you can and add the following labels to make easier to categorise issues: 
 - The label `bug`
 - The module or modules involved: [module labels](#module)
 - Severity of the bug: [severity labels](#severity)
