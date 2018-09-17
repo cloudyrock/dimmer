@@ -53,14 +53,13 @@ Dimmer project contains 4 main areas.
 
 This section guides you through submitting a bug report for Dimmer project. 
 
-Before creating bug reports, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](./community/ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, please check the section [before submitting a bug report](#before-submitting-a-bug-report) as you might find out that you don't need to create one. When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](./community/ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
 #### Before Submitting A Bug Report
 
 * **Check the [FAQ page](FAQ.md)** for a list of common questions and problems.
-* **Determine [which module the problem should be reported in](#dimmer-project-packages)**.
 * **Perform a [cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+archived%3Afalse+repo%3Acloudyrock%2Fdimmer-project+)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Bug Report?
