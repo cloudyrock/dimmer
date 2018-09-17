@@ -87,7 +87,7 @@ This section guides you through submitting an enhancement suggestion for Dimmer 
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
-Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information  
+Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information
 by filling in [the enhancement template](ENHANCENMENT_TEMPLATE.md).
  
 Please add the following labels to make easier to categorise issues:
