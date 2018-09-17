@@ -101,7 +101,7 @@ Please add the following labels to make easier to categorise issues:
 Unsure where to begin contributing to Dimmer project? You can start by looking through these `beginner` and `intermediate` issues:
 
 * [Beginner issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Abeginner) - issues which should only require a few lines of code, and a test or two.
-* [Intermediate issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Aadvance) - issues which should be a bit more involved than `beginner` issues.
+* [Intermediate issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Aintermediate) - issues which should be a bit more involved than `beginner` issues.
 
 
 #### Before creating a pull request
