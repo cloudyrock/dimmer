@@ -94,7 +94,7 @@ Please add the following labels to make easier to categorise issues:
 - The label `feature`
 - The module or modules involved: [module labels](#module)
 - Severity of the bug: [severity labels](#severity)
-- If you feel confident to estimate how complex the fix is, please provide a complexity label: [complexity labels](#complexity
+- If you feel confident to estimate how complex the development is, please provide a complexity label: [complexity labels](#complexity
 
 ### Your First Code Contribution
 
