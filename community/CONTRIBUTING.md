@@ -2,7 +2,8 @@
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines for contributing to Dimmer project which is hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to Dimmer project which is hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel 
+free to propose changes to this document in a pull request.
 
 
 ## Table of contents
@@ -32,13 +33,15 @@ The following is a set of guidelines for contributing to Dimmer project which is
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Dimmer Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [dev@cloudyrock.io][dev_email].
+This project and everyone participating in it is governed by the [Dimmer Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. 
+Please report unacceptable behavior to [dev@cloudyrock.io][dev_email].
 
 ## It's just a question, I don't want to read this whole thing!!!
 
 > **Note:** Please don't file an issue to ask a question.
  
-We have an official [FAQ page](FAQ.md) where your question may be already answered. Otherwise an email to [dev@cloudyrock][dev_email]  will be the fastest way to get tour question resolved. 
+We have an official [FAQ page](FAQ.md) where your question may be already answered. Otherwise an email to [dev@cloudyrock][dev_email]  will be the fastest way to get 
+tour question resolved. 
  
 ## Dimmer project packages
 Dimmer project contains 4 main areas. 
@@ -53,8 +56,10 @@ Dimmer project contains 4 main areas.
 
 This section guides you through submitting a bug report for Dimmer project. 
 
-Before creating bug reports, first follow the suggested checks in section [before submitting a bug report](#before-submitting-a-bug-report) as you might find out that you don't need to create one. 
-When you are creating a bug report, please [include as many details as possible](#how-do-i-submit-a-good-bug-report). Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks for helps us resolve issues faster.
+Before creating bug reports, first follow the suggested checks in section [before submitting a bug report](#before-submitting-a-bug-report) as you might 
+find out that you don't need to create one. 
+When you are creating a bug report, please check the section [how do I submit a good report](#how-do-i-submit-a-good-bug-report) and 
+fill out [the required template](ISSUE_TEMPLATE.md) including as many details as possible.
 
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
@@ -62,13 +67,15 @@ When you are creating a bug report, please [include as many details as possible]
 #### Before Submitting A Bug Report
 
 * **Check the [FAQ page](FAQ.md)** for a list of common questions and problems.
-* **Perform a [cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+archived%3Afalse+repo%3Acloudyrock%2Fdimmer-project+)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
+* **Perform a [cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+archived%3Afalse+repo%3Acloudyrock%2Fdimmer-project+)** 
+to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Bug Report?
 
-Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the Dimmer repository referencing the specific module(by the right label) and provide the required information by filling in [the template](ISSUE_TEMPLATE.md).
-
-Please use the `bug` label and the module label for the issue. For instance, a bug in dimmer local should contain, at least, the label `bug` and `LOCAL-MODULE`.
+Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the Dimmer repository following the
+[the issue template](ISSUE_TEMPLATE.md). Please add the following labels to make easier to categorise issues: 
+- The label `bug`
+- The module or modules involved(`core-module`, `local-module`, `server-module`, `samples-module`)
 
 ### Suggesting Enhancements
 
