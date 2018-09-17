@@ -42,10 +42,10 @@ We have an official [FAQ page](FAQ.md) where your question may be already answer
  
 ## Dimmer project packages
 Dimmer project contains 4 main areas. 
-- **Core:** Base project for the basic Dimmer module and Dimmer server. Issue label is `CORE-MODULE`
-- **Dimmer:** Basic Dimmer module to used locally or as a client. Issue label is `LOCAL-MODULE`
-- **Dimmer server:** Dimmer as a centralised server. Issue label is `SERVER-MODULE`
-- **Samples:** Set of examples using Dimmer project.  Issue label is `SAMPLES-MODULE`
+- **Core:** Base project for the basic Dimmer module and Dimmer server. Issue label is `core-module`
+- **Dimmer:** Basic Dimmer module to used locally or as a client in combination with Dimmer server. Issue label is `local-module`
+- **Dimmer server:** Dimmer as a centralised server. Issue label is `server-module`
+- **Samples:** Set of examples using Dimmer project.  Issue label is `samples-module`
  
 ## How Can I Contribute?
 
