@@ -144,7 +144,7 @@ Please open an issue on `atom/atom` if you have suggestions for new labels, and 
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
-| `BUG` | [search][search-repo-label-bug] | Bug issues |
+| `bug` | [search][search-repo-label-bug] | Bug issues |
 | `feature` | [search][search-repo-label-feature] | Feature issues |
 | `docs/ops` | [search][search-repo-label-docs-ops] | Issues which just require documentation or some management work |
 
@@ -153,16 +153,16 @@ Please open an issue on `atom/atom` if you have suggestions for new labels, and 
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
-| `CORE-MODULE` | [search][search-repo-label-core-module] | issues to be fixed in the core |
-| `LOCAL-MODULE` | [search][search-repo-label-local-module] | issues to be fixed in the local module |
-| `SERVER-MODULE` | [search][search-repo-label-server-module] | issues to be fixed in the server module |
-| `samples-MODULE` | [search][search-repo-label-samples-module] | issues to be fixed in one of the sample apps|
+| `core-module` | [search][search-repo-label-core-module] | issues to be fixed in the core |
+| `local-module` | [search][search-repo-label-local-module] | issues to be fixed in the local module |
+| `server-module` | [search][search-repo-label-server-module] | issues to be fixed in the server module |
+| `samples-module` | [search][search-repo-label-samples-module] | issues to be fixed in one of the sample apps|
 
 #### Severity
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
-| `CRITICAL` | [search][search-repo-label-critical] | Critical issues stopping Dimmer from being used |
+| `critical` | [search][search-repo-label-critical] | Critical issues stopping Dimmer from being used |
 | `normal` | [search][search-repo-label-normal] | normal issues that needs to be fixed, but doesn't stop the application from being used  |
 | `minor` | [search][search-repo-label-minor] | issues that can wait or it's a nice to have feature |
 
