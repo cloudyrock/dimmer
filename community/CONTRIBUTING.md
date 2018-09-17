@@ -56,26 +56,22 @@ Dimmer project contains 4 main areas.
 
 This section guides you through submitting a bug report for Dimmer project. 
 
-Before creating bug reports, first follow the suggested checks in section [before submitting a bug report](#before-submitting-a-bug-report) as you might 
-find out that you don't need to create one. 
-When you are creating a bug report, please check the section [how do I submit a good report](#how-do-i-submit-a-good-bug-report) and 
-fill out [the required template](ISSUE_TEMPLATE.md) including as many details as possible.
-
-
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
 #### Before Submitting A Bug Report
 
-* **Check the [FAQ page](FAQ.md)** for a list of common questions and problems.
+* **Check the [FAQ page](FAQ.md)** for a list of common questions and problems. You might find out that you don't need to create an issue.
 * **Perform a [cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+archived%3Afalse+repo%3Acloudyrock%2Fdimmer-project+)** 
 to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
 #### How Do I Submit A (Good) Bug Report?
 
 Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the Dimmer repository following the
-[the issue template](ISSUE_TEMPLATE.md). Please add the following labels to make easier to categorise issues: 
+[the issue template](ISSUE_TEMPLATE.md). Please provide as much information as you can and add the following labels to make easier to categorise issues: 
 - The label `bug`
-- The module or modules involved(`core-module`, `local-module`, `server-module`, `samples-module`)
+- The module or modules involved: [module labels](#module)
+- Severity of the bug: [severity labels](#severity)
+- If you feel confident to estimate how complex the fix is, please provide a complexity label: [complexity labels](#complexity)
 
 ### Suggesting Enhancements
 
@@ -91,11 +87,14 @@ This section guides you through submitting an enhancement suggestion for Dimmer 
 
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
-Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information  by filling in [the template](ENHANCENMENT_TEMPLATE.md).
-
-Please use at least the module label for the enhancement. For instance, a enhancement in dimmer local should contain, at least, `local-module`.
-
-In addition, if you believe you have the knowledge to evaluate the issue complexity, you could add one of these labels: `beginner`,`intermediate`, `advance`
+Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information  
+by filling in [the enhancement template](ENHANCENMENT_TEMPLATE.md).
+ 
+Please add the following labels to make easier to categorise issues:
+- The label `feature`
+- The module or modules involved: [module labels](#module)
+- Severity of the bug: [severity labels](#severity)
+- If you feel confident to estimate how complex the fix is, please provide a complexity label: [complexity labels](#complexity
 
 ### Your First Code Contribution
 
