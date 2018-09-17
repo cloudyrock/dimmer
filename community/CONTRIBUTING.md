@@ -38,7 +38,7 @@ This project and everyone participating in it is governed by the [Dimmer Code of
 
 > **Note:** Please don't file an issue to ask a question.
  
-We have an official [FAQ page](FAQ.md) where your question may be already answered. Otherwise an email to [dev@cloudyrock][dev_email]  will be the faster way to get tour question resolved. 
+We have an official [FAQ page](FAQ.md) where your question may be already answered. Otherwise an email to [dev@cloudyrock][dev_email]  will be the fastest way to get tour question resolved. 
  
 ## Dimmer project packages
 Dimmer project contains 4 main areas. 
