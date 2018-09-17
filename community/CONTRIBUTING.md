@@ -85,7 +85,7 @@ This section guides you through submitting an enhancement suggestion for Dimmer 
 
 Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information  by filling in [the template](./community/ENHANCENMENT_TEMPLATE.md).
 
-Please use at least the module label for the enhancement. For instance, a enhancement in dimmer local should contain, at least, `LOCAL-MODULE`.
+Please use at least the module label for the enhancement. For instance, a enhancement in dimmer local should contain, at least, `local-module`.
 
 In addition, if you believe you have the knowledge to evaluate the issue complexity, you could add one of these labels: `beginner`,`intermediate`, `advance`
 
