@@ -22,6 +22,7 @@ public class DimmerAspect {
 
     @Pointcut("@annotation(dimmerFeatureAnnotation) && execution(* *(..))")
     public void dimmerFeaturePointCutDef(DimmerFeature dimmerFeatureAnnotation) {
+        //This method needs to exists even been empty. DON'T remove
     }
 
     @Around("dimmerFeaturePointCutDef(dimmerFeatureAnn)")
