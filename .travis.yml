@@ -1,21 +1,18 @@
 language: java
 sudo: false
 install: true
-
-#addons:
-#  sonarcloud:
-#    organization: "cloudyrock"
-#    token:
-#      secure: "$SONAR_TOKEN"
-
+addons:
+  sonarcloud:
+    organization: cloudyrock
+    token:
+      secure: XQWw3R2XTH+9ACVAYXErVLUcyCG78zspDp1s6M28iw+dGI1rSs63be7J1liAGyQTPjWUa5gqsShuXFChhwAdKSjZG3nyT1drfCOqAqNpDjyVQ0pGbM5i4p9XAZRw+qjl+oltKtTMhYWBiZoD12d98Zuf1gzUo9W2Po7t0LDge+MabRSCLFQ30bFMdxsRvR1o0Q8Whu4nc9pbuM8wNr8/oB7g8i7qRis/oI4NZXwbD+Qg15icBv8PlfSn5c8a2iwWFtuL0hkQ0D5vsjIs4yymvz9VFoSL1WkvoLTchbTzx87mlV3CwQ7SvnO+KBAbm+H+SZEUngiD5GGf6mMfVYSa2FN9wA/b4ltg3qiyUAab+iLN65zcyKsjtywoyWKu5qwOtlda/xL6PX5syRE6W1U4dBE5GBhVYmy9w983nS5X5Owi+dct6AqhI/JWmkTSDUb2xcKwF6UBcP0I0vDefZVMiO9+NcVvRI0iesaOqQdf3Gft3+s1i7vTjzO6sx1NTfUA/A6GcGMniD9lN0K8IdYrZnr50uUwVcUCzx7ETZVH696w4YtLpfb87TZUpGpI+L4Vo6xsW7d43NKQhtUQzpE9qsOrII6RxXuHdkrhQ54FhX3e7eoKYxZLkBl+5txXpWUxp3dKrAKqfhkntIF2oNpDXiMs8D3Lvy2rQCrkBkusjAY=
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 script:
-#  - sonar-scanner
-  - mvn clean sonar:sonar -Dsonar.projectKey=com.github.cloudyrock.dimmer -X -Dsonar.organization=cloudyrock -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=b3ad74729ae5d41a7248e50e686d44b755f3a092 -Dmaven.test.failure.ignore=false
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
 
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
+  - "$HOME/.m2/repository"
+  - "$HOME/.sonar/cache"
+
