@@ -10,7 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-public class FeatureInvocationTest {
+public class FeatureInvocationUTest {
 
     @Test
     public void constructor() {
@@ -18,14 +18,14 @@ public class FeatureInvocationTest {
                 "feature",
                 "operation",
                 "methodName",
-                FeatureInvocationTest.class,
+                FeatureInvocationUTest.class,
                 new Object[]{"arg1"},
                 String.class
         );
         assertEquals("feature", fi.getFeature());
         assertEquals("operation", fi.getOperation());
         assertEquals("methodName", fi.getMethodName());
-        assertEquals(FeatureInvocationTest.class, fi.getDeclaringType());
+        assertEquals(FeatureInvocationUTest.class, fi.getDeclaringType());
         assertEquals("arg1", fi.getArgs()[0]);
         assertEquals(1, fi.getArgs().length);
         assertEquals(String.class, fi.getReturnType());
@@ -38,7 +38,7 @@ public class FeatureInvocationTest {
                 "feature",
                 "operation",
                 "methodName",
-                FeatureInvocationTest.class,
+                FeatureInvocationUTest.class,
                 new Object[]{"arg1"},
                 String.class
         );
@@ -46,7 +46,7 @@ public class FeatureInvocationTest {
                 "feature",
                 "operation",
                 "methodName",
-                FeatureInvocationTest.class,
+                FeatureInvocationUTest.class,
                 new Object[]{"arg3", "whatever"},
                 String.class
         );
@@ -55,7 +55,7 @@ public class FeatureInvocationTest {
                 "featureDifferent",
                 "operation",
                 "methodName",
-                FeatureInvocationTest.class,
+                FeatureInvocationUTest.class,
                 new Object[]{"arg3", "whatever"},
                 String.class
         );
@@ -64,7 +64,7 @@ public class FeatureInvocationTest {
                 "feature",
                 "operationDifferent",
                 "methodName",
-                FeatureInvocationTest.class,
+                FeatureInvocationUTest.class,
                 new Object[]{"arg3", "whatever"},
                 String.class
         );
@@ -73,7 +73,7 @@ public class FeatureInvocationTest {
                 "feature",
                 "operation",
                 "methodNameDifferent",
-                FeatureInvocationTest.class,
+                FeatureInvocationUTest.class,
                 new Object[]{"arg3", "whatever"},
                 String.class
         );
@@ -90,9 +90,9 @@ public class FeatureInvocationTest {
                 "feature",
                 "operation",
                 "methodName",
-                FeatureInvocationTest.class,
+                FeatureInvocationUTest.class,
                 new Object[]{"arg1"},
-                FeatureInvocationTest.class
+                FeatureInvocationUTest.class
         );
         assertTrue(fiEqual1.equals(fiEqual1));
         assertFalse(fiEqual1.equals(null));
