@@ -37,6 +37,7 @@ public class DimmerAspect {
         );
     }
 
+
     private MethodCaller createCallerInstance(ProceedingJoinPoint joinPoint) {
         //for some reasons doesn't work when using lambda
         return new MethodCaller() {
