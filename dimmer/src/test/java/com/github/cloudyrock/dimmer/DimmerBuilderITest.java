@@ -18,7 +18,7 @@ public class DimmerBuilderITest {
     @Test
     public void shouldApplyConfigToRightEnvironment() {
 
-        final Function<FeatureInvocation, ?> behaviour1 = FeatureInvocation::getArgs;
+        final Function<FeatureInvocation, Object> behaviour1 = FeatureInvocation::getArgs;
         final String value = "VALUE";
 
         final String feature1 = "feature1";

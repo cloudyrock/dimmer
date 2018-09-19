@@ -60,7 +60,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
             boolean interceptingFeature,
             String feature,
             String operation,
-            Function<FeatureInvocation, ?> behaviour) {
+            Function<FeatureInvocation, Object> behaviour) {
 
         return interceptingFeature
                 ? featureWithBehaviour(feature, operation, behaviour)
@@ -87,7 +87,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
     public RUNNER featureWithBehaviour(
             String feature,
             String operation,
-            Function<FeatureInvocation, ?> behaviour) {
+            Function<FeatureInvocation, Object> behaviour) {
 
         final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
                 feature,
