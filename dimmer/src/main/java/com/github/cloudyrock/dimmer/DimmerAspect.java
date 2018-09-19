@@ -27,7 +27,7 @@ public class DimmerAspect {
     @Around("dimmerFeaturePointCutDef(dimmerFeatureAnn)")
     public Object dimmerFeatureAdvice(ProceedingJoinPoint joinPoint,
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
-//        checkingSonar();
+        checkingSonar();
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
                 dimmerFeatureAnn.op(),
@@ -48,8 +48,8 @@ public class DimmerAspect {
         };
     }
 
-//    @Deprecated
-//    public void checkingSonar() {}
+    @Deprecated
+    public void checkingSonar() {}
 
     private FeatureInvocation generateFeatureInvocation(String feature,
                                                         String operation,
