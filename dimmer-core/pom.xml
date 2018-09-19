@@ -31,8 +31,8 @@
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <jacoco.out.ut.file>jacoco.exec</jacoco.out.ut.file>
         <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
-        <sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPaths>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPaths>
+        <sonar.jacoco.itReportPaths>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPaths>
 
     </properties>
 
@@ -75,53 +75,6 @@
 
     <build>
         <plugins>
-            <!--<plugin>-->
-                <!--<groupId>org.jacoco</groupId>-->
-                <!--<artifactId>jacoco-maven-plugin</artifactId>-->
-                <!--<version>${jacoco.version}</version>-->
-                <!--<configuration>-->
-                    <!--<excludes>-->
-                    <!--</excludes>-->
-                <!--</configuration>-->
-                <!--<executions>-->
-                    <!--<execution>-->
-                        <!--<id>prepare-jacoco-${project.name}</id>-->
-                        <!--<goals>-->
-                            <!--<goal>prepare-agent</goal>-->
-                            <!--<goal>prepare-agent-integration</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                    <!--<execution>-->
-                        <!--<id>report-jacoco-${project.name}</id>-->
-                        <!--<phase>prepare-package</phase>-->
-                        <!--<goals>-->
-                            <!--<goal>report</goal>-->
-                        <!--</goals>-->
-                    <!--</execution>-->
-                    <!--<execution>-->
-                        <!--<id>jacoco-check-${project.name}</id>-->
-                        <!--<goals>-->
-                            <!--<goal>check</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                            <!--<rules>-->
-                                <!--<rule>-->
-                                    <!--<element>PACKAGE</element>-->
-                                    <!--<limits>-->
-                                        <!--<limit>-->
-                                            <!--<counter>LINE</counter>-->
-                                            <!--<value>COVEREDRATIO</value>-->
-                                            <!--<minimum>0.84</minimum>-->
-                                        <!--</limit>-->
-                                    <!--</limits>-->
-                                <!--</rule>-->
-                            <!--</rules>-->
-                        <!--</configuration>-->
-                    <!--</execution>-->
-                <!--</executions>-->
-            <!--</plugin>-->
-
-
 
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -141,7 +94,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <!--<id>prepare-it-agent</id>-->
+                        <id>prepare-it-agent</id>
                         <phase>package</phase>
                         <goals>
                             <goal>prepare-agent-integration</goal>
@@ -166,12 +119,19 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.5</minimum>
+                                            <minimum>0.98</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
                             </rules>
                         </configuration>
+                    </execution>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

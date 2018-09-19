@@ -28,9 +28,8 @@
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <jacoco.out.ut.file>jacoco.exec</jacoco.out.ut.file>
         <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
-        <!--<jacoco.outputDir>${project.build.directory}/target/jacoco</jacoco.outputDir>-->
-        <sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
-        <sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
+        <sonar.jacoco.reportPaths>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPaths>
+        <sonar.jacoco.itReportPaths>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPaths>
 
     </properties>
 
@@ -162,6 +161,13 @@
                                 </rule>
                             </rules>
                         </configuration>
+                    </execution>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
