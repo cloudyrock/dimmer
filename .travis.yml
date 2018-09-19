@@ -5,8 +5,8 @@ install: true
 addons:
   sonarcloud:
     organization: "cloudyrock"
-#    token:
-#      secure: "TOKEN ADDED IN TRAVIS"
+    token:
+      secure: "$SONAR_TOKEN"
 
 jdk:
   - oraclejdk8
