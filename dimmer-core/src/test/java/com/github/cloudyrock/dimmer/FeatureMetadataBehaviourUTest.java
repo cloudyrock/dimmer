@@ -7,7 +7,7 @@ import java.util.function.Function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class FeatureMetadataBehaviourTest {
+public class FeatureMetadataBehaviourUTest {
 
     private final String operation = "operation";
 

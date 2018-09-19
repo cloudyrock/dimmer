@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class FeatureMetadataDefaultExceptionTest {
+public class FeatureMetadataDefaultExceptionUTest {
     private final String operation = "operation";
 
     @Test

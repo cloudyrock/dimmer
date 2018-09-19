@@ -22,6 +22,7 @@ public class DimmerAspect {
 
     @Pointcut("@annotation(dimmerFeatureAnnotation) && execution(* *(..))")
     public void dimmerFeaturePointCutDef(DimmerFeature dimmerFeatureAnnotation) {
+        //This method needs to exists even been empty. DON'T remove
     }
 
     @Around("dimmerFeaturePointCutDef(dimmerFeatureAnn)")
@@ -35,6 +36,7 @@ public class DimmerAspect {
                 createCallerInstance(joinPoint)
         );
     }
+
 
     private MethodCaller createCallerInstance(ProceedingJoinPoint joinPoint) {
         //for some reasons doesn't work when using lambda

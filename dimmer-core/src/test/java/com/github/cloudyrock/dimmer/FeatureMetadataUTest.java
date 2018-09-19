@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class FeatureMetadataTest {
+public class FeatureMetadataUTest {
 
     private final String operation = "operation";
 
