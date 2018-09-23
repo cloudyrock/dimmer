@@ -31,7 +31,7 @@ public class UserRepositoryITest {
         entityManager.flush();
 
         // when
-        User found = userRepository.findByName(user1);
+        final User found = userRepository.findByName(user1).get();
 
         // then
         assertThat(found.getName()).isEqualTo(found.getName());

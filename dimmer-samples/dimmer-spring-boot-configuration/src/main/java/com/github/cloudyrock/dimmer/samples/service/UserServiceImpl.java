@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
@@ -25,5 +26,11 @@ public class UserServiceImpl implements UserService {
     public User createUser(User user) {
         LOGGER.info("Create new user in repository");
         return userRepository.saveAndFlush(user);
+    }
+
+    @Override
+    public Optional<User> searchByUserName(String user) {
+        LOGGER.info("Create new user in repository");
+        return userRepository.findByName(user);
     }
 }
