@@ -19,7 +19,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Test class for examples of the Standard configuration for the different environments
  */
 @RunWith(MockitoJUnitRunner.class)
-public class StandaloneConfigurationExampleTest {
+public class StandaloneConfigurationExampleUTest {
 
     @InjectMocks
     StandaloneConfigurationExample standaloneConfigurationExample;
