@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @EnableAutoConfiguration
 @ActiveProfiles(PROD)
-public class DimmerApplicationIProdEnvironmentITest extends DimmerApplicationITest {
+public class DimmerApplicationProdEnvironmentITest extends DimmerApplicationITest {
 
     @Test
     public void testGetUsersFeatureIsActive() throws Exception {
