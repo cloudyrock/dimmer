@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNull;
 
 public class DimmerFeatureConfigurableITest {
 
-    private final Function<FeatureInvocation, ?> behaviour1 = FeatureInvocation::getArgs;
+    private final Function<FeatureInvocation, Object> behaviour1 = FeatureInvocation::getArgs;
     private final String value = "VALUE";
     private final String feature1 = "feature1";
     private final String feature2 = "feature2";

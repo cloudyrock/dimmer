@@ -24,7 +24,7 @@ public class FeatureMetadataBehaviourUTest {
 
     @Test
     public void constructor() {
-        Function<FeatureInvocation, ?> behaviour = FeatureInvocation::getMethodName;
+        Function<FeatureInvocation, Object> behaviour = FeatureInvocation::getMethodName;
         final FeatureMetadataBehaviour m1 = new FeatureMetadataBehaviour("F1", operation, behaviour);
         assertEquals("F1", m1.getFeature());
         assertEquals(behaviour, m1.getBehaviour());

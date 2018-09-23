@@ -2,7 +2,9 @@ jdk: oraclejdk8
 language: java
 
 sudo: false
+
 install: true
+
 addons:
   sonarcloud:
     organization: cloudyrock
