@@ -20,11 +20,12 @@
 
 
         <!--<jacoco.outputDir>${project.build.directory}/jacoco</jacoco.outputDir>-->
+        <jacoco.outputDir>../../target/jacoco</jacoco.outputDir>
         <jacoco.version>0.7.7.201606060606</jacoco.version>
         <jacoco.out.ut.file>jacoco.exec</jacoco.out.ut.file>
         <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
-        <sonar.jacoco.reportPaths>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPaths>
-        <sonar.jacoco.itReportPaths>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPaths>
+        <sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
 
     </properties>
 
@@ -179,7 +180,7 @@
                 <version>${jacoco.version}</version>
                 <executions>
                     <execution>
-                        <id>prepare-ut-agent</id>
+                        <id>prepare-ut-agent-sample-standalone-jacoco</id>
                         <phase>process-test-classes</phase>
                         <goals>
                             <goal>prepare-agent</goal>
@@ -191,7 +192,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>prepare-it-agent</id>
+                        <id>prepare-it-agent-sample-standalone-jacoco</id>
                         <phase>package</phase>
                         <goals>
                             <goal>prepare-agent-integration</goal>
