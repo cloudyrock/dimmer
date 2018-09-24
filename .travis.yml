@@ -1,23 +1,18 @@
 jdk: oraclejdk8
 language: java
-
 sudo: false
-
 install: true
-
-script: mvn clean verify sonar:sonar -Dsonar.projectKey=com.github.cloudyrock.dimmer -Dsonar.organization=cloudyrock -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.pullrequest.base=master -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH
-
-
-# only triggering master
+script: mvn clean verify sonar:sonar -Dsonar.projectKey=com.github.cloudyrock.dimmer
+  -Dsonar.organization=cloudyrock -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN_LOCAL
+  -Dsonar.pullrequest.base=master -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH
 branches:
   only:
   - master
   - pr-integration
-
 cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/.sonar/cache"
 env:
   global:
-    secure: OvziLP5sI0f//jZNkBcCux0hzfwV2nqHEfYwx+qJwwTvfcaA7sfRjsd8GsxKlOugK1X5RCdPcHjGUTKOHyzsFOCrvGKaws2qFDOLLN+jKw0ggLyv7gO7bmzWnkqczalCP1B26QzEYMs77Q0xPWUWt3z2XVDuTAVcDZeuT51phhz2gFmMWxQ/zj65fOCfBssZmJrhdisJtDx5vF7alLXRhFqyIIiPNtRWgx7grpAo6rRYOHtxsYgasnQ9f2mmYhWDRv8wW8nmbwOD9xIY7NjA8qUW4O6LTb0OtQnKLoXLbiisgiPprmF3nUTCrs5UB6aRkKtOt+HzMyWkKZhLjjs6rjAoclnsqlsuVZK9oMQyhP7jmcFs6oc4OIJPQd7EIX18hsf22qztc6K2oVXi4r6LddFcVeINR5JA77fn0JKehosAXxbhKCZFomGMRa3PMuHaX+o4M5ISOYzUeE+H8DM7L6jMmIC5xoRQFkHkRFnJOfjS5Ln6+l88P5MqnP98gujvgVtdJT7M7Qsq0xKPSyAQDgtyNKrsg2nHmwz/F0Z8ooLcytzMTNh1SIw3M7/f5c7khQM5rDq4RXxrmyRWXUsmvESJHSztKRZ47Vy6V4BufTmVldKAKbmgoO4+d+ij/QS9VjdwSV9let4KD7rsqUIvB+kNZWKFzYXIbNgsLyQz2G0=
+    secure: p0DaXYR80Yc7rWKUUH7kEZxA13GD2ECdsxBp54XIRoGZcT+mw48HCsEfnIdgK+erYQegr6zAmj/4KFCPhsQzhj+4EhYUBaCw87aQzHFPGaQyXH1XyGSOeipHLzmJeZEQAtEZtiTgNRrsky9X3B8LC8aAmE4PLSDBuSiulQZIlF1DVaSyQAeMUEutnGU55p5Hjn3G+KyphidHSdaMjeM/dlPvMzcoCZpqZ4yxjuXdFyMaSd0+VIAOMSYuQzfz37ZrOuMnnpNPkMeSyHOrpbju4qKIkhtpvb+va5DJuRd7ICjckYWWI4DmgWXui6WWYU+2Slbg62Up+tKi5ZM6t2vKxM6Iaqa+WK+D/uZZDeUKFUdPVy8eOn9DZamMsG/V6IEoAwFxmhyu4BHhxg3s80Q1HS67pIg0ietHq3KiZxeMhaP4a1tvYRT/Ry4lP9Z1JKMLSDgzg9+KJCv4mL56fRHRwh8iCVhve+PxZQu246pT49KH5+Z2S6yjrOQ2V+l/6EYxwlOey5vvRdilusCn2cp8aLZq3Ib+UlZx4mEEgnH/dHYqo6f2mAHVFAqjtXLrZUyEiPOsIPfUVzCzQ0atPi2XU5gAN/qSn/kpKZUcpz/fZGSnesihhTClbouqXzXvVtz9hHw7bLyfJ4Sxa1LveNeYL9Z+n18Tl5HBoTpf21qY6cs=
