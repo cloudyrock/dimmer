@@ -1,18 +1,18 @@
 jdk: oraclejdk8
+
 language: java
+
 sudo: false
+
 install: true
-script: mvn clean verify sonar:sonar -Dsonar.projectKey=com.github.cloudyrock.dimmer
-  -Dsonar.organization=cloudyrock -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=b3ad74729ae5d41a7248e50e686d44b755f3a092
-  -Dsonar.pullrequest.base=master -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH
+
+script: .infra/mvn_sonar.sh
+
 branches:
   only:
   - master
-  - pr-integration
+
 cache:
   directories:
   - "$HOME/.m2/repository"
   - "$HOME/.sonar/cache"
-env:
-  global:
-    secure: p0DaXYR80Yc7rWKUUH7kEZxA13GD2ECdsxBp54XIRoGZcT+mw48HCsEfnIdgK+erYQegr6zAmj/4KFCPhsQzhj+4EhYUBaCw87aQzHFPGaQyXH1XyGSOeipHLzmJeZEQAtEZtiTgNRrsky9X3B8LC8aAmE4PLSDBuSiulQZIlF1DVaSyQAeMUEutnGU55p5Hjn3G+KyphidHSdaMjeM/dlPvMzcoCZpqZ4yxjuXdFyMaSd0+VIAOMSYuQzfz37ZrOuMnnpNPkMeSyHOrpbju4qKIkhtpvb+va5DJuRd7ICjckYWWI4DmgWXui6WWYU+2Slbg62Up+tKi5ZM6t2vKxM6Iaqa+WK+D/uZZDeUKFUdPVy8eOn9DZamMsG/V6IEoAwFxmhyu4BHhxg3s80Q1HS67pIg0ietHq3KiZxeMhaP4a1tvYRT/Ry4lP9Z1JKMLSDgzg9+KJCv4mL56fRHRwh8iCVhve+PxZQu246pT49KH5+Z2S6yjrOQ2V+l/6EYxwlOey5vvRdilusCn2cp8aLZq3Ib+UlZx4mEEgnH/dHYqo6f2mAHVFAqjtXLrZUyEiPOsIPfUVzCzQ0atPi2XU5gAN/qSn/kpKZUcpz/fZGSnesihhTClbouqXzXvVtz9hHw7bLyfJ4Sxa1LveNeYL9Z+n18Tl5HBoTpf21qY6cs=
