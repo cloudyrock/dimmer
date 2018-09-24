@@ -28,7 +28,6 @@ public class DimmerAspect {
     @Around("dimmerFeaturePointCutDef(dimmerFeatureAnn)")
     public Object dimmerFeatureAdvice(ProceedingJoinPoint joinPoint,
                                       DimmerFeature dimmerFeatureAnn) throws Throwable {
-        deprecatedMethod();
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
                 dimmerFeatureAnn.op(),
@@ -37,11 +36,6 @@ public class DimmerAspect {
                 createCallerInstance(joinPoint)
         );
     }
-
-@Deprecated
-public  void deprecatedMethod() {
-
-}
 
     private MethodCaller createCallerInstance(ProceedingJoinPoint joinPoint) {
         //for some reasons doesn't work when using lambda
