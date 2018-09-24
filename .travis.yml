@@ -5,12 +5,8 @@ sudo: false
 
 install: true
 
-addons:
-  sonarcloud:
-    organization: cloudyrock
-    token:
-      secure: vXPdsZfpaGFOGXB7BjnJfyOaeeTfXgm3ilvxslqkyby8a/y1vixj5OtxQTb+HTX+mXxd2AgOKIR9Ssj0A7r6axA6/97w1/6op2C3psKj48zm2Fnnyg/bXsQRIsCN3jgERtYAopYyC6Z1EvPpuRe38aCUR8hy2p1FhevmpT5xZKntPiuFh/alINRctgioeSMh97fP9oAa8JEt39tCFTwjufiEyKG97eScy5adZhc0dqrZlOSIH9NsNTMBAI8bheHCTxJLO5XmtcWHBjbvjI5T7C0mdol54t1jKf0k/0gBMgNF9bfZ8LEzxKCmI7vgs91nUwYSQxgif6Sjrzax3qSCqtTxt+DK6l75RbwtzgzT73qW30QF0U0VWWWwlqRo1oXDLNLEz9c70X4m8CYR8yFK8vDR6U3xToGA9VDAviGypiQXrGeL0jma8oBmWOFrdSnMkj5xJpV4s5wSJpS9HBkrunljD6jw02wQlfa5OhOCCg4EoJMj/z9xYfZfirRNKDCe386+oZnHeUpjEalqcuzQuavB+4uOLeCtI+eKo0kFtwFYLKGZV/mRECyyu6BNhL/h7cjYykZmqGiJKFYf9nu5uyi7fVIG7BWgnUszp/dboBJicz1IPZxrwn2OktpR79Ftv4q8Fgk/wD2fCZ/4kD37Rwe7Q6EFD23i/v1W3COuu70=
 script: mvn clean verify sonar:sonar -Dsonar.projectKey=com.github.cloudyrock.dimmer -Dsonar.organization=cloudyrock -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=b3ad74729ae5d41a7248e50e686d44b755f3a092
+
 
 # only triggering master
 branches:
