@@ -6,10 +6,10 @@
         <version>2.2.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>dimmer</artifactId>
+    <artifactId>dimmer-local</artifactId>
 
     <packaging>jar</packaging>
-    <name>dimmer</name>
+    <name>dimmer-local</name>
 
     <url>https://github.com/cloudyrock/dimmer.git</url>
     <description>
