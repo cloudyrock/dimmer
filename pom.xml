@@ -23,6 +23,7 @@
 
     <properties>
         <jacoco.outputDir>../target/jacoco</jacoco.outputDir>
+        <threshold.coverage>0.80</threshold.coverage>
     </properties>
 
 
