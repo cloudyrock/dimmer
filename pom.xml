@@ -23,8 +23,8 @@
 
     <properties>
         <jacoco.outputDir>../target/jacoco</jacoco.outputDir>
-        <threshold.coverage.ut>0.80</threshold.coverage.ut>
-        <threshold.coverage.it>0.80</threshold.coverage.it>
+        <threshold.coverage.ut>0.58</threshold.coverage.ut>
+        <threshold.coverage.it>0.28</threshold.coverage.it>
     </properties>
 
 
@@ -153,6 +153,7 @@
 
         <profile>
             <id>withCoverage</id>
+            <activation><activeByDefault>true</activeByDefault></activation>
             <build>
                 <plugins>
                     <plugin>
