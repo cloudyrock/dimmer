@@ -23,7 +23,8 @@
 
     <properties>
         <jacoco.outputDir>../target/jacoco</jacoco.outputDir>
-        <threshold.coverage>0.80</threshold.coverage>
+        <threshold.coverage.ut>0.80</threshold.coverage.ut>
+        <threshold.coverage.it>0.80</threshold.coverage.it>
     </properties>
 
 
@@ -146,12 +147,12 @@
     <profiles>
         <!-- Local check for pull requests -->
         <profile>
-            <id>localCheck</id>
+            <id>noCoverage</id>
         </profile>
 
 
         <profile>
-            <id>sonarqube</id>
+            <id>withCoverage</id>
             <build>
                 <plugins>
                     <plugin>
@@ -178,6 +179,9 @@
                             <includes>
                                 <include>**/*ITest*</include>
                             </includes>
+                            <excludes>
+                                <exclude>**/*UTest*</exclude>
+                            </excludes>
                         </configuration>
                         <executions>
                             <execution>
