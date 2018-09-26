@@ -25,7 +25,7 @@ public @interface DimmerFeature {
     /**
      * Name of the operation for the annotated method. This operation should be unique
      * within a feature bound, as it's used to configure the specific method's behaviour.
-     * <p/>
+     *
      * It must be unique within a feature
      * @return Name of the operation
      */
