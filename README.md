@@ -457,4 +457,4 @@ If you would like to contribute to Dimmer project, please read [how to contribut
 Please read the [code of conduct](././community/CODE_OF_CONDUCT.md) for details on our code of conduct.
 
 ## LICENSE
-This project is licensed under the [GNU Global Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), Version 3.0 - see the [LICENSE](./LICENSE.md) file for details
+Dimmer-project is licensed under the [Apache 2.0 license License](http://www.apache.org/licenses/LICENSE-2.0.html), Version 3.0 - see the [LICENSE](./LICENSE.md) file for details
