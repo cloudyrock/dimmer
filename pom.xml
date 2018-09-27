@@ -4,7 +4,7 @@
 
     <groupId>com.github.cloudyrock.dimmer</groupId>
     <artifactId>dimmer-parent</artifactId>
-    <version>2.2.2-SNAPSHOT</version>
+    <version>2.2.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>parent</name>
     <!-- Web site not created yet -->
@@ -23,7 +23,8 @@
 
     <properties>
         <jacoco.outputDir>../target/jacoco</jacoco.outputDir>
-        <threshold.coverage>0.80</threshold.coverage>
+        <threshold.coverage.ut>0.58</threshold.coverage.ut>
+        <threshold.coverage.it>0.28</threshold.coverage.it>
     </properties>
 
 
@@ -146,12 +147,13 @@
     <profiles>
         <!-- Local check for pull requests -->
         <profile>
-            <id>localCheck</id>
+            <id>noCoverage</id>
         </profile>
 
 
         <profile>
-            <id>sonarqube</id>
+            <id>withCoverage</id>
+            <activation><activeByDefault>true</activeByDefault></activation>
             <build>
                 <plugins>
                     <plugin>
@@ -178,6 +180,9 @@
                             <includes>
                                 <include>**/*ITest*</include>
                             </includes>
+                            <excludes>
+                                <exclude>**/*UTest*</exclude>
+                            </excludes>
                         </configuration>
                         <executions>
                             <execution>
