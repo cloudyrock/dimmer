@@ -27,8 +27,10 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 
         <jacoco.version>0.7.7.201606060606</jacoco.version>
-        <sonar.jacoco.unitReportPath>${jacoco.outputDir}/jacoco-ut.exec</sonar.jacoco.unitReportPath>
-        <sonar.jacoco.integrationReportPath>${jacoco.outputDir}/jacoco-it.exec</sonar.jacoco.integrationReportPath>
+        <jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>
+        <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
+        <sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
 
     </properties>
 
@@ -96,7 +98,7 @@
                                     <goal>prepare-agent</goal>
                                 </goals>
                                 <configuration>
-                                    <destFile>${sonar.jacoco.unitReportPath}</destFile>
+                                    <destFile>${sonar.jacoco.reportPath}</destFile>
                                     <propertyName>jacoco.agent.ut.arg</propertyName>
                                     <append>true</append>
                                 </configuration>
@@ -110,7 +112,7 @@
                                     <goal>report</goal>
                                 </goals>
                                 <configuration>
-                                    <dataFile>${sonar.jacoco.unitReportPath}</dataFile>
+                                    <dataFile>${sonar.jacoco.reportPath}</dataFile>
                                     <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
                                 </configuration>
                             </execution>
@@ -124,7 +126,7 @@
                                     <goal>prepare-agent-integration</goal>
                                 </goals>
                                 <configuration>
-                                    <destFile>${sonar.jacoco.integrationReportPath}</destFile>
+                                    <destFile>${sonar.jacoco.itReportPath}</destFile>
                                     <propertyName>jacoco.agent.it.arg</propertyName>
                                     <append>true</append>
                                 </configuration>
@@ -138,7 +140,7 @@
                                     <goal>report</goal>
                                 </goals>
                                 <configuration>
-                                    <dataFile>${sonar.jacoco.integrationReportPath}</dataFile>
+                                    <dataFile>${sonar.jacoco.itReportPath}</dataFile>
                                     <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
                                 </configuration>
                             </execution>
@@ -151,7 +153,7 @@
                                 </goals>
                                 <configuration>
 
-                                    <dataFile>${sonar.jacoco.unitReportPath}</dataFile>
+                                    <dataFile>${sonar.jacoco.reportPath}</dataFile>
                                     <rules>
                                         <rule>
                                             <element>PACKAGE</element>
@@ -175,7 +177,7 @@
                                 </goals>
                                 <configuration>
 
-                                    <dataFile>${sonar.jacoco.integrationReportPath}</dataFile>
+                                    <dataFile>${sonar.jacoco.itReportPath}</dataFile>
                                     <rules>
                                         <rule>
                                             <element>PACKAGE</element>
