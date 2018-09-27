@@ -96,7 +96,9 @@ Please add the following labels to make easier to categorise issues:
 - Severity of the bug: [severity labels](#severity)
 - If you feel confident to estimate how complex the development is, please provide a complexity label: [complexity labels](#complexity
 
-### Your First Code Contribution
+### Code Contribution
+
+#### I just want to help: First code contribution
 
 Unsure where to begin contributing to Dimmer project? You can start by looking through these `beginner` and `intermediate` issues:
 
