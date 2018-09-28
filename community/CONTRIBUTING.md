@@ -105,38 +105,21 @@ Unsure where to begin contributing to Dimmer project? You can start by looking t
 * [Beginner issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Abeginner) - issues which should only require a few lines of code, and a test or two.
 * [Intermediate issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Aintermediate) - issues which should be a bit more involved than `beginner` issues.
 
+#### Code contribution steps
+1. __Issue created__: Before starting a code contribution, please make sure there is an issue for it.
+1. __Fork__: Fork this project to your own repository.
+1. __Branch__: Create a branch in your forked repository called feature/issue_xx. Here is where you should work.
+1. __Coding__: Please, make sure your code change fits [our standards](./CODE_STANDARDS.md).
+1. __Code checking__: In this stage you verify your code is ok to be pushed. Please see [our verification process](./VERIFICATION_PROCESS.md)
+1. __README update__: Please, update README.md file if needed.
+1. __Documentation__: We believe in self explanatory code, so please prioritize a readable code over documentation. However, as we are developing a library, please ensure you provide(and update) the javaDocs for the public API.
+1. __Pull request__: Please use [our pull request template](PULL_REQUEST_TEMPLATE.md) to provide the required information.
 
-#### Before creating a pull request
+Once a pull request in in place, you can expect 1-2 days for us to start the review.
 
-##### Code style
-
-While we improve this section, please adhere to the [Google Style guide](http://google.github.io/styleguide/javaguide.html)
-
-##### Tests
-
-- Any code delivered should be covered by unit and integration tests.
-
-- Unit test files should end with the sufix `UTest` and integration tests with `ITest`.
-
-- We use the shouldXXX_whenXXX_ifXXXXX for test names. Something like shouldReturn4_whenSum_ifParametersAre2And2()
-
-- Ensure the test coverage fits the threshold 
-
-##### JavaDocs and general documentation
-
-We believe in self explanatory code, so please prioritize a readable code over documentation. However, as we are developing 
-a library, please ensure you provide(and update) the javaDocs for the public API. 
-
-#### How Do I perform A (Good) Pull Request?
-- Fork repository to
-- Checkout a new branch called feature/issue-XXX
-- Perform the change
-    - Actual code change
-    - Tests
-    - Java docs for public API
-    - Update readme if needed
-- Perform pull request, filling in [the required template](PULL_REQUEST_TEMPLATE.md)
-- Check travis and sonar are passing
+Part of the review involves sonar to check the code quality. Although it's already explained in [our standards](./CODE_STANDARDS.md), please notice:
+* We use a [quality profile][sonar-quality-profily-url], which is basically an small extension of the sonar way with few changes.
+* Our [quality gate][sonar-quality-gate-url] requires at least 85% test coverage and at most 3% code duplication for new code.
 
 
 ### Issue and Pull Request Labels
@@ -192,7 +175,8 @@ Please click on the `search` list the issues for the given label.
 
 
 [dev_email]: mailto:dev@cloudyrock.io
-
+[sonar-quality-profily-url]:https://sonarcloud.io/organizations/cloudyrock/rules?activation=true&qprofile=AWXxxqaLFozSdSzRWmfS
+[sonar-quality-gate-url]:https://sonarcloud.io/organizations/cloudyrock/quality_gates/show/1437
 
 [search-repo-label-bug]:https://github.com/cloudyrock/dimmer-project/labels/bug
 [search-repo-label-feature]:https://github.com/cloudyrock/dimmer-project/labels/feature
