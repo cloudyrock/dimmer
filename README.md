@@ -11,24 +11,26 @@ In addition to the traditional feature toggle on/off functionalities, Dimmer off
 developers to configure a custom response for a feature with a simple Java annotation. 
 This additional flexibility enables the developers to configure custom behaviours for specific environments.
 
-# Table of contents
-- [Why Dimmer?](#why-dimmer)
-- [Some uses cases](#some-uses-cases)
-- [How does Dimmer work?](#how-does-dimmer-work)
-- [How does it look?](#how-does-it-look)
-- [Prerequisites](#prerequisites)
-- [Getting started](#getting-started)
-- [Lets see some code!](#lets-see-some-code)
-- [Throwing a default exception](#throwing-a-default-exception)
-- [Returning a fixed value](#returning-a-fixed-value)
-- [Behaviours: When exceptions and fixed values are not enough](#behaviours-when-exceptions-and-fixed-values-are-not-enough)
-- [Throwing custom exceptions](#throwing-custom-exceptions)
-- [Environments](#environments)
-- [Conditional toggling](#conditional-toggling)
-- [Logging](#logging)
-- [Known issues](#known-issues)
-    - [Aspectj libraries and Lombok project don't work well together in IDEs](#aspectj-libraries-and-lombok-project-dont-work-well-together-in-ides)
-- [LICENSE](#license)
+## Table of contents
+* [Why Dimmer?](#why-dimmer)
+* [Some uses cases](#some-uses-cases)
+* [How does Dimmer work?](#how-does-dimmer-work)
+* [How does it look?](#how-does-it-look)
+* [Prerequisites](#prerequisites)
+* [Getting started](#getting-started)
+* [Lets see some code!](#lets-see-some-code)
+* [Throwing a default exception](#throwing-a-default-exception)
+* [Returning a fixed value](#returning-a-fixed-value)
+* [Behaviours: When exceptions and fixed values are not enough](#behaviours-when-exceptions-and-fixed-values-are-not-enough)
+* [Throwing custom exceptions](#throwing-custom-exceptions)
+* [Environments](#environments)
+* [Conditional toggling](#conditional-toggling)
+* [Logging](#logging)
+* [Known issues](#known-issues)
+   * [Aspectj libraries and Lombok project don't work well together in IDEs](#aspectj-libraries-and-lombok-project-dont-work-well-together-in-ides)
+* [Contributing](#contributing)
+* [Code of conduct](#code-of-conduct)
+* [LICENSE](#license)
 
 
 
@@ -446,6 +448,14 @@ Workarounds:
 - Create a submodule with all the classes that use lombok, compile it and the bringing to the project. It can be a maven/gradle submodule.
 - Similar to the previous one, but in this case, instead of creating a submodule, just having the classes that use Lombok in a separated package and tell Intellij to compile with a different compiler. 
 - Taking advantage of the full compatibility of Kotlin with Java, use Kotlin instead of Java for those classes using Lombok. Everything Lombok provides, Kotlin does too natively and easier.
+
+## Contributing 
+If you would like to contribute to Dimmer project, please read [how to contribute](././community/CONTRIBUTING.md) for details on our collaboration process and standards.
+
+
+## Code of conduct 
+Please read the [code of conduct](././community/CODE_OF_CONDUCT.md) for details on our code of conduct.
+ 
 
 ## LICENSE
 This project is licensed under the [GNU Global Public License](https://www.gnu.org/licenses/gpl-3.0.en.html), Version 3.0 - see the [LICENSE](./LICENSE.md) file for details
