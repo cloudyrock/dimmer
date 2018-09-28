@@ -2,21 +2,11 @@
 
 [Description of the issue]
 
-### PRIORITY
-
-[Choose the label best describe the severity of your issue: CRITICAL, normal or minor]
-
 ### Steps to Reproduce
 
 1. [First Step]
 2. [Second Step]
 3. [and so on...]
-
-### Specific scenario
-
-[You can describe your specific scenario and how this bugs is affecting you]
-
-### Behaviour
 
 **Expected behavior:** [What you expect to happen]
 
@@ -24,14 +14,14 @@
 
 **Reproduces how often:** [What percentage of the time does it reproduce?]
 
-### Version
+### Versions
 
-[You can get this information from your maven pom or gradle build file]
+You can get this information from your maven pom or gradle build file
 
 ### Link to repository using dimmer
 
-[While no mandatory, accessing to the real code that uses Dimmer, would help to solve the issue]
+While no mandatory, accessing to the real code that uses Dimmer, would help to solve the issue.
 
 ### Additional Information
 
-[Any additional information, configuration or data that might be necessary to reproduce the issue]
+Any additional information, configuration or data that might be necessary to reproduce the issue.
