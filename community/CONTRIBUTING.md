@@ -5,6 +5,8 @@
  The following is a set of guidelines for contributing to Dimmer project which is hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel
  free to propose changes to this document in a pull request.
 
+## Table of contents
+
 * [Code of Conduct](#code-of-conduct)
 * [It's just a question, I don't want to read this whole thing!!!](#its-just-a-question-i-dont-want-to-read-this-whole-thing)
 * [Dimmer project packages](#dimmer-project-packages)

@@ -1,6 +1,8 @@
 
 # Dimmer Code Standard
 
+## Table of contents
+
 * [Introduction](#introduction)
 * [General](#general)
    * [Column limit: 120](#column-limit-120)
