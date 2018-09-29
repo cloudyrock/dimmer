@@ -45,7 +45,7 @@ You should be using `final` modifier for classes and members are instructed in t
 you should be using `final` too.
 
 * __Utility classes__: In utility classes that are accessed statically.
-* __Local ariables__: As general rule, use final in variables, which reference is not intended to be modified. This helps readability.
+* __Local variables__: As general rule, use final in variables where reference is not intended to be modified. This helps readability.
 * __Method parameter__: Not required, but permitted, applying the rule for 'Local variables'
 
 ### Immutability
@@ -84,7 +84,7 @@ Use the Java 8 API where possible.
 
 ### Method naming
 
-Use the shouldXXX_whenXXX_ifXXXXX pattern for test names.
+Use the **should**XXX_**when**XXX_**if**XXXXX pattern for test names.
 
 Example:
 ```java
@@ -98,7 +98,7 @@ public shouldReturn4_whenSum_ifParametersAre2And2() {
 
 Any code delivered must be covered by unit and integrations test. We ensure this by using [Jacoco plugin](https://www.eclemma.org/jacoco/).
 
-Coverage for unit and integrations tests are checked separately(both have __80% threshold__ coverage)
+Coverage for unit and integrations tests are checked separately(both have __80% threshold coverage__)
 
 You can run the check simply by running `mvn clean verify`
 
