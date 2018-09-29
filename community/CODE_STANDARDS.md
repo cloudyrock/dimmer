@@ -1,6 +1,25 @@
 
 # Dimmer Code Standard
 
+* [Introduction](#introduction)
+* [General](#general)
+   * [Column limit: 120](#column-limit-120)
+   * [Horizontal alignment: never required](#horizontal-alignment-never-required)
+   * [Access modifier](#access-modifier)
+ * [Programming Practices](#programming-practices)
+   * [final modifier](#final-modifier)
+   * [Immutability pattern](#immutability-pattern)
+   * [Java 8 Optional Vs null](#java-8-optional-vs-null)
+   * [Generic](#generic)
+   * [Code duplication](#code-duplication)
+   * [Java 8 API](#java-8-api)
+* [Test](#test)
+   * [Test file Naming](#test-file-naming)
+   * [Method naming](#method-naming)
+   * [Coverage](#coverage)
+* [Javadoc](#javadoc)
+
+
 ## Introduction
 --------------------------------------------------------------------------------------------------------------------------------
 
