@@ -1,35 +1,29 @@
-# Contributing to Dimmer project
+ # Contributing to Dimmer project
 
-:+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
+ :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines for contributing to Dimmer project which is hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel 
-free to propose changes to this document in a pull request.
+ The following is a set of guidelines for contributing to Dimmer project which is hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel
+ free to propose changes to this document in a pull request.
 
+* [Code of Conduct](#code-of-conduct)
+* [It's just a question, I don't want to read this whole thing!!!](#its-just-a-question-i-dont-want-to-read-this-whole-thing)
+* [Dimmer project packages](#dimmer-project-packages)
+* [How Can I Contribute?](#how-can-i-contribute)
+   * [Reporting Bugs](#reporting-bugs)
+      * [Before Submitting A Bug Report](#before-submitting-a-bug-report)
+      * [How Do I Submit A (Good) Bug Report?](#how-do-i-submit-a-good-bug-report)
+   * [Suggesting Enhancements](#suggesting-enhancements)
+      * [Before Submitting An Enhancement Suggestion](#before-submitting-an-enhancement-suggestion)
+      * [How Do I Submit A (Good) Enhancement Suggestion?](#how-do-i-submit-a-good-enhancement-suggestion)
+   * [Code Contribution](#code-contribution)
+      * [I just want to help: First code contribution](#i-just-want-to-help-first-code-contribution)
+      * [Code contribution steps](#code-contribution-steps)
+   * [Issue and Pull Request Labels](#issue-and-pull-request-labels)
+      * [Type of issue](#type-of-issue)
+      * [Module](#module)
+      * [Severity](#severity)
+      * [Complexity](#complexity)
 
-## Table of contents
-
-   * [Code of Conduct](#code-of-conduct)
-   * [It's just a question, I don't want to read this whole thing!!!](#its-just-a-question-i-dont-want-to-read-this-whole-thing)
-   * [Dimmer project packages](#dimmer-project-packages)
-   * [How Can I Contribute?](#how-can-i-contribute)
-      * [Reporting Bugs](#reporting-bugs)
-         * [Before Submitting A Bug Report](#before-submitting-a-bug-report)
-         * [How Do I Submit A (Good) Bug Report?](#how-do-i-submit-a-good-bug-report)
-      * [Suggesting Enhancements](#suggesting-enhancements)
-         * [Before Submitting An Enhancement Suggestion](#before-submitting-an-enhancement-suggestion)
-         * [How Do I Submit A (Good) Enhancement Suggestion?](#how-do-i-submit-a-good-enhancement-suggestion)
-      * [Your First Code Contribution](#your-first-code-contribution)
-         * [Before creating a pull request](#before-creating-a-pull-request)
-            * [Code style](#code-style)
-            * [Tests](#tests)
-            * [JavaDocs and general documentation](#javadocs-and-general-documentation)
-         * [How Do I perform A (Good) Pull Request?](#how-do-i-perform-a-good-pull-request)
-      * [Issue and Pull Request Labels](#issue-and-pull-request-labels)
-         * [Type of issue](#type-of-issue)
-         * [Module](#module)
-         * [Severity](#severity)
-         * [Complexity](#complexity)
-         * [Others](#others)
 
 ## Code of Conduct
 
