@@ -1,3 +1,6 @@
+
+# Dimmer Code Standard
+
 * [1 Introduction](#1-introduction)
    * [1.1 Terminology notes](#11-terminology-notes)
    * [1.2 Guide notes](#12-guide-notes)
@@ -80,10 +83,12 @@
       * [7.3.1 Exception: self-explanatory methods](#731-exception-self-explanatory-methods)
       * [7.3.2 Exception: overrides](#732-exception-overrides)
       * [7.3.4 Non-required Javadoc](#734-non-required-javadoc)
-1 Introduction
+
+## 1 Introduction
 --------------------------------------------------------------------------------------------------------------------------------
 
-This document serves as the **complete** definition of Google's coding standards for source code in the Java™ Programming Language. A Java source file is described as being _in Google Style_ if and only if it adheres to the rules herein.
+This document is based on and extends the [Google Java Style Guide](http://google.github.io/styleguide/javaguide.html). This guide contains the full [Google Java Style Guide](http://google.github.io/styleguide/javaguide.html) with
+our customization and extensions, so you won't need to consult the original one. However you will probably find several references to Google resources.
 
 Like other programming style guides, the issues covered span not only aesthetic issues of formatting, but other types of conventions or coding standards as well. However, this document focuses primarily on the **hard-and-fast rules** that we follow universally, and avoids giving _advice_ that isn't clearly enforceable (whether by human or tool).
 
@@ -101,7 +106,7 @@ Other "terminology notes" will appear occasionally throughout the document.
 
 Example code in this document is **non-normative**. That is, while the examples are in Google Style, they may not illustrate the _only_ stylish way to represent the code. Optional formatting choices made in examples should not be enforced as rules.
 
-2 Source file basics
+## 2 Source file basics
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 ### 2.1 File name
@@ -159,7 +164,7 @@ Good: use escapes for non-printable characters, and comment if necessary.
 
 **Tip:** Never make your code less readable simply out of fear that some programs might not handle non-ASCII characters properly. If that should happen, those programs are **broken** and they must be **fixed**.
 
-3 Source file structure
+## 3 Source file structure
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 A source file consists of, **in order**:
@@ -220,7 +225,7 @@ What is important is that each class uses **_some_ logical order**, which its ma
 
 When a class has multiple constructors, or multiple methods with the same name, these appear sequentially, with no other code in between (not even private members).
 
-4 Formatting
+## 4 Formatting
 ----------------------------------------------------------------------------------------------------------------------------
 
 **Terminology Note:** _block-like construct_ refers to the body of a class, method or constructor. Note that, by Section 4.8.3.1 on [array initializers](http://google.github.io/styleguide/javaguide.html#s4.8.3.1-array-initializers), any array initializer _may_ optionally be treated as if it were a block-like construct.
@@ -480,7 +485,7 @@ public protected private abstract default static final transient volatile synchr
 
 `long`\-valued integer literals use an uppercase `L` suffix, never lowercase (to avoid confusion with the digit `1`). For example, `3000000000L` rather than `3000000000l`.
 
-5 Naming
+## 5 Naming
 --------------------------------------------------------------------------------------------------------------------
 
 ### 5.1 Rules common to all identifiers
@@ -603,7 +608,7 @@ Incorrect
 
 **Note:** Some words are ambiguously hyphenated in the English language: for example "nonempty" and "non-empty" are both correct, so the method names `checkNonempty` and `checkNonEmpty` are likewise both correct.
 
-6 Programming Practices
+## 6 Programming Practices
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### 6.1 `@Override`: always used
@@ -636,7 +641,7 @@ It is **extremely rare** to override `Object.finalize`.
 
 **Tip:** Don't do it. If you absolutely must, first read and understand [_Effective Java_ Item 7,](http://books.google.com/books?isbn=8131726592) "Avoid Finalizers," very carefully, and _then_ don't do it.
 
-7 Javadoc
+## 7 Javadoc
 ----------------------------------------------------------------------------------------------------------------------
 
 ### 7.1 Formatting
