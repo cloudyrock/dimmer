@@ -4,8 +4,10 @@
 ## Introduction
 --------------------------------------------------------------------------------------------------------------------------------
 
-We used [Google Java Style Guide][google-tyle-url] as standard foundation
-with our own extensions, which you can find in this document.
+We used [Google Java Style Guide][google-tyle-url] as base guide, adding few rules.
+
+Notice that as part of the code review we check the code quality with sonar, which uses this [quality profile](https://sonarcloud.io/organizations/cloudyrock/quality_profiles/show?language=java&name=Dimmer+Quality++Profile)
+and [quality gate](https://sonarcloud.io/organizations/cloudyrock/quality_gates/show/1437)
 
 
 ## General
@@ -75,6 +77,9 @@ public interface GenericInterface<GENERIC_PARAMETER> {
 }
 ```
 
+### Code duplication
+
+A maximum of 3% code duplication is allowed for new code.
 
 ### Java 8 API
 
