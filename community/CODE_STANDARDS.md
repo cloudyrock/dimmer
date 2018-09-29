@@ -4,7 +4,7 @@
 ## Introduction
 --------------------------------------------------------------------------------------------------------------------------------
 
-We used [Google Java Style Guide][google-tyle-url] as base guide, adding few rules.
+We used [Google Java Style Guide][google-style-url] as base guide, adding few rules.
 
 Notice that as part of the code review we check the code quality with sonar, which uses this [quality profile](https://sonarcloud.io/organizations/cloudyrock/quality_profiles/show?language=java&name=Dimmer+Quality++Profile)
 and [quality gate](https://sonarcloud.io/organizations/cloudyrock/quality_gates/show/1437)
