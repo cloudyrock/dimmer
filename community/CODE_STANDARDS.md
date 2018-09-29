@@ -114,8 +114,8 @@ Coverage for unit and integrations tests are checked separately(both have __80% 
 
 You can run the check simply by running `mvn clean verify`
 
-> **Note:** Please notice that when we you run jacoco(by mvn), it checks the entire project. However, the first thing we do when we perform a review
-is to run sonar which check that just the new code fits the coverage threshold. This means that when you verify locally you coverage, it passes, but it
+> **Note:** Please notice that when we you run jacoco(by mvn), it checks the entire project. However, the first thing we do when we perform a code review
+is to run sonar which checks that just the new code fits the coverage threshold. This means that when you verify locally you coverage, it passes, but it
 doesn't when we review. For this we suggest you make sure your new code fits the coverage threshold.
 
 
