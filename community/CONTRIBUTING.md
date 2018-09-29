@@ -108,7 +108,7 @@ Unsure where to begin contributing to Dimmer project? You can start by looking t
 #### Code contribution steps
 1. __Issue created__: Before starting a code contribution, please make sure there is an issue for it.
 1. __Fork__: Fork this project to your own repository.
-1. __Branch__: Create a branch in your forked repository called feature/issue_xx. Here is where you should work.
+1. __Branch__: In your forked repository create a branch, in which you will do the change, using the pattern 'feature/issue_xx'.
 1. __Coding__: Please, make sure your code change fits [our standards](./CODE_STANDARDS.md).
 1. __Code checking__: In this stage you verify your code is ok to be pushed. Please see [our verification process](./VERIFICATION_PROCESS.md)
 1. __README update__: Please, update README.md file if needed.
