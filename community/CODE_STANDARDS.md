@@ -21,7 +21,7 @@ This is ok for most of screens and allow developers to split the screen in two, 
 
 ### Horizontal alignment: never required
 
-**Terminology Note:** _Horizontal alignment_ is the practice of adding a variable number of additional spaces in your code with the goal of making certain tokens appear directly below certain other tokens on previous lines.
+> **Terminology Note:** _Horizontal alignment_ is the practice of adding a variable number of additional spaces in your code with the goal of making certain tokens appear directly below certain other tokens on previous lines.
 
 This practice is NOT permitted by Dimmer Style.
 
@@ -114,7 +114,7 @@ Coverage for unit and integrations tests are checked separately(both have __80% 
 
 You can run the check simply by running `mvn clean verify`
 
-**Note:** Please notice that when we you run jacoco(by mvn), it checks the entire project. However, the first thing we do when we perform a review
+> **Note:** Please notice that when we you run jacoco(by mvn), it checks the entire project. However, the first thing we do when we perform a review
 is to run sonar which check that just the new code fits the coverage threshold. This means that when you verify locally you coverage, it passes, but it
 doesn't when we review. For this we suggest you make sure your new code fits the coverage threshold.
 
