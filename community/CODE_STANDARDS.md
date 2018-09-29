@@ -25,7 +25,14 @@ This practice is NOT permitted by Dimmer Style.
 
 Here is an example without alignment, then using alignment:
 
-private  int x;  // this is OK  private  Color color;  // this OK too  private  int x;  // NOT allowed  private  Color color;
+```java
+private  int x;  // this is OK
+private  Color color;  // this OK too
+
+private  int   x;  // NOT allowed
+private  Color color;
+```
+
 
 ### Access modifier
 In this section we want to encourage the right modifier in every case.
