@@ -13,7 +13,7 @@ with our own extensions, which you can find in this document.
 
 ### Column limit: 120
 
-We add extra 20 to the goggle standard column limit: 120 characters column limit.
+We add extra 20 characters to the goggle standard column limit: 120 characters column limit.
 
 This is ok for most of screens and allow developers to split the screen in two, actual class and test.
 
