@@ -46,7 +46,7 @@ In this section we want to encourage the right modifier in every case.
 ## Programming Practices
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
-### finals
+### final modifier
 
 You should be using `final` modifier for classes and members are instructed in the Java standard guide. In  this section we add specific scenarios where
 you should be using `final` too.
@@ -55,13 +55,13 @@ you should be using `final` too.
 * __Local variables__: As general rule, use final in variables where reference is not intended to be modified. This helps readability.
 * __Method parameter__: Not required, but permitted, applying the rule for 'Local variables'
 
-### Immutability
+### Immutability pattern
 
 As part of this project we highly encourage immutability, so please apply it wherever is possible.
 
-### Optional and nulls
+### Java 8 Optional Vs null
 
-Avoid nulls as much as possible. Use `Optional` wherever a method could return a null instance.
+As general rule avoid the presence of null references as much as possible. As returning type, use `Optional` as container type in any method where the returned object might be absent.
 
 ### Generic
 
