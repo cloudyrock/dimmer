@@ -110,7 +110,7 @@ Unsure where to begin contributing to Dimmer project? You can start by looking t
 1. __Fork__: Fork this project to your own repository.
 1. __Branch__: In your forked repository create a branch, in which you will do the change, using the pattern 'feature/issue_xx'.
 1. __Coding__: Please, make sure your code change fits [our standards](./CODE_STANDARDS.md).
-1. __Code checking__: In this stage you verify your code is ok to be pushed. Please see [our verification process](./VERIFICATION_PROCESS.md)
+1. __Local verification__: In this stage you verify your code is ok to be pushed. Please see [our verification process](./VERIFICATION_PROCESS.md)
 1. __README update__: Please, update README.md file if needed.
 1. __Documentation__: We believe in self explanatory code, so please prioritize a readable code over documentation. However, as we are developing a library, please ensure you provide(and update) the javaDocs for the public API.
 1. __Pull request__: Please use [our pull request template](PULL_REQUEST_TEMPLATE.md) to provide the required information.
