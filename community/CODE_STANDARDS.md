@@ -4,10 +4,11 @@
 ## Introduction
 --------------------------------------------------------------------------------------------------------------------------------
 
-We used [Google Java Style Guide][google-style-url] as base guide, adding few rules.
+We use [Google Java Style Guide][google-style-url] as base guide, adding few rules.
 
-Notice that as part of the code review we check the code quality with sonar, which uses this [quality profile](https://sonarcloud.io/organizations/cloudyrock/quality_profiles/show?language=java&name=Dimmer+Quality++Profile)
-and [quality gate](https://sonarcloud.io/organizations/cloudyrock/quality_gates/show/1437)
+Notice that as part of the code review sonarqube is used to check  the code quality, which is configured with:
+* [Quality profile](https://sonarcloud.io/organizations/cloudyrock/quality_profiles/show?language=java&name=Dimmer+Quality++Profile)
+* [Quality gate](https://sonarcloud.io/organizations/cloudyrock/quality_gates/show/1437)
 
 
 ## General
