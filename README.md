@@ -3,6 +3,7 @@
 </p>
              
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=coverage)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=coverage)
+[![Build Status](https://travis-ci.org/cloudyrock/dimmer-project.svg?branch=master)](https://travis-ci.org/cloudyrock/dimmer-project)
 
 
 # Dimmer: Lightweight Java library for flexible feature toggling
