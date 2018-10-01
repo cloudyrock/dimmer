@@ -1,10 +1,10 @@
 #!/bin/bash
 
-printf "--------------------------------------------------------------------Branch:\t $TRAVIS_BRANCH\n"
-printf "--------------------------------------------------------------------Pull request key:\t $TRAVIS_PULL_REQUEST\n"
-printf "--------------------------------------------------------------------Pull request branch:\t $TRAVIS_PULL_REQUEST_BRANCH\n"
-printf "--------------------------------------------------------------------Encrypted variables:\t $TRAVIS_SECURE_ENV_VARS\n"
-printf "--------------------------------------------------------------------Encrypted variables:\t $TRAVIS_REPO_SLUG\n"
+printf "____________________________________________________________________Branch:\t\t\t $TRAVIS_BRANCH\n"
+printf "____________________________________________________________________Pull request key:\t $TRAVIS_PULL_REQUEST\n"
+printf "____________________________________________________________________Pull request branch:\t $TRAVIS_PULL_REQUEST_BRANCH\n"
+printf "____________________________________________________________________Encrypted variables:\t $TRAVIS_SECURE_ENV_VARS\n"
+printf "____________________________________________________________________Encrypted variables:\t $TRAVIS_REPO_SLUG\n"
 
 if [[ -z $TRAVIS_PULL_REQUEST_BRANCH ]]
 then
