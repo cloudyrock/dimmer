@@ -135,9 +135,9 @@ Please click on the `search` list the issues for the given label.
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
-| `core-module` | [search][search-repo-label-core-module] | issues to be fixed in the core |
-| `local-module` | [search][search-repo-label-local-module] | issues to be fixed in the local module |
-| `server-module` | [search][search-repo-label-server-module] | issues to be fixed in the server module |
+| `core-module` | [search][search-repo-label-core-module] | Issues to be fixed in the core |
+| `local-module` | [search][search-repo-label-local-module] | Issues to be fixed in the local module |
+| `server-module` | [search][search-repo-label-server-module] | Issues to be fixed in the server module |
 
 ### Severity
 
@@ -152,9 +152,9 @@ Please click on the `search` list the issues for the given label.
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
-| `beginner` | [search][search-repo-label-beginner] | issues which should only require a few lines of code, and a test or two |
-| `intermediate` | [search][search-repo-label-intermediate] | issues which should be a bit more involved than `beginner` issues  |
-| `advanced` | [search][search-repo-label-advanced] | issues that require some deep knowledge, expertise or just time consuming |
+| `beginner` | [search][search-repo-label-beginner] | Issues which should only require a few lines of code, and a test or two |
+| `intermediate` | [search][search-repo-label-intermediate] | Issues which should be a bit more involved than `beginner` issues  |
+| `advanced` | [search][search-repo-label-advanced] | Issues that require some deep knowledge, expertise or just time consuming |
 
 ### Others
 
