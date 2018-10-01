@@ -10,7 +10,7 @@ public class DimmerInvocationException extends RuntimeException {
     /**
      * Feature invocation to describe the real call to the intercepted method
      */
-    private transient final FeatureInvocation invocationInfo;
+    private final transient FeatureInvocation invocationInfo;
 
     /**
      * Constructor with a featureInvocation as parameter

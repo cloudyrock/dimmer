@@ -13,9 +13,9 @@ public class FeatureMetadataBehaviourUTest {
 
     @Test
     public void equals() {
-        final FeatureMetadataBehaviour m1 = new FeatureMetadataBehaviour("F1", operation, null);
-        final FeatureMetadataBehaviour m2 = new FeatureMetadataBehaviour("F1", operation, null);
-        final FeatureMetadataBehaviour m3 = new FeatureMetadataBehaviour("F2", operation,null);
+        final BehaviourFeatureMetadata m1 = new BehaviourFeatureMetadata("F1", operation, null);
+        final BehaviourFeatureMetadata m2 = new BehaviourFeatureMetadata("F1", operation, null);
+        final BehaviourFeatureMetadata m3 = new BehaviourFeatureMetadata("F2", operation,null);
 
         assertEquals(m1, m2);
         assertNotEquals(m1, m3);
@@ -25,7 +25,7 @@ public class FeatureMetadataBehaviourUTest {
     @Test
     public void constructor() {
         Function<FeatureInvocation, Object> behaviour = FeatureInvocation::getMethodName;
-        final FeatureMetadataBehaviour m1 = new FeatureMetadataBehaviour("F1", operation, behaviour);
+        final BehaviourFeatureMetadata m1 = new BehaviourFeatureMetadata("F1", operation, behaviour);
         assertEquals("F1", m1.getFeature());
         assertEquals(behaviour, m1.getBehaviour());
     }

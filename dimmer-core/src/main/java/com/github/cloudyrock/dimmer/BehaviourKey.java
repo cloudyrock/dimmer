@@ -6,12 +6,8 @@ class BehaviourKey {
     private final String operation;
 
     BehaviourKey(String feature, String operation) {
-        if(feature == null || feature.isEmpty()) {
-            throw new IllegalArgumentException("Feature cannot be empty");
-        }
-        if(operation == null || operation.isEmpty()) {
-            throw new IllegalArgumentException("Operation cannot be empty");
-        }
+        checkProperty(feature, "Feature");
+        checkProperty(operation, "Operation");
         this.feature = feature;
         this.operation = operation;
     }
@@ -42,5 +38,13 @@ class BehaviourKey {
     @Override
     public int hashCode() {
         return 31 * feature.hashCode() + operation.hashCode();
+    }
+
+
+
+    private void checkProperty(String feature, String propertyName1) {
+        if(feature == null || feature.isEmpty()) {
+            throw new IllegalArgumentException(propertyName1 + " cannot be empty");
+        }
     }
 }

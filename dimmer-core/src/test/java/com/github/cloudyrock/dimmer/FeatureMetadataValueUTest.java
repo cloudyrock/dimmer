@@ -11,9 +11,9 @@ public class FeatureMetadataValueUTest {
 
     @Test
     public void equals() {
-        final FeatureMetadataValue m1 = new FeatureMetadataValue("F1", operation, null);
-        final FeatureMetadataValue m2 = new FeatureMetadataValue("F1", operation, null);
-        final FeatureMetadataValue m3 = new FeatureMetadataValue("F2", operation, null);
+        final ValueFeatureMetadata m1 = new ValueFeatureMetadata("F1", operation, null);
+        final ValueFeatureMetadata m2 = new ValueFeatureMetadata("F1", operation, null);
+        final ValueFeatureMetadata m3 = new ValueFeatureMetadata("F2", operation, null);
 
         assertEquals(m1, m2);
         assertNotEquals(m1, m3);
@@ -23,7 +23,7 @@ public class FeatureMetadataValueUTest {
     @Test
     public void constructor() {
         final String value = "VALUE";
-        final FeatureMetadataValue m1 = new FeatureMetadataValue("F1", operation, value);
+        final ValueFeatureMetadata m1 = new ValueFeatureMetadata("F1", operation, value);
         assertEquals("F1", m1.getFeature());
         assertEquals(value, m1.getValueToReturn());
     }

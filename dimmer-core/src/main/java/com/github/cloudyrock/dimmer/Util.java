@@ -5,6 +5,11 @@ import java.util.Collection;
 import java.util.Objects;
 
 final class Util {
+
+    private Util() {
+
+    }
+
     static void checkArgumentNullEmpty(Object arg, String argName) {
         if (Objects.isNull(arg)) {
             throw new IllegalArgumentException(
