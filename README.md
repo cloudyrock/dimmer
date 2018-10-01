@@ -4,8 +4,12 @@
 
 [![Build Status](https://travis-ci.org/cloudyrock/dimmer-project.svg?branch=master)](https://travis-ci.org/cloudyrock/dimmer-project)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=alert_status)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=alert_status)
+
+
 [![Reliability rating](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=reliability_rating)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=reliability_rating)
 [![Maintainability rating](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=sqale_rating)
+
+
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=coverage)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=coverage)
 [![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=ncloc)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=ncloc)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=bugs)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=bugs)
