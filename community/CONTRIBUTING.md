@@ -41,10 +41,8 @@ tour question resolved.
  
 ## Dimmer project packages
 Dimmer project contains 4 main areas. 
-- **Core:** Base project for the basic Dimmer module and Dimmer server. Issue label is `core-module`
-- **Dimmer:** Basic Dimmer module to used locally or as a client in combination with Dimmer server. Issue label is `local-module`
-- **Dimmer server:** Dimmer as a centralised server. Issue label is `server-module`
-- **Samples:** Set of examples using Dimmer project.  Issue label is `samples-module`
+- **dimer-core:** Base project for the basic Dimmer module and Dimmer server. Issue label is `core-module`
+- **dimmer-local:** Basic Dimmer module to used locally or as a client in combination with Dimmer server. Issue label is `local-module`
  
 ## How Can I Contribute?
 
@@ -143,15 +141,15 @@ Please click on the `search` list the issues for the given label.
 | `core-module` | [search][search-repo-label-core-module] | issues to be fixed in the core |
 | `local-module` | [search][search-repo-label-local-module] | issues to be fixed in the local module |
 | `server-module` | [search][search-repo-label-server-module] | issues to be fixed in the server module |
-| `samples-module` | [search][search-repo-label-samples-module] | issues to be fixed in one of the sample apps|
 
 #### Severity
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
-| `critical` | [search][search-repo-label-critical] | Critical issues stopping Dimmer from being used |
-| `normal` | [search][search-repo-label-normal] | normal issues that needs to be fixed, but doesn't stop the application from being used  |
-| `minor` | [search][search-repo-label-minor] | issues that can wait or it's a nice to have feature |
+| `critical` | [search][search-repo-label-critical] | Blocking issues |
+| `high` | [search][search-repo-label-high] | Very important, but non-blocking, issues |
+| `normal` | [search][search-repo-label-normal] | Normal non-blocking issues that needs to be fixed sooner than later  |
+| `minor` | [search][search-repo-label-minor] | Low priority issues |
 
 #### Complexity
 
@@ -159,7 +157,7 @@ Please click on the `search` list the issues for the given label.
 | --- | --- | --- |
 | `beginner` | [search][search-repo-label-beginner] | issues which should only require a few lines of code, and a test or two |
 | `intermediate` | [search][search-repo-label-intermediate] | issues which should be a bit more involved than `beginner` issues  |
-| `advance` | [search][search-repo-label-advance] | issues that require some deep knowledge, expertise or just time consuming |
+| `advanced` | [search][search-repo-label-advanced] | issues that require some deep knowledge, expertise or just time consuming |
 
 #### Others
 
@@ -180,14 +178,14 @@ Please click on the `search` list the issues for the given label.
 [search-repo-label-core-module]:https://github.com/cloudyrock/dimmer-project/labels/core-module
 [search-repo-label-local-module]:https://github.com/cloudyrock/dimmer-project/labels/local-module
 [search-repo-label-server-module]:https://github.com/cloudyrock/dimmer-project/labels/server-module
-[search-repo-label-samples-module]:https://github.com/cloudyrock/dimmer-project/labels/samples-module
 
 [search-repo-label-critical]:https://github.com/cloudyrock/dimmer-project/labels/critical
+[search-repo-label-hig]:https://github.com/cloudyrock/dimmer-project/labels/high
 [search-repo-label-normal]:https://github.com/cloudyrock/dimmer-project/labels/normal
 [search-repo-label-minor]:https://github.com/cloudyrock/dimmer-project/labels/minor
 
 [search-repo-label-beginner]:https://github.com/cloudyrock/dimmer-project/labels/beginner
 [search-repo-label-intermediate]:https://github.com/cloudyrock/dimmer-project/labels/intermediate
-[search-repo-label-advance]:https://github.com/cloudyrock/dimmer-project/labels/advance
+[search-repo-label-advanced]:https://github.com/cloudyrock/dimmer-project/labels/advance
 
 [search-repo-label-wont-fix]:https://github.com/cloudyrock/dimmer-project/labels/invalid%2Fwon%27t%20fix

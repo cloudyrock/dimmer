@@ -7,7 +7,7 @@
 * [First step: Verify what I've done](#first-step-verify-what-ive-done)
 * [Results](#results)
    * [Success!](#success)
-   * [Ouups, something went wrong!](#ouups-something-went-wrong)
+   * [Ooooops, something went wrong!](#ouups-something-went-wrong)
    * [What to do when verification fails?](#what-to-do-when-verification-fails)
 
 
@@ -31,7 +31,7 @@ When the verification is successfully, you will see something like this
 ![Successfully code verrification](./jacoco-verification-success.png)
 
 
-### Ouups, something went wrong!
+### Ooooops, something went wrong!
 
 You can obviously get compilation errors or test failing, but we'll assume that you
 already have the knowledge to deal with it. Lets focus on the actual verification,

@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <name>dimmer-local</name>
 
-    <url>https://cloudyrock.github.io/dimmer-project</url>
+    <url>https://github.com/cloudyrock/dimmer-project.git</url>
     <description>
         Lightweight library to manage feature toggling. Unlike others Dimmer doesn't work
         in switch mode, black or white, It provides a flexible way to respond to disabled
@@ -26,10 +26,6 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 
         <jacoco.version>0.7.7.201606060606</jacoco.version>
-        <!--<jacoco.out.ut.file>jacoco-ut.exec</jacoco.out.ut.file>-->
-        <!--<jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>-->
-        <!--<sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>-->
-        <!--<sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>-->
 
     </properties>
 

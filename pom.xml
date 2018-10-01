@@ -7,7 +7,7 @@
     <version>2.2.3-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>parent</name>
-    <url>https://cloudyrock.github.io/dimmer-project</url>
+    <url>https://github.com/cloudyrock/dimmer-project.git</url>
     <description>
         Lightweight library to manage feature toggling. Unlike others Dimmer doesn't work
         in switch mode, black or white, It provides a flexible way to respond to disabled
