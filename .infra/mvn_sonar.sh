@@ -1,12 +1,10 @@
 #!/bin/bash
 
-
-
-echo "---------------------------------------------------------------------------------------------------------------------Branch: $TRAVIS_BRANCH"
-echo "---------------------------------------------------------------------------------------------------------------------Pull request key: $TRAVIS_PULL_REQUEST"
-echo "---------------------------------------------------------------------------------------------------------------------Pull request branch: $TRAVIS_PULL_REQUEST_BRANCH"
-echo "---------------------------------------------------------------------------------------------------------------------Encripted variables: $TRAVIS_SECURE_ENV_VARS"
-
+printf "--------------------------------------------------------------------Branch:\t $TRAVIS_BRANCH\n"
+printf "--------------------------------------------------------------------Pull request key:\t $TRAVIS_PULL_REQUEST\n"
+printf "--------------------------------------------------------------------Pull request branch:\t $TRAVIS_PULL_REQUEST_BRANCH\n"
+printf "--------------------------------------------------------------------Encrypted variables:\t $TRAVIS_SECURE_ENV_VARS\n"
+printf "--------------------------------------------------------------------Encrypted variables:\t $TRAVIS_REPO_SLUG\n"
 
 if [[ -z $TRAVIS_PULL_REQUEST_BRANCH ]]
 then
@@ -14,9 +12,9 @@ then
     mvn clean verify sonar:sonar -Dsonar.projectKey=com.github.cloudyrock.dimmer -Dsonar.organization=cloudyrock -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
 elif [[ $TRAVIS_SECURE_ENV_VARS = true ]]
 then
-    echo "Verifying and running sonar for  Pull request"
+    echo "Verifying and running sonar for internal pull request from branch $TRAVIS_PULL_REQUEST_BRANCH"
     mvn clean verify sonar:sonar -Dsonar.projectKey=com.github.cloudyrock.dimmer -Dsonar.organization=cloudyrock -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN -Dsonar.pullrequest.base=master -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST -Dsonar.pullrequest.branch=$TRAVIS_PULL_REQUEST_BRANCH
 else
-    echo "Verifying(NO SONAR) Pull request"
+    echo "Verifying(NO SONAR) external pull request from forked repository $TRAVIS_REPO_SLUG, branch $TRAVIS_PULL_REQUEST_BRANCH"
     mvn clean verify
 fi
