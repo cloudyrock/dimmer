@@ -5,6 +5,19 @@ echo "--------------------------------------------------------------------------
 echo "---------------------------------------------------------------------------------------------------------------------Pull request branch: $TRAVIS_PULL_REQUEST_BRANCH"
 echo "---------------------------------------------------------------------------------------------------------------------Encripted variables: $TRAVIS_SECURE_ENV_VARS"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 if [[ -z $TRAVIS_PULL_REQUEST_BRANCH ]]
 then
     echo "Verifying and running sonar for  master branch"
