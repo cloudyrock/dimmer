@@ -3,6 +3,9 @@
 </p>
              
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=coverage)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=coverage)
+[![Lines of code](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=ncloc)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=ncloc)
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=alert_status)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=alert_status)
+[![Code smells](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=code_smells)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=code_smells)
 [![Build Status](https://travis-ci.org/cloudyrock/dimmer-project.svg?branch=master)](https://travis-ci.org/cloudyrock/dimmer-project)
 
 
