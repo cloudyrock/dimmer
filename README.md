@@ -1,8 +1,8 @@
 <p align="center">
     <img src="https://raw.githubusercontent.com/cloudyrock/dimmer-project/master/misc/logo.png" width="200" />
 </p>
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=coverage)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=coverage)
              
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=coverage)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=coverage)
 
 
 # Dimmer: Lightweight Java library for flexible feature toggling
