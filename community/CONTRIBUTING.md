@@ -10,21 +10,20 @@
 * [Code of Conduct](#code-of-conduct)
 * [It's just a question, I don't want to read this whole thing!!!](#its-just-a-question-i-dont-want-to-read-this-whole-thing)
 * [Dimmer project packages](#dimmer-project-packages)
-* [How Can I Contribute?](#how-can-i-contribute)
-   * [Reporting Bugs](#reporting-bugs)
-      * [Before Submitting A Bug Report](#before-submitting-a-bug-report)
-      * [How Do I Submit A (Good) Bug Report?](#how-do-i-submit-a-good-bug-report)
-   * [Suggesting Enhancements](#suggesting-enhancements)
-      * [Before Submitting An Enhancement Suggestion](#before-submitting-an-enhancement-suggestion)
-      * [How Do I Submit A (Good) Enhancement Suggestion?](#how-do-i-submit-a-good-enhancement-suggestion)
-   * [Code Contribution](#code-contribution)
-      * [I just want to help: First code contribution](#i-just-want-to-help-first-code-contribution)
-      * [Code contribution steps](#code-contribution-steps)
-   * [Issue and Pull Request Labels](#issue-and-pull-request-labels)
-      * [Type of issue](#type-of-issue)
-      * [Module](#module)
-      * [Severity](#severity)
-      * [Complexity](#complexity)
+* [Reporting Bugs](#reporting-bugs)
+   * [Before Submitting A Bug Report](#before-submitting-a-bug-report)
+   * [How Do I Submit A (Good) Bug Report?](#how-do-i-submit-a-good-bug-report)
+* [Suggesting Enhancements](#suggesting-enhancements)
+   * [Before Submitting An Enhancement Suggestion](#before-submitting-an-enhancement-suggestion)
+   * [How Do I Submit A (Good) Enhancement Suggestion?](#how-do-i-submit-a-good-enhancement-suggestion)
+* [Code Contribution](#code-contribution)
+   * [I just want to help: First code contribution](#i-just-want-to-help-first-code-contribution)
+   * [Code contribution steps](#code-contribution-steps)
+* [Issue and Pull Request Labels](#issue-and-pull-request-labels)
+   * [Type of issue](#type-of-issue)
+   * [Module](#module)
+   * [Severity](#severity)
+   * [Complexity](#complexity)
 
 
 ## Code of Conduct
@@ -43,22 +42,20 @@ tour question resolved.
 Dimmer project contains 4 main areas. 
 - **dimer-core:** Base project for the basic Dimmer module and Dimmer server. Issue label is `core-module`
 - **dimmer-local:** Basic Dimmer module to used locally or as a client in combination with Dimmer server. Issue label is `local-module`
- 
-## How Can I Contribute?
 
-### Reporting Bugs
+## Reporting Bugs
 
 This section guides you through submitting a bug report for Dimmer project. 
 
 > **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
 
-#### Before Submitting A Bug Report
+### Before Submitting A Bug Report
 
 * **Check the [FAQ page](FAQ.md)** for a list of common questions and problems. You might find out your issue/question is clarified in this page.
 * **Perform a [cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+archived%3Afalse+repo%3Acloudyrock%2Fdimmer-project+)** 
 to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
-#### How Do I Submit A (Good) Bug Report?
+### How Do I Submit A (Good) Bug Report?
 
 Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on the Dimmer repository following the
 [issue template](ISSUE_TEMPLATE.md). Please provide as much information as you can and add the following labels to make easier to categorise issues: 
@@ -67,11 +64,11 @@ Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/).
 - Severity of the bug: [severity labels](#severity)
 - If you feel confident to estimate how complex the fix is, please provide a complexity label: [complexity labels](#complexity)
 
-### Suggesting Enhancements
+## Suggesting Enhancements
 
 This section guides you through submitting an enhancement suggestion for Dimmer project, including completely new features and minor improvements to existing functionality.
 
-#### Before Submitting An Enhancement Suggestion
+### Before Submitting An Enhancement Suggestion
 
 
 * **Check the [FAQ page](FAQ.md)**. You might find out that enhancement is already covered.
@@ -79,7 +76,7 @@ This section guides you through submitting an enhancement suggestion for Dimmer 
 * **Perform a [cursory search](https://github.com/issues?utf8=%E2%9C%93&q=is%3Aissue+archived%3Afalse+repo%3Acloudyrock%2Fdimmer-project+)** to see if the problem has already been reported. If it has **and the issue is still open**, add a comment to the existing issue instead of opening a new one.
 
 
-#### How Do I Submit A (Good) Enhancement Suggestion?
+### How Do I Submit A (Good) Enhancement Suggestion?
 
 Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an enhancement on the main repository and provide the required information
 by filling in [the enhancement template](ENHANCENMENT_TEMPLATE.md).
@@ -90,16 +87,16 @@ Please add the following labels to make easier to categorise issues:
 - Severity of the bug: [severity labels](#severity)
 - If you feel confident to estimate how complex the development is, please provide a complexity label: [complexity labels](#complexity
 
-### Code Contribution
+## Code Contribution
 
-#### I just want to help: First code contribution
+### I just want to help: First code contribution
 
 Unsure where to begin contributing to Dimmer project? You can start by looking through these `beginner` and `intermediate` issues:
 
 * [Beginner issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Abeginner) - issues which should only require a few lines of code, and a test or two.
 * [Intermediate issues](https://github.com/cloudyrock/dimmer-project/issues?q=is%3Aopen+is%3Aissue+label%3Aintermediate) - issues which should be a bit more involved than `beginner` issues.
 
-#### Code contribution steps
+### Code contribution steps
 1. __Issue created__: Before starting a code contribution, please make sure there is an issue for it.
 1. __Fork repository__: Fork this project to your own repository.
 1. __Branch within forked repository__: In your forked repository create a branch, in which you will do the change, using the pattern 'feature/issue_xx'.
@@ -115,7 +112,7 @@ Part of the review involves sonar to check the code quality. Although it's alrea
 * Our [quality gate][sonar-quality-gate-url] requires at least 85% test coverage and at most 3% code duplication for new code.
 
 
-### Issue and Pull Request Labels
+## Issue and Pull Request Labels
 
 This section lists the labels we use to help us track and manage issues and pull requests. 
 
@@ -125,7 +122,7 @@ the more you provide, the easier and faster the issue can be fixed.
 Please click on the `search` list the issues for the given label.
 
 
-#### Type of issue
+### Type of issue
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
@@ -134,7 +131,7 @@ Please click on the `search` list the issues for the given label.
 | `docs/ops` | [search][search-repo-label-docs-ops] | Issues which just require documentation or some management work |
 
 
-#### Module
+### Module
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
@@ -142,7 +139,7 @@ Please click on the `search` list the issues for the given label.
 | `local-module` | [search][search-repo-label-local-module] | issues to be fixed in the local module |
 | `server-module` | [search][search-repo-label-server-module] | issues to be fixed in the server module |
 
-#### Severity
+### Severity
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
@@ -151,7 +148,7 @@ Please click on the `search` list the issues for the given label.
 | `normal` | [search][search-repo-label-normal] | Normal non-blocking issues that needs to be fixed sooner than later  |
 | `minor` | [search][search-repo-label-minor] | Low priority issues |
 
-#### Complexity
+### Complexity
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
@@ -159,7 +156,7 @@ Please click on the `search` list the issues for the given label.
 | `intermediate` | [search][search-repo-label-intermediate] | issues which should be a bit more involved than `beginner` issues  |
 | `advanced` | [search][search-repo-label-advanced] | issues that require some deep knowledge, expertise or just time consuming |
 
-#### Others
+### Others
 
 | Label name | `Search in github` :mag_right: | Description |
 | --- | --- | --- |
