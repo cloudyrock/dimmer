@@ -10,9 +10,9 @@ public class FeatureMetadataExceptionUTest {
     private final String operation = "operation";
     @Test
     public void equals() {
-        final FeatureMetadataException m1 = new FeatureMetadataException("F1", operation, null);
-        final FeatureMetadataException m2 = new FeatureMetadataException("F1", operation, null);
-        final FeatureMetadataException m3 = new FeatureMetadataException("F2", operation, null);
+        final ExceptionFeatureMetadata m1 = new ExceptionFeatureMetadata("F1", operation, null);
+        final ExceptionFeatureMetadata m2 = new ExceptionFeatureMetadata("F1", operation, null);
+        final ExceptionFeatureMetadata m3 = new ExceptionFeatureMetadata("F2", operation, null);
 
         assertEquals(m1, m2);
         assertNotEquals(m1, m3);
@@ -22,7 +22,7 @@ public class FeatureMetadataExceptionUTest {
     @Test
     public void constructor() {
         final Class<? extends RuntimeException> ex = RuntimeException.class;
-        final FeatureMetadataException m1 = new FeatureMetadataException("F1", operation, ex);
+        final ExceptionFeatureMetadata m1 = new ExceptionFeatureMetadata("F1", operation, ex);
         assertEquals("F1", m1.getFeature());
         assertEquals(ex, m1.getException());
     }

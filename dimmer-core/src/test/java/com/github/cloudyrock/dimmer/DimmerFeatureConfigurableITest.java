@@ -75,8 +75,8 @@ public class DimmerFeatureConfigurableITest {
         final Set<FeatureMetadata> env1Metadata = runner.configMetadata.get("env1");
          assertEquals(1, env1Metadata.size());
         env1Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                .map(fm -> (FeatureMetadataBehaviour) fm)
+                .filter(fm -> fm instanceof BehaviourFeatureMetadata)
+                .map(fm -> (BehaviourFeatureMetadata) fm)
                 .filter(fm -> fm.getBehaviour().equals(behaviour1))
                 .filter(fm -> feature1.equals(fm.getFeature()))
                 .findAny()
@@ -85,8 +85,8 @@ public class DimmerFeatureConfigurableITest {
         final Set<FeatureMetadata> env2Metadata = runner.configMetadata.get("env2");
         assertEquals(1, env2Metadata.size());
         env2Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                .map(fm -> (FeatureMetadataBehaviour) fm)
+                .filter(fm -> fm instanceof BehaviourFeatureMetadata)
+                .map(fm -> (BehaviourFeatureMetadata) fm)
                 .filter(fm -> fm.getBehaviour().equals(behaviour1))
                 .filter(fm -> feature1.equals(fm.getFeature()))
                 .findAny()
@@ -95,8 +95,8 @@ public class DimmerFeatureConfigurableITest {
         final Set<FeatureMetadata> env3Metadata = runner.configMetadata.get("env3");
         assertEquals(1, env3Metadata.size());
         env3Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataValue)
-                .map(fm -> (FeatureMetadataValue) fm)
+                .filter(fm -> fm instanceof ValueFeatureMetadata)
+                .map(fm -> (ValueFeatureMetadata) fm)
                 .filter(fm -> value.equals(fm.getValueToReturn()))
                 .filter(fm -> feature2.equals(fm.getFeature()))
                 .findAny()
@@ -105,32 +105,32 @@ public class DimmerFeatureConfigurableITest {
         final Set<FeatureMetadata> env4Metadata = runner.configMetadata.get("env4");
         assertEquals(4, env4Metadata.size());
         env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataValue)
-                .map(fm -> (FeatureMetadataValue) fm)
+                .filter(fm -> fm instanceof ValueFeatureMetadata)
+                .map(fm -> (ValueFeatureMetadata) fm)
                 .filter(fm -> value.equals(fm.getValueToReturn()))
                 .filter(fm -> feature2.equals(fm.getFeature()))
                 .findAny()
                 .get();
 
         env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                .map(fm -> (FeatureMetadataBehaviour) fm)
+                .filter(fm -> fm instanceof BehaviourFeatureMetadata)
+                .map(fm -> (BehaviourFeatureMetadata) fm)
                 .filter(fm -> fm.getBehaviour().equals(behaviour1))
                 .filter(fm -> feature1.equals(fm.getFeature()))
                 .findAny()
                 .get();
 
         env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataException)
-                .map(fm -> (FeatureMetadataException) fm)
+                .filter(fm -> fm instanceof ExceptionFeatureMetadata)
+                .map(fm -> (ExceptionFeatureMetadata) fm)
                 .filter(fm -> RuntimeException.class.equals(fm.getException()))
                 .filter(fm -> feature3.equals(fm.getFeature()))
                 .findAny()
                 .get();
 
         env4Metadata.stream()
-                .filter(fm -> fm instanceof FeatureMetadataDefaultException)
-                .map(fm -> (FeatureMetadataDefaultException) fm)
+                .filter(fm -> fm instanceof DefaultExceptionFeatureMetadata)
+                .map(fm -> (DefaultExceptionFeatureMetadata) fm)
                 .filter(fm -> feature4.equals(fm.getFeature()))
                 .findAny()
                 .get();

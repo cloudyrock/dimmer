@@ -8,6 +8,11 @@ import static com.github.cloudyrock.dimmer.ExceptionConstructorType.FEATURE_INVO
 import static com.github.cloudyrock.dimmer.ExceptionConstructorType.NO_COMPATIBLE_CONSTRUCTOR;
 
 final class ExceptionUtil {
+
+    private ExceptionUtil() {
+
+    }
+
     static Object throwException(Class<? extends RuntimeException> exceptionType,
                                  FeatureInvocation f) {
         final ExceptionConstructorType constructorType =
@@ -37,10 +42,8 @@ final class ExceptionUtil {
         Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
         for (Constructor<?> c : constructors) {
-            if (c.getParameterCount() == 1 && FeatureInvocation.class
-                    .equals(c.getParameterTypes()[0])) {
-                return;
-            } else if (c.getParameterCount() == 0) {
+            if (c.getParameterCount() == 0 ||
+                    (c.getParameterCount() == 1 && FeatureInvocation.class.equals(c.getParameterTypes()[0]))) {
                 return;
             }
         }

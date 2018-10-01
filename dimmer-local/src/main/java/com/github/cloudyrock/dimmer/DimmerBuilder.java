@@ -10,6 +10,10 @@ import static java.util.Arrays.asList;
  */
 public class DimmerBuilder {
 
+    private DimmerBuilder(){
+
+    }
+
     /**
      * @return A local version of the Dimmer builder, so it gets the entire configuration
      * form the current application.

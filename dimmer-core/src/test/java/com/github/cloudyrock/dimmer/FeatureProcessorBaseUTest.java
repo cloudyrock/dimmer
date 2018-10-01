@@ -110,27 +110,27 @@ public class FeatureProcessorBaseUTest {
         assertTrue(objTest.isConditionPresent("FEATURE-BEHAVIOUR", "OPERATION-2"));
     }
 
-    private Collection<? extends FeatureMetadataValue> valueMetadataList() {
+    private Collection<? extends ValueFeatureMetadata> valueMetadataList() {
         return Arrays.asList(
-                new FeatureMetadataValue("FEATURE-VALUE", "OPERATION-1", "VALUED")
+                new ValueFeatureMetadata("FEATURE-VALUE", "OPERATION-1", "VALUED")
         );
     }
 
-    private Collection<? extends FeatureMetadataDefaultException> defaultExceptionMetadataList() {
+    private Collection<? extends DefaultExceptionFeatureMetadata> defaultExceptionMetadataList() {
         return Arrays.asList(
-                new FeatureMetadataDefaultException("FEATURE-DEFAULT-EXCEPTION", "OPERATION-2")
+                new DefaultExceptionFeatureMetadata("FEATURE-DEFAULT-EXCEPTION", "OPERATION-2")
         );
     }
 
-    private Collection<? extends FeatureMetadataException> ExceptionMetadataList() {
+    private Collection<? extends ExceptionFeatureMetadata> ExceptionMetadataList() {
         return Arrays.asList(
-                new FeatureMetadataException("FEATURE-EXCEPTION", "OPERATION-2", RuntimeException.class)
+                new ExceptionFeatureMetadata("FEATURE-EXCEPTION", "OPERATION-2", RuntimeException.class)
         );
     }
 
-    private Collection<? extends FeatureMetadataBehaviour> behaviourMetadataList() {
+    private Collection<? extends BehaviourFeatureMetadata> behaviourMetadataList() {
         return Arrays.asList(
-                new FeatureMetadataBehaviour("FEATURE-BEHAVIOUR", "OPERATION-2",
+                new BehaviourFeatureMetadata("FEATURE-BEHAVIOUR", "OPERATION-2",
                         FeatureInvocation::getFeature)
         );
     }

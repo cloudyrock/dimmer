@@ -28,8 +28,8 @@ abstract class FeatureProcessorBase {
 
         if (featureMetadataSet != null) {
             featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataBehaviour)
-                    .map(fm -> (FeatureMetadataBehaviour) fm)
+                    .filter(fm -> fm instanceof BehaviourFeatureMetadata)
+                    .map(fm -> (BehaviourFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with behaviour",
                             fm.getFeature()))
                     .forEach(fmb -> featureWithBehaviour(
@@ -38,8 +38,8 @@ abstract class FeatureProcessorBase {
                             fmb.getBehaviour()));
 
             featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataException)
-                    .map(fm -> (FeatureMetadataException) fm)
+                    .filter(fm -> fm instanceof ExceptionFeatureMetadata)
+                    .map(fm -> (ExceptionFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with exception {}",
                             fm.getFeature(), fm.getException()))
                     .forEach(fme -> featureWithException(
@@ -50,8 +50,8 @@ abstract class FeatureProcessorBase {
 
 
             featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataDefaultException)
-                    .map(fm -> (FeatureMetadataDefaultException) fm)
+                    .filter(fm -> fm instanceof DefaultExceptionFeatureMetadata)
+                    .map(fm -> (DefaultExceptionFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with default exception {}",
                             fm.getFeature(), defaultException))
                     .forEach(fmde ->
@@ -61,8 +61,8 @@ abstract class FeatureProcessorBase {
                                     defaultException));
 
             featureMetadataSet.stream()
-                    .filter(fm -> fm instanceof FeatureMetadataValue)
-                    .map(fm -> (FeatureMetadataValue) fm)
+                    .filter(fm -> fm instanceof ValueFeatureMetadata)
+                    .map(fm -> (ValueFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with value {}",
                             fm.getFeature(), fm.getValueToReturn()))
                     .forEach(fmv -> featureWithValue(

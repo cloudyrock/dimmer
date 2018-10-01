@@ -2,11 +2,11 @@ package com.github.cloudyrock.dimmer;
 
 import java.util.function.Function;
 
-final class FeatureMetadataBehaviour extends FeatureMetadata{
+final class BehaviourFeatureMetadata extends FeatureMetadata{
 
     private final Function<FeatureInvocation, Object> behaviour;
 
-    FeatureMetadataBehaviour(String feature,
+    BehaviourFeatureMetadata(String feature,
                              String operation,
                              Function<FeatureInvocation, Object> behaviour) {
         super(feature, operation);
@@ -15,5 +15,16 @@ final class FeatureMetadataBehaviour extends FeatureMetadata{
 
     Function<FeatureInvocation, Object> getBehaviour() {
         return behaviour;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

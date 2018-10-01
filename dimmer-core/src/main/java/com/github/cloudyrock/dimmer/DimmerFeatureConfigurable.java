@@ -89,7 +89,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
             String operation,
             Function<FeatureInvocation, Object> behaviour) {
 
-        final FeatureMetadataBehaviour metadata = new FeatureMetadataBehaviour(
+        final BehaviourFeatureMetadata metadata = new BehaviourFeatureMetadata(
                 feature,
                 operation,
                 behaviour
@@ -129,7 +129,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
     public RUNNER featureWithDefaultException(String feature, String operation) {
-        final FeatureMetadata metadata = new FeatureMetadataDefaultException(
+        final FeatureMetadata metadata = new DefaultExceptionFeatureMetadata(
                 feature,
                 operation);
         addFeatureMetadata(metadata);
@@ -184,7 +184,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
             Class<? extends RuntimeException> exceptionType) {
 
         ExceptionUtil.checkExceptionConstructorType(exceptionType);
-        final FeatureMetadata metadata = new FeatureMetadataException(
+        final FeatureMetadata metadata = new ExceptionFeatureMetadata(
                 feature, operation, exceptionType);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
@@ -231,7 +231,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
                                    String operation,
                                    Object valueToReturn) {
         final FeatureMetadata metadata =
-                new FeatureMetadataValue(feature, operation, valueToReturn);
+                new ValueFeatureMetadata(feature, operation, valueToReturn);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType);
 

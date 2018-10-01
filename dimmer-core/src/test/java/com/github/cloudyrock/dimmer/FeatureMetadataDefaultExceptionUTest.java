@@ -10,12 +10,12 @@ public class FeatureMetadataDefaultExceptionUTest {
 
     @Test
     public void equals() {
-        final FeatureMetadataDefaultException m1 =
-                new FeatureMetadataDefaultException("F1", operation);
-        final FeatureMetadataDefaultException m2 =
-                new FeatureMetadataDefaultException("F1", operation);
-        final FeatureMetadataDefaultException m3 =
-                new FeatureMetadataDefaultException("F2", operation);
+        final DefaultExceptionFeatureMetadata m1 =
+                new DefaultExceptionFeatureMetadata("F1", operation);
+        final DefaultExceptionFeatureMetadata m2 =
+                new DefaultExceptionFeatureMetadata("F1", operation);
+        final DefaultExceptionFeatureMetadata m3 =
+                new DefaultExceptionFeatureMetadata("F2", operation);
 
         assertEquals(m1, m2);
         assertNotEquals(m1, m3);
@@ -24,8 +24,8 @@ public class FeatureMetadataDefaultExceptionUTest {
 
     @Test
     public void constructor() {
-        final FeatureMetadataDefaultException m1 =
-                new FeatureMetadataDefaultException("F1", operation);
+        final DefaultExceptionFeatureMetadata m1 =
+                new DefaultExceptionFeatureMetadata("F1", operation);
         assertEquals("F1", m1.getFeature());
     }
 
