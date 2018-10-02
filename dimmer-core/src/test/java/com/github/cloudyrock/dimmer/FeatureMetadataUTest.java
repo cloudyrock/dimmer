@@ -7,13 +7,13 @@ import static org.junit.Assert.assertNotEquals;
 
 public class FeatureMetadataUTest {
 
-    private final String operation = "operation";
+    private static final String operation = "operation";
 
     @Test
     public void equals() {
-        final DummyFeatureMeatadata m1 = new DummyFeatureMeatadata("F1");
-        final DummyFeatureMeatadata m2 = new DummyFeatureMeatadata("F1");
-        final DummyFeatureMeatadata m3 = new DummyFeatureMeatadata("F2");
+        final DummyFeatureMetadata m1 = new DummyFeatureMetadata("F1");
+        final DummyFeatureMetadata m2 = new DummyFeatureMetadata("F1");
+        final DummyFeatureMetadata m3 = new DummyFeatureMetadata("F2");
 
         assertEquals(m1, m2);
         assertNotEquals(m1, m3);
@@ -22,14 +22,14 @@ public class FeatureMetadataUTest {
 
     @Test
     public void constructor() {
-        final DummyFeatureMeatadata m1 = new DummyFeatureMeatadata("F1");
+        final DummyFeatureMetadata m1 = new DummyFeatureMetadata("F1");
         assertEquals("F1", m1.getFeature());
     }
 
-    class DummyFeatureMeatadata extends FeatureMetadata{
+    class DummyFeatureMetadata extends FeatureMetadata{
 
-        protected DummyFeatureMeatadata(String feature) {
-            super(feature, operation);
+        protected DummyFeatureMetadata(String feature) {
+            super(feature, FeatureMetadataUTest.operation);
         }
     }
 
