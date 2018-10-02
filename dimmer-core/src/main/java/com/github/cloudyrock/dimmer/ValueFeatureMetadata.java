@@ -1,5 +1,7 @@
 package com.github.cloudyrock.dimmer;
 
+import java.util.Objects;
+
 final class ValueFeatureMetadata extends FeatureMetadata {
 
     private final Object valueToReturn;
