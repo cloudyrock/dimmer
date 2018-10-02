@@ -1,16 +1,16 @@
 package com.github.cloudyrock.dimmer;
 
 /**
- * @param <CONFIGURABLE> Class to be returned.
+ * @param <FEATURE_CONFIGURABLE> Class to be returned.
  */
 public interface DimmerDefaultEnvironmentConfigurable
-        <CONFIGURABLE extends DimmerFeatureConfigurable<CONFIGURABLE>>
-        extends DimmerEnvironmentConfigurable<CONFIGURABLE> {
+        <FEATURE_CONFIGURABLE extends DimmerFeatureConfigurable<FEATURE_CONFIGURABLE>>
+        extends DimmerEnvironmentConfigurable<FEATURE_CONFIGURABLE> {
 
 
     /**
      * Indicates the following set of configuration will be applied to the defaultEnvironment.
      * @return An instance of a DimmerFeatureConfigurable.
      */
-    CONFIGURABLE defaultEnvironment();
+    FEATURE_CONFIGURABLE defaultEnvironment();
 }
