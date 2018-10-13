@@ -18,6 +18,8 @@
     <modules>
         <module>dimmer-core</module>
         <module>dimmer-local</module>
+        <module>dimmer-server-api</module>
+        <module>dimmer-server</module>
     </modules>
 
     <properties>

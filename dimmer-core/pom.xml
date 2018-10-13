@@ -24,7 +24,6 @@
 
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-
         <jacoco.version>0.7.7.201606060606</jacoco.version>
 
     </properties>
