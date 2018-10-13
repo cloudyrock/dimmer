@@ -16,6 +16,7 @@ public class DimmerSpringBootApp {
     }
 
 
+    //TODO remove this
     @Bean
     public CommonsRequestLoggingFilter logFilter() {
         CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();

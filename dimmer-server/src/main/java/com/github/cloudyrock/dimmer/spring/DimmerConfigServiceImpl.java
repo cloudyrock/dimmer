@@ -13,17 +13,17 @@ public class DimmerConfigServiceImpl implements DimmerConfigServiceSpring {
 
     @Override
     public DimmerConfigResponse getConfigByEnvironment(@PathVariable("environment") String environment) {
-        final DimmerConfigResponse value = new DimmerConfigResponse("OK -  " + environment + LocalDateTime.now().toString());
-//        return new DimmerConfigResponse(value);
-        try {
-            Thread.sleep(1000 * 60 * 10);
-        } catch(Throwable ex) {
-            ex.printStackTrace();
-        }
+        final String value = "OK -  " + environment + LocalDateTime.now().toString();
+        return new DimmerConfigResponse(value);
+//        try {
+//            Thread.sleep(1000 * 60 * 10);
+//        } catch(Throwable ex) {
+//            ex.printStackTrace();
+//        }
 //        if(true) {
 //            throw new RuntimeException("Problemmmm!");
 //        }
-        return value;
+//        return value;
 
     }
 
