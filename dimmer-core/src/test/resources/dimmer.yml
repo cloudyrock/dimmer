@@ -1,0 +1,15 @@
+dimmer:
+  #version: 1.0 - for future release
+  environments:
+    dev:
+      featureIntercept:
+        - feature2
+        - feature3
+        - feature2
+        - feature3
+        - feature2
+        - feature3
+    staging:
+      server: http://asdasd.com:880
+    prod:
+      server: http://asdasd.com:880

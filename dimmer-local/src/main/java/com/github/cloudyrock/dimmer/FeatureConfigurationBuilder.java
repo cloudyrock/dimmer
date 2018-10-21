@@ -19,27 +19,28 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
 
     private static final String DEFAULT_ENV = "DEFAULT_DIMMER_ENV";
 
-    private static final DimmerLogger logger =
+    private static final DimmerLogger LOGGER =
             new DimmerLogger(FeatureConfigurationBuilder.class);
 
-    static FeatureConfigurationBuilder withDefaultEnvironment() {
-        return new FeatureConfigurationBuilder(Collections.singleton(DEFAULT_ENV),
+    static FeatureConfigurationBuilder withDefaultEnvironment(String propertiesLocation) {
+        return new FeatureConfigurationBuilder(propertiesLocation,Collections.singleton(DEFAULT_ENV),
                 new HashMap<>(), DimmerInvocationException.class);
     }
 
     static FeatureConfigurationBuilder withEnvironmentsAndMetadata(
+            String propertiesLocation,
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata) {
-        return new FeatureConfigurationBuilder(environments, configMetadata,
+        return new FeatureConfigurationBuilder(propertiesLocation, environments, configMetadata,
                 DimmerInvocationException.class);
     }
 
     private FeatureConfigurationBuilder(
+            String propertiesLocation,
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> newDefaultExceptionType) {
-        super(environments, configMetadata, newDefaultExceptionType);
-
+        super(propertiesLocation, environments, configMetadata, newDefaultExceptionType);
     }
 
     @Override
@@ -47,7 +48,7 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
-        return new FeatureConfigurationBuilder(environments, configMetadata,
+        return new FeatureConfigurationBuilder(propertiesLocation,environments, configMetadata,
                 defaultExceptionType);
     }
 
@@ -60,12 +61,12 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
      * @return Feature executor
      */
     public FeatureExecutorImpl build(String environment) {
-        logger.info("Building local executor");
+        LOGGER.info("Building local executor");
         final FeatureExecutorImpl executor = new FeatureExecutorImpl(
                 configMetadata.get(environment),
                 getDefaultExceptionType());
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
-        logger.info("Dimmer Aspect running");
+        LOGGER.info("Dimmer Aspect running");
         return executor;
     }
 
