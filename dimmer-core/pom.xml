@@ -185,6 +185,9 @@
                                             </limits>
                                         </rule>
                                     </rules>
+                                    <excludes>
+                                        <exclude>**/reader/*</exclude>
+                                    </excludes>
                                 </configuration>
                             </execution>
 
