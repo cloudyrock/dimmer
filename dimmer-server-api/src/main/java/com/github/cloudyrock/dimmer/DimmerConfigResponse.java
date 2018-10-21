@@ -3,6 +3,7 @@ package com.github.cloudyrock.dimmer;
 public final class DimmerConfigResponse {
 
     private String value;
+
     public DimmerConfigResponse() {
 
     }

@@ -1,6 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
-public enum ImplementationType {
+public enum DimmerServerType {
 
     SPRING
 }

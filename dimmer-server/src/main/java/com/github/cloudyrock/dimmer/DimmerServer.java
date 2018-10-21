@@ -4,7 +4,7 @@ import com.github.cloudyrock.dimmer.spring.DimmerSpringBootApp;
 
 public final class DimmerServer {
 
-    public static void  run(ImplementationType implementation, String[] args) {
+    public static void  run(DimmerServerType implementation, String[] args) {
         switch (implementation) {
             case SPRING:
                 DimmerSpringBootApp.run(args);

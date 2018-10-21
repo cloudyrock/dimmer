@@ -1,6 +1,7 @@
 package com.github.cloudyrock.dimmer.spring;
 
 
+import com.github.cloudyrock.dimmer.ConfigService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,10 @@ public class DimmerSpringBootApp {
         SpringApplication.run(DimmerSpringBootApp.class, args);
     }
 
+    @Bean
+    ConfigService configService() {
+        return new ConfigService();
+    }
 
     //TODO remove this
     @Bean

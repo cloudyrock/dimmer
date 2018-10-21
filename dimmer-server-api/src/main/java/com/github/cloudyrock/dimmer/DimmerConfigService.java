@@ -13,8 +13,6 @@ import static com.github.cloudyrock.dimmer.ApiPaths.ROOT_PATH;
 
 public interface DimmerConfigService {
 
-//TODO test builder
-
     @Headers("Content-Type: application/json")
     @RequestLine("GET " + ROOT_PATH + ENV_PATH)
     DimmerConfigResponse getConfigByEnvironment(@Param("environment") String environment);
@@ -23,7 +21,7 @@ public interface DimmerConfigService {
         return new Builder();
     }
 
-    class Builder {
+    final class Builder {
         private int connectionTimeout = 1000;
         private int readTimeout = 1000;
         private Encoder encoder;
@@ -32,7 +30,9 @@ public interface DimmerConfigService {
         private long maxPeriod = TimeUnit.SECONDS.toMillis(1L);
         private int maxAttempts = 3;
 
+        private Builder() {
 
+        }
 
         public Builder maxAttempts(int maxAttempts) {
             this.maxAttempts = maxAttempts;
