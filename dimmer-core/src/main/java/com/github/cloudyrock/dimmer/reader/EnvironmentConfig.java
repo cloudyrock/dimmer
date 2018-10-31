@@ -6,10 +6,12 @@ public class EnvironmentConfig {
 
     private List<String> featureIntercept;
     private String server;
+    private boolean isDefault;
 
-    public EnvironmentConfig (String server, List featureIntercept){
+    public EnvironmentConfig (String server, List featureIntercept, boolean isDefault){
         this.server = server;
         this.featureIntercept = featureIntercept;
+        this.isDefault = isDefault;
     }
 
     public EnvironmentConfig (String server){
@@ -34,5 +36,13 @@ public class EnvironmentConfig {
 
     public void setServer(String server) {
         this.server = server;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 }

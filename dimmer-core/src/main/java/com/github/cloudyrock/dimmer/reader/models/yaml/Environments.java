@@ -12,6 +12,9 @@ public class Environments {
     @JsonProperty(value = "featureIntercept", required = false)
     private ArrayList<String> featureIntercept;
 
+    @JsonProperty(value = "default", required = false)
+    private boolean isDefault;
+
     public ArrayList<String> getFeatureIntercept() {
         return featureIntercept;
     }
@@ -26,5 +29,13 @@ public class Environments {
 
     public void setServer(String server) {
         this.server = server;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 }
