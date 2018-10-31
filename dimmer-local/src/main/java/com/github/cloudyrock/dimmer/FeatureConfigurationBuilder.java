@@ -23,7 +23,7 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
             new DimmerLogger(FeatureConfigurationBuilder.class);
 
     static FeatureConfigurationBuilder withDefaultEnvironment(String propertiesLocation) {
-        return new FeatureConfigurationBuilder(propertiesLocation,Collections.singleton(DEFAULT_ENV),
+        return new FeatureConfigurationBuilder(propertiesLocation, Collections.singleton(DEFAULT_ENV),
                 new HashMap<>(), DimmerInvocationException.class);
     }
 
@@ -48,7 +48,7 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
-        return new FeatureConfigurationBuilder(propertiesLocation,environments, configMetadata,
+        return new FeatureConfigurationBuilder(propertiesLocation, environments, configMetadata,
                 defaultExceptionType);
     }
 
@@ -62,6 +62,9 @@ public final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
      */
     public FeatureExecutorImpl build(String environment) {
         LOGGER.info("Building local executor");
+
+        //ToDo: Inject YAML Reader here. Create ConfigMetadata from propertiesConfig.
+
         final FeatureExecutorImpl executor = new FeatureExecutorImpl(
                 configMetadata.get(environment),
                 getDefaultExceptionType());

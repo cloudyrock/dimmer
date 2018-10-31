@@ -10,14 +10,14 @@ public class DummyDimmerFeatureConfigurable
         extends DimmerFeatureConfigurable<DummyDimmerFeatureConfigurable> {
 
     DummyDimmerFeatureConfigurable() {
-        super(new HashSet<>(), new HashMap<>(), RuntimeException.class);
+        super("", new HashSet<>(), new HashMap<>(), RuntimeException.class);
     }
 
     DummyDimmerFeatureConfigurable(
             Collection<String> environments,
             Map<String, Set<FeatureMetadata>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType) {
-        super(environments, configMetadata, defaultExceptionType);
+        super("", environments, configMetadata, defaultExceptionType);
     }
 
     @Override

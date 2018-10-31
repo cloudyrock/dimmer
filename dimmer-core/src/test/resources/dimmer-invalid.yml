@@ -3,13 +3,6 @@ dimmer:
   environments:
     dev:
       default: true
-      featureIntercept:
-        - feature2
-        - feature3
-        - feature2
-        - feature3
-        - feature2
-        - feature3
     staging:
       server: http://asdasd.com:880
     prod:
