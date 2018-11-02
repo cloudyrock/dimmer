@@ -1,0 +1,10 @@
+development:
+  - whatever
+  - whatever2
+  - whatever3
+  - whatever4
+production:
+  - whatever
+  - whatever2
+  - whatever3
+  - whatever4

@@ -17,7 +17,7 @@ public class ConfigController implements DimmerConfigServiceSpring {
 
     @Override
     public DimmerConfigResponse getConfigByEnvironment(@PathVariable("environment") String environment) {
-        return configService.getValue(environment);
+        return null;//configService.getValue(environment);
     }
 
 }

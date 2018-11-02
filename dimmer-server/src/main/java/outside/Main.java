@@ -5,7 +5,7 @@ import com.github.cloudyrock.dimmer.*;
 public class Main {
 
     public static void main(String[] args) {
-        DimmerServer.run(DimmerServerType.SPRING, args);
+//        DimmerServer.run(DimmerServerType.SPRING, args);
         runClient();
     }
 

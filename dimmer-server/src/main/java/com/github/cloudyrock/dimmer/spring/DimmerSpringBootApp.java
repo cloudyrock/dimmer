@@ -1,7 +1,9 @@
 package com.github.cloudyrock.dimmer.spring;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.cloudyrock.dimmer.ConfigService;
+import com.github.cloudyrock.dimmer.ConfigRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,9 +19,17 @@ public class DimmerSpringBootApp {
     }
 
     @Bean
-    ConfigService configService() {
-        return new ConfigService();
+    ConfigService configService(ConfigRepository configRepository) {
+        return new ConfigService(configRepository);
     }
+
+    @Bean
+    ConfigRepository configRepository() {
+        //todo create mapper instance and get propertyFile
+        return null;
+    }
+
+
 
     //TODO remove this
     @Bean

@@ -1,12 +1,22 @@
 package com.github.cloudyrock.dimmer;
 
-import java.time.LocalDateTime;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class ConfigService {
 
+    private final ConfigRepository repository;
 
-    public DimmerConfigResponse getValue(String environment) {
-        final String value = "OK -  " + environment + LocalDateTime.now().toString();
-        return new DimmerConfigResponse(value);
+    public ConfigService(ConfigRepository repository) {
+        this.repository = repository;
     }
+
+    public Set<String> getInterceptedFeaturesByEnvironment(String environment) {
+        checkArgument(StringUtils.isNotEmpty(environment), "");
+        return repository.findFeaturesInterceptedByEnvironment(environment);
+    }
+
 }

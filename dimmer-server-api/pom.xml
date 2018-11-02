@@ -14,6 +14,15 @@
     <properties>
         <feign.version>10.0.1</feign.version>
         <spring.version>2.0.5.RELEASE</spring.version>
+
+        <slf4j.version>1.7.25</slf4j.version>
+
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <jacoco.version>0.7.7.201606060606</jacoco.version>
+        <threshold.coverage.ut>0</threshold.coverage.ut>
+        <threshold.coverage.it>0</threshold.coverage.it>
+
     </properties>
 
     <dependencies>
@@ -39,11 +48,145 @@
     </dependencies>
 
     <!--<dependencies>-->
-        <!--<dependency>-->
-            <!--<groupId>io.github.openfeign</groupId>-->
-            <!--<artifactId>feign-core</artifactId>-->
-        <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>io.github.openfeign</groupId>-->
+    <!--<artifactId>feign-core</artifactId>-->
+    <!--</dependency>-->
     <!--</dependencies>-->
 
+    <profiles>
+
+        <profile>
+            <id>noCoverage</id>
+        </profile>
+
+        <profile>
+            <id>withCoverage</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco.version}</version>
+                        <executions>
+                            <!-- Prepare agent for unit test -->
+                            <execution>
+                                <id>jacoco-ut-prepare-agent(${project.name})</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                                <configuration>
+                                    <destFile>${sonar.jacoco.reportPath}</destFile>
+                                    <propertyName>jacoco.agent.ut.arg</propertyName>
+                                    <append>true</append>
+                                </configuration>
+                            </execution>
+
+                            <!-- Produce report for unit test -->
+                            <execution>
+                                <id>jacoco-ut-report(${project.name})</id>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <dataFile>${sonar.jacoco.reportPath}</dataFile>
+                                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                                </configuration>
+                            </execution>
+
+
+                            <!-- Prepare agent for integration test -->
+                            <execution>
+                                <id>jacoco-it-prepare-agent(${project.name})</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>prepare-agent-integration</goal>
+                                </goals>
+                                <configuration>
+                                    <destFile>${sonar.jacoco.itReportPath}</destFile>
+                                    <propertyName>jacoco.agent.it.arg</propertyName>
+                                    <append>true</append>
+                                </configuration>
+                            </execution>
+
+                            <!-- Produce report for integration test -->
+                            <execution>
+                                <id>jacoco-it-report(${project.name})</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                                <configuration>
+                                    <dataFile>${sonar.jacoco.itReportPath}</dataFile>
+                                    <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                                </configuration>
+                            </execution>
+
+                            <!-- Perform coverage verification for unit test -->
+                            <execution>
+                                <id>jacoco-ut-verify-coverage(${project.name})</id>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                                <configuration>
+
+                                    <dataFile>${sonar.jacoco.reportPath}</dataFile>
+                                    <rules>
+                                        <rule>
+                                            <element>PACKAGE</element>
+                                            <limits>
+                                                <limit>
+                                                    <counter>LINE</counter>
+                                                    <value>COVEREDRATIO</value>
+                                                    <minimum>${threshold.coverage.ut}</minimum>
+                                                </limit>
+                                            </limits>
+                                        </rule>
+                                    </rules>
+                                    <excludes>
+                                        <exclude>**/reader/*</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+
+                            <!-- Perform coverage verification for integration test -->
+                            <execution>
+                                <id>jacoco-it-verify-coverage(${project.name})</id>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                                <configuration>
+
+                                    <dataFile>${sonar.jacoco.itReportPath}</dataFile>
+                                    <rules>
+                                        <rule>
+                                            <element>PACKAGE</element>
+                                            <limits>
+                                                <limit>
+                                                    <counter>LINE</counter>
+                                                    <value>COVEREDRATIO</value>
+                                                    <minimum>${threshold.coverage.it}</minimum>
+                                                </limit>
+                                            </limits>
+                                        </rule>
+                                    </rules>
+                                    <excludes>
+                                        <exclude>**/reader/*</exclude>
+                                    </excludes>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
 
 </project>

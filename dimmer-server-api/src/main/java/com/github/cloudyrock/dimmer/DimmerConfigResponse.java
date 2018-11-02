@@ -1,29 +1,20 @@
 package com.github.cloudyrock.dimmer;
 
+import java.util.*;
+
 public final class DimmerConfigResponse {
 
-    private String value;
+    private final String environment;
+    private final Set<String> featuresIntercepted;
 
-    public DimmerConfigResponse() {
 
+    public DimmerConfigResponse(String environment, Set<String> featureInterceptedList) {
+        this.environment = environment;
+        this.featuresIntercepted = featureInterceptedList != null ? featureInterceptedList : Collections.emptySet();
     }
 
-    public DimmerConfigResponse(String value) {
-        this.value = value;
+    public Set<String> getFeaturesIntercepted() {
+        return featuresIntercepted;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "DimmerConfigResponse{" +
-                "value='" + value + '\'' +
-                '}';
-    }
 }
