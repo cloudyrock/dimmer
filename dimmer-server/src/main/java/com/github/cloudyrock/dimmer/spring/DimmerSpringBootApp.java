@@ -1,9 +1,8 @@
 package com.github.cloudyrock.dimmer.spring;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.cloudyrock.dimmer.ConfigService;
 import com.github.cloudyrock.dimmer.ConfigRepository;
+import com.github.cloudyrock.dimmer.ConfigService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
