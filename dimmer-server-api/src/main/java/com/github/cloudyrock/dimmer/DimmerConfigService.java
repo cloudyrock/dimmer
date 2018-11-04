@@ -6,6 +6,7 @@ import feign.codec.Encoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.cloudyrock.dimmer.ApiPaths.ENV_PATH;
@@ -15,7 +16,7 @@ public interface DimmerConfigService {
 
     @Headers("Content-Type: application/json")
     @RequestLine("GET " + ROOT_PATH + ENV_PATH)
-    DimmerConfigResponse getConfigByEnvironment(@Param("environment") String environment);
+    Set<String> getConfigByEnvironment(@Param("environment") String environment);
 
     static Builder builder() {
         return new Builder();
