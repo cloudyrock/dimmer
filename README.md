@@ -2,12 +2,13 @@
     <img src="https://raw.githubusercontent.com/cloudyrock/dimmer-project/master/misc/logo.png" width="200" />
 </p>
 
-[![Build Status](https://travis-ci.org/cloudyrock/dimmer-project.svg?branch=master)](https://travis-ci.org/cloudyrock/dimmer-project)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.cloudyrock.dimmer/dimmer-parent/badge.png)](https://search.maven.org/artifact/com.github.cloudyrock.dimmer/dimmer-parent)
+[![Build Status](https://travis-ci.org/cloudyrock/dimmer-project.svg?branch=master)](https://travis-ci.org/cloudyrock/dimmer-project)
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=alert_status)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=alert_status)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=coverage)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=coverage)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=bugs)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=bugs)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=com.github.cloudyrock.dimmer&metric=vulnerabilities)](https://sonarcloud.io/component_measures?id=com.github.cloudyrock.dimmer&metric=vulnerabilities)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/dieppa/mongock/blob/master/LICENSE)
 
 
 
