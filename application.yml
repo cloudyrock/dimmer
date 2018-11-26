@@ -1,0 +1,16 @@
+
+dimmer:
+  features:
+    config:
+      environments:
+        jajajaja:
+          - whatever-0
+          - whatever-1
+          - whatever-2
+          - whatever-3
+        jejejeje:
+          - whatever
+          - whatever2
+          - whatever3
+          - whatever4
+

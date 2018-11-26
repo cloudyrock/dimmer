@@ -6,6 +6,8 @@ import com.github.cloudyrock.dimmer.DimmerConfigServiceSpring;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Set;
+
 @RestController
 public class ConfigController implements DimmerConfigServiceSpring {
 
@@ -17,7 +19,8 @@ public class ConfigController implements DimmerConfigServiceSpring {
 
     @Override
     public DimmerConfigResponse getConfigByEnvironment(@PathVariable("environment") String environment) {
-        return null;//configService.getValue(environment);
+        final Set<String> features = configService.getInterceptedFeaturesByEnvironment(environment);
+        return new DimmerConfigResponse(environment, features);
     }
 
 }

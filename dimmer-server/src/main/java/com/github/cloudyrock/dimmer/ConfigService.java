@@ -15,7 +15,7 @@ public class ConfigService {
     }
 
     public Set<String> getInterceptedFeaturesByEnvironment(String environment) {
-        checkArgument(StringUtils.isNotEmpty(environment), "");
+        checkArgument(StringUtils.isNotEmpty(environment), "Environment cannot be empty");
         return repository.findFeaturesInterceptedByEnvironment(environment);
     }
 

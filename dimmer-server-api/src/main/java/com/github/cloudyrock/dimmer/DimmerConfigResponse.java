@@ -1,6 +1,8 @@
 package com.github.cloudyrock.dimmer;
 
-import java.util.*;
+
+import java.util.Collections;
+import java.util.Set;
 
 public final class DimmerConfigResponse {
 
@@ -17,4 +19,7 @@ public final class DimmerConfigResponse {
         return featuresIntercepted;
     }
 
+    public String getEnvironment() {
+        return environment;
+    }
 }
