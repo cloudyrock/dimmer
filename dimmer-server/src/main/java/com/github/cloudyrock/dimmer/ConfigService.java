@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
@@ -11,6 +12,7 @@ public class ConfigService {
     private final ConfigRepository repository;
 
     public ConfigService(ConfigRepository repository) {
+        Preconditions.checkArgument(repository != null);
         this.repository = repository;
     }
 
