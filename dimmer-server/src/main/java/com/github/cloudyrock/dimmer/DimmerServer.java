@@ -23,7 +23,7 @@ public final class DimmerServer {
 
 }
 
-//TODO: add tests: unit and integrations tests
+//TODO: add tests: unit(for config classes) and integrations tests for controller(with config)
 //TODO: manage exceptions-> properties not passed, wrong configuration, environment not found, etc.
 //TODO: add jacoco
 //TODO: README hot to config

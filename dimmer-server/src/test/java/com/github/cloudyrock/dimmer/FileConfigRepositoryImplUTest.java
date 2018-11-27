@@ -14,7 +14,7 @@ class FileConfigRepositoryImplUTest {
 
     @Nested
     @DisplayName("constructor")
-    public class Constructor {
+    class Constructor {
 
         @Test
         @DisplayName("should throw exception when constructor if parameter is null")
@@ -26,7 +26,7 @@ class FileConfigRepositoryImplUTest {
 
     @Nested
     @DisplayName("findFeaturesInterceptedByEnvironment()")
-    public class FindFeaturesInterceptedByEnvironment {
+    class FindFeaturesInterceptedByEnvironment {
 
         @Test
         @DisplayName("Should return empty when called if map is empty")

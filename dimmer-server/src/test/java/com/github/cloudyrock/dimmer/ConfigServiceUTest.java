@@ -29,7 +29,7 @@ class ConfigServiceUTest {
 
     @Nested
     @DisplayName("constructor")
-    public class Constructor {
+    class Constructor {
 
         @Test
         @DisplayName("should throw exception when constructor if parameter is null")

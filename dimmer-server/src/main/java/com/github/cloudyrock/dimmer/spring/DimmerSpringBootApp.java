@@ -27,6 +27,7 @@ import java.util.Set;
 @EnableAutoConfiguration
 public class DimmerSpringBootApp {
 
+    //TODO: This should be removed without problem. Check
     @Autowired
     private FeatureConfig featureConfig;
 
