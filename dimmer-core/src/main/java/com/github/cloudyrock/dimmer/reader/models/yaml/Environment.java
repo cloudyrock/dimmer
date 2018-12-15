@@ -3,19 +3,20 @@ package com.github.cloudyrock.dimmer.reader.models.yaml;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Environments {
+public class Environment {
 
     @JsonProperty(value = "server", required = false)
     private String server;
 
     @JsonProperty(value = "featureIntercept", required = false)
-    private ArrayList<String> featureIntercept;
+    private List<String> featureIntercept;
 
     @JsonProperty(value = "default", required = false)
     private boolean isDefault;
 
-    public ArrayList<String> getFeatureIntercept() {
+    public List<String> getFeatureIntercept() {
         return featureIntercept;
     }
 

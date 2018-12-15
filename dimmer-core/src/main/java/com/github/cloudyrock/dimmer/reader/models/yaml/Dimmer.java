@@ -9,13 +9,13 @@ import java.util.Map;
 public class Dimmer {
 
     @JsonProperty(value = "environments")
-    private Map<String, Environments> environments;
+    private Map<String, Environment> environments;
 
-    public Map<String, Environments> getEnvironments() {
+    public Map<String, Environment> getEnvironments() {
         return environments;
     }
 
-    public void setEnvironments(Map<String, Environments> environments) {
+    public void setEnvironments(Map<String, Environment> environments) {
         this.environments = environments;
     }
 }
