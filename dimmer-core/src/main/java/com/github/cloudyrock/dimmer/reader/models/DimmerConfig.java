@@ -1,4 +1,4 @@
-package com.github.cloudyrock.dimmer.reader;
+package com.github.cloudyrock.dimmer.reader.models;
 
 import java.util.Map;
 

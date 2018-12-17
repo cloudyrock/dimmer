@@ -3,6 +3,8 @@ package com.github.cloudyrock.dimmer.reader;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.cloudyrock.dimmer.DimmerConfigException;
+import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
+import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import com.github.cloudyrock.dimmer.reader.models.yaml.DimmerYamlConfig;
 import com.github.cloudyrock.dimmer.reader.models.yaml.Environment;
 import org.slf4j.Logger;
@@ -13,11 +15,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.toMap;
 import static org.slf4j.LoggerFactory.getLogger;
 
-final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
+public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
 
     private static Logger LOGGER = getLogger(DimmerConfigReaderYamlImpl.class);
     private ObjectMapper objectMapper;
@@ -27,19 +30,30 @@ final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     public static final String DIMMER_CONFIG_EXCEPTION_INVALID_URL = "Invalid URL set in server configuration.";
     public static final String DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ = "Dimmer configuration file could not be read.";
 
+    private static final String DEFAULT_DIMMER_PROPERTIES_LOCATION = "dimmer.yml";
+    private String propertiesLocation;
+
+    /**
+     * Creates a new instance DimmerConfigReaderYaml instance with the default Yaml ObjectMapper
+     */
     public DimmerConfigReaderYamlImpl() {
         //Default to YAML object mapper
         objectMapper = new ObjectMapper(new YAMLFactory());
+        propertiesLocation = DEFAULT_DIMMER_PROPERTIES_LOCATION;
     }
 
-    public DimmerConfigReaderYamlImpl(ObjectMapper objectMapper) {
+    /**
+     * Creates a new instance DimmerConfigReaderYaml with an ObjectMapper chosen by the creator of the instance
+     */
+    public DimmerConfigReaderYamlImpl(String propertiesLocation, ObjectMapper objectMapper) {
+        this.propertiesLocation = propertiesLocation;
         this.objectMapper = objectMapper;
     }
 
     @Override
-    public DimmerConfig fromProperties(final String filePath) {
+    public DimmerConfig loadConfiguration() {
         try {
-            final File file = readFileFromClassPath(filePath);
+            final File file = readFileFromClassPath(propertiesLocation);
             final DimmerYamlConfig dimmerYamlConfig = objectMapper.readValue(file, DimmerYamlConfig.class);
             return toDimmerConfig(dimmerYamlConfig);
         } catch (IOException e) {
@@ -48,31 +62,42 @@ final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         }
     }
 
+    @Override
+    public EnvironmentConfig getDefaultEnvironment(DimmerConfig dimmerConfig) {
+
+        return  dimmerConfig.getEnvironments().entrySet().stream()
+                .filter(stringEnvironmentConfigEntry ->
+                        stringEnvironmentConfigEntry.getValue().isDefault())
+                .findFirst().get().getValue();
+    }
+
     private DimmerConfig toDimmerConfig(DimmerYamlConfig dimmerYamlConfig) {
         final DimmerConfig dimmerConfig = new DimmerConfig();
         final Map<String, EnvironmentConfig> environmentConfigMap =
                 dimmerYamlConfig.getDimmer().getEnvironments().entrySet().stream()
-                    .collect(toMap(Map.Entry::getKey,
-                        k -> {
-                            final Environment value = k.getValue();
-                            final List featuresList = value.getFeatureIntercept();
-                            final String server = value.getServer();
-                            final Boolean isDefault = value.isDefault();
-
-                            checkEnvironmentSettings(featuresList, server, isDefault);
-
-                            return new EnvironmentConfig(
-                                    value.getServer(),
-                                    value.getFeatureIntercept(),
-                                    value.isDefault()
-                            );
-                        }));
+                        .collect(toMap(Map.Entry::getKey, getEntryEnvironmentConfigFunction()));
 
         dimmerConfig.setEnvironments(environmentConfigMap);
         return dimmerConfig;
     }
 
-    private void checkEnvironmentSettings(List featuresList, String server, Boolean isDefault) throws DimmerConfigException {
+    private Function<Map.Entry<String, Environment>, EnvironmentConfig> getEntryEnvironmentConfigFunction() {
+        return k -> {
+            final Environment value = k.getValue();
+            final List featuresList = value.getFeatureIntercept();
+            final String server = value.getServer();
+
+            checkEnvironmentSettings(featuresList, server);
+
+            return new EnvironmentConfig(
+                    value.getServer(),
+                    value.getFeatureIntercept(),
+                    value.isDefault()
+            );
+        };
+    }
+
+    private void checkEnvironmentSettings(List featuresList, String server) throws DimmerConfigException {
 
         //server or featureIntercept don't exist
         if ((featuresList == null) && (server == null)) {
@@ -83,7 +108,9 @@ final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         if ((featuresList != null && !featuresList.isEmpty()) && (server != null && !server.isEmpty())) {
             throw new DimmerConfigException(DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH);
         }
+
         checkUrl(server);
+        //TODO: Add call to load config from server
     }
 
     private static void checkUrl(String server) {

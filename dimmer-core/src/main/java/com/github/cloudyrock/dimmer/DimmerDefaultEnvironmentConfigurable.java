@@ -11,4 +11,10 @@ public interface DimmerDefaultEnvironmentConfigurable
      * @return An instance of a DimmerFeatureConfigurable.
      */
     FEATURE_CONFIGURABLE defaultEnvironment();
+
+    /**
+     * Indicates the following set of configuration will be applied to the selected list of environments.
+     * @return An instance of a DimmerFeatureConfigurable.
+     */
+    FEATURE_CONFIGURABLE environments(String... environments);
 }

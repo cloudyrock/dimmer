@@ -179,7 +179,8 @@
                                         </rule>
                                     </rules>
                                     <excludes>
-                                        <exclude>**/reader/*</exclude>
+                                        <exclude>**/models/*</exclude>
+                                        <exclude>**/yaml/*</exclude>
                                     </excludes>
                                 </configuration>
                             </execution>
@@ -206,6 +207,8 @@
                                         </rule>
                                     </rules>
                                     <excludes>
+                                        <exclude>**/models/*</exclude>
+                                        <exclude>**/yaml/*</exclude>
                                         <exclude>**/reader/*</exclude>
                                     </excludes>
                                 </configuration>

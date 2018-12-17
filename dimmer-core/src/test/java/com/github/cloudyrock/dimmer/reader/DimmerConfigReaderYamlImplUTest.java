@@ -3,6 +3,7 @@ package com.github.cloudyrock.dimmer.reader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.cloudyrock.dimmer.DimmerConfigException;
+import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
 import com.github.cloudyrock.dimmer.reader.models.yaml.Dimmer;
 import com.github.cloudyrock.dimmer.reader.models.yaml.DimmerYamlConfig;
 import com.github.cloudyrock.dimmer.reader.models.yaml.Environment;
@@ -32,11 +33,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class DimmerConfigReaderYamlImplUTest {
 
-
     @Test
     public void shouldLoadDimmerConfigWithCorrectFile_happyPath() {
 
-        final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl().fromProperties("./dimmer.yml");
+        final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl().loadConfiguration();
         assertNotNull(dimmerConfig);
         assertNotNull(dimmerConfig.getEnvironments());
         assertThat(dimmerConfig.getEnvironments().size(), is(3));
@@ -47,7 +47,8 @@ public class DimmerConfigReaderYamlImplUTest {
     @Test
     public void shouldThrowDimmerConfigExceptionWhenFileDoesntExist() {
         try {
-            new DimmerConfigReaderYamlImpl().fromProperties("./random.yml");
+            final ObjectMapper mapperMock = mock(ObjectMapper.class);
+            new DimmerConfigReaderYamlImpl("./random.yml", mapperMock).loadConfiguration();
             assertTrue(false);
         } catch (DimmerConfigException e) {
             assertThat(e.getMessage(), is(DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ));
@@ -61,7 +62,7 @@ public class DimmerConfigReaderYamlImplUTest {
         when(mapperMock.readValue(any(File.class), any(DimmerYamlConfig.class.getClass()))).thenReturn(invalidConfigServerAndFeaturesSetUpForEnv());
 
         try {
-            final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl(mapperMock).fromProperties("./dimmer.yml");
+            final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl("./dimmer.yml", mapperMock).loadConfiguration();
             assertThat(dimmerConfig.getEnvironments().size(), is(1));
 
         } catch (DimmerConfigException e) {
@@ -77,7 +78,7 @@ public class DimmerConfigReaderYamlImplUTest {
         when(mapperMock.readValue(any(File.class), any(DimmerYamlConfig.class.getClass()))).thenReturn(invalidConfigWrongServerFormat());
 
         try {
-            final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl(mapperMock).fromProperties("./dimmer.yml");
+            final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl("./dimmer.yml", mapperMock).loadConfiguration();
             assertThat(dimmerConfig.getEnvironments().size(), is(1));
 
         } catch (DimmerConfigException e) {
@@ -93,7 +94,7 @@ public class DimmerConfigReaderYamlImplUTest {
         when(mapperMock.readValue(any(File.class), any(DimmerYamlConfig.class.getClass()))).thenReturn(invalidConfigEmptyEnv());
 
         try {
-            final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl(mapperMock).fromProperties("./dimmer.yml");
+            final DimmerConfig dimmerConfig = new DimmerConfigReaderYamlImpl("./dimmer.yml", mapperMock).loadConfiguration();
             assertThat(dimmerConfig.getEnvironments().size(), is(1));
 
         } catch (DimmerConfigException e) {
