@@ -11,4 +11,8 @@ public class DimmerConfigException extends RuntimeException {
     public DimmerConfigException(String message) {
         super(message);
     }
+
+    public DimmerConfigException(String message, Exception e) {
+        super(message, e);
+    }
 }
