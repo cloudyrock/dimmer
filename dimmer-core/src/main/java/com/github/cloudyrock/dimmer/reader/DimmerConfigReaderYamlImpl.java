@@ -1,7 +1,6 @@
 package com.github.cloudyrock.dimmer.reader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.cloudyrock.dimmer.DimmerConfigException;
 import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
@@ -31,15 +30,15 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     public static final String DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ = "Dimmer configuration file could not be read.";
 
     private static final String DEFAULT_DIMMER_PROPERTIES_LOCATION = "dimmer.yml";
+
     private String propertiesLocation;
 
     /**
      * Creates a new instance DimmerConfigReaderYaml instance with the default Yaml ObjectMapper
      */
-    public DimmerConfigReaderYamlImpl() {
+    public DimmerConfigReaderYamlImpl(ObjectMapper objectMapper) {
         //Default to YAML object mapper
-        objectMapper = new ObjectMapper(new YAMLFactory());
-        propertiesLocation = DEFAULT_DIMMER_PROPERTIES_LOCATION;
+        this(DEFAULT_DIMMER_PROPERTIES_LOCATION, objectMapper);
     }
 
     /**
@@ -51,27 +50,33 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     }
 
     @Override
+    public void setPropertiesLocation(String propertiesLocation) {
+        this.propertiesLocation = propertiesLocation;
+    }
+
+    @Override
     public DimmerConfig loadConfiguration() {
         try {
             final File file = readFileFromClassPath(propertiesLocation);
             final DimmerYamlConfig dimmerYamlConfig = objectMapper.readValue(file, DimmerYamlConfig.class);
             return toDimmerConfig(dimmerYamlConfig);
         } catch (IOException e) {
-            LOGGER.error("Failed mapping Dimmer configuration file.", e);
-            throw new DimmerConfigException(e);
+            throw new DimmerConfigException("Failed mapping Dimmer configuration file.", e);
         }
     }
 
     @Override
-    public EnvironmentConfig getDefaultEnvironment(DimmerConfig dimmerConfig) {
+    public Map.Entry<String, EnvironmentConfig> getDefaultEnvironment(DimmerConfig dimmerConfig) {
 
-        return  dimmerConfig.getEnvironments().entrySet().stream()
+        return dimmerConfig.getEnvironments().entrySet().stream()
                 .filter(stringEnvironmentConfigEntry ->
                         stringEnvironmentConfigEntry.getValue().isDefault())
-                .findFirst().get().getValue();
+                .findFirst()
+                .orElseThrow(() -> new DimmerConfigException("No Default environment found in configuration"))
+                ;
     }
 
-    private DimmerConfig toDimmerConfig(DimmerYamlConfig dimmerYamlConfig) {
+    private static DimmerConfig toDimmerConfig(DimmerYamlConfig dimmerYamlConfig) {
         final DimmerConfig dimmerConfig = new DimmerConfig();
         final Map<String, EnvironmentConfig> environmentConfigMap =
                 dimmerYamlConfig.getDimmer().getEnvironments().entrySet().stream()
@@ -81,7 +86,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         return dimmerConfig;
     }
 
-    private Function<Map.Entry<String, Environment>, EnvironmentConfig> getEntryEnvironmentConfigFunction() {
+    private static Function<Map.Entry<String, Environment>, EnvironmentConfig> getEntryEnvironmentConfigFunction() {
         return k -> {
             final Environment value = k.getValue();
             final List featuresList = value.getFeatureIntercept();
@@ -97,7 +102,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         };
     }
 
-    private void checkEnvironmentSettings(List featuresList, String server) throws DimmerConfigException {
+    private static void checkEnvironmentSettings(List featuresList, String server) throws DimmerConfigException {
 
         //server or featureIntercept don't exist
         if ((featuresList == null) && (server == null)) {
@@ -123,8 +128,8 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         }
     }
 
-    private File readFileFromClassPath(String filePath) {
-        final URL url = getClass().getClassLoader().getResource(filePath);
+    private static File readFileFromClassPath(String filePath) {
+        final URL url = DimmerConfigReader.class.getClassLoader().getResource(filePath);
         if (url == null) {
             LOGGER.error("Could not find dimmer config file from classpath, throwing DimmerConfigException.");
             throw new DimmerConfigException(DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ);
