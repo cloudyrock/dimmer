@@ -1,5 +1,10 @@
 package com.github.cloudyrock.dimmer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.github.cloudyrock.dimmer.reader.DimmerConfigReader;
+import com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl;
+
 import java.util.HashMap;
 
 import static java.util.Arrays.asList;
@@ -10,8 +15,8 @@ import static java.util.Arrays.asList;
  */
 public class DimmerBuilder {
 
-    private DimmerBuilder(){
 
+    private DimmerBuilder() {
     }
 
     /**
@@ -21,16 +26,6 @@ public class DimmerBuilder {
     public static DimmerDefaultEnvironmentConfigurable<FeatureConfigurationBuilder> local() {
 
         return new DimmerDefaultEnvironmentConfigurable<FeatureConfigurationBuilder>() {
-            /**
-             * Indicates the following configurations for dimmer feature will be applied
-             * to the default environment, until the environment is changed with
-             * the method 'environments(String...)'
-             * @return a new immutable instance of the builder with the current configuration.
-             */
-            @Override
-            public FeatureConfigurationBuilder defaultEnvironment() {
-                return FeatureConfigurationBuilder.withDefaultEnvironment();
-            }
 
             /**
              * Indicates the following configurations for dimmer feature will be applied
@@ -40,8 +35,19 @@ public class DimmerBuilder {
              */
             @Override
             public FeatureConfigurationBuilder environments(String... environments) {
+                final DimmerConfigReader dimmerConfigReader = getDimmerConfigReader();
                 return FeatureConfigurationBuilder
-                        .withEnvironmentsAndMetadata(asList(environments), new HashMap<>());
+                        .withEnvironmentsAndMetadata(asList(environments), new HashMap<>(), dimmerConfigReader);
+            }
+
+            private DimmerConfigReader getDimmerConfigReader() {
+                /**
+                 * TODO: Change this to a service locator that dynamically Injects the correct factory depending
+                 * on the extension type
+                 */
+
+                final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+                return new DimmerConfigReaderYamlImpl(objectMapper);
             }
         };
     }
