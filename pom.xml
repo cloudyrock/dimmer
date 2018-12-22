@@ -18,6 +18,7 @@
     <modules>
         <module>dimmer-core</module>
         <module>dimmer-local</module>
+        <module>dimmer-config-util</module>
     </modules>
 
     <properties>
