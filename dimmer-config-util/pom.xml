@@ -219,11 +219,6 @@
                                             </limits>
                                         </rule>
                                     </rules>
-                                    <excludes>
-                                        <exclude>**/models/*</exclude>
-                                        <exclude>**/yaml/*</exclude>
-                                        <exclude>**/reader/*</exclude>
-                                    </excludes>
                                 </configuration>
                             </execution>
 
