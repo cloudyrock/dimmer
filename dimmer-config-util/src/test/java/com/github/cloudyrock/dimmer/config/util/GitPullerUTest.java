@@ -57,7 +57,7 @@ public class GitPullerUTest {
     }
 
     @Test
-    @DisplayName("Should notify onChange consumer when git pulls pull result is OK")
+    @DisplayName("Should notify onChange consumer when git pull result is OK")
     public void shouldNotifyOnChangeConsumer_whenSubscribeOnChange_ifGitPullResultIsOK() throws InterruptedException {
         //given
         when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.OK);
@@ -77,7 +77,7 @@ public class GitPullerUTest {
     }
 
     @Test
-    @DisplayName("Should notify onChange consumer when git pulls pull result is FAST_FORWARD")
+    @DisplayName("Should notify onChange consumer when git pull result is FAST_FORWARD")
     public void shouldNotifyOnChangeConsumer_whenSubscribeOnChange_ifGitPullResultIsFAST_FORWARD() throws InterruptedException {
         //given
         when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.FAST_FORWARD);
@@ -97,7 +97,7 @@ public class GitPullerUTest {
     }
 
     @Test
-    @DisplayName("Should not notify onChange consumer when git pulls pull result is NOT FAST_FORWARD or OK")
+    @DisplayName("Should not notify onChange consumer when git pull result is NOT FAST_FORWARD or OK")
     public void shouldNotNotifyOnChangeConsumer_whenSubscribeOnChange_ifGitPullResultIsNotFAST_FORWARDOrOK() throws InterruptedException {
         //given
         when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.UP_TO_DATE);
@@ -115,7 +115,7 @@ public class GitPullerUTest {
     }
 
     @Test
-    @DisplayName("Should notify onAny consumer when git pulls pull result is OK")
+    @DisplayName("Should notify onAny consumer when git pull result is OK")
     public void shouldNotifyOnAnyConsumer_whenSubscribeOnAny_ifGitPullResultIsOK() throws InterruptedException {
         //given
         when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.OK);
@@ -136,7 +136,7 @@ public class GitPullerUTest {
 
 
     @Test
-    @DisplayName("Should notify onAny consumer when git pulls pull result is FAST_FORWARD")
+    @DisplayName("Should notify onAny consumer when git pull result is FAST_FORWARD")
     public void shouldNotifyOnAnyConsumer_whenSubscribeOnAny_ifGitPullResultIsFAST_FORWARD() throws InterruptedException {
         //given
         when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.FAST_FORWARD);
@@ -156,7 +156,7 @@ public class GitPullerUTest {
     }
 
     @Test
-    @DisplayName("Should notify onAny consumer when git pulls pull result is NOT FAST_FORWARD or OK")
+    @DisplayName("Should notify onAny consumer when git pull result is NOT FAST_FORWARD or OK")
     public void shouldNotifyOnAnyConsumer_whenSubscribeOnChange_ifGitPullResultIsNotFAST_FORWARDOrOK() throws InterruptedException {
         //given
         when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.UP_TO_DATE);
