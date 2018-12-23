@@ -93,6 +93,7 @@ public class GitPullerUTest {
         runGitPuller(latch, consumer, null, null);
 
         //then
+        Assert.assertTrue(objectAffected.isAffected());
     }
 
     @Test
