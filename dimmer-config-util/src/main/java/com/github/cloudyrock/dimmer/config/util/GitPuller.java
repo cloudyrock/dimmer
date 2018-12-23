@@ -1,10 +1,9 @@
 package com.github.cloudyrock.dimmer.config.util;
 
+import com.github.cloudyrock.dimmer.DimmerLogger;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.RebaseResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import static org.eclipse.jgit.api.RebaseResult.Status.FAST_FORWARD;
 import static org.eclipse.jgit.api.RebaseResult.Status.OK;
 
 public final class GitPuller {
-    private static final Logger LOG = LoggerFactory.getLogger(GitPuller.class);
+    private static final DimmerLogger LOG = new DimmerLogger(GitPuller.class);
 
     private final File gitFolder;
     private final String gitRepository;
@@ -62,63 +61,96 @@ public final class GitPuller {
     public ScheduledFuture<?> subscribe(Consumer<RebaseResult> onAnyStatusConsumer,
                                         Consumer<RebaseResult> onchangeConsumer,
                                         Consumer<Throwable> onErrorConsumer) {
-        final Git git = initializeGit();
-        return runPullerScheduleExecutor(git, onAnyStatusConsumer, onchangeConsumer, onErrorConsumer);
-    }
 
-    private Git initializeGit() {
-        try {
-            boolean exists = gitFolder.exists();
-            return exists
-                    ? Git.open(gitFolder)
-                    : Git.cloneRepository().setURI(gitRepository).setDirectory(gitFolder).call();
 
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    private ScheduledFuture<?> runPullerScheduleExecutor(Git git,
-                                                         Consumer<RebaseResult> onAnyStatusConsumer,
-                                                         Consumer<RebaseResult> onchangeConsumer,
-                                                         Consumer<Throwable> onErrorConsumer) {
-        return Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-                    try {
-                        final PullCommand pc = git.pull().setRebase(Boolean.TRUE);
-                        final RebaseResult rebaseResult = pc.call().getRebaseResult();
-
-                        if (onAnyStatusConsumer != null) {
-                            onAnyStatusConsumer.accept(rebaseResult);
-                        }
-
-                        if (rebaseResult.getStatus().isSuccessful()) {
-                            if (onchangeConsumer != null && statusOnChange.contains(rebaseResult.getStatus())) {
-                                onchangeConsumer.accept(rebaseResult);
-                            }
-                        } else {
-                            LOG.warn("Pull not successful({})", rebaseResult.getStatus());
-                            resetDirectory();
-                        }
-                    } catch (Throwable ex) {
-                        if (onErrorConsumer != null) {
-                            onErrorConsumer.accept(ex);
-                        }
-                    }
-                },
+        return Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
+                new PullWorker(gitFolder, gitRepository, onAnyStatusConsumer, onchangeConsumer, onErrorConsumer),
                 initialDelayMilliSeconds,
                 periodMilliseconds,
                 TimeUnit.MILLISECONDS);
     }
 
-    private void resetDirectory() {
-        LOG.debug("Deleting directory: {}", gitFolder.getAbsolutePath());
-        final boolean deletionResult = gitFolder.delete();
-        if (!deletionResult) {
-            LOG.warn("Folder couldn't be deleted: {}", gitFolder.getAbsolutePath());
-        } else {
-            LOG.warn("Folder deleted successfully: {}", gitFolder.getAbsolutePath());
+    private static class PullWorker implements Runnable {
+
+        private final Consumer<RebaseResult> onAnyStatusConsumer;
+        private final Consumer<RebaseResult> onchangeConsumer;
+        private final Consumer<Throwable> onErrorConsumer;
+        private final File gitFolder;
+        private final String gitRepository;
+
+        private PullWorker(File gitFolder,
+                           String gitRepository,
+                           Consumer<RebaseResult> onAnyStatusConsumer,
+                           Consumer<RebaseResult> onchangeConsumer,
+                           Consumer<Throwable> onErrorConsumer) {
+            this.gitRepository = gitRepository;
+            this.gitFolder = gitFolder;
+            this.onAnyStatusConsumer = onAnyStatusConsumer;
+            this.onchangeConsumer = onchangeConsumer;
+            this.onErrorConsumer = onErrorConsumer;
+
         }
-        initializeGit();
+
+        @Override
+        public void run() {
+            synchronized (this) {
+                boolean needResetting = false;
+                try {
+                    final RebaseResult rebaseResult = getGitRepo(gitFolder, gitRepository)
+                            .pull()
+                            .setRebase(Boolean.TRUE)
+                            .call()
+                            .getRebaseResult();
+
+                    if (onAnyStatusConsumer != null) {
+                        onAnyStatusConsumer.accept(rebaseResult);
+                    }
+
+                    if (rebaseResult.getStatus().isSuccessful()) {
+                        if (onchangeConsumer != null && statusOnChange.contains(rebaseResult.getStatus())) {
+                            onchangeConsumer.accept(rebaseResult);
+                        }
+                    } else {
+                        LOG.warn("Pull not successful({})", rebaseResult.getStatus());
+                        needResetting = true;
+                    }
+
+                } catch (Throwable ex) {
+                    LOG.error("ERROR pulling: ", ex);
+                    if (onErrorConsumer != null) {
+                        onErrorConsumer.accept(ex);
+                        needResetting = true;
+
+                    }
+                }
+                if(needResetting) {
+                    deleteDirectory(gitFolder);
+                }
+            }
+
+        }
+
+
+        private static Git getGitRepo(File gitFolder, String gitRepository) {
+            try {
+                return gitFolder.exists()
+                        ? Git.open(gitFolder)
+                        : Git.cloneRepository().setURI(gitRepository).setDirectory(gitFolder).call();
+
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        private static void deleteDirectory(File gitFolder) {
+            LOG.debug("Deleting directory: {}", gitFolder.getAbsolutePath());
+            try {
+                FileUtils.deleteDirectory(gitFolder);
+                LOG.debug("Deleted successfully directory: {}", gitFolder.getAbsolutePath());
+            } catch (Exception e) {
+                LOG.error("File couldn't be deleted(in order to be reset", e);
+            }
+        }
     }
 
 
@@ -153,8 +185,8 @@ public final class GitPuller {
         }
 
 
-        public Builder errorHandler(Consumer<Throwable> erroHandler) {
-            this.errorHandler = erroHandler;
+        public Builder errorHandler(Consumer<Throwable> errorHandler) {
+            this.errorHandler = errorHandler;
             return this;
         }
 

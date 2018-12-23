@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer.config.util;
 
+import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
 import org.eclipse.jgit.api.PullResult;
@@ -22,7 +23,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({GitPuller.class, Git.class, File.class})
+@PrepareForTest({GitPuller.class, Git.class, File.class, FileUtils.class})
 public class GitPullerUTest {
 
     private static final String GIT_DIR = "gitDir";
@@ -35,12 +36,10 @@ public class GitPullerUTest {
 
     @Before
     public void setUp() throws Exception {
-        mockStatic(Git.class, File.class);
-        gitDirectory = new File(GIT_DIR);
-        if(!gitDirectory.exists()) {
-            gitDirectory.mkdir();
-        }
+        mockStatic(Git.class, File.class, FileUtils.class);
         whenNew(File.class).withArguments(Mockito.anyString()).thenReturn(gitDirectory);
+        gitDirectory = new File(GIT_DIR);
+        when(gitDirectory.exists()).thenReturn(true);
 
 
         gitMock = mock(Git.class);
@@ -52,6 +51,9 @@ public class GitPullerUTest {
         when(pullCommandMock.setRebase(Boolean.TRUE)).thenReturn(pullCommandMock);
         when(pullCommandMock.call()).thenReturn(pullResultMock);
         when(pullResultMock.getRebaseResult()).thenReturn(rebaseResult);
+
+        doNothing().when(FileUtils.class);
+        FileUtils.deleteDirectory(Mockito.any(File.class));
     }
 
     @Test
@@ -191,9 +193,10 @@ public class GitPullerUTest {
 
         //then
         Assert.assertTrue(changeAffected.isAffected());
-        verifyStatic(Git.class);
-        Git.open(Mockito.any(File.class));
-        Git.cloneRepository();
+
+        verifyStatic(FileUtils.class);
+        FileUtils.deleteDirectory(gitDirectory);
+
     }
 
     public void runGitPuller(CountDownLatch latch,
