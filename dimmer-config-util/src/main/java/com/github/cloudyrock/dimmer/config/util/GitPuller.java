@@ -120,9 +120,8 @@ public final class GitPuller {
                     LOG.error("ERROR pulling: ", ex);
                     if (onErrorConsumer != null) {
                         onErrorConsumer.accept(ex);
-                        needResetting = true;
-
                     }
+                    needResetting = true;
                 }
                 if(needResetting) {
                     deleteDirectory(gitFolder);
