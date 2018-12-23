@@ -144,7 +144,7 @@
                                         </rule>
                                     </rules>
                                     <excludes>
-                                        <exclude>**/models/*</exclude>
+                                        <exclude>com/github/cloudyrock/dimmer/Uti.class</exclude>
                                         <exclude>**/yaml/*</exclude>
                                     </excludes>
                                 </configuration>
