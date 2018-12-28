@@ -82,7 +82,7 @@ abstract class FeatureProcessorBase {
             String feature,
             String operation,
             Function<FeatureInvocation, ?> behaviour) {
-        CheckUtil.checkArgumentNullEmpty(behaviour, "behaviour");
+        Preconditions.isNullOrEmpty(behaviour, "behaviour");
         return putBehaviour(feature, operation, behaviour);
     }
 
@@ -90,7 +90,7 @@ abstract class FeatureProcessorBase {
                                  String operation,
                                  Class<? extends RuntimeException> exceptionType) {
 
-        CheckUtil.checkArgumentNullEmpty(exceptionType, "exceptionType");
+        Preconditions.isNullOrEmpty(exceptionType, "exceptionType");
         return putBehaviour(
                 feature,
                 operation,
@@ -112,8 +112,8 @@ abstract class FeatureProcessorBase {
     private boolean putBehaviour(String feature,
                                  String operation,
                                  Function<FeatureInvocation, ?> behaviour) {
-        CheckUtil.checkArgumentNullEmpty(feature, "featureId");
-        CheckUtil.checkArgumentNullEmpty(feature, "operation");
+        Preconditions.isNullOrEmpty(feature, "featureId");
+        Preconditions.isNullOrEmpty(feature, "operation");
         if(operation == null || operation.isEmpty()) {
             logger.warn("Adding behaviour to feature {} with empty operation", feature);
         }

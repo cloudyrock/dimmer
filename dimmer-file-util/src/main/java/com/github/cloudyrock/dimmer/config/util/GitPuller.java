@@ -1,7 +1,7 @@
 package com.github.cloudyrock.dimmer.config.util;
 
 import com.github.cloudyrock.dimmer.DimmerLogger;
-import com.github.cloudyrock.dimmer.CheckUtil;
+import com.github.cloudyrock.dimmer.Preconditions;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.RebaseResult;
@@ -49,12 +49,12 @@ public final class GitPuller {
     }
 
     public ScheduledFuture<?> subscribeOnChange(Consumer<RebaseResult> onchangeConsumer) {
-        CheckUtil.checkNullEmpty(onchangeConsumer, "onChange consumer");
+        Preconditions.isNullOrEmpty(onchangeConsumer, "onChange consumer");
         return subscribe(null, onchangeConsumer, errorHandler);
     }
 
     public ScheduledFuture<?> subscribeOnAny(Consumer<RebaseResult> onAnyStatusConsumer) {
-        CheckUtil.checkNullEmpty(onAnyStatusConsumer, "onAnyStatus consumer");
+        Preconditions.isNullOrEmpty(onAnyStatusConsumer, "onAnyStatus consumer");
         return subscribe(onAnyStatusConsumer, null, errorHandler);
     }
 
@@ -191,8 +191,8 @@ public final class GitPuller {
         }
 
         public GitPuller build() {
-            CheckUtil.checkNullEmpty(gitFolder, "git folder");
-            CheckUtil.checkNullEmpty(gitRepository, "git repository");
+            Preconditions.isNullOrEmpty(gitFolder, "git folder");
+            Preconditions.isNullOrEmpty(gitRepository, "git repository");
             return new GitPuller(
                     new File(gitFolder),
                     gitRepository,

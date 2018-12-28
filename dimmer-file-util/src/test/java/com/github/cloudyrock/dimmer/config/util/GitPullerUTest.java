@@ -57,6 +57,15 @@ public class GitPullerUTest {
     }
 
     @Test
+    @DisplayName("Should throw IllegalArgumentException when building puller if git folder is null")
+    public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitFolderIsNull() {
+        final GitPuller gitPuller = GitPuller.builder()
+                .gitFolder(null)
+                .gitRepository(GIT_REPO)
+                .build();
+    }
+
+    @Test
     @DisplayName("Should notify onChange consumer when git pull result is OK")
     public void shouldNotifyOnChangeConsumer_whenSubscribeOnChange_ifGitPullResultIsOK() throws InterruptedException {
         //given

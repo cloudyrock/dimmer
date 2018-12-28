@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
+import static org.mockito.BDDMockito.given;
 
 
 public class DimmerLoggerTest {
