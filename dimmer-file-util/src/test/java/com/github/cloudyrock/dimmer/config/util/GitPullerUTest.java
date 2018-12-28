@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer.config.util;
 
+import com.github.cloudyrock.dimmer.DisplayName;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
@@ -56,7 +57,7 @@ public class GitPullerUTest {
         FileUtils.deleteDirectory(Mockito.any(File.class));
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     @DisplayName("Should throw IllegalArgumentException when building puller if git folder is null")
     public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitFolderIsNull() {
         final GitPuller gitPuller = GitPuller.builder()
@@ -64,6 +65,36 @@ public class GitPullerUTest {
                 .gitRepository(GIT_REPO)
                 .build();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    @DisplayName("Should throw IllegalArgumentException when building puller if git folder is empty")
+    public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitFolderIsEmpty() {
+        final GitPuller gitPuller = GitPuller.builder()
+                .gitFolder("")
+                .gitRepository(GIT_REPO)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @DisplayName("Should throw IllegalArgumentException when building puller if git folder is null")
+    public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitRepoIsNull() {
+        final GitPuller gitPuller = GitPuller.builder()
+                .gitFolder(GIT_DIR)
+                .gitRepository(null)
+                .build();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @DisplayName("Should throw IllegalArgumentException when building puller if git folder is empty")
+    public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitRepoIsEmpty() {
+        final GitPuller gitPuller = GitPuller.builder()
+                .gitFolder(GIT_DIR)
+                .gitRepository("")
+                .build();
+    }
+
+
+
 
     @Test
     @DisplayName("Should notify onChange consumer when git pull result is OK")
@@ -243,11 +274,6 @@ public class GitPullerUTest {
 
         void affect() {
             affected = true;
-        }
-
-
-        void inverse() {
-            affected = !affected;
         }
 
         boolean isAffected() {

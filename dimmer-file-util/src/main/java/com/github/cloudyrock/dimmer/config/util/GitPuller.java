@@ -2,21 +2,13 @@ package com.github.cloudyrock.dimmer.config.util;
 
 import com.github.cloudyrock.dimmer.DimmerLogger;
 import com.github.cloudyrock.dimmer.Preconditions;
-import org.apache.commons.io.FileUtils;
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.RebaseResult;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-
-import static org.eclipse.jgit.api.RebaseResult.Status.FAST_FORWARD;
-import static org.eclipse.jgit.api.RebaseResult.Status.OK;
 
 public final class GitPuller {
     private static final DimmerLogger LOG = new DimmerLogger(GitPuller.class);
@@ -26,17 +18,22 @@ public final class GitPuller {
     private final long initialDelayMilliSeconds;
     private final long periodMilliseconds;
     private final Consumer<Throwable> errorHandler;
-    private static final Set<RebaseResult.Status> statusOnChange = new HashSet<>(Arrays.asList(OK, FAST_FORWARD));
+    private final String username;
+    private final String password;
 
     public static Builder builder() {
         return new Builder();
     }
 
-    private GitPuller(File gitFolder,
+    private GitPuller(String username,
+                      String password,
+                      File gitFolder,
                       String gitRepository,
                       long initialDelayMilliSeconds,
                       long periodMilliseconds,
                       Consumer<Throwable> errorHandler) {
+        this.username = username;
+        this.password = password;
         this.gitFolder = gitFolder;
         this.gitRepository = gitRepository;
         this.initialDelayMilliSeconds = initialDelayMilliSeconds;
@@ -49,11 +46,13 @@ public final class GitPuller {
     }
 
     public ScheduledFuture<?> subscribeOnChange(Consumer<RebaseResult> onchangeConsumer) {
+        LOG.trace("git puller subscribed onChange");
         Preconditions.isNullOrEmpty(onchangeConsumer, "onChange consumer");
         return subscribe(null, onchangeConsumer, errorHandler);
     }
 
     public ScheduledFuture<?> subscribeOnAny(Consumer<RebaseResult> onAnyStatusConsumer) {
+        LOG.trace("git puller subscribed onAny");
         Preconditions.isNullOrEmpty(onAnyStatusConsumer, "onAnyStatus consumer");
         return subscribe(onAnyStatusConsumer, null, errorHandler);
     }
@@ -62,96 +61,13 @@ public final class GitPuller {
     public ScheduledFuture<?> subscribe(Consumer<RebaseResult> onAnyStatusConsumer,
                                         Consumer<RebaseResult> onchangeConsumer,
                                         Consumer<Throwable> onErrorConsumer) {
-
-
         return Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
-                new PullWorker(gitFolder, gitRepository, onAnyStatusConsumer, onchangeConsumer, onErrorConsumer),
+                new GitPullWorker(gitFolder, gitRepository, onAnyStatusConsumer, onchangeConsumer, onErrorConsumer),
                 initialDelayMilliSeconds,
                 periodMilliseconds,
                 TimeUnit.MILLISECONDS);
     }
 
-    private static class PullWorker implements Runnable {
-
-        private final Consumer<RebaseResult> onAnyStatusConsumer;
-        private final Consumer<RebaseResult> onchangeConsumer;
-        private final Consumer<Throwable> onErrorConsumer;
-        private final File gitFolder;
-        private final String gitRepository;
-
-        private PullWorker(File gitFolder,
-                           String gitRepository,
-                           Consumer<RebaseResult> onAnyStatusConsumer,
-                           Consumer<RebaseResult> onchangeConsumer,
-                           Consumer<Throwable> onErrorConsumer) {
-            this.gitRepository = gitRepository;
-            this.gitFolder = gitFolder;
-            this.onAnyStatusConsumer = onAnyStatusConsumer;
-            this.onchangeConsumer = onchangeConsumer;
-            this.onErrorConsumer = onErrorConsumer;
-
-        }
-
-        @Override
-        public void run() {
-            synchronized (this) {
-                boolean needResetting = false;
-                try {
-                    final RebaseResult rebaseResult = getGitRepo(gitFolder, gitRepository)
-                            .pull()
-                            .setRebase(Boolean.TRUE)
-                            .call()
-                            .getRebaseResult();
-
-                    if (onAnyStatusConsumer != null) {
-                        onAnyStatusConsumer.accept(rebaseResult);
-                    }
-
-                    if (rebaseResult.getStatus().isSuccessful()) {
-                        if (onchangeConsumer != null && statusOnChange.contains(rebaseResult.getStatus())) {
-                            onchangeConsumer.accept(rebaseResult);
-                        }
-                    } else {
-                        LOG.warn("Pull not successful({})", rebaseResult.getStatus());
-                        needResetting = true;
-                    }
-
-                } catch (Throwable ex) {
-                    LOG.error("ERROR pulling: ", ex);
-                    if (onErrorConsumer != null) {
-                        onErrorConsumer.accept(ex);
-                    }
-                    needResetting = true;
-                }
-                if(needResetting) {
-                    deleteDirectory(gitFolder);
-                }
-            }
-
-        }
-
-
-        private static Git getGitRepo(File gitFolder, String gitRepository) {
-            try {
-                return gitFolder.exists()
-                        ? Git.open(gitFolder)
-                        : Git.cloneRepository().setURI(gitRepository).setDirectory(gitFolder).call();
-
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-
-        private static void deleteDirectory(File gitFolder) {
-            LOG.debug("Deleting directory: {}", gitFolder.getAbsolutePath());
-            try {
-                FileUtils.deleteDirectory(gitFolder);
-                LOG.debug("Deleted successfully directory: {}", gitFolder.getAbsolutePath());
-            } catch (Exception e) {
-                LOG.error("File couldn't be deleted(in order to be reset", e);
-            }
-        }
-    }
 
 
     public static class Builder {
@@ -160,6 +76,8 @@ public final class GitPuller {
         private long initialDelayMilliSeconds = 1000L;// default 1 second
         private long periodMilliseconds = 10 * 60 * 1000L;// default 10 minutes
         private Consumer<Throwable> errorHandler = null;
+        private String username;
+        private String password;
 
         private Builder() {
         }
@@ -191,14 +109,30 @@ public final class GitPuller {
         }
 
         public GitPuller build() {
+            LOG.trace("building git puller with builder:\n {}", this);
             Preconditions.isNullOrEmpty(gitFolder, "git folder");
             Preconditions.isNullOrEmpty(gitRepository, "git repository");
             return new GitPuller(
+                    username,
+                    password,
                     new File(gitFolder),
                     gitRepository,
                     initialDelayMilliSeconds,
                     periodMilliseconds,
                     errorHandler);
+        }
+
+        @Override
+        public String toString() {
+            return "Builder{" +
+                    "gitFolder='" + gitFolder + '\'' +
+                    ", gitRepository='" + gitRepository + '\'' +
+                    ", initialDelayMilliSeconds=" + initialDelayMilliSeconds +
+                    ", periodMilliseconds=" + periodMilliseconds +
+                    ", errorHandler=" + errorHandler +
+                    ", username='" + username + '\'' +
+                    ", password='" + (password == null || "".equals(password) ? "empty" : "********" ) + '\'' +
+                    '}';
         }
     }
 }

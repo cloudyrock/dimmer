@@ -38,6 +38,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.cloudyrock.dimmer</groupId>
+            <artifactId>dimmer-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.8.2</version>
