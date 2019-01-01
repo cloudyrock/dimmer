@@ -24,7 +24,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({GitPuller.class, Git.class, File.class, FileUtils.class})
+@PrepareForTest({GitPuller.class, Git.class, FileUtils.class})
 public class GitPullerUTest {
 
     private static final String GIT_DIR = "gitDir";
@@ -37,9 +37,8 @@ public class GitPullerUTest {
 
     @Before
     public void setUp() throws Exception {
-        mockStatic(Git.class, File.class, FileUtils.class);
-        whenNew(File.class).withArguments(Mockito.anyString()).thenReturn(gitDirectory);
-        gitDirectory = new File(GIT_DIR);
+        mockStatic(Git.class, FileUtils.class);
+        gitDirectory = mock(File.class);
         when(gitDirectory.exists()).thenReturn(true);
 
 
@@ -66,20 +65,12 @@ public class GitPullerUTest {
                 .build();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    @DisplayName("Should throw IllegalArgumentException when building puller if git folder is empty")
-    public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitFolderIsEmpty() {
-        final GitPuller gitPuller = GitPuller.builder()
-                .gitFolder("")
-                .gitRepository(GIT_REPO)
-                .build();
-    }
 
     @Test(expected = IllegalArgumentException.class)
     @DisplayName("Should throw IllegalArgumentException when building puller if git folder is null")
     public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitRepoIsNull() {
         final GitPuller gitPuller = GitPuller.builder()
-                .gitFolder(GIT_DIR)
+                .gitFolder(new File(""))
                 .gitRepository(null)
                 .build();
     }
@@ -88,7 +79,7 @@ public class GitPullerUTest {
     @DisplayName("Should throw IllegalArgumentException when building puller if git folder is empty")
     public void shouldThrowIllegalArgumentException_WhenBuildingPuller_IfGitRepoIsEmpty() {
         final GitPuller gitPuller = GitPuller.builder()
-                .gitFolder(GIT_DIR)
+                .gitFolder(new File(""))
                 .gitRepository("")
                 .build();
     }
@@ -256,7 +247,7 @@ public class GitPullerUTest {
 
         //when
         final GitPuller gitPuller = GitPuller.builder()
-                .gitFolder(GIT_DIR)
+                .gitFolder(gitDirectory)
                 .gitRepository(GIT_REPO)
                 .initialDelayMilliSeconds(initialDelay)
                 .periodMilliseconds(period)

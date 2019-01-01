@@ -62,7 +62,7 @@ public final class GitPuller {
                                         Consumer<RebaseResult> onchangeConsumer,
                                         Consumer<Throwable> onErrorConsumer) {
         return Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
-                new GitPullWorker(gitFolder, gitRepository, onAnyStatusConsumer, onchangeConsumer, onErrorConsumer),
+                new GitPullWorker(username, password, gitFolder, gitRepository, onAnyStatusConsumer, onchangeConsumer, onErrorConsumer),
                 initialDelayMilliSeconds,
                 periodMilliseconds,
                 TimeUnit.MILLISECONDS);
@@ -71,7 +71,7 @@ public final class GitPuller {
 
 
     public static class Builder {
-        private String gitFolder;
+        private File gitFolder;
         private String gitRepository;
         private long initialDelayMilliSeconds = 1000L;// default 1 second
         private long periodMilliseconds = 10 * 60 * 1000L;// default 10 minutes
@@ -82,7 +82,7 @@ public final class GitPuller {
         private Builder() {
         }
 
-        public Builder gitFolder(String gitFolder) {
+        public Builder gitFolder(File gitFolder) {
             this.gitFolder = gitFolder;
             return this;
         }
@@ -115,7 +115,7 @@ public final class GitPuller {
             return new GitPuller(
                     username,
                     password,
-                    new File(gitFolder),
+                    gitFolder,
                     gitRepository,
                     initialDelayMilliSeconds,
                     periodMilliseconds,

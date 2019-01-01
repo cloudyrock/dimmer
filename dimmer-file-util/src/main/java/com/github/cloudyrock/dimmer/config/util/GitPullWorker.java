@@ -2,6 +2,7 @@ package com.github.cloudyrock.dimmer.config.util;
 
 import com.github.cloudyrock.dimmer.DimmerLogger;
 import org.apache.commons.io.FileUtils;
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.RebaseResult;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -41,7 +42,9 @@ class GitPullWorker implements Runnable {
         this.onAnyStatusConsumer = onAnyStatusConsumer;
         this.onchangeConsumer = onchangeConsumer;
         this.onErrorConsumer = onErrorConsumer;
-        this.credentialsProvider = new UsernamePasswordCredentialsProvider(username, password);
+        this.credentialsProvider = username != null && password != null
+                ? new UsernamePasswordCredentialsProvider(username, password)
+                : null;
     }
 
     @Override
@@ -93,17 +96,22 @@ class GitPullWorker implements Runnable {
     private static Git getGitRepo(CredentialsProvider credentialsProvider, File gitFolder, String gitRepository) {
         try {
             final Git git;
-            if(gitFolder.exists()) {
+            if (gitFolder.exists()) {
                 LOG.trace("folder already exists, trying git open");
                 git = Git.open(gitFolder);
                 LOG.trace("Git open executed successfully");
             } else {
                 LOG.trace("folder not created, trying git cloning");
-                git = Git.cloneRepository()
+                final CloneCommand cloneCommand = Git.cloneRepository()
                         .setURI(gitRepository)
-                        .setCredentialsProvider(credentialsProvider)
-                        .setDirectory(gitFolder)
-                        .call();
+                        .setDirectory(gitFolder);
+                if (credentialsProvider != null) {
+                    LOG.trace("git cloning with credentials");
+                    git = cloneCommand.setCredentialsProvider(credentialsProvider).call();
+                } else {
+                    LOG.trace("git cloning with NO credentials");
+                    git = cloneCommand.call();
+                }
                 LOG.trace("Git cloning executed successfully");
             }
             return git;
