@@ -1,6 +1,7 @@
 package com.github.cloudyrock.dimmer.config.util;
 
 import com.github.cloudyrock.dimmer.DimmerLogger;
+import com.github.cloudyrock.dimmer.Preconditions;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
@@ -42,7 +43,7 @@ class GitPullWorker implements Runnable {
         this.onAnyStatusConsumer = onAnyStatusConsumer;
         this.onchangeConsumer = onchangeConsumer;
         this.onErrorConsumer = onErrorConsumer;
-        this.credentialsProvider = username != null && password != null
+        this.credentialsProvider = Preconditions.notEmpty(username) && Preconditions.notEmpty(password)
                 ? new UsernamePasswordCredentialsProvider(username, password)
                 : null;
     }
@@ -89,11 +90,12 @@ class GitPullWorker implements Runnable {
                 deleteDirectory(gitFolder);
             }
         }
-
     }
 
 
-    private static Git getGitRepo(CredentialsProvider credentialsProvider, File gitFolder, String gitRepository) {
+    private static Git getGitRepo(CredentialsProvider credentialsProvider,
+                                  File gitFolder,
+                                  String gitRepository) {
         try {
             final Git git;
             if (gitFolder.exists()) {

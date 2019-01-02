@@ -7,18 +7,26 @@ import java.util.Optional;
 
 public final class Preconditions {
 
-    public static void isNullOrEmpty(Object obj) {
-        isNullOrEmpty(obj, null);
+    public static void checkNullOrEmpty(Object obj) {
+        checkNullOrEmpty(obj, null);
     }
 
-    public static void isNullOrEmpty(Object obj, String name) {
-        if (Objects.isNull(obj) || "".equals(obj) ||
+    public static void checkNullOrEmpty(Object obj, String name) {
+        if (isNullOrEmpty(obj)) {
+            throwException(name);
+        }
+    }
+
+    public static boolean isNullOrEmpty(Object obj) {
+        return (Objects.isNull(obj) || "".equals(obj) ||
                 (obj.getClass().isArray() && Array.getLength(obj) <= 0) ||
                 (obj instanceof Collection && ((Collection) obj).isEmpty()) ||
-                (obj instanceof Optional && !((Optional) obj).isPresent())) {
-            throwException(name);
-            return;
-        }
+                (obj instanceof Optional && !((Optional) obj).isPresent()));
+    }
+
+
+    public static boolean notEmpty(Object obj) {
+        return !isNullOrEmpty(obj);
     }
 
     private static void throwException(String name) {

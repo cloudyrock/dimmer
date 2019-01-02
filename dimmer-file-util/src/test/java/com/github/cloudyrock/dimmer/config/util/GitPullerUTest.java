@@ -2,24 +2,30 @@ package com.github.cloudyrock.dimmer.config.util;
 
 import com.github.cloudyrock.dimmer.DisplayName;
 import org.apache.commons.io.FileUtils;
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.PullCommand;
-import org.eclipse.jgit.api.PullResult;
-import org.eclipse.jgit.api.RebaseResult;
+import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.Times;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledFuture;
 import java.util.function.Consumer;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 
@@ -34,6 +40,7 @@ public class GitPullerUTest {
     private Git gitMock;
 
     private RebaseResult rebaseResult;
+    private PullCommand pullCommandMock;
 
     @Before
     public void setUp() throws Exception {
@@ -41,9 +48,8 @@ public class GitPullerUTest {
         gitDirectory = mock(File.class);
         when(gitDirectory.exists()).thenReturn(true);
 
-
         gitMock = mock(Git.class);
-        PullCommand pullCommandMock = mock(PullCommand.class);
+        pullCommandMock = mock(PullCommand.class);
         PullResult pullResultMock = mock(PullResult.class);
         rebaseResult = mock(RebaseResult.class);
         when(Git.open(Mockito.any(File.class))).thenReturn(gitMock);
@@ -83,8 +89,6 @@ public class GitPullerUTest {
                 .gitRepository("")
                 .build();
     }
-
-
 
 
     @Test
@@ -221,7 +225,7 @@ public class GitPullerUTest {
         };
 
         //when
-        runGitPuller(latch, onChangeConsumer, null, null, 10L, 75L);
+        runGitPuller(latch, null, null, onChangeConsumer, null, null, 10L, 75L);
 
         //then
         Assert.assertTrue(changeAffected.isAffected());
@@ -231,14 +235,112 @@ public class GitPullerUTest {
 
     }
 
+    @Test
+    @DisplayName("Should use credentials when pulling if username and password passed")
+    public void shouldUseCredentials_whenPulling_ifUsernameAndPasswordPassed() throws InterruptedException, IOException, GitAPIException, NoSuchFieldException, IllegalAccessException {
+        //given
+        final CloneCommand mockCloneCommand = mock(CloneCommand.class);
+        when(gitDirectory.exists()).thenReturn(false);
+        when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.OK);
+        when(Git.cloneRepository()).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.setURI(anyString())).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.setDirectory(Mockito.any(File.class))).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.setCredentialsProvider(any(CredentialsProvider.class))).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.call()).thenReturn(gitMock);
+
+        final AffectedObject changeAffected = new AffectedObject();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final Consumer<RebaseResult> onChangeConsumer = result -> {
+            changeAffected.affect();
+            latch.countDown();
+        };
+
+        //when
+        runGitPuller(latch, "username", "password", onChangeConsumer, null, null, 10L, 75L);
+
+        //then
+        final ArgumentCaptor<CredentialsProvider> credentialsCaptor = ArgumentCaptor.forClass(CredentialsProvider.class);
+        verify(mockCloneCommand).setCredentialsProvider(credentialsCaptor.capture());
+        final UsernamePasswordCredentialsProvider actualCredentials = (UsernamePasswordCredentialsProvider)
+                credentialsCaptor.getValue();
+        checkGitCredentials(actualCredentials, "username", "password");
+    }
+
+    @Test
+    @DisplayName("Should not use credentials when pulling if username null")
+    public void shouldNotUseCredentials_whenPulling_ifUsernameNull() throws InterruptedException, GitAPIException {
+        verifyNoCredentialsInteraction(null, "password'");
+    }
+
+    @Test
+    @DisplayName("Should not use credentials when pulling if username empty")
+    public void shouldNotUseCredentials_whenPulling_ifUsernameEmpty() throws InterruptedException, GitAPIException {
+        verifyNoCredentialsInteraction("", "password");
+    }
+
+    @Test
+    @DisplayName("Should not use credentials when pulling if password null")
+    public void shouldNotUseCredentials_whenPulling_ifPasswordNull() throws InterruptedException, GitAPIException {
+        verifyNoCredentialsInteraction("username", null);
+    }
+
+    @Test
+    @DisplayName("Should not use credentials when pulling if password empty")
+    public void shouldNotUseCredentials_whenPulling_ifPasswordEmpty() throws InterruptedException, GitAPIException {
+        verifyNoCredentialsInteraction("username", "");
+    }
+
+    private void verifyNoCredentialsInteraction(String username, String password) throws GitAPIException, InterruptedException {
+        //given
+        final CloneCommand mockCloneCommand = mock(CloneCommand.class);
+        when(gitDirectory.exists()).thenReturn(false);
+        when(rebaseResult.getStatus()).thenReturn(RebaseResult.Status.OK);
+        when(Git.cloneRepository()).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.setURI(anyString())).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.setDirectory(Mockito.any(File.class))).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.setCredentialsProvider(any(CredentialsProvider.class))).thenReturn(mockCloneCommand);
+        when(mockCloneCommand.call()).thenReturn(gitMock);
+
+        final AffectedObject changeAffected = new AffectedObject();
+        final CountDownLatch latch = new CountDownLatch(1);
+        final Consumer<RebaseResult> onChangeConsumer = result -> {
+            changeAffected.affect();
+            latch.countDown();
+        };
+
+        //when
+        runGitPuller(latch, username, password, onChangeConsumer, null, null, 10L, 75L);
+
+        //then
+        verify(mockCloneCommand, new Times(0)).setCredentialsProvider(Mockito.any(CredentialsProvider.class));
+    }
+
+
+    private void checkGitCredentials(UsernamePasswordCredentialsProvider actualCredentials,
+                                     String username,
+                                     String password) throws NoSuchFieldException, IllegalAccessException {
+        final Field field = UsernamePasswordCredentialsProvider.class.getDeclaredField("username");
+        field.setAccessible(true);
+        final String actualUsername = (String) field.get(actualCredentials);
+
+        final Field field2 = UsernamePasswordCredentialsProvider.class.getDeclaredField("password");
+        field2.setAccessible(true);
+        final char[] actualPassword = (char[]) field2.get(actualCredentials);
+
+        Assert.assertEquals(username, actualUsername);
+        Assert.assertEquals(password, new String(actualPassword));
+    }
+
     public void runGitPuller(CountDownLatch latch,
                              Consumer<RebaseResult> onChangeConsumer,
                              Consumer<RebaseResult> onAnyConsumer,
                              Consumer<Throwable> onErrorConsumer) throws InterruptedException {
-        runGitPuller(latch, onChangeConsumer, onAnyConsumer, onErrorConsumer, 10L, 1000L * 60 * 60);
+        runGitPuller(latch, null, null, onChangeConsumer, onAnyConsumer, onErrorConsumer, 10L, 1000L * 60 * 60);
     }
 
     public void runGitPuller(CountDownLatch latch,
+                             String username,
+                             String password,
                              Consumer<RebaseResult> onChangeConsumer,
                              Consumer<RebaseResult> onAnyConsumer,
                              Consumer<Throwable> onErrorConsumer,
@@ -247,6 +349,8 @@ public class GitPullerUTest {
 
         //when
         final GitPuller gitPuller = GitPuller.builder()
+                .username(username)
+                .password(password)
                 .gitFolder(gitDirectory)
                 .gitRepository(GIT_REPO)
                 .initialDelayMilliSeconds(initialDelay)

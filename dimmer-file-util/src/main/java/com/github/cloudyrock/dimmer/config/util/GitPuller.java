@@ -47,13 +47,13 @@ public final class GitPuller {
 
     public ScheduledFuture<?> subscribeOnChange(Consumer<RebaseResult> onchangeConsumer) {
         LOG.trace("git puller subscribed onChange");
-        Preconditions.isNullOrEmpty(onchangeConsumer, "onChange consumer");
+        Preconditions.checkNullOrEmpty(onchangeConsumer, "onChange consumer");
         return subscribe(null, onchangeConsumer, errorHandler);
     }
 
     public ScheduledFuture<?> subscribeOnAny(Consumer<RebaseResult> onAnyStatusConsumer) {
         LOG.trace("git puller subscribed onAny");
-        Preconditions.isNullOrEmpty(onAnyStatusConsumer, "onAnyStatus consumer");
+        Preconditions.checkNullOrEmpty(onAnyStatusConsumer, "onAnyStatus consumer");
         return subscribe(onAnyStatusConsumer, null, errorHandler);
     }
 
@@ -80,6 +80,16 @@ public final class GitPuller {
         private String password;
 
         private Builder() {
+        }
+
+        public Builder username(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
         }
 
         public Builder gitFolder(File gitFolder) {
@@ -110,8 +120,8 @@ public final class GitPuller {
 
         public GitPuller build() {
             LOG.trace("building git puller with builder:\n {}", this);
-            Preconditions.isNullOrEmpty(gitFolder, "git folder");
-            Preconditions.isNullOrEmpty(gitRepository, "git repository");
+            Preconditions.checkNullOrEmpty(gitFolder, "git folder");
+            Preconditions.checkNullOrEmpty(gitRepository, "git repository");
             return new GitPuller(
                     username,
                     password,
