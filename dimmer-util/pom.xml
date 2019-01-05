@@ -143,36 +143,6 @@
                                             </limits>
                                         </rule>
                                     </rules>
-                                    <excludes>
-                                        <exclude>com/github/cloudyrock/dimmer/Uti.class</exclude>
-                                    </excludes>
-                                </configuration>
-                            </execution>
-
-                            <!-- Perform coverage verification for integration test -->
-                            <execution>
-                                <id>jacoco-it-verify-coverage(${project.name})</id>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                                <configuration>
-
-                                    <dataFile>${sonar.jacoco.itReportPath}</dataFile>
-                                    <rules>
-                                        <rule>
-                                            <element>PACKAGE</element>
-                                            <limits>
-                                                <limit>
-                                                    <counter>LINE</counter>
-                                                    <value>COVEREDRATIO</value>
-                                                    <minimum>${threshold.coverage.it}</minimum>
-                                                </limit>
-                                            </limits>
-                                        </rule>
-                                    </rules>
-                                    <excludes>
-                                        <exclude>com/github/cloudyrock/dimmer/Uti.class</exclude>
-                                    </excludes>
                                 </configuration>
                             </execution>
 

@@ -169,6 +169,33 @@ public class GitPullerUTest {
         Assert.assertTrue(objectAffected.isAffected());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    @DisplayName("Should notify onAny consumer when git pull result is OK")
+    public void shouldThrowIllegalArgumentExceptionOnAnyConsumer_whenConsumerIsEmpty() throws InterruptedException {
+        //when
+        GitPuller.builder()
+                .username("username")
+                .password("password")
+                .gitFolder(gitDirectory)
+                .gitRepository(GIT_REPO)
+                .initialDelayMilliSeconds(100)
+                .periodMilliseconds(10)
+                .build().subscribeOnAny(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @DisplayName("Should notify onAny consumer when git pull result is OK")
+    public void shouldThrowIllegalArgumentExceptionOnChangeConsumer_whenConsumerIsEmpty() throws InterruptedException {
+        //when
+        GitPuller.builder()
+                .username("username")
+                .password("password")
+                .gitFolder(gitDirectory)
+                .gitRepository(GIT_REPO)
+                .initialDelayMilliSeconds(100)
+                .periodMilliseconds(10)
+                .build().subscribeOnChange(null);
+    }
 
     @Test
     @DisplayName("Should notify onAny consumer when git pull result is FAST_FORWARD")

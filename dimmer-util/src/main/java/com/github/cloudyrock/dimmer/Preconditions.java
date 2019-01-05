@@ -2,6 +2,7 @@ package com.github.cloudyrock.dimmer;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -21,7 +22,8 @@ public final class Preconditions {
         return (Objects.isNull(obj) || "".equals(obj) ||
                 (obj.getClass().isArray() && Array.getLength(obj) <= 0) ||
                 (obj instanceof Collection && ((Collection) obj).isEmpty()) ||
-                (obj instanceof Optional && !((Optional) obj).isPresent()));
+                (obj instanceof Optional && !((Optional) obj).isPresent()) ||
+                (obj instanceof Map && ((Map) obj).isEmpty()));
     }
 
 
