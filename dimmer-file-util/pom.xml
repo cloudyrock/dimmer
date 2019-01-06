@@ -174,53 +174,6 @@
                                 </configuration>
                             </execution>
 
-                            <!-- Perform coverage verification for unit test -->
-                            <execution>
-                                <id>jacoco-ut-verify-coverage(${project.name})</id>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                                <configuration>
-
-                                    <dataFile>${sonar.jacoco.reportPath}</dataFile>
-                                    <rules>
-                                        <rule>
-                                            <element>PACKAGE</element>
-                                            <limits>
-                                                <limit>
-                                                    <counter>LINE</counter>
-                                                    <value>COVEREDRATIO</value>
-                                                    <minimum>${threshold.coverage.ut}</minimum>
-                                                </limit>
-                                            </limits>
-                                        </rule>
-                                    </rules>
-                                </configuration>
-                            </execution>
-
-                            <!-- Perform coverage verification for integration test -->
-                            <execution>
-                                <id>jacoco-it-verify-coverage(${project.name})</id>
-                                <goals>
-                                    <goal>check</goal>
-                                </goals>
-                                <configuration>
-
-                                    <dataFile>${sonar.jacoco.itReportPath}</dataFile>
-                                    <rules>
-                                        <rule>
-                                            <element>PACKAGE</element>
-                                            <limits>
-                                                <limit>
-                                                    <counter>LINE</counter>
-                                                    <value>COVEREDRATIO</value>
-                                                    <minimum>${threshold.coverage.it}</minimum>
-                                                </limit>
-                                            </limits>
-                                        </rule>
-                                    </rules>
-                                </configuration>
-                            </execution>
 
                         </executions>
                     </plugin>
