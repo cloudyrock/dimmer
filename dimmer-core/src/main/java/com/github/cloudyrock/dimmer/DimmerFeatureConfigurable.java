@@ -42,7 +42,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
     public RUNNER environments(String... environments) {
-        Util.checkArgumentNullEmpty(environments, "environments");
+        Preconditions.checkNullOrEmpty(environments, "environments");
         final List<String> envs = Arrays.asList(environments);
         return newInstance(envs, configMetadata, defaultExceptionType, dimmerConfigReader);
     }
@@ -263,7 +263,7 @@ abstract class DimmerFeatureConfigurable<RUNNER extends DimmerFeatureConfigurabl
      */
     public RUNNER setDefaultExceptionType(
             Class<? extends RuntimeException> newDefaultExceptionType) {
-        Util.checkArgumentNullEmpty(newDefaultExceptionType, "defaultExceptionType");
+        Preconditions.checkNullOrEmpty(newDefaultExceptionType, "defaultExceptionType");
         ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
         return newInstance(environments, configMetadata, newDefaultExceptionType, dimmerConfigReader);
     }

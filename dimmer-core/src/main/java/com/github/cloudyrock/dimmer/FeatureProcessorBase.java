@@ -16,8 +16,7 @@ abstract class FeatureProcessorBase {
             new ConcurrentHashMap<>();
 
 
-    private static final DimmerLogger logger =
-            new DimmerLogger(DimmerFeatureConfigurable.class);
+    private static final DimmerLogger logger = new DimmerLogger(DimmerFeatureConfigurable.class);
 
 
     FeatureProcessorBase() {
@@ -83,7 +82,7 @@ abstract class FeatureProcessorBase {
             String feature,
             String operation,
             Function<FeatureInvocation, ?> behaviour) {
-        Util.checkArgumentNullEmpty(behaviour, "behaviour");
+        Preconditions.checkNullOrEmpty(behaviour, "behaviour");
         return putBehaviour(feature, operation, behaviour);
     }
 
@@ -91,7 +90,7 @@ abstract class FeatureProcessorBase {
                                  String operation,
                                  Class<? extends RuntimeException> exceptionType) {
 
-        Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
+        Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
         return putBehaviour(
                 feature,
                 operation,
@@ -113,8 +112,8 @@ abstract class FeatureProcessorBase {
     private boolean putBehaviour(String feature,
                                  String operation,
                                  Function<FeatureInvocation, ?> behaviour) {
-        Util.checkArgumentNullEmpty(feature, "featureId");
-        Util.checkArgumentNullEmpty(feature, "operation");
+        Preconditions.checkNullOrEmpty(feature, "featureId");
+        Preconditions.checkNullOrEmpty(feature, "operation");
         if(operation == null || operation.isEmpty()) {
             logger.warn("Adding behaviour to feature {} with empty operation", feature);
         }
