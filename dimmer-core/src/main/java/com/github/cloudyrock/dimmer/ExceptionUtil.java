@@ -39,7 +39,7 @@ final class ExceptionUtil {
 
     static void checkExceptionConstructorType(
             Class<? extends RuntimeException> exceptionType) {
-        Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
+        Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
         for (Constructor<?> c : constructors) {
             if (c.getParameterCount() == 0 ||
@@ -55,7 +55,7 @@ final class ExceptionUtil {
 
     static ExceptionConstructorType getExceptionConstructorType(
             Class<? extends RuntimeException> exceptionType) {
-        Util.checkArgumentNullEmpty(exceptionType, "exceptionType");
+        Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
         ExceptionConstructorType constructorType = NO_COMPATIBLE_CONSTRUCTOR;
         for (Constructor<?> c : constructors) {
