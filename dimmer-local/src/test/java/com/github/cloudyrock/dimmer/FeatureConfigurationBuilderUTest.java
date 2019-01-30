@@ -36,7 +36,7 @@ public class FeatureConfigurationBuilderUTest {
 
 
     @Test
-    @DisplayName("Should throw DimmerConfigException when build environment doesn't exist in config file")
+    @DisplayName("Should throw DimmerConfigException when run environment doesn't exist in config file")
     public void shouldThrowDimmerConfigException_WhenEnvironmentDoesntExistInConfig() {
 
         when(dimmerConfigReaderMock.loadConfiguration()).thenReturn(loadDimmerConfig());
@@ -45,7 +45,7 @@ public class FeatureConfigurationBuilderUTest {
 
         FeatureConfigurationBuilder
                 .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .build("RANDOM_ENV");
+                .run("RANDOM_ENV");
     }
 
     @Test
@@ -59,7 +59,7 @@ public class FeatureConfigurationBuilderUTest {
 
         FeatureConfigurationBuilder
                 .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .build(ENV);
+                .run(ENV);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class FeatureConfigurationBuilderUTest {
 
         FeatureConfigurationBuilder
                 .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .build(ENV);
+                .run(ENV);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class FeatureConfigurationBuilderUTest {
 
         FeatureConfigurationBuilder
                 .withEnvironmentsAndMetadata(Collections.singleton(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
     }
 
     @Test
@@ -95,7 +95,7 @@ public class FeatureConfigurationBuilderUTest {
 
         FeatureConfigurationBuilder
                 .withEnvironmentsAndMetadata(Collections.singletonList(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
     }
 
 

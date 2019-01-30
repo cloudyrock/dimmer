@@ -1,7 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.reader.DimmerConfigReader;
-import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import org.aspectj.lang.Aspects;
 
@@ -65,10 +64,10 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
      * dimmer aspect (which will intercept the calls to all methods annotated
      * with {@link DimmerFeature}) and return it.
      *
-     * @param environment Environment to build
+     * @param environment Environment to run
      * @return Feature executor
      */
-    public void build(String environment) {
+    public void run(String environment) {
         final EnvironmentConfig environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
         FeatureExecutor featureExecutor = getFeatureExecutor(environment, environmentConfig);
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
@@ -82,8 +81,8 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
      *
      * @return Feature executor
      */
-    public void buildWithDefaultEnvironment() {
-        build(null);
+    public void runWithDefaultEnvironment() {
+        run(null);
     }
 
 
