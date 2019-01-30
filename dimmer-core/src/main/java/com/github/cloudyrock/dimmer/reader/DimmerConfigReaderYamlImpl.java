@@ -95,6 +95,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
             checkEnvironmentSettings(featuresList, server);
 
             return new EnvironmentConfig(
+                    k.getKey(),
                     value.getServer(),
                     value.getFeatureIntercept(),
                     value.isDefault()

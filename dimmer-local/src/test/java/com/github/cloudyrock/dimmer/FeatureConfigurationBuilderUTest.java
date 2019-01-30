@@ -11,9 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.github.cloudyrock.dimmer.FeatureConfigurationBuilder.DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_DOESNT_EXIST_IN_CONFIG_FILE;
 import static org.mockito.Matchers.any;
@@ -83,7 +81,7 @@ public class FeatureConfigurationBuilderUTest {
         when(dimmerConfigReaderMock.getDefaultEnvironment(any(DimmerConfig.class))).thenReturn(loadDefaultEntry());
 
         FeatureConfigurationBuilder
-                .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
+                .withEnvironmentsAndMetadata(Collections.singleton(ENV), new HashMap<>(), dimmerConfigReaderMock)
                 .buildWithDefaultEnvironment();
     }
 
@@ -96,7 +94,7 @@ public class FeatureConfigurationBuilderUTest {
         exception.expect(DimmerConfigException.class);
 
         FeatureConfigurationBuilder
-                .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
+                .withEnvironmentsAndMetadata(Collections.singletonList(ENV), new HashMap<>(), dimmerConfigReaderMock)
                 .buildWithDefaultEnvironment();
     }
 
@@ -104,7 +102,7 @@ public class FeatureConfigurationBuilderUTest {
     private static DimmerConfig loadDimmerConfig() {
         final DimmerConfig dimmerConfig = new DimmerConfig();
         final Map<String, EnvironmentConfig> environmentConfigMap = new HashMap<>();
-        environmentConfigMap.put(ENV, new EnvironmentConfig(null, Arrays.asList("Feature1", "Feature2"), true));
+        environmentConfigMap.put(ENV, new EnvironmentConfig(ENV,null, Arrays.asList("Feature1", "Feature2"), true));
         dimmerConfig.setEnvironments(environmentConfigMap);
         return dimmerConfig;
     }
@@ -112,7 +110,7 @@ public class FeatureConfigurationBuilderUTest {
     private static DimmerConfig loadDimmerConfigWithoutDefaultEnv() {
         final DimmerConfig dimmerConfig = new DimmerConfig();
         final Map<String, EnvironmentConfig> environmentConfigMap = new HashMap<>();
-        environmentConfigMap.put(ENV, new EnvironmentConfig(null, Arrays.asList("Feature1", "Feature2"), false));
+        environmentConfigMap.put(ENV, new EnvironmentConfig(ENV,null, Arrays.asList("Feature1", "Feature2"), false));
         dimmerConfig.setEnvironments(environmentConfigMap);
         return dimmerConfig;
     }
@@ -126,7 +124,7 @@ public class FeatureConfigurationBuilderUTest {
 
             @Override
             public EnvironmentConfig getValue() {
-                return new EnvironmentConfig(null, Arrays.asList("Feature1", "Feature2"), true);
+                return new EnvironmentConfig(ENV,null, Arrays.asList("Feature1", "Feature2"), true);
             }
 
             @Override
