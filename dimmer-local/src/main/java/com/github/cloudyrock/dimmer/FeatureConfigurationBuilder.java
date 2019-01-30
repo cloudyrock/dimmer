@@ -21,8 +21,6 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
         implements DimmerEnvironmentConfigurable<FeatureConfigurationBuilder> {
 
     private static final DimmerLogger LOGGER = new DimmerLogger(FeatureConfigurationBuilder.class);
-    public static final String DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_DOESNT_EXIST_IN_CONFIG_FILE =
-            "The selected environment doesn't exist in the Dimmer configuration file. ";
 
     static FeatureConfigurationBuilder withEnvironmentsAndMetadata(
             Collection<String> environments,
@@ -70,11 +68,11 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
      * @param environment Environment to build
      * @return Feature executor
      */
-    public FeatureExecutorImpl build(String environment) {
-
-        final DimmerConfig dimmerConfig = dimmerConfigReader.loadConfiguration();
-        final EnvironmentConfig environmentConfig = loadMatchingEnvironmentFromConfig(dimmerConfig, environment);
-        return getFeatureExecutor(environment, environmentConfig);
+    public void build(String environment) {
+        final EnvironmentConfig environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
+        FeatureExecutor featureExecutor = getFeatureExecutor(environment, environmentConfig);
+        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
+        LOGGER.info("Dimmer Aspect running");
     }
 
     /**
@@ -84,23 +82,18 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
      *
      * @return Feature executor
      */
-    public FeatureExecutorImpl buildWithDefaultEnvironment() {
-
-        final DimmerConfig dimmerConfig = dimmerConfigReader.loadConfiguration();
-        final Map.Entry<String,EnvironmentConfig> environmentConfig = dimmerConfigReader.getDefaultEnvironment(dimmerConfig);
-
-        return getFeatureExecutor(environmentConfig.getKey(), environmentConfig.getValue());
+    public void buildWithDefaultEnvironment() {
+        build(null);
     }
 
-    private FeatureExecutorImpl getFeatureExecutor(String environment, EnvironmentConfig environmentConfig) {
-        LOGGER.info("Building local executor");
 
-        final FeatureExecutorImpl executor = new FeatureExecutorImpl(
+    private FeatureExecutor getFeatureExecutor(String environment, EnvironmentConfig environmentConfig) {
+        LOGGER.debug("Building local executor");
+
+        final FeatureExecutor executor = new FeatureExecutorImpl(
                 loadConfigMetadata(environment, environmentConfig),
                 getDefaultExceptionType());
 
-        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
-        LOGGER.info("Dimmer Aspect running");
         return executor;
     }
 
@@ -135,15 +128,4 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
                 .collect(Collectors.toSet());
     }
 
-    private static EnvironmentConfig loadMatchingEnvironmentFromConfig(DimmerConfig dimmerConfig, String env) {
-        final Map<String, EnvironmentConfig> dimmerConfigEnvironments = dimmerConfig.getEnvironments();
-        final EnvironmentConfig environmentConfig = dimmerConfigEnvironments.get(env);
-
-        if (environmentConfig == null) {
-            throw new DimmerConfigException(
-                    String.format(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_DOESNT_EXIST_IN_CONFIG_FILE +
-                            "Please add the environment %s in the configuration file", env));
-        }
-        return environmentConfig;
-    }
 }

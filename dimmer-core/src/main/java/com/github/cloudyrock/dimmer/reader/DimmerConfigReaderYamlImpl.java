@@ -6,6 +6,7 @@ import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import com.github.cloudyrock.dimmer.reader.models.yaml.DimmerYamlConfig;
 import com.github.cloudyrock.dimmer.reader.models.yaml.Environment;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -24,10 +25,12 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     private static Logger LOGGER = getLogger(DimmerConfigReaderYamlImpl.class);
     private ObjectMapper objectMapper;
 
-    public static final String DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY = "Environment configuration is empty";
-    public static final String DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH = "Server Configuration and Feature Interceptor must not be configured for the same environment.";
-    public static final String DIMMER_CONFIG_EXCEPTION_INVALID_URL = "Invalid URL set in server configuration.";
-    public static final String DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ = "Dimmer configuration file could not be read.";
+    static final String DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY = "Environment configuration is empty";
+    static final String DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH = "Server Configuration and Feature Interceptor must not be configured for the same environment.";
+    static final String DIMMER_CONFIG_EXCEPTION_INVALID_URL = "Invalid URL set in server configuration.";
+    static final String DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ = "Dimmer configuration file could not be read.";
+    public static final String DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_DOESNT_EXIST_IN_CONFIG_FILE =
+            "The selected environment doesn't exist in the Dimmer configuration file. ";
 
     private static final String DEFAULT_DIMMER_PROPERTIES_LOCATION = "dimmer.yml";
 
@@ -66,15 +69,38 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     }
 
     @Override
-    public Map.Entry<String, EnvironmentConfig> getDefaultEnvironment(DimmerConfig dimmerConfig) {
-
-        return dimmerConfig.getEnvironments().entrySet().stream()
-                .filter(stringEnvironmentConfigEntry ->
-                        stringEnvironmentConfigEntry.getValue().isDefault())
-                .findFirst()
-                .orElseThrow(() -> new DimmerConfigException("No Default environment found in configuration"))
-                ;
+    public EnvironmentConfig loadEnvironmentOrDefault(String env) {
+        final DimmerConfig dimmerConfig = loadConfiguration();
+        if(StringUtils.isEmpty(env)) {
+            return getDefaultEnvironment(dimmerConfig);
+        } else {
+            return getEnvironment(dimmerConfig, env);
+        }
     }
+
+    @Override
+    public EnvironmentConfig getEnvironment(DimmerConfig dimmerConfig, String env) {
+        final Map<String, EnvironmentConfig> dimmerConfigEnvironments = dimmerConfig.getEnvironments();
+        final EnvironmentConfig environmentConfig = dimmerConfigEnvironments.get(env);
+
+        if (environmentConfig == null) {
+            throw new DimmerConfigException(
+                    String.format(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_DOESNT_EXIST_IN_CONFIG_FILE +
+                            "Please add the environment %s in the configuration file", env));
+        }
+        return environmentConfig;
+    }
+
+
+
+    @Override
+    public EnvironmentConfig getDefaultEnvironment(DimmerConfig dimmerConfig) {
+        return dimmerConfig.getEnvironments().values().stream()
+                .filter(EnvironmentConfig::isDefault)
+                .findFirst()
+                .orElseThrow(() -> new DimmerConfigException("No Default environment found in configuration"));
+    }
+
 
     private static DimmerConfig toDimmerConfig(DimmerYamlConfig dimmerYamlConfig) {
         final DimmerConfig dimmerConfig = new DimmerConfig();
@@ -103,7 +129,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         };
     }
 
-    private static void checkEnvironmentSettings(List featuresList, String server) throws DimmerConfigException {
+    private static void checkEnvironmentSettings(List<String> featuresList, String server) throws DimmerConfigException {
 
         //server or featureIntercept don't exist
         if ((featuresList == null) && (server == null)) {
