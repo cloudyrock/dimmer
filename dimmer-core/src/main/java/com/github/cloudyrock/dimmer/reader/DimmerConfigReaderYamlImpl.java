@@ -69,11 +69,9 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     public Map.Entry<String, EnvironmentConfig> getDefaultEnvironment(DimmerConfig dimmerConfig) {
 
         return dimmerConfig.getEnvironments().entrySet().stream()
-                .filter(stringEnvironmentConfigEntry ->
-                        stringEnvironmentConfigEntry.getValue().isDefault())
+                .filter(stringEnvironmentConfigEntry -> stringEnvironmentConfigEntry.getValue().isDefault())
                 .findFirst()
-                .orElseThrow(() -> new DimmerConfigException("No Default environment found in configuration"))
-                ;
+                .orElseThrow(() -> new DimmerConfigException("No Default environment found in configuration"));
     }
 
     private static DimmerConfig toDimmerConfig(DimmerYamlConfig dimmerYamlConfig) {
@@ -102,7 +100,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         };
     }
 
-    private static void checkEnvironmentSettings(List featuresList, String server) throws DimmerConfigException {
+    private static void checkEnvironmentSettings(List<String> featuresList, String server) throws DimmerConfigException {
 
         //server or featureIntercept don't exist
         if ((featuresList == null) && (server == null)) {

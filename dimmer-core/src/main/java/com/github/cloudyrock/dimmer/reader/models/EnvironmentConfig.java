@@ -9,7 +9,7 @@ public final class EnvironmentConfig {
     private final String server;
     private final boolean isDefault;
 
-    public EnvironmentConfig (String server, List featureIntercept, boolean isDefault){
+    public EnvironmentConfig(String server, List<String> featureIntercept, boolean isDefault){
         this.server = server;
         this.featureIntercept = featureIntercept;
         this.isDefault = isDefault;

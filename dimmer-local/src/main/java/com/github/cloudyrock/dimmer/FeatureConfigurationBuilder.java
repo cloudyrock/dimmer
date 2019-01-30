@@ -70,11 +70,13 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
      * @param environment Environment to build
      * @return Feature executor
      */
-    public FeatureExecutorImpl build(String environment) {
+    public FeatureExecutor build(String environment) {
 
         final DimmerConfig dimmerConfig = dimmerConfigReader.loadConfiguration();
         final EnvironmentConfig environmentConfig = loadMatchingEnvironmentFromConfig(dimmerConfig, environment);
-        return getFeatureExecutor(environment, environmentConfig);
+        FeatureExecutor executor = getFeatureExecutor(environment, environmentConfig);
+        setFeatureExecutorToAspect(executor);
+        return executor;
     }
 
     /**
@@ -84,24 +86,26 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
      *
      * @return Feature executor
      */
-    public FeatureExecutorImpl buildWithDefaultEnvironment() {
+    public FeatureExecutor buildWithDefaultEnvironment() {
 
         final DimmerConfig dimmerConfig = dimmerConfigReader.loadConfiguration();
         final Map.Entry<String,EnvironmentConfig> environmentConfig = dimmerConfigReader.getDefaultEnvironment(dimmerConfig);
 
-        return getFeatureExecutor(environmentConfig.getKey(), environmentConfig.getValue());
+        FeatureExecutor executor = getFeatureExecutor(environmentConfig.getKey(), environmentConfig.getValue());
+        setFeatureExecutorToAspect(executor);
+        return executor;
     }
 
-    private FeatureExecutorImpl getFeatureExecutor(String environment, EnvironmentConfig environmentConfig) {
-        LOGGER.info("Building local executor");
-
-        final FeatureExecutorImpl executor = new FeatureExecutorImpl(
-                loadConfigMetadata(environment, environmentConfig),
-                getDefaultExceptionType());
-
+    private void setFeatureExecutorToAspect(FeatureExecutor executor) {
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(executor);
         LOGGER.info("Dimmer Aspect running");
-        return executor;
+    }
+
+    private FeatureExecutor getFeatureExecutor(String environment, EnvironmentConfig environmentConfig) {
+        LOGGER.info("Building local executor");
+
+        final Set<FeatureMetadata> featureMetadataSet = loadConfigMetadata(environment, environmentConfig);
+        return new FeatureExecutorImpl(featureMetadataSet, getDefaultExceptionType());
     }
 
     private Set<FeatureMetadata> loadConfigMetadata(String environment, EnvironmentConfig environmentConfig) {
@@ -136,8 +140,7 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
     }
 
     private static EnvironmentConfig loadMatchingEnvironmentFromConfig(DimmerConfig dimmerConfig, String env) {
-        final Map<String, EnvironmentConfig> dimmerConfigEnvironments = dimmerConfig.getEnvironments();
-        final EnvironmentConfig environmentConfig = dimmerConfigEnvironments.get(env);
+        final EnvironmentConfig environmentConfig = dimmerConfig.getEnvironments().get(env);
 
         if (environmentConfig == null) {
             throw new DimmerConfigException(
