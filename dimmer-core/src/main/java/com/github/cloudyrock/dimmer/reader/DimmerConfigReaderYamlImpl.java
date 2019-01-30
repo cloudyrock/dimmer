@@ -71,11 +71,8 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     @Override
     public EnvironmentConfig loadEnvironmentOrDefault(String env) {
         final DimmerConfig dimmerConfig = loadConfiguration();
-        if(StringUtils.isEmpty(env)) {
-            return getDefaultEnvironment(dimmerConfig);
-        } else {
-            return getEnvironment(dimmerConfig, env);
-        }
+        return StringUtils.isEmpty(env) ? getDefaultEnvironment(dimmerConfig) : getEnvironment(dimmerConfig, env);
+
     }
 
     @Override
