@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.*;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -35,38 +36,25 @@ public class FeatureConfigurationBuilderUTest {
     }
 
 
+    //TODO test this also in ConfigReaderUTest
     @Test
-    @DisplayName("Should throw DimmerConfigException when run environment doesn't exist in config file")
-    public void shouldThrowDimmerConfigException_WhenEnvironmentDoesntExistInConfig() {
-
-        when(dimmerConfigReaderMock.loadConfiguration()).thenReturn(loadDimmerConfig());
-        exception.expect(DimmerConfigException.class);
-        exception.expectMessage(DimmerConfigReaderYamlImpl.DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_DOESNT_EXIST_IN_CONFIG_FILE);
-
-        FeatureConfigurationBuilder
-                .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .run("RANDOM_ENV");
-    }
-
-    @Test
-    @DisplayName("HappyPath: should ")
+    @DisplayName("Should throw exception when DimmerReader throws exception loading environment")
     public void shouldThrowException_WhenDimmerReaderExceptionIsThrown() {
 
-        final String test = "TEST";
-        when(dimmerConfigReaderMock.loadConfiguration()).thenThrow(new DimmerConfigException(test));
+        when(dimmerConfigReaderMock.loadEnvironmentOrDefault(anyString())).thenThrow(new DimmerConfigException("MESSAGE"));
         exception.expect(DimmerConfigException.class);
-        exception.expectMessage(test);
+        exception.expectMessage("MESSAGE");
 
         FeatureConfigurationBuilder
-                .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .run(ENV);
+                .withEnvironmentsAndMetadata(Collections.singleton(ENV), new HashMap<>(), dimmerConfigReaderMock)
+                .run("RANDOM_ENV");
     }
 
     @Test
     @DisplayName("HappyPath: should work when building a specific existing environment set up.")
     public void happyPath() {
 
-        when(dimmerConfigReaderMock.loadConfiguration()).thenReturn(loadDimmerConfig());
+        when(dimmerConfigReaderMock.loadEnvironmentOrDefault(anyString())).thenReturn(loadDimmerConfig());
 
         FeatureConfigurationBuilder
                 .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
@@ -77,7 +65,7 @@ public class FeatureConfigurationBuilderUTest {
     @DisplayName("HappyPath: should work for default environment set up")
     public void happyPathWithDefaultEnvironment() {
 
-        when(dimmerConfigReaderMock.loadConfiguration()).thenReturn(loadDimmerConfig());
+        when(dimmerConfigReaderMock.loadEnvironmentOrDefault(anyString())).thenReturn(loadDimmerConfig());
         when(dimmerConfigReaderMock.getDefaultEnvironment(any(DimmerConfig.class))).thenReturn(loadDefaultEntry());
 
         FeatureConfigurationBuilder
@@ -85,26 +73,22 @@ public class FeatureConfigurationBuilderUTest {
                 .runWithDefaultEnvironment();
     }
 
-    @Test
-    @DisplayName("Should throw error when building default environment doesn't exist.")
-    public void shouldThrowException_WhenDefaultEnvironmentDoesntExist() {
+    //TODO add this to integration tests
+//    @Test(expected = DimmerInvocationException.class)
+//    @DisplayName("Should throw error when building default environment doesn't exist.")
+//    public void shouldThrowException_WhenDefaultEnvironmentDoesntExist() {
+//
+//        when(dimmerConfigReaderMock.loadConfiguration()).thenReturn(loadDimmerConfigWithoutDefaultEnv());
+//        when(dimmerConfigReaderMock.getDefaultEnvironment(any(DimmerConfig.class))).thenThrow(new DimmerConfigException(""));
+//
+//        FeatureConfigurationBuilder
+//                .withEnvironmentsAndMetadata(Collections.singletonList(ENV), new HashMap<>(), dimmerConfigReaderMock)
+//                .runWithDefaultEnvironment();
+//    }
 
-        when(dimmerConfigReaderMock.loadConfiguration()).thenReturn(loadDimmerConfigWithoutDefaultEnv());
-        when(dimmerConfigReaderMock.getDefaultEnvironment(any(DimmerConfig.class))).thenThrow(new DimmerConfigException(""));
-        exception.expect(DimmerConfigException.class);
 
-        FeatureConfigurationBuilder
-                .withEnvironmentsAndMetadata(Collections.singletonList(ENV), new HashMap<>(), dimmerConfigReaderMock)
-                .runWithDefaultEnvironment();
-    }
-
-
-    private static DimmerConfig loadDimmerConfig() {
-        final DimmerConfig dimmerConfig = new DimmerConfig();
-        final Map<String, EnvironmentConfig> environmentConfigMap = new HashMap<>();
-        environmentConfigMap.put(ENV, new EnvironmentConfig(ENV, null, Arrays.asList("Feature1", "Feature2"), true));
-        dimmerConfig.setEnvironments(environmentConfigMap);
-        return dimmerConfig;
+    private static EnvironmentConfig loadDimmerConfig() {
+        return new EnvironmentConfig(ENV, null, Arrays.asList("Feature1", "Feature2"), true);
     }
 
     private static DimmerConfig loadDimmerConfigWithoutDefaultEnv() {

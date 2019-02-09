@@ -3,6 +3,7 @@ package com.github.cloudyrock.dimmer;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Optional;
 import static org.hamcrest.core.Is.is;
@@ -23,7 +24,7 @@ public class PreconditionsUTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentException_whenIsEmptyArray(){
-        Preconditions.checkNullOrEmpty(Arrays.asList());
+        Preconditions.checkNullOrEmpty(Collections.emptyList());
     }
 
     @Test(expected = IllegalArgumentException.class)

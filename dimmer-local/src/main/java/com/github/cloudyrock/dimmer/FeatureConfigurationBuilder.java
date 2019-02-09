@@ -69,7 +69,7 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
      */
     public void run(String environment) {
         final EnvironmentConfig environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
-        FeatureExecutor featureExecutor = getFeatureExecutor(environment, environmentConfig);
+        FeatureExecutor featureExecutor = getFeatureExecutor(environmentConfig);
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
         LOGGER.info("Dimmer Aspect running");
     }
@@ -86,14 +86,12 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
     }
 
 
-    private FeatureExecutor getFeatureExecutor(String environment, EnvironmentConfig environmentConfig) {
+    private FeatureExecutor getFeatureExecutor(EnvironmentConfig environmentConfig) {
         LOGGER.debug("Building local executor");
 
-        final FeatureExecutor executor = new FeatureExecutorImpl(
-                loadConfigMetadata(environment, environmentConfig),
+        return new FeatureExecutorImpl(
+                loadConfigMetadata(environmentConfig.getName(), environmentConfig),
                 getDefaultExceptionType());
-
-        return executor;
     }
 
     private Set<FeatureMetadata> loadConfigMetadata(String environment, EnvironmentConfig environmentConfig) {
@@ -110,12 +108,12 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable<Featur
         //No behaviours defined for environment
         if (featureBehaviours == null) {
             LOGGER.warn("No behaviours have been defined for selected environment.");
-            return featureBehaviours;
+            return null;
         }
 
         List<String> featuresForEnvironmentConfigFile = environmentConfig.getFeatureIntercept();
         //No features set in the environment of the config file
-        if (featuresForEnvironmentConfigFile == null || featuresForEnvironmentConfigFile.isEmpty()) {
+        if (featuresForEnvironmentConfigFile.isEmpty()) {
             LOGGER.warn("No Features intercepted in configuration file for environment.");
             return featureBehaviours;
         }

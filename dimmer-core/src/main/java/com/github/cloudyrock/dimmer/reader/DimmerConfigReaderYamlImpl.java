@@ -57,8 +57,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         this.propertiesLocation = propertiesLocation;
     }
 
-    @Override
-    public DimmerConfig loadConfiguration() {
+    DimmerConfig loadConfiguration() {
         try {
             final File file = readFileFromClassPath(propertiesLocation);
             final DimmerYamlConfig dimmerYamlConfig = objectMapper.readValue(file, DimmerYamlConfig.class);
@@ -71,8 +70,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     @Override
     public EnvironmentConfig loadEnvironmentOrDefault(String env) {
         final DimmerConfig dimmerConfig = loadConfiguration();
-        return StringUtils.isEmpty(env) ? getDefaultEnvironment(dimmerConfig) : getEnvironment(dimmerConfig, env);
-
+        return  StringUtils.isEmpty(env) ? getDefaultEnvironment(dimmerConfig) : getEnvironment(dimmerConfig, env);
     }
 
     @Override
