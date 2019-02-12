@@ -11,6 +11,8 @@
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/dieppa/mongock/blob/master/LICENSE)
 
 
+#### Status
+> **STILL IN DEVELOPMENT. NOT READY FOR PUBLIC USE YET**
 
 
 # Dimmer: Lightweight Java library for flexible feature toggling
