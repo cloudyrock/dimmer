@@ -73,7 +73,6 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         return  StringUtils.isEmpty(env) ? getDefaultEnvironment(dimmerConfig) : getEnvironment(dimmerConfig, env);
     }
 
-    @Override
     public EnvironmentConfig getEnvironment(DimmerConfig dimmerConfig, String env) {
         final Map<String, EnvironmentConfig> dimmerConfigEnvironments = dimmerConfig.getEnvironments();
         final EnvironmentConfig environmentConfig = dimmerConfigEnvironments.get(env);
@@ -87,8 +86,6 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     }
 
 
-
-    @Override
     public EnvironmentConfig getDefaultEnvironment(DimmerConfig dimmerConfig) {
         return dimmerConfig.getEnvironments().values().stream()
                 .filter(EnvironmentConfig::isDefault)

@@ -1,7 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.reader.DimmerConfigReader;
-import com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl;
 import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import org.junit.Before;
@@ -12,9 +11,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -57,7 +58,7 @@ public class FeatureConfigurationBuilderUTest {
         when(dimmerConfigReaderMock.loadEnvironmentOrDefault(anyString())).thenReturn(loadDimmerConfig());
 
         FeatureConfigurationBuilder
-                .withEnvironmentsAndMetadata(Arrays.asList(ENV), new HashMap<>(), dimmerConfigReaderMock)
+                .withEnvironmentsAndMetadata(Collections.singletonList(ENV), new HashMap<>(), dimmerConfigReaderMock)
                 .run(ENV);
     }
 
@@ -66,7 +67,7 @@ public class FeatureConfigurationBuilderUTest {
     public void happyPathWithDefaultEnvironment() {
 
         when(dimmerConfigReaderMock.loadEnvironmentOrDefault(anyString())).thenReturn(loadDimmerConfig());
-        when(dimmerConfigReaderMock.getDefaultEnvironment(any(DimmerConfig.class))).thenReturn(loadDefaultEntry());
+        when(dimmerConfigReaderMock.loadEnvironmentOrDefault(anyString())).thenReturn(loadDefaultEntry());
 
         FeatureConfigurationBuilder
                 .withEnvironmentsAndMetadata(Collections.singleton(ENV), new HashMap<>(), dimmerConfigReaderMock)
