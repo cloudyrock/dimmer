@@ -52,7 +52,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         assertEquals(value, annotatedClass.methodForFeature1());
     }
 
@@ -63,7 +63,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(ENV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
-                .build(ENV);
+                .run(ENV);
         assertEquals(value, annotatedClass.methodForFeature1());
     }
 
@@ -74,7 +74,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(ENV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
-                .build(ENV_2);
+                .run(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature1());
     }
 
@@ -90,7 +90,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE2, operation, mockBehaviour)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         final String param1 = "parameter1";
         final int param2 = 2;
         annotatedClass.methodForFeature2(param1, param2);
@@ -110,7 +110,7 @@ public class DimmerAspectITest {
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE3, operation, f -> {
             throw new DummyException();
-        }).buildWithDefaultEnvironment();
+        }).runWithDefaultEnvironment();
         annotatedClass.methodForFeature3();
     }
 
@@ -122,7 +122,7 @@ public class DimmerAspectITest {
                 .featureWithBehaviour(FEATURE3, operation, f -> {
                     throw new DummyException();
                 })
-                .build(ENV);
+                .run(ENV);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature3());
     }
 
@@ -132,7 +132,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithValue(FEATURE4, operation, VALUE1)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         assertEquals(VALUE1, annotatedClass.methodForFeature4());
     }
 
@@ -142,7 +142,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(ENV_2)
                 .featureWithValue(FEATURE4, operation, VALUE1)
-                .build(ENV);
+                .run(ENV);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature4());
     }
 
@@ -152,17 +152,17 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithException(FEATURE5, operation, DummyException.class)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         annotatedClass.methodForFeature5();
     }
 
     @Test (expected = DimmerConfigException.class)
-    @DisplayName("Should throw exception when build environment is not configured.")
+    @DisplayName("Should throw exception when run environment is not configured.")
     public void shouldThrowExceptionWhenEnvironmentNotConfigured() {
         DimmerBuilder.local()
                 .environments(ENV)
                 .featureWithException(FEATURE5, operation, DummyException.class)
-                .build(ENV_2);
+                .run(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature5());
     }
 
@@ -172,7 +172,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithValue(FEATURE7, operation, 1)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         annotatedClass.methodForFeature7();
     }
 
@@ -182,7 +182,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
-                .build(ENV);
+                .run(ENV);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature7());
     }
 
@@ -192,7 +192,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithValue(FEATURE8, operation, null)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         assertNull(annotatedClass.methodForFeature8());
     }
 
@@ -202,7 +202,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithValue(FEATURE9, operation, new Child())
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         annotatedClass.methodForFeature9();
     }
 
@@ -212,7 +212,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(DEV)
                 .featureWithValue(FEATURE10, operation, "VALUE")
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         annotatedClass.methodForFeature10();
     }
 
@@ -223,7 +223,7 @@ public class DimmerAspectITest {
                 .environments(DEV)
                 .featureWithException(FEATURE6, operation,
                         DummyExceptionWithFeatureInvocation.class)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
         final String param1 = "parameter1";
         final int param2 = 2;
         boolean thrownException = false;
@@ -246,7 +246,7 @@ public class DimmerAspectITest {
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
                 .withProperties("dimmer.yml")
-                .build(ENV);
+                .run(ENV);
     }
 
     @Test
@@ -255,7 +255,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
     }
 
     @Test
@@ -264,7 +264,7 @@ public class DimmerAspectITest {
         DimmerBuilder.local()
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
-                .buildWithDefaultEnvironment();
+                .runWithDefaultEnvironment();
     }
 
     private void assertFeatureInvocation(FeatureInvocation actualFeatureInvocation,
