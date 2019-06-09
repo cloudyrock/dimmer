@@ -153,10 +153,6 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
      * FROM DimmerFeatureConfigurable
      ****************************************************/
 
-
-
-
-
     /**
      * If interceptingFeature is true and the specified feature is not already associated
      * with a behaviour(or is mapped to null), associates it with the given {@link Function}
