@@ -23,9 +23,9 @@ public class DimmerBuilder {
      * @return A local version of the Dimmer builder, so it gets the entire configuration
      * form the current application.
      */
-    public static DimmerDefaultEnvironmentConfigurable<FeatureConfigurationBuilder> local() {
+    public static DimmerEnvironmentConfigurable<FeatureConfigurationBuilder> local() {
 
-        return new DimmerDefaultEnvironmentConfigurable<FeatureConfigurationBuilder>() {
+        return new DimmerEnvironmentConfigurable<FeatureConfigurationBuilder>() {
 
             /**
              * Indicates the following configurations for dimmer feature will be applied
@@ -35,9 +35,8 @@ public class DimmerBuilder {
              */
             @Override
             public FeatureConfigurationBuilder environments(String... environments) {
-                final DimmerConfigReader dimmerConfigReader = getDimmerConfigReader();
-                return FeatureConfigurationBuilder
-                        .withEnvironmentsAndMetadata(asList(environments), new HashMap<>(), dimmerConfigReader);
+                return FeatureConfigurationBuilder.withEnvironmentsAndMetadata(
+                        asList(environments), new HashMap<>(), getDimmerConfigReader());
             }
 
             private DimmerConfigReader getDimmerConfigReader() {
