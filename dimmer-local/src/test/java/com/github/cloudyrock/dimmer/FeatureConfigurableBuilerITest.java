@@ -1,16 +1,19 @@
 package com.github.cloudyrock.dimmer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class DimmerFeatureConfigurableITest {
-
+public class FeatureConfigurableBuilerITest {
     private final Function<FeatureInvocation, Object> behaviour1 = FeatureInvocation::getArgs;
     private final String value = "VALUE";
     private final String feature1 = "feature1";
@@ -19,11 +22,15 @@ public class DimmerFeatureConfigurableITest {
     private final String feature4 = "feature4";
     private final String operation = "opertaion";
 
-    private DummyDimmerFeatureConfigurable runner;
+    private FeatureConfigurationBuilder runner;
 
     @Before
     public void setUp() {
-        runner = new DummyDimmerFeatureConfigurable();
+        runner = new FeatureConfigurationBuilder(
+                new HashSet<>(),
+                new HashMap<>(),
+                RuntimeException.class,
+                new DimmerConfigReaderYamlImpl(new ObjectMapper()));
     }
 
     @Test
@@ -73,7 +80,7 @@ public class DimmerFeatureConfigurableITest {
 
     private void checkFeatureConfigApplied() {
         final Set<FeatureMetadata> env1Metadata = runner.configMetadata.get("env1");
-         assertEquals(1, env1Metadata.size());
+        assertEquals(1, env1Metadata.size());
         env1Metadata.stream()
                 .filter(fm -> fm instanceof BehaviourFeatureMetadata)
                 .map(fm -> (BehaviourFeatureMetadata) fm)
