@@ -28,8 +28,8 @@
         <jacoco.out.it.file>jacoco-it.exec</jacoco.out.it.file>
         <sonar.jacoco.reportPath>${jacoco.outputDir}/${jacoco.out.ut.file}</sonar.jacoco.reportPath>
         <sonar.jacoco.itReportPath>${jacoco.outputDir}/${jacoco.out.it.file}</sonar.jacoco.itReportPath>
-        <threshold.coverage.ut>0.57</threshold.coverage.ut>
-        <threshold.coverage.it>0.27</threshold.coverage.it>
+        <threshold.coverage.ut>0.2</threshold.coverage.ut>
+        <threshold.coverage.it>0.2</threshold.coverage.it>
     </properties>
 
 
