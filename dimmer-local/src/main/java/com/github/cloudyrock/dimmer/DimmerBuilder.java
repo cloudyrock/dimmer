@@ -13,42 +13,31 @@ import static java.util.Arrays.asList;
  * Builder to configure the initial environment.
  * This forces to select a environment before starting to add configuration.
  */
-public class DimmerBuilder {
-
+public final class DimmerBuilder {
 
     private DimmerBuilder() {
     }
 
     /**
-     * @return A local version of the Dimmer builder, so it gets the entire configuration
-     * form the current application.
+     * Indicates the following configurations for dimmer feature will be applied
+     * to the given environment, until the environment is changed with
+     * the method 'environments(String...)' or 'defaultEnvironment()'
+     *
+     * @return a new immutable instance of the builder with the current configuration.
      */
-    public static DimmerEnvironmentConfigurable<FeatureConfigurationBuilder> local() {
+    public static FeatureConfigurationBuilder environments(String... environments) {
+        return FeatureConfigurationBuilder.withEnvironmentsAndMetadata(
+                asList(environments), new HashMap<>(), getDimmerConfigReader());
+    }
 
-        return new DimmerEnvironmentConfigurable<FeatureConfigurationBuilder>() {
+    private static DimmerConfigReader getDimmerConfigReader() {
+        /**
+         * TODO: Change this to a service locator that dynamically Injects the correct factory depending
+         * on the extension type
+         */
 
-            /**
-             * Indicates the following configurations for dimmer feature will be applied
-             * to the given environment, until the environment is changed with
-             * the method 'environments(String...)' or 'defaultEnvironment()'
-             * @return a new immutable instance of the builder with the current configuration.
-             */
-            @Override
-            public FeatureConfigurationBuilder environments(String... environments) {
-                return FeatureConfigurationBuilder.withEnvironmentsAndMetadata(
-                        asList(environments), new HashMap<>(), getDimmerConfigReader());
-            }
-
-            private DimmerConfigReader getDimmerConfigReader() {
-                /**
-                 * TODO: Change this to a service locator that dynamically Injects the correct factory depending
-                 * on the extension type
-                 */
-
-                final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-                return new DimmerConfigReaderYamlImpl(objectMapper);
-            }
-        };
+        final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+        return new DimmerConfigReaderYamlImpl(objectMapper);
     }
 
 }

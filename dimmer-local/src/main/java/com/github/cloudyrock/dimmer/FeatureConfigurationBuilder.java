@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
  * @see DimmerConfigException
  * @see DimmerFeature
  */
-final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable
-        implements DimmerEnvironmentConfigurable<FeatureConfigurationBuilder> {
+final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable {
 
     private static final DimmerLogger logger = new DimmerLogger(FeatureConfigurationBuilder.class);
 

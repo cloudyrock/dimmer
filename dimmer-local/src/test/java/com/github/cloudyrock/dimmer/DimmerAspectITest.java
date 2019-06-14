@@ -49,7 +49,7 @@ public class DimmerAspectITest {
     @DisplayName("Should run behaviour when featureWithBehaviour")
     public void shouldRunBehaviour() {
         final String value = "feature1_value";
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
                 .runWithDefaultEnvironment();
@@ -60,7 +60,7 @@ public class DimmerAspectITest {
     @DisplayName("Should run behaviour when featureWithBehaviour")
     public void shouldRunBehaviourForEnvironment() {
         final String value = "feature1_value";
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
                 .run(ENV);
@@ -71,7 +71,7 @@ public class DimmerAspectITest {
     @DisplayName("Should run behaviour when featureWithBehaviour")
     public void shouldThrowDimmerExceptionWhenEnvironmentNotConfigured() {
         final String value = "feature1_value";
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
                 .run(ENV_2);
@@ -87,7 +87,7 @@ public class DimmerAspectITest {
                 .willReturn("not_checked");
 
         //when
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE2, operation, mockBehaviour)
                 .runWithDefaultEnvironment();
@@ -106,7 +106,7 @@ public class DimmerAspectITest {
     @Test(expected = DummyException.class)
     @DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
     public void shouldThrowExceptionWhenBehaviourThrowsException() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE3, operation, f -> {
             throw new DummyException();
@@ -117,7 +117,7 @@ public class DimmerAspectITest {
     @Test
     @DisplayName("Should throw exception thrown inside behaviour when featureWithBehaviour")
     public void shouldNotThrowExceptionWithBehaviourWhenEnvironmentNotConfigured() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithBehaviour(FEATURE3, operation, f -> {
                     throw new DummyException();
@@ -129,7 +129,7 @@ public class DimmerAspectITest {
     @Test
     @DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
     public void shouldReturnValue() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE4, operation, VALUE1)
                 .runWithDefaultEnvironment();
@@ -139,7 +139,7 @@ public class DimmerAspectITest {
     @Test
     @DisplayName("Should return " + VALUE1 + " behaviour when featureWithValue")
     public void shouldNotReturnValueWhenEnvironmentNotConfigured() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV_2)
                 .featureWithValue(FEATURE4, operation, VALUE1)
                 .run(ENV);
@@ -149,7 +149,7 @@ public class DimmerAspectITest {
     @Test(expected = DummyException.class)
     @DisplayName("Should throw DummyException when featureWithException")
     public void shouldThrowException() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithException(FEATURE5, operation, DummyException.class)
                 .runWithDefaultEnvironment();
@@ -159,7 +159,7 @@ public class DimmerAspectITest {
     @Test (expected = DimmerConfigException.class)
     @DisplayName("Should throw exception when run environment is not configured.")
     public void shouldThrowExceptionWhenEnvironmentNotConfigured() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithException(FEATURE5, operation, DummyException.class)
                 .run(ENV_2);
@@ -169,7 +169,7 @@ public class DimmerAspectITest {
     @Test(expected = DimmerConfigException.class)
     @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
     public void shouldThrowDimmerConfigException() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE7, operation, 1)
                 .runWithDefaultEnvironment();
@@ -179,7 +179,7 @@ public class DimmerAspectITest {
     @Test
     @DisplayName("Should throw DimmerConfigException exception expected return type of the caller and configuration mismatch")
     public void shouldNotThrowDimmerConfigException() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
                 .run(ENV);
@@ -189,7 +189,7 @@ public class DimmerAspectITest {
     @Test
     @DisplayName("Should return a NULL value")
     public void shouldReturnNull() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE8, operation, null)
                 .runWithDefaultEnvironment();
@@ -199,7 +199,7 @@ public class DimmerAspectITest {
     @Test
     @DisplayName("Behaviour should return child class when executing parent compatible type")
     public void featureAndDimmerSubtypeClass() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE9, operation, new Child())
                 .runWithDefaultEnvironment();
@@ -209,7 +209,7 @@ public class DimmerAspectITest {
     @Test(expected = DimmerConfigException.class)
     @DisplayName("Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type")
     public void featureAndDimmerConfigExceptionWhenRealMethodIsVoid() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE10, operation, "VALUE")
                 .runWithDefaultEnvironment();
@@ -219,7 +219,7 @@ public class DimmerAspectITest {
     @Test
     @DisplayName("Should get FeatureInvocation as parameter when featureWithException")
     public void passingFeatureInvocationToException() {
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(DEV)
                 .featureWithException(FEATURE6, operation,
                         DummyExceptionWithFeatureInvocation.class)
@@ -242,7 +242,7 @@ public class DimmerAspectITest {
     @Test
     public void shouldReturnFeatureExecutorWhenBuildHappyPath(){
 
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
                 .withProperties("dimmer.yml")
@@ -252,7 +252,7 @@ public class DimmerAspectITest {
     @Test
     public void shouldReturnFeatureExecutorWhenBuildDefaultEnvironmentHappyPath(){
 
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
                 .runWithDefaultEnvironment();
@@ -261,7 +261,7 @@ public class DimmerAspectITest {
     @Test
     public void shouldReturn(){
 
-        DimmerBuilder.local()
+        DimmerBuilder
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
                 .runWithDefaultEnvironment();
