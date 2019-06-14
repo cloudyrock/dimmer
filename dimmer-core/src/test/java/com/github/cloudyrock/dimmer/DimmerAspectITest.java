@@ -36,6 +36,7 @@ public class DimmerAspectITest {
     private static final String ENV = "environment";
     private static final String ENV_2 = "environment_other";
     private static final String DEV = "dev";
+    private static final String LOCAL_CONFIG_FILE = "dimmer2.yml";
     private final AnnotatedClass annotatedClass = new AnnotatedClass();
 
     @Rule public ExpectedException exception = ExpectedException.none();
@@ -52,6 +53,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         assertEquals(value, annotatedClass.methodForFeature1());
     }
@@ -63,6 +65,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(ENV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV);
         assertEquals(value, annotatedClass.methodForFeature1());
     }
@@ -74,6 +77,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(ENV)
                 .featureWithBehaviour(FEATURE1, operation, f -> value)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature1());
     }
@@ -90,6 +94,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE2, operation, mockBehaviour)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         final String param1 = "parameter1";
         final int param2 = 2;
@@ -110,7 +115,7 @@ public class DimmerAspectITest {
                 .environments(DEV)
                 .featureWithBehaviour(FEATURE3, operation, f -> {
             throw new DummyException();
-        }).runWithDefaultEnvironment();
+        }).withProperties(LOCAL_CONFIG_FILE).runWithDefaultEnvironment();
         annotatedClass.methodForFeature3();
     }
 
@@ -122,6 +127,7 @@ public class DimmerAspectITest {
                 .featureWithBehaviour(FEATURE3, operation, f -> {
                     throw new DummyException();
                 })
+                .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature3());
     }
@@ -132,6 +138,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE4, operation, VALUE1)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         assertEquals(VALUE1, annotatedClass.methodForFeature4());
     }
@@ -142,6 +149,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(ENV_2)
                 .featureWithValue(FEATURE4, operation, VALUE1)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature4());
     }
@@ -152,6 +160,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithException(FEATURE5, operation, DummyException.class)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         annotatedClass.methodForFeature5();
     }
@@ -162,6 +171,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(ENV)
                 .featureWithException(FEATURE5, operation, DummyException.class)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature5());
     }
@@ -172,6 +182,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE7, operation, 1)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         annotatedClass.methodForFeature7();
     }
@@ -182,6 +193,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature7());
     }
@@ -192,6 +204,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE8, operation, null)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         assertNull(annotatedClass.methodForFeature8());
     }
@@ -202,6 +215,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE9, operation, new Child())
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         annotatedClass.methodForFeature9();
     }
@@ -212,6 +226,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(DEV)
                 .featureWithValue(FEATURE10, operation, "VALUE")
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         annotatedClass.methodForFeature10();
     }
@@ -223,6 +238,7 @@ public class DimmerAspectITest {
                 .environments(DEV)
                 .featureWithException(FEATURE6, operation,
                         DummyExceptionWithFeatureInvocation.class)
+                .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         final String param1 = "parameter1";
         final int param2 = 2;
@@ -245,7 +261,7 @@ public class DimmerAspectITest {
         DimmerBuilder
                 .environments(ENV)
                 .featureWithValue(FEATURE7, operation, 1)
-                .withProperties("dimmer.yml")
+                .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV);
     }
 

@@ -1,0 +1,9 @@
+dimmer:
+  #version: 1.0 - for future release
+  environments:
+    dev:
+      default: true
+    staging:
+      server: http://asdasd.com:880
+    prod:
+      server: http://asdasd.com:880

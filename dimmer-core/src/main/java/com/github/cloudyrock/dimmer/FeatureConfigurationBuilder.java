@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @see DimmerConfigException
  * @see DimmerFeature
  */
-final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable {
+final class FeatureConfigurationBuilder {
 
     private static final DimmerLogger logger = new DimmerLogger(FeatureConfigurationBuilder.class);
 
@@ -91,7 +91,13 @@ final class FeatureConfigurationBuilder extends DimmerFeatureConfigurable {
      * @return Feature executor
      */
     public void run(String environment) {
-        final EnvironmentConfig environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
+
+        final EnvironmentConfig environmentConfig;
+        try {
+            environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
+        } catch (FileConfigException ex) {
+            throw new DimmerConfigException(ex);
+        }
         FeatureExecutor featureExecutor = getFeatureExecutor(environmentConfig);
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
         logger.info("Dimmer Aspect running");

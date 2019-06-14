@@ -16,7 +16,7 @@ abstract class FeatureProcessorBase {
             new ConcurrentHashMap<>();
 
 
-    private static final DimmerLogger logger = new DimmerLogger(DimmerFeatureConfigurable.class);
+    private static final DimmerLogger logger = new DimmerLogger(FeatureProcessorBase.class);
 
 
     FeatureProcessorBase() {
