@@ -1,7 +1,7 @@
 package com.github.cloudyrock.dimmer.reader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.cloudyrock.dimmer.DimmerConfigException;
+import com.github.cloudyrock.dimmer.FileConfigException;
 import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import com.github.cloudyrock.dimmer.reader.models.yaml.DimmerYamlConfig;
@@ -57,28 +57,28 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         this.propertiesLocation = propertiesLocation;
     }
 
-    DimmerConfig loadConfiguration() {
+    DimmerConfig loadConfiguration() throws FileConfigException {
         try {
             final File file = readFileFromClassPath(propertiesLocation);
             final DimmerYamlConfig dimmerYamlConfig = objectMapper.readValue(file, DimmerYamlConfig.class);
             return toDimmerConfig(dimmerYamlConfig);
         } catch (IOException e) {
-            throw new DimmerConfigException("Failed mapping Dimmer configuration file.", e);
+            throw new FileConfigException("Failed mapping Dimmer configuration file.", e);
         }
     }
 
     @Override
     public EnvironmentConfig loadEnvironmentOrDefault(String env) {
         final DimmerConfig dimmerConfig = loadConfiguration();
-        return  StringUtils.isEmpty(env) ? getDefaultEnvironment(dimmerConfig) : getEnvironment(dimmerConfig, env);
+        return StringUtils.isEmpty(env) ? getDefaultEnvironment(dimmerConfig) : getEnvironment(dimmerConfig, env);
     }
 
-    public EnvironmentConfig getEnvironment(DimmerConfig dimmerConfig, String env) {
+    public EnvironmentConfig getEnvironment(DimmerConfig dimmerConfig, String env) throws FileConfigException {
         final Map<String, EnvironmentConfig> dimmerConfigEnvironments = dimmerConfig.getEnvironments();
         final EnvironmentConfig environmentConfig = dimmerConfigEnvironments.get(env);
 
         if (environmentConfig == null) {
-            throw new DimmerConfigException(
+            throw new FileConfigException(
                     String.format(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_DOESNT_EXIST_IN_CONFIG_FILE +
                             "Please add the environment %s in the configuration file", env));
         }
@@ -86,11 +86,11 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     }
 
 
-    public EnvironmentConfig getDefaultEnvironment(DimmerConfig dimmerConfig) {
+    public EnvironmentConfig getDefaultEnvironment(DimmerConfig dimmerConfig) throws FileConfigException {
         return dimmerConfig.getEnvironments().values().stream()
                 .filter(EnvironmentConfig::isDefault)
                 .findFirst()
-                .orElseThrow(() -> new DimmerConfigException("No Default environment found in configuration"));
+                .orElseThrow(() -> new FileConfigException("No Default environment found in configuration"));
     }
 
 
@@ -121,37 +121,37 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
         };
     }
 
-    private static void checkEnvironmentSettings(List<String> featuresList, String server) throws DimmerConfigException {
+    private static void checkEnvironmentSettings(List<String> featuresList, String server) throws FileConfigException {
 
         //server or featureIntercept don't exist
         if ((featuresList == null) && (server == null)) {
-            throw new DimmerConfigException(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY);
+            throw new FileConfigException(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY);
         }
 
         //server and featureIntercept both exist simultaneously
         if ((featuresList != null && !featuresList.isEmpty()) && (server != null && !server.isEmpty())) {
-            throw new DimmerConfigException(DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH);
+            throw new FileConfigException(DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH);
         }
 
         checkUrl(server);
         //TODO: Add call to load config from server
     }
 
-    private static void checkUrl(String server) {
+    private static void checkUrl(String server) throws FileConfigException {
         if (server != null && !server.isEmpty()) {
             try {
                 new URL(server);
             } catch (MalformedURLException e) {
-                throw new DimmerConfigException(DIMMER_CONFIG_EXCEPTION_INVALID_URL);
+                throw new FileConfigException(DIMMER_CONFIG_EXCEPTION_INVALID_URL);
             }
         }
     }
 
-    private static File readFileFromClassPath(String filePath) {
+    private static File readFileFromClassPath(String filePath) throws FileConfigException {
         final URL url = DimmerConfigReader.class.getClassLoader().getResource(filePath);
         if (url == null) {
-            LOGGER.error("Could not find dimmer config file from classpath, throwing DimmerConfigException.");
-            throw new DimmerConfigException(DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ);
+            LOGGER.error("Could not find dimmer config file from classpath, throwing FileConfigException.");
+            throw new FileConfigException(DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ);
         }
         return new File(url.getFile());
     }
