@@ -98,7 +98,7 @@ public class Main {
 
     public static void main(String... args) {
         DimmerBuilder
-                
+                .local()
                 .defaultEnvironment()
                 .featureWithValue(FEATURE_NAME, "fake value")
                 .buildWithDefaultEnvironment();
@@ -196,13 +196,13 @@ The most basic scenario is just throwing a default exception when a feature is c
 The Dimmer configuration looks like this:
 ```java
 DimmerBuilder
-    
+    .local()
     .defaultEnvironment()
     .featureWithDefaultException(FEATURE_NAME)
     .buildWithDefaultEnvironment();
 ```
 Code explanation:
-- `` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
 - `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
 - `.featureWithDefaultException(FEATURE_NAME)` tells Dimmer to throw a default exception(DimmerInvocationException) whenever a 
 method annotated with `@DimmerFeature(FEATURE_NAME)` is invoked.
@@ -234,7 +234,7 @@ ClassB should inherit ClassA(or, if ClassA is an interface, ClassB is an impleme
 final ClassB fixedObject = new ClassB();
 
 DimmerBuilder
-    
+    .local()
     .defaultEnvironment()
     .featureWithValue(FEATURE_NAME, fixedObject)
     .buildWithDefaultEnvironment();
@@ -246,7 +246,7 @@ public ClassA methodIWantToToggleOff() {
 }
 ```
 Code explanation:
-- `` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
 - `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
 - `.featureWithValue(FEATURE_NAME, object)` tells Dimmer to return the object passed as second parameter when a method annotated 
 with `@DimmerFeature(FEATURE_NAME)` is invoked.
@@ -301,7 +301,7 @@ public class Main {
                 };
 
         DimmerBuilder
-                
+                .local()
                 .defaultEnvironment()
                 .featureWithBehaviour(FEATURE_NAME, behaviour)
                 .buildWithDefaultEnvironment();
@@ -322,7 +322,7 @@ public class Main {
 }
 ```
 Code explanation:
-- `` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
 - `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
 - `.featureWithBehaviour(FEATURE_NAME, behaviour)` this line tells Dimmer to execute the function passed as second parameter(behaviour) when a method annotated 
 with `@DimmerFeature(FEATURE_NAME)` is invoked, instead of the actual method. Basically it replaces the method invocation with the behaviour.
@@ -364,7 +364,7 @@ public class Main {
 
     public static void main(String... args) {
         DimmerBuilder
-                
+                .local()
                 .defaultEnvironment()
                 .featureWithException(FEATURE_NAME, MyException.class)
                 .buildWithDefaultEnvironment();
@@ -381,7 +381,7 @@ public class Main {
 }
 ```
 Code explanation:
-- `` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
+- `.local()` indicates Dimmer to take the local configuration. In next releases will be possible to use remote configuration
 - `.defaultEnvironment()` and buildWithDefaultEnvironment() are used when we don't want to deal with different environments.
 - `.featureWithException(FEATURE_NAME, MyException.class)` tells Dimmer to throw an instance of the exception MyException whenever a 
 method annotated with `@DimmerFeature(FEATURE_NAME)` is invoked.
@@ -404,7 +404,7 @@ public class Main {
     //args[0] provides the environment where the application is running
     public static void main(String... args) {
         DimmerBuilder
-                
+                .local()
                 .environments(ENV1, ENV2)//ENV1 or ENV2
                 .featureWithDefaultException(FEATURE_NAME)
                 .environments(ENV3)//ENV3
@@ -435,7 +435,7 @@ add a boolean flag which indicates if you want to provide the given behaviour to
 ```java
 public void dimmerConfiguration(boolean toggledOff) {
     DimmerBuilder
-        
+        .local()
         .defaultEnvironment()
         .featureWithDefaultException(toggledOff, FEATURE_NAME)//Taken into account only if toggledOff is true
         .buildWithDefaultEnvironment();
