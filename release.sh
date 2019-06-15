@@ -13,8 +13,6 @@ else
         -Dproject.dev.com.github.cloudyrock.dimmer:dimmer-parent=$2-SNAPSHOT \
         -Dproject.rel.com.github.cloudyrock.dimmer:dimmer-core=$1 \
         -Dproject.dev.com.github.cloudyrock.dimmer:dimmer-core=$2-SNAPSHOT \
-        -Dproject.rel.com.github.cloudyrock.dimmer:dimmer-local=$1 \
-        -Dproject.dev.com.github.cloudyrock.dimmer:dimmer-local=$2-SNAPSHOT \
         release:prepare
     if [ $? -eq 0 ]; then
         mvn release:perform

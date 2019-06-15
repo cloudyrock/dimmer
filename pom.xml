@@ -17,7 +17,6 @@
 
     <modules>
         <module>dimmer-core</module>
-        <module>dimmer-local</module>
         <module>dimmer-file-util</module>
         <module>dimmer-util</module>
     </modules>
