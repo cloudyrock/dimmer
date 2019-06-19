@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.FeatureInvocation;
 
 public class DummyExceptionWithFeatureInvocation extends RuntimeException{
 

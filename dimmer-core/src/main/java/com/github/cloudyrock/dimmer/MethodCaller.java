@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+
 /**
  * Interface representing a real method invocation.
  * By using this interface the method interceptor({@link DimmerAspect} or any other) is able

@@ -1,5 +1,6 @@
 package com.github.cloudyrock.dimmer;
 
+
 /**
  * Interface to define the API to run a Dimmer feature.
  */
