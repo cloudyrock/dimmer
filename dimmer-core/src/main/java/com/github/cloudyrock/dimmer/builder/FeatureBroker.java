@@ -26,10 +26,10 @@ class FeatureBroker {
     }
 
     void start() {
-        featureObservable.observe(this::process);
+        featureObservable.subscribe(this::process);
     }
 
-    void setObserver(Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> observer) {
+    void setSubscriber(Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> observer) {
         this.observer = observer;
     }
 

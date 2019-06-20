@@ -12,7 +12,7 @@ public class StaticLocalFeatureObservable implements FeatureObservable {
     }
 
     @Override
-    public void observe(Consumer<FeatureUpdateEvent> observer) {
+    public void subscribe(Consumer<FeatureUpdateEvent> observer) {
         observer.accept(new FeatureUpdateEvent(featuresToggledOff));
     }
 }

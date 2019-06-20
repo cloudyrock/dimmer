@@ -6,8 +6,6 @@ import com.github.cloudyrock.dimmer.metadata.*;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -28,7 +26,7 @@ public class FeatureExecutorImpl implements FeatureExecutor {
 
     FeatureExecutorImpl(FeatureBroker broker) {
         this.broker = broker;
-        this.broker.setObserver(this::updateBehaviours);
+        this.broker.setSubscriber(this::updateBehaviours);
     }
 
     FeatureBroker getBroker() {
