@@ -2,6 +2,7 @@ package com.github.cloudyrock.dimmer.builder;
 
 import com.github.cloudyrock.dimmer.DisplayName;
 import com.github.cloudyrock.dimmer.FeatureInvocation;
+import com.github.cloudyrock.dimmer.StaticLocalFeatureObservable;
 import com.github.cloudyrock.dimmer.exception.DimmerInvocationException;
 import com.github.cloudyrock.dimmer.exceptions.DummyExceptionWithFeatureInvocation;
 import com.github.cloudyrock.dimmer.metadata.*;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.core.Is.is;
@@ -42,7 +44,7 @@ public class FeatureProcessorBaseUTest {
     @Before
     public void setUp() {
 
-        dimmerProcessor = new DummyFeatureProcessor();
+        dimmerProcessor = new DummyFeatureProcessor(new StaticLocalFeatureObservable(new HashSet<>()), new HashSet<>(), RuntimeException.class);
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(featureInvocationMock.getReturnType()).willReturn(String.class);
@@ -103,7 +105,12 @@ public class FeatureProcessorBaseUTest {
         metadata.addAll(defaultExceptionMetadataList());
         metadata.addAll(valueMetadataList());
 
-        FeatureExecutorImpl objTest = new DummyFeatureProcessor().process(metadata, DimmerInvocationException.class);
+        Set<String> featureSet = metadata.stream()
+                .map(FeatureMetadata::getFeature)
+                .collect(Collectors.toSet());
+
+        FeatureExecutorImpl objTest = new DummyFeatureProcessor(new StaticLocalFeatureObservable(featureSet), metadata, DimmerInvocationException.class);
+        objTest.start();
         assertTrue(objTest.isConditionPresent("FEATURE-VALUE", "OPERATION-1"));
         assertTrue(objTest.isConditionPresent("FEATURE-DEFAULT-EXCEPTION", "OPERATION-2"));
         assertTrue(objTest.isConditionPresent("FEATURE-EXCEPTION", "OPERATION-2"));

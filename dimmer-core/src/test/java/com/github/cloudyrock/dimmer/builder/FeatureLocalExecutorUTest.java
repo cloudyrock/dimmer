@@ -1,15 +1,13 @@
 package com.github.cloudyrock.dimmer.builder;
 
-import com.github.cloudyrock.dimmer.DisplayName;
-import com.github.cloudyrock.dimmer.DummyExceptionWithFeatureInvocation;
-import com.github.cloudyrock.dimmer.FeatureInvocation;
-import com.github.cloudyrock.dimmer.MethodCaller;
+import com.github.cloudyrock.dimmer.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -19,11 +17,11 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class FeatureLocalExecutorUTest {
-    @Rule public ExpectedException exception = ExpectedException.none();
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     private static final String operation = "operation";
 
@@ -42,7 +40,8 @@ public class FeatureLocalExecutorUTest {
     @Before
     public void setUp() throws Throwable {
 
-        dimmerProcessor = new FeatureExecutorImpl();
+        dimmerProcessor = new FeatureExecutorImpl(new StaticLocalFeatureObservable(new HashSet<>()), new HashSet<>(), RuntimeException.class);
+        dimmerProcessor.start();
         feature = "FEATURE" + UUID.randomUUID().toString();
         initMocks(this);
         given(methodCaller.call()).willReturn(String.class);

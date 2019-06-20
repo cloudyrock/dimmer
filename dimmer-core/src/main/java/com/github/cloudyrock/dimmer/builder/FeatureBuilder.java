@@ -120,41 +120,15 @@ final class FeatureBuilder {
 
     private FeatureExecutor getFeatureExecutor(EnvironmentConfig environmentConfig) {
         logger.debug("Building local executor");
+        new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getFeatureIntercept()));
 
-        return new FeatureExecutorImpl().process(
-                loadConfigMetadata(environmentConfig.getName(), environmentConfig),
-                getDefaultExceptionType());
-    }
-
-    private Set<FeatureMetadata> loadConfigMetadata(String environment, EnvironmentConfig environmentConfig) {
-
-        //Load configuration list of behaviours set up programmatically
-        final Set<FeatureMetadata> featureBehaviours = configMetadata.get(environment);
-
-        //Merge both
-        return mergeConfigurations(environmentConfig, featureBehaviours);
-    }
-
-    private Set<FeatureMetadata> mergeConfigurations(EnvironmentConfig environmentConfig, Set<FeatureMetadata> featureBehaviours) {
-
-        //No behaviours defined for environment
-        if (featureBehaviours == null) {
-            logger.warn("No behaviours have been defined for selected environment.");
-            return null;
-        }
-
-        List<String> featuresForEnvironmentConfigFile = environmentConfig.getFeatureIntercept();
-        //No features set in the environment of the config file
-        if (featuresForEnvironmentConfigFile.isEmpty()) {
-            logger.warn("No Features intercepted in configuration file for environment.");
-            return featureBehaviours;
-        }
-
-        //Creates feature metadata only with selected interceptors from Config file
-        return featureBehaviours.stream()
-                .filter(featureMetadata -> featuresForEnvironmentConfigFile.contains(featureMetadata.getFeature()))
-                .peek(featureMetadata -> logger.info("Feature {} will be intercepted.", featureMetadata.getFeature()))
-                .collect(Collectors.toSet());
+        //TODO re-think architecture
+        FeatureExecutorImpl executor = new FeatureExecutorImpl(
+                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getFeatureIntercept())),
+                configMetadata.get(environmentConfig.getName()),
+                defaultExceptionType);
+        executor.start();
+        return executor;
     }
 
     /****************************************************

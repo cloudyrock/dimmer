@@ -22,18 +22,30 @@ public class FeatureExecutorImpl implements FeatureExecutor {
 
     private final Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours =
             new ConcurrentHashMap<>();
+    private final FeatureObservable featureObservable;
+    private final Set<FeatureMetadata> featureActions;
+    private final Class<? extends RuntimeException> defaultException;
 
 
     private static final DimmerLogger logger = new DimmerLogger(FeatureExecutorImpl.class);
 
-    FeatureExecutorImpl() {
+    FeatureExecutorImpl(FeatureObservable featureObservable,
+                        Set<FeatureMetadata> featureActions,
+                        Class<? extends RuntimeException> defaultException) {
+        this.featureObservable = featureObservable;
+        this.featureActions = featureActions;
+        this.defaultException = defaultException;
     }
 
-    FeatureExecutorImpl process(Set<FeatureMetadata> featureMetadataSet,
-                        Class<? extends RuntimeException> defaultException) {
+    void start() {
+        this.featureObservable.observe(this::process);
+    }
 
-        if (featureMetadataSet != null) {
-            featureMetadataSet.stream()
+    void process(FeatureUpdateEvent featureUpdateEvent) {
+
+        if (featureActions != null) {
+            featureActions.stream()
+                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
                     .filter(fm -> fm instanceof BehaviourFeatureMetadata)
                     .map(fm -> (BehaviourFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with behaviour",
@@ -43,7 +55,8 @@ public class FeatureExecutorImpl implements FeatureExecutor {
                             fmb.getOperation(),
                             fmb.getBehaviour()));
 
-            featureMetadataSet.stream()
+            featureActions.stream()
+                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
                     .filter(fm -> fm instanceof ExceptionFeatureMetadata)
                     .map(fm -> (ExceptionFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with exception {}",
@@ -55,7 +68,8 @@ public class FeatureExecutorImpl implements FeatureExecutor {
                     ));
 
 
-            featureMetadataSet.stream()
+            featureActions.stream()
+                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
                     .filter(fm -> fm instanceof DefaultExceptionFeatureMetadata)
                     .map(fm -> (DefaultExceptionFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with default exception {}",
@@ -66,7 +80,8 @@ public class FeatureExecutorImpl implements FeatureExecutor {
                                     fmde.getOperation(),
                                     defaultException));
 
-            featureMetadataSet.stream()
+            featureActions.stream()
+                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
                     .filter(fm -> fm instanceof ValueFeatureMetadata)
                     .map(fm -> (ValueFeatureMetadata) fm)
                     .peek(fm -> logFeature("APPLIED feature {} with value {}",
@@ -77,7 +92,6 @@ public class FeatureExecutorImpl implements FeatureExecutor {
                             fmv.getValueToReturn())
                     );
         }
-        return this;
     }
 
     @Override
@@ -130,7 +144,7 @@ public class FeatureExecutorImpl implements FeatureExecutor {
                                  Function<FeatureInvocation, ?> behaviour) {
         Preconditions.checkNullOrEmpty(feature, "featureId");
         Preconditions.checkNullOrEmpty(feature, "operation");
-        if(operation == null || operation.isEmpty()) {
+        if (operation == null || operation.isEmpty()) {
             logger.warn("Adding behaviour to feature {} with empty operation", feature);
         }
         final BehaviourKey behaviourKey = new BehaviourKey(
