@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -31,7 +33,6 @@ public class FeatureLocalExecutorUTest {
     private static final String operation = "operation";
 
     private FeatureExecutorImpl dimmerProcessor;
-
 
     @Mock
     private Function<FeatureInvocation, String> behaviour;
@@ -65,14 +66,45 @@ public class FeatureLocalExecutorUTest {
     }
 
     @Test
-    @DisplayName("Should run behaviour")
-    public void shouldRun() throws Throwable {
-
-        Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours = new HashMap<>();
-        behaviours.put(new BehaviourKey(feature, operation), s -> "VALUE");
-        dimmerProcessor.updateBehaviours(behaviours);
+    @DisplayName("Should run behaviour when FEATURE when featureWithBehaviour")
+    public void shouldRunBehaviour() throws Throwable {
+        dimmerProcessor.featureWithBehaviour(feature, operation, s -> "VALUE");
         Object actualResult = dimmerProcessor.executeDimmerFeature(
                 feature, operation, featureInvocation, methodCaller);
         assertEquals("VALUE", actualResult);
+    }
+
+    @Test
+    @DisplayName("Should return value when featureWithValue")
+    public void shouldReturnValue() throws Throwable {
+        dimmerProcessor.featureWithValue(feature, operation, "VALUE");
+        Object actualResult = dimmerProcessor.executeDimmerFeature(
+                feature, operation, featureInvocation, methodCaller);
+        assertEquals("VALUE", actualResult);
+    }
+
+    @Test
+    @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
+    public void ensureFeatureInvocationParameterWhenBehaviour() throws Throwable {
+        given(behaviour.apply(any(FeatureInvocation.class))).willReturn("not_checked");
+
+        dimmerProcessor.featureWithBehaviour(feature, operation, behaviour);
+        dimmerProcessor.executeDimmerFeature(feature, operation, featureInvocation, methodCaller);
+
+        then(behaviour).should().apply(featureInvocation);
+    }
+
+    @Test
+    @DisplayName("Should pass FeatureInvocation parameter when featureWithBehaviour")
+    public void ensureFeatureInvocationParameterWhenException() throws Throwable {
+        dimmerProcessor.featureWithException(
+                feature,
+                operation,
+                DummyExceptionWithFeatureInvocation.class);
+
+        exception.expect(DummyExceptionWithFeatureInvocation.class);
+        exception.expect(hasProperty("featureInvocation", is(featureInvocation)));
+
+        dimmerProcessor.executeDimmerFeature(feature, operation, featureInvocation, methodCaller);
     }
 }
