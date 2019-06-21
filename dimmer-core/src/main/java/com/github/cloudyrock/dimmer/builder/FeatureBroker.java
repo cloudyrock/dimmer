@@ -76,7 +76,6 @@ class FeatureBroker {
                 .map(fm -> (ExceptionFeatureMetadata) fm)
                 .peek(fm -> logFeature("APPLIED feature {} with exception {}", fm.getFeature(), fm.getException()))
                 .forEach(fme -> {
-                            Preconditions.checkNullOrEmpty(fme.getException(), "exceptionType");
                             behaviours.putIfAbsent(getKey(fme), featureInv -> ExceptionUtil.throwException(fme.getException(), featureInv));
                         }
                 );
@@ -89,14 +88,11 @@ class FeatureBroker {
                 .map(fm -> (BehaviourFeatureMetadata) fm)
                 .peek(fm -> logFeature("APPLIED feature {} with behaviour", fm.getFeature()))
                 .forEach(fmb -> {
-                    Preconditions.checkNullOrEmpty(fmb.getBehaviour(), "behaviour");
                     behaviours.putIfAbsent(getKey(fmb), fmb.getBehaviour());
                 });
     }
 
     private BehaviourKey getKey(FeatureMetadata featureMetadata) {
-        Preconditions.checkNullOrEmpty(featureMetadata.getFeature(), "feature");
-        Preconditions.checkNullOrEmpty(featureMetadata.getOperation(), "operation");
         return new BehaviourKey(featureMetadata.getFeature(), featureMetadata.getOperation());
     }
 

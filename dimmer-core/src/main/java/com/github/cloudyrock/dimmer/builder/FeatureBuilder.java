@@ -133,7 +133,7 @@ final class FeatureBuilder {
             String feature,
             String operation,
             Function<FeatureInvocation, Object> behaviour) {
-
+        Preconditions.checkNullOrEmpty(behaviour, "behaviour");
         final BehaviourFeatureMetadata metadata = new BehaviourFeatureMetadata(
                 feature,
                 operation,
@@ -281,6 +281,9 @@ final class FeatureBuilder {
     }
 
     private void addFeatureMetadata(FeatureMetadata metadata) {
+
+        Preconditions.checkNullOrEmpty(metadata.getFeature(), "feature");
+        Preconditions.checkNullOrEmpty(metadata.getOperation(), "operation");
         environments.forEach(env -> {
             if (!configMetadata.containsKey(env)) {
                 configMetadata.put(env, new HashSet<>());
