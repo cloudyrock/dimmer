@@ -6,6 +6,7 @@ import com.github.cloudyrock.dimmer.metadata.*;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 class FeatureBroker {
 
@@ -15,7 +16,7 @@ class FeatureBroker {
     private final Set<FeatureMetadata> featureActions;
     private final Class<? extends RuntimeException> defaultException;
 
-    private Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> observer;
+    private Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> subscriber;
 
     FeatureBroker(FeatureObservable featureObservable,
                   Set<FeatureMetadata> featureActions,
@@ -29,8 +30,8 @@ class FeatureBroker {
         featureObservable.subscribe(this::process);
     }
 
-    void setSubscriber(Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> observer) {
-        this.observer = observer;
+    void setSubscriber(Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> subscriber) {
+        this.subscriber = subscriber;
     }
 
 
@@ -46,8 +47,8 @@ class FeatureBroker {
     }
 
     private void notifyExecutor(Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
-        if (observer != null) {
-            observer.accept(behaviours);
+        if (subscriber != null) {
+            subscriber.accept(behaviours);
         }
     }
 
@@ -75,10 +76,7 @@ class FeatureBroker {
                 .filter(fm -> fm instanceof ExceptionFeatureMetadata)
                 .map(fm -> (ExceptionFeatureMetadata) fm)
                 .peek(fm -> logFeature("APPLIED feature {} with exception {}", fm.getFeature(), fm.getException()))
-                .forEach(fme -> {
-                            behaviours.putIfAbsent(getKey(fme), featureInv -> ExceptionUtil.throwException(fme.getException(), featureInv));
-                        }
-                );
+                .forEach(fme -> behaviours.putIfAbsent(getKey(fme), featureInv -> ExceptionUtil.throwException(fme.getException(), featureInv)));
     }
 
     private void addWithBehaviour(FeatureUpdateEvent featureUpdateEvent, Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
@@ -87,9 +85,7 @@ class FeatureBroker {
                 .filter(fm -> fm instanceof BehaviourFeatureMetadata)
                 .map(fm -> (BehaviourFeatureMetadata) fm)
                 .peek(fm -> logFeature("APPLIED feature {} with behaviour", fm.getFeature()))
-                .forEach(fmb -> {
-                    behaviours.putIfAbsent(getKey(fmb), fmb.getBehaviour());
-                });
+                .forEach(fmb -> behaviours.putIfAbsent(getKey(fmb), fmb.getBehaviour()));
     }
 
     private BehaviourKey getKey(FeatureMetadata featureMetadata) {
