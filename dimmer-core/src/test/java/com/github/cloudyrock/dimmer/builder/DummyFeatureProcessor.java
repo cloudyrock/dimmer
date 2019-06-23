@@ -15,7 +15,7 @@ public class DummyFeatureProcessor extends FeatureExecutorImpl {
     public Object executeDimmerFeature(String feature,
                                        String operation,
                                        FeatureInvocation featureInvocation) {
-        return executeFeature(feature, operation, featureInvocation);
+        return runFeature(feature, operation, featureInvocation);
     }
 
 }
