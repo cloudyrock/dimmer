@@ -245,14 +245,14 @@ final class FeatureBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      * @see FeatureInvocation
      */
-    public FeatureBuilder featureWithExceptionConditional(
+    public FeatureBuilder featureWithCustomExceptionConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
             Class<? extends RuntimeException> exceptionType) {
 
         return interceptingFeature
-                ? featureWithException(feature, operation, exceptionType)
+                ? featureWithCustomException(feature, operation, exceptionType)
                 : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
     }
 
@@ -270,7 +270,7 @@ final class FeatureBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      * @see FeatureInvocation
      */
-    public FeatureBuilder featureWithException(
+    public FeatureBuilder featureWithCustomException(
             String feature,
             String operation,
             Class<? extends RuntimeException> exceptionType) {

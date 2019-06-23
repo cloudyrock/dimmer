@@ -1,22 +1,14 @@
 dimmer:
   #version: 1.0 - for future release
   environments:
-    dev:
+    defaultEnvironment:
       default: true
       featureIntercept:
-        - FEATURE1
-        - FEATURE2
-        - FEATURE3
-        - FEATURE4
-        - FEATURE5
-        - FEATURE6
-        - FEATURE7
-        - FEATURE8
-        - FEATURE10
-    environment:
+        - FEATURE_FIXED
+        - FEATURE_CONDITIONAL_FALSE
+        - FEATURE_CONDITIONAL_TRUE
+    dev:
       featureIntercept:
         - FEATURE1
-    staging:
-      server: http://asdasd.com:880
     prod:
       server: http://asdasd.com:880

@@ -157,11 +157,11 @@ public class DimmerAspectITest {
     }
 
     @Test(expected = DummyException.class)
-    @DisplayName("Should throw DummyException when featureWithException")
+    @DisplayName("Should throw DummyException when featureWithCustomException")
     public void shouldThrowException() {
         DimmerBuilder
                 .environments(DEV)
-                .featureWithException(FEATURE5, operation, DummyException.class)
+                .featureWithCustomException(FEATURE5, operation, DummyException.class)
                 .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
         annotatedClass.methodForFeature5();
@@ -172,7 +172,7 @@ public class DimmerAspectITest {
     public void shouldThrowExceptionWhenEnvironmentNotConfigured() {
         DimmerBuilder
                 .environments(ENV)
-                .featureWithException(FEATURE5, operation, DummyException.class)
+                .featureWithCustomException(FEATURE5, operation, DummyException.class)
                 .withProperties(LOCAL_CONFIG_FILE)
                 .run(ENV_2);
         assertEquals(REAL_VALUE, annotatedClass.methodForFeature5());
@@ -234,11 +234,11 @@ public class DimmerAspectITest {
     }
 
     @Test
-    @DisplayName("Should get FeatureInvocation as parameter when featureWithException")
+    @DisplayName("Should get FeatureInvocation as parameter when featureWithCustomException")
     public void passingFeatureInvocationToException() {
         DimmerBuilder
                 .environments(DEV)
-                .featureWithException(FEATURE6, operation,
+                .featureWithCustomException(FEATURE6, operation,
                         DummyExceptionWithFeatureInvocation.class)
                 .withProperties(LOCAL_CONFIG_FILE)
                 .runWithDefaultEnvironment();
