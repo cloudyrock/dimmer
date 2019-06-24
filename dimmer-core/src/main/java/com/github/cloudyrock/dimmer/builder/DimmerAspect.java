@@ -16,7 +16,7 @@ import org.aspectj.lang.reflect.MethodSignature;
  * @see DimmerFeature
  */
 @Aspect
-class DimmerAspect {
+public class DimmerAspect {
 
     private FeatureExecutor featureExecutor;
 

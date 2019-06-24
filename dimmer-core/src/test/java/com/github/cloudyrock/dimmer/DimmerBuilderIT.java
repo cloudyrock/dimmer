@@ -1,17 +1,28 @@
-package com.github.cloudyrock.dimmer.builder;
+package com.github.cloudyrock.dimmer;
 
-import com.github.cloudyrock.dimmer.*;
-import org.aspectj.lang.Aspects;
+
+import com.github.cloudyrock.dimmer.builder.DimmerBuilder;
+import com.github.cloudyrock.dimmer.exception.DimmerInvocationException;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertEquals;
 
-public class DimmerAspect2ITest {
+//TODO: add environment tests: configure different environment and ensure the behaviour is from the one executed
+//TODO: default environment
+//TODO: checking the right signature is injected
+//TODO: check updating defaultException
+//TODO: throwing an exception inside a behaviour should be propagated
+//TODO: configuration: when is in file, but not in builder, vice versa, etc.
+//TODO: throw config exception when method's signature and the value to return(withValue) mismatch
+//TODO: should return a null value whern withValue
+//TODO: Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type
+//TODO: Should get FeatureInvocation as parameter when featureWithCustomException
+//TODO: invalid file
+
+public class DimmerBuilderIT {
     //CONFIG FILES
     private static final String LOCAL_CONFIG_FILE = "dimmer-it-test.yml";
 
@@ -28,11 +39,13 @@ public class DimmerAspect2ITest {
     private static final String OPERATION_1_VALUE = "OPERATION_1_VALUE";
     private static final String OPERATION_1_CUSTOM_EXCEPTION = "OPERATION_1_CUSTOM_EXCEPTION";
     private static final String OPERATION_1_DEFAULT_EXCEPTION = "OPERATION_1_DEFAULT_EXCEPTION";
+    private static final String OPERATION_RETURNS_CUSTOM_OBJECT = "OPERATION_RETURNS_CUSTOM_OBJECT";
 
     //VALUES
     private static final String BEHAVIOUR_VALUE = "BEHAVIOUR_VALUE";
     private static final String TOGGLED_OFF_VALUE = "TOGGLED_OFF_VALUE";
     private static final String REAL_VALUE = "real_value";
+    private static final String CHILD_VALUE = "CHILD_VALUE";
 
     @Rule public ExpectedException exception = ExpectedException.none();
 
@@ -46,6 +59,7 @@ public class DimmerAspect2ITest {
                 .featureWithValue(FEATURE_FIXED, OPERATION_1_VALUE, TOGGLED_OFF_VALUE)
                 .featureWithCustomException(FEATURE_FIXED, OPERATION_1_CUSTOM_EXCEPTION, DummyException.class)
                 .featureWithDefaultException(FEATURE_FIXED, OPERATION_1_DEFAULT_EXCEPTION)
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_RETURNS_CUSTOM_OBJECT, f-> new ReturnedClassChild(CHILD_VALUE))
 
                 //conditional configuration non executing: false
                 .featureWithBehaviourConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
@@ -59,19 +73,15 @@ public class DimmerAspect2ITest {
                 .featureWithCustomExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_CUSTOM_EXCEPTION, DummyException.class)
                 .featureWithDefaultExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_DEFAULT_EXCEPTION)
                 .withProperties(LOCAL_CONFIG_FILE)
-                .setDefaultExceptionType(DefaultException.class)
                 .runWithDefaultEnvironment();
     }
 
-    @Test
-    public void hasAspect() {
-        assertTrue(Aspects.hasAspect(DimmerAspect.class));
-    }
 
     @Test
     @DisplayName("Should run behaviour when it's fixed behaviour-configured(non conditional)")
     public void shouldRunBehaviourNonConditional() {
-        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehabiourFixed());
+        assertEquals(BEHAVIOUR_VALUE,
+                testFeaturedClass.operationWithBehaviourFixed());
     }
 
     @Test
@@ -86,7 +96,7 @@ public class DimmerAspect2ITest {
         testFeaturedClass.operationWithCustomExceptionFixed();
     }
 
-    @Test(expected = DefaultException.class)
+    @Test(expected = DimmerInvocationException.class)
     @DisplayName("Should throw default exception when it's fixed default-exception-configured(non conditional)")
     public void shouldThrowDefaultExceptionNonConditional() {
         testFeaturedClass.operationWithDefaultExceptionFixed();
@@ -96,7 +106,7 @@ public class DimmerAspect2ITest {
     @Test
     @DisplayName("Should return real value when it's conditional-false behaviour-configured")
     public void shouldReturnRealValueWhenBehaviourIfConditionalFalse() {
-        assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehabiourConditionalFalse());
+        assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourConditionalFalse());
     }
 
     @Test
@@ -119,7 +129,7 @@ public class DimmerAspect2ITest {
     @Test
     @DisplayName("Should run behaviour when it's conditional-true behaviour-configured")
     public void shouldRunBehaviourConditionalTrue() {
-        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehabiourConditionalTrue());
+        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourConditionalTrue());
     }
 
     @Test
@@ -134,19 +144,27 @@ public class DimmerAspect2ITest {
         testFeaturedClass.operationWithCustomExceptionConditionalTrue();
     }
 
-    @Test(expected = DefaultException.class)
+    @Test(expected = DimmerInvocationException.class)
     @DisplayName("Should throw default exception when it's conditional-true default-exception-configured")
     public void shouldThrowDefaultExceptionConditionalTrue() {
         testFeaturedClass.operationWithDefaultExceptionConditionalTrue();
     }
 
+    //GENERAL
+    @Test
+    @DisplayName("Should run behaviour when it's conditional-true behaviour-configured")
+    public void shouldWorkReturningAnInstanceOfAChildClass() {
+        ReturnedClassParent parent = testFeaturedClass.operationReturnsCustomObject();
+        ReturnedClassChild child = (ReturnedClassChild)parent;
+        assertEquals(CHILD_VALUE, child.value);
+    }
 
 
     static class TestFeaturedClass {
 
         //FEATURE_FIXED
         @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_BEHAVIOUR)
-        String operationWithBehabiourFixed() {
+        String operationWithBehaviourFixed() {
             return REAL_VALUE;
         }
 
@@ -164,10 +182,10 @@ public class DimmerAspect2ITest {
         String operationWithDefaultExceptionFixed() {
             return REAL_VALUE;
         }
-        
+
         //FEATURE_CONDITIONAL_FALSE
         @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_1_BEHAVIOUR)
-        String operationWithBehabiourConditionalFalse() {
+        String operationWithBehaviourConditionalFalse() {
             return REAL_VALUE;
         }
 
@@ -185,10 +203,10 @@ public class DimmerAspect2ITest {
         String operationWithDefaultExceptionConditionalFalse() {
             return REAL_VALUE;
         }
-        
+
         //FEATURE_CONDITIONAL_FALSE
         @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_1_BEHAVIOUR)
-        String operationWithBehabiourConditionalTrue() {
+        String operationWithBehaviourConditionalTrue() {
             return REAL_VALUE;
         }
 
@@ -207,12 +225,22 @@ public class DimmerAspect2ITest {
             return REAL_VALUE;
         }
 
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_RETURNS_CUSTOM_OBJECT)
+        ReturnedClassParent operationReturnsCustomObject() {
+            return new ReturnedClassParent();
+        }
+
     }
 
-    public class ReturnedClassParent {
+    public static class ReturnedClassParent {
     }
 
-    public class ReturnedClassChild extends ReturnedClassParent {
+    public static class ReturnedClassChild extends ReturnedClassParent {
+        public String value;
+
+        public ReturnedClassChild(String value) {
+            this.value = value;
+        }
     }
 
 }

@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @see DimmerConfigException
  * @see DimmerFeature
  */
-final class FeatureBuilder {
+public final class FeatureBuilder {
 
     private static final DimmerLogger logger = new DimmerLogger(FeatureBuilder.class);
 
