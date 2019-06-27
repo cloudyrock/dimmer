@@ -10,7 +10,6 @@ import org.aspectj.lang.Aspects;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Builder to configure the feature behaviours.
@@ -22,8 +21,7 @@ final class FeatureBuilder {
 
     private static final DimmerLogger logger = new DimmerLogger(FeatureBuilder.class);
 
-    private static final Class<? extends RuntimeException> DEFAULT_EXCEPTION_TYPE =
-            DimmerInvocationException.class;
+    private static final Class<? extends RuntimeException> DEFAULT_EXCEPTION_TYPE = DimmerInvocationException.class;
 
     private final Collection<String> environments;
 
@@ -85,81 +83,7 @@ final class FeatureBuilder {
         return this;
     }
 
-    /**
-     * Builds a feature executor with the given environment, inject it to the
-     * dimmer aspect (which will intercept the calls to all methods annotated
-     * with {@link DimmerFeature}) and return it.
-     *
-     * @param environment Environment to run
-     * @return Feature executor
-     */
-    public void run(String environment) {
 
-        final EnvironmentConfig environmentConfig;
-        try {
-            environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
-        } catch (FileConfigException ex) {
-            throw new DimmerConfigException(ex);
-        }
-        FeatureExecutor featureExecutor = getFeatureExecutor(environmentConfig);
-        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
-        logger.info("Dimmer Aspect running");
-    }
-
-    /**
-     * Builds a feature executor with the default environment, inject it to the
-     * dimmer aspect (which will intercept the calls to all methods annotated
-     * with {@link DimmerFeature}) and return it.
-     *
-     * @return Feature executor
-     */
-    public void runWithDefaultEnvironment() {
-        run(null);
-    }
-
-
-    private FeatureExecutor getFeatureExecutor(EnvironmentConfig environmentConfig) {
-        logger.debug("Building local executor");
-
-        return new FeatureExecutorImpl().process(
-                loadConfigMetadata(environmentConfig.getName(), environmentConfig),
-                getDefaultExceptionType());
-    }
-
-    private Set<FeatureMetadata> loadConfigMetadata(String environment, EnvironmentConfig environmentConfig) {
-
-        //Load configuration list of behaviours set up programmatically
-        final Set<FeatureMetadata> featureBehaviours = configMetadata.get(environment);
-
-        //Merge both
-        return mergeConfigurations(environmentConfig, featureBehaviours);
-    }
-
-    private Set<FeatureMetadata> mergeConfigurations(EnvironmentConfig environmentConfig, Set<FeatureMetadata> featureBehaviours) {
-
-        //No behaviours defined for environment
-        if (featureBehaviours == null) {
-            logger.warn("No behaviours have been defined for selected environment.");
-            return null;
-        }
-
-        List<String> featuresForEnvironmentConfigFile = environmentConfig.getFeatureIntercept();
-        //No features set in the environment of the config file
-        if (featuresForEnvironmentConfigFile.isEmpty()) {
-            logger.warn("No Features intercepted in configuration file for environment.");
-            return featureBehaviours;
-        }
-
-        //Creates feature metadata only with selected interceptors from Config file
-        return featureBehaviours.stream()
-                .filter(featureMetadata -> featuresForEnvironmentConfigFile.contains(featureMetadata.getFeature()))
-                .peek(featureMetadata -> logger.info("Feature {} will be intercepted.", featureMetadata.getFeature()))
-                .collect(Collectors.toSet());
-    }
-
-    /****************************************************
-     * FROM DimmerFeatureConfigurable
-     ****************************************************/
 
     /**
      * If interceptingFeature is true and the specified feature is not already associated
@@ -209,7 +133,7 @@ final class FeatureBuilder {
             String feature,
             String operation,
             Function<FeatureInvocation, Object> behaviour) {
-
+        Preconditions.checkNullOrEmpty(behaviour, "behaviour");
         final BehaviourFeatureMetadata metadata = new BehaviourFeatureMetadata(
                 feature,
                 operation,
@@ -357,6 +281,9 @@ final class FeatureBuilder {
     }
 
     private void addFeatureMetadata(FeatureMetadata metadata) {
+
+        Preconditions.checkNullOrEmpty(metadata.getFeature(), "feature");
+        Preconditions.checkNullOrEmpty(metadata.getOperation(), "operation");
         environments.forEach(env -> {
             if (!configMetadata.containsKey(env)) {
                 configMetadata.put(env, new HashSet<>());
@@ -388,5 +315,52 @@ final class FeatureBuilder {
                 ? defaultExceptionType
                 : DEFAULT_EXCEPTION_TYPE;
     }
+
+
+
+    /**
+     * Builds a feature executor with the given environment, inject it to the
+     * dimmer aspect (which will intercept the calls to all methods annotated
+     * with {@link DimmerFeature}) and return it.
+     *
+     * @param environment Environment to run
+     * @return Feature executor
+     */
+    public void run(String environment) {
+
+        final EnvironmentConfig environmentConfig;
+        try {
+            environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
+        } catch (FileConfigException ex) {
+            throw new DimmerConfigException(ex);
+        }
+        final FeatureExecutorImpl featureExecutor = getFeatureExecutor(environmentConfig);
+        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
+        logger.info("Dimmer Aspect running");
+        featureExecutor.getBroker().start();
+
+    }
+
+    /**
+     * Builds a feature executor with the default environment, inject it to the
+     * dimmer aspect (which will intercept the calls to all methods annotated
+     * with {@link DimmerFeature}) and return it.
+     *
+     * @return Feature executor
+     */
+    public void runWithDefaultEnvironment() {
+        run(null);
+    }
+
+
+    private FeatureExecutorImpl getFeatureExecutor(EnvironmentConfig environmentConfig) {
+        logger.debug("Building local executor");
+        FeatureBroker broker = new FeatureBroker(
+                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getFeatureIntercept())),
+                configMetadata.getOrDefault(environmentConfig.getName(), new HashSet<>()),
+                defaultExceptionType);
+        return new FeatureExecutorImpl(broker);
+    }
+
 
 }
