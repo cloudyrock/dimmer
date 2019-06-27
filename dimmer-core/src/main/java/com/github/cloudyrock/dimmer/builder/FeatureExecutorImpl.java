@@ -45,7 +45,7 @@ public class FeatureExecutorImpl implements FeatureExecutor {
                                        MethodCaller realMethod) throws Throwable {
         if (isConditionPresent(feature, operation)) {
             logDimmerInterception(feature, operation, featureInvocation);
-            return runFeature(feature, operation, featureInvocation);
+            return executeFeature(feature, operation, featureInvocation);
         } else {
             logger.trace("Dimmer ignored due to feature {} is not configured", feature);
             return realMethod.call();
@@ -57,7 +57,7 @@ public class FeatureExecutorImpl implements FeatureExecutor {
         return behaviours.containsKey(new BehaviourKey(feature, operation));
     }
 
-    Object runFeature(String feature, String operation, FeatureInvocation featureInvocation) {
+    Object executeFeature(String feature, String operation, FeatureInvocation featureInvocation) {
         final BehaviourKey key = new BehaviourKey(feature, operation);
         final Object result = behaviours.get(key).apply(featureInvocation);
         checkReturnType(featureInvocation.getReturnType(), result);

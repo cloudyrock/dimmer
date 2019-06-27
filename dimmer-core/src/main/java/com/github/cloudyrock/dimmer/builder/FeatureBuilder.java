@@ -334,7 +334,7 @@ final class FeatureBuilder {
         } catch (FileConfigException ex) {
             throw new DimmerConfigException(ex);
         }
-        FeatureExecutorImpl featureExecutor = getFeatureExecutor(environmentConfig);
+        final FeatureExecutorImpl featureExecutor = getFeatureExecutor(environmentConfig);
         Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
         logger.info("Dimmer Aspect running");
         featureExecutor.getBroker().start();

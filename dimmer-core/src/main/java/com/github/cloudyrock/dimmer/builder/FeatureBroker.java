@@ -6,6 +6,7 @@ import com.github.cloudyrock.dimmer.metadata.*;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class FeatureBroker {
@@ -52,40 +53,38 @@ class FeatureBroker {
         }
     }
 
-    private void addWithValue(FeatureUpdateEvent featureUpdateEvent, Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
-        featureActions.stream()
-                .filter(fm -> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
-                .filter(fm -> fm instanceof ValueFeatureMetadata)
-                .map(fm -> (ValueFeatureMetadata) fm)
-                .peek(fm -> logFeature("APPLIED feature {} with value {}", fm.getFeature(), fm.getValueToReturn()))
-                .forEach(fmv -> behaviours.putIfAbsent(getKey(fmv), signature -> fmv.getValueToReturn()));
+    private void addWithValue(FeatureUpdateEvent newFeatures, Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
+
+        addFeatures(newFeatures, behaviours, fm -> fm instanceof ValueFeatureMetadata,
+                featureMetadataValue -> invocation -> ((ValueFeatureMetadata)featureMetadataValue).getValueToReturn());
     }
 
+
     private void addWithDefaultException(FeatureUpdateEvent featureUpdateEvent, Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
-        featureActions.stream()
-                .filter(fm -> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
-                .filter(fm -> fm instanceof DefaultExceptionFeatureMetadata)
-                .map(fm -> (DefaultExceptionFeatureMetadata) fm)
-                .peek(fm -> logFeature("APPLIED feature {} with default exception {}", fm.getFeature(), defaultException))
-                .forEach(fmde -> behaviours.putIfAbsent(getKey(fmde), featureInv -> ExceptionUtil.throwException(defaultException, featureInv)));
+        addFeatures(featureUpdateEvent, behaviours, fm -> fm instanceof DefaultExceptionFeatureMetadata,
+                fmde -> featureInv -> ExceptionUtil.throwException(defaultException, featureInv));
     }
 
     private void addWithException(FeatureUpdateEvent featureUpdateEvent, Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
-        featureActions.stream()
-                .filter(fm -> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
-                .filter(fm -> fm instanceof ExceptionFeatureMetadata)
-                .map(fm -> (ExceptionFeatureMetadata) fm)
-                .peek(fm -> logFeature("APPLIED feature {} with exception {}", fm.getFeature(), fm.getException()))
-                .forEach(fme -> behaviours.putIfAbsent(getKey(fme), featureInv -> ExceptionUtil.throwException(fme.getException(), featureInv)));
+        addFeatures(featureUpdateEvent, behaviours, fm -> fm instanceof ExceptionFeatureMetadata,
+                fme -> featureInv -> ExceptionUtil.throwException(((ExceptionFeatureMetadata)fme).getException(), featureInv));
     }
 
     private void addWithBehaviour(FeatureUpdateEvent featureUpdateEvent, Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
+        addFeatures(featureUpdateEvent, behaviours, fm -> fm instanceof DefaultExceptionFeatureMetadata,
+                fmb -> featureInv -> ((BehaviourFeatureMetadata)fmb).getBehaviour());
+    }
+
+
+    private void addFeatures(FeatureUpdateEvent featureUpdateEvent,
+                             Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours,
+                             Predicate<FeatureMetadata> filter,
+                             Function<FeatureMetadata, Function<FeatureInvocation, Object>> additionFunction) {
         featureActions.stream()
                 .filter(fm -> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
-                .filter(fm -> fm instanceof BehaviourFeatureMetadata)
-                .map(fm -> (BehaviourFeatureMetadata) fm)
-                .peek(fm -> logFeature("APPLIED feature {} with behaviour", fm.getFeature()))
-                .forEach(fmb -> behaviours.putIfAbsent(getKey(fmb), fmb.getBehaviour()));
+                .filter(filter)
+                .peek(fm -> logFeature("APPLIED feature[{}]", fm.toString()))
+                .forEach(fm -> behaviours.putIfAbsent(getKey(fm), additionFunction.apply(fm)));
     }
 
     private BehaviourKey getKey(FeatureMetadata featureMetadata) {
