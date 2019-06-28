@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @see DimmerConfigException
  * @see DimmerFeature
  */
-public final class FeatureBuilder {
+final class FeatureBuilder {
 
     private static final DimmerLogger logger = new DimmerLogger(FeatureBuilder.class);
 
@@ -84,55 +84,6 @@ public final class FeatureBuilder {
     }
 
 
-    /**
-     * Builds a feature executor with the given environment, inject it to the
-     * dimmer aspect (which will intercept the calls to all methods annotated
-     * with {@link DimmerFeature}) and return it.
-     *
-     * @param environment Environment to run
-     * @return Feature executor
-     */
-    public void run(String environment) {
-
-        final EnvironmentConfig environmentConfig;
-        try {
-            environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
-        } catch (FileConfigException ex) {
-            throw new DimmerConfigException(ex);
-        }
-        FeatureExecutor featureExecutor = getFeatureExecutor(environmentConfig);
-        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
-        logger.info("Dimmer Aspect running");
-    }
-
-    /**
-     * Builds a feature executor with the default environment, inject it to the
-     * dimmer aspect (which will intercept the calls to all methods annotated
-     * with {@link DimmerFeature}) and return it.
-     *
-     * @return Feature executor
-     */
-    public void runWithDefaultEnvironment() {
-        run(null);
-    }
-
-
-    private FeatureExecutor getFeatureExecutor(EnvironmentConfig environmentConfig) {
-        logger.debug("Building local executor");
-        new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getFeatureIntercept()));
-
-        //TODO re-think architecture
-        FeatureExecutorImpl executor = new FeatureExecutorImpl(
-                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getFeatureIntercept())),
-                configMetadata.get(environmentConfig.getName()),
-                defaultExceptionType);
-        executor.start();
-        return executor;
-    }
-
-    /****************************************************
-     * FROM DimmerFeatureConfigurable
-     ****************************************************/
 
     /**
      * If interceptingFeature is true and the specified feature is not already associated
@@ -245,14 +196,14 @@ public final class FeatureBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      * @see FeatureInvocation
      */
-    public FeatureBuilder featureWithCustomExceptionConditional(
+    public FeatureBuilder featureWithExceptionConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
             Class<? extends RuntimeException> exceptionType) {
 
         return interceptingFeature
-                ? featureWithCustomException(feature, operation, exceptionType)
+                ? featureWithException(feature, operation, exceptionType)
                 : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
     }
 
@@ -270,7 +221,7 @@ public final class FeatureBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      * @see FeatureInvocation
      */
-    public FeatureBuilder featureWithCustomException(
+    public FeatureBuilder featureWithException(
             String feature,
             String operation,
             Class<? extends RuntimeException> exceptionType) {
