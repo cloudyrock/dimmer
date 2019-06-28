@@ -61,13 +61,13 @@ public class DimmerBuilderIT {
                 .featureWithDefaultException(FEATURE_FIXED, OPERATION_1_DEFAULT_EXCEPTION)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_RETURNS_CUSTOM_OBJECT, f-> new ReturnedClassChild(CHILD_VALUE))
 
-                //conditional configuration non executing: false
+                //conditional configuration non executing(false)
                 .featureWithBehaviourConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
                 .featureWithValueConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_VALUE, TOGGLED_OFF_VALUE)
                 .featureWithCustomExceptionConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_CUSTOM_EXCEPTION, DummyException.class)
                 .featureWithDefaultExceptionConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_DEFAULT_EXCEPTION)
 
-                //conditional configuration executing: true
+                //conditional configuration executing(true)
                 .featureWithBehaviourConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
                 .featureWithValueConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_VALUE, TOGGLED_OFF_VALUE)
                 .featureWithCustomExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_CUSTOM_EXCEPTION, DummyException.class)
