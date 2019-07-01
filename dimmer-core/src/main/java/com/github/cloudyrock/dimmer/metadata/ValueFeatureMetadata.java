@@ -1,5 +1,9 @@
 package com.github.cloudyrock.dimmer.metadata;
 
+import com.github.cloudyrock.dimmer.FeatureInvocation;
+
+import java.util.function.Function;
+
 public final class ValueFeatureMetadata extends FeatureMetadata {
 
     private final Object valueToReturn;
@@ -11,6 +15,11 @@ public final class ValueFeatureMetadata extends FeatureMetadata {
 
     public Object getValueToReturn() {
         return valueToReturn;
+    }
+
+
+    public Function<FeatureInvocation, Object> getFunction() {
+        return featureInvocation -> valueToReturn;
     }
 
 

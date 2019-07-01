@@ -311,9 +311,7 @@ public final class FeatureBuilder {
 
 
     Class<? extends RuntimeException> getDefaultExceptionType() {
-        return this.defaultExceptionType != null
-                ? defaultExceptionType
-                : DEFAULT_EXCEPTION_TYPE;
+        return this.defaultExceptionType != null ? defaultExceptionType : DEFAULT_EXCEPTION_TYPE;
     }
 
 

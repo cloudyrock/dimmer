@@ -19,6 +19,9 @@ public final class BehaviourFeatureMetadata extends FeatureMetadata{
         return behaviour;
     }
 
+    public Function<FeatureInvocation, Object> getFunction() {
+        return getBehaviour();
+    }
 
     @Override
     public boolean equals(Object o) {
