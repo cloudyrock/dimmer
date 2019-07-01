@@ -1,12 +1,12 @@
 package com.github.cloudyrock.dimmer.metadata;
 
-public final class ExceptionFeatureMetadata extends FeatureMetadata {
+public final class CustomExceptionFeatureMetadata extends FeatureMetadata {
 
     private final Class<? extends RuntimeException> exceptionType;
 
-	public ExceptionFeatureMetadata(String feature,
-							 String operation,
-							 Class<? extends RuntimeException> exceptionType) {
+	public CustomExceptionFeatureMetadata(String feature,
+                                          String operation,
+                                          Class<? extends RuntimeException> exceptionType) {
         super(feature, operation);
         this.exceptionType = exceptionType;
     }

@@ -80,8 +80,7 @@ public class DimmerBuilderIT {
     @Test
     @DisplayName("Should run behaviour when it's fixed behaviour-configured(non conditional)")
     public void shouldRunBehaviourNonConditional() {
-        assertEquals(BEHAVIOUR_VALUE,
-                testFeaturedClass.operationWithBehaviourFixed());
+        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourFixed());
     }
 
     @Test

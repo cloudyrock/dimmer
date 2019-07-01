@@ -227,7 +227,7 @@ public final class FeatureBuilder {
             Class<? extends RuntimeException> exceptionType) {
 
         ExceptionUtil.checkExceptionConstructorType(exceptionType);
-        final FeatureMetadata metadata = new ExceptionFeatureMetadata(
+        final FeatureMetadata metadata = new CustomExceptionFeatureMetadata(
                 feature, operation, exceptionType);
         addFeatureMetadata(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
