@@ -18,7 +18,7 @@ public class FeatureExecutorImpl implements FeatureExecutor {
     private static final String EXCEPTION_MESSAGE_CAST =
             "The expected return types between the real method and the configured function are mismatched";
 
-    private Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours;
+    private Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours;
     private FeatureBroker broker;
 
 
@@ -33,7 +33,7 @@ public class FeatureExecutorImpl implements FeatureExecutor {
         return broker;
     }
 
-    void updateBehaviours(Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
+    void updateBehaviours(Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
         this.behaviours = behaviours;
     }
 
@@ -54,11 +54,11 @@ public class FeatureExecutorImpl implements FeatureExecutor {
 
 
     boolean isConditionPresent(String feature, String operation) {
-        return behaviours.containsKey(new BehaviourKey(feature, operation));
+        return behaviours.containsKey(new Behaviour.BehaviourKey(feature, operation));
     }
 
     Object executeFeature(String feature, String operation, FeatureInvocation featureInvocation) {
-        final BehaviourKey key = new BehaviourKey(feature, operation);
+        final Behaviour.BehaviourKey key = new Behaviour.BehaviourKey(feature, operation);
         final Object result = behaviours.get(key).apply(featureInvocation);
         checkReturnType(featureInvocation.getReturnType(), result);
         return result;

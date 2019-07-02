@@ -1,6 +1,7 @@
 package com.github.cloudyrock.dimmer.behaviour;
 
 import com.github.cloudyrock.dimmer.FeatureInvocation;
+import com.github.cloudyrock.dimmer.Preconditions;
 
 import java.util.function.Function;
 
@@ -54,7 +55,7 @@ public class Behaviour {
             return false;
         }
 
-        final FeatureOperationBase that = (FeatureOperationBase) o;
+        final Behaviour that = (Behaviour) o;
 
         return feature.equals(that.feature) && operation.equals(that.operation);
     }
@@ -63,5 +64,48 @@ public class Behaviour {
     @Override
     public int hashCode() {
         return 31 * feature.hashCode() + operation.hashCode();
+    }
+
+    public static class BehaviourKey {
+
+        private final String feature;
+        private final String operation;
+
+        public BehaviourKey(String feature,
+                         String operation) {
+            Preconditions.checkNullOrEmpty(feature, "feature");
+            this.feature = feature;
+            this.operation = operation != null ? operation : "";
+        }
+
+        public String getFeature() {
+            return feature;
+        }
+
+        public String getOperation() {
+            return operation;
+        }
+
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            final BehaviourKey that = (BehaviourKey) o;
+
+            return feature.equals(that.feature) && operation.equals(that.operation);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * feature.hashCode() + operation.hashCode();
+        }
+
     }
 }

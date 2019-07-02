@@ -25,8 +25,8 @@ public final class DimmerBuilder {
      *
      * @return a new immutable instance of the builder with the current configuration.
      */
-    public static FeatureBuilder environments(String... environments) {
-        return new FeatureBuilder(
+    public static BehaviourBuilder environments(String... environments) {
+        return new BehaviourBuilder(
                 asList(environments), new HashMap<>(), getDimmerConfigReader());
     }
 

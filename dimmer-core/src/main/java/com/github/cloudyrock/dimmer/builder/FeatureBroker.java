@@ -5,7 +5,6 @@ import com.github.cloudyrock.dimmer.DimmerLogger;
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 import com.github.cloudyrock.dimmer.FeatureObservable;
 import com.github.cloudyrock.dimmer.FeatureUpdateEvent;
-import com.github.cloudyrock.dimmer.behaviour.BehaviourKey;
 import com.github.cloudyrock.dimmer.behaviour.Behaviour;
 
 import java.util.Map;
@@ -23,7 +22,7 @@ class FeatureBroker {
     private final Set<Behaviour> featureActions;
     private final Class<? extends RuntimeException> defaultException;
 
-    private Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> subscriber;
+    private Consumer<Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>>> subscriber;
 
     FeatureBroker(FeatureObservable featureObservable,
                   Set<Behaviour> featureActions,
@@ -37,14 +36,14 @@ class FeatureBroker {
         featureObservable.subscribe(this::process);
     }
 
-    void setSubscriber(Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> subscriber) {
+    void setSubscriber(Consumer<Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>>> subscriber) {
         this.subscriber = subscriber;
     }
 
 
     void process(FeatureUpdateEvent featureUpdateEvent) {
         if (featureActions != null && subscriber != null) {
-            final Map<BehaviourKey, Function<FeatureInvocation, ?>> behaviours =
+            final Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours =
             featureActions.stream()
                     .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
                     .peek(fm -> logger.info("APPLIED feature [{}]", fm.toString()))

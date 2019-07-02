@@ -18,9 +18,9 @@ import java.util.function.Function;
  * @see DimmerConfigException
  * @see DimmerFeature
  */
-public final class FeatureBuilder {
+public final class BehaviourBuilder {
 
-    private static final DimmerLogger logger = new DimmerLogger(FeatureBuilder.class);
+    private static final DimmerLogger logger = new DimmerLogger(BehaviourBuilder.class);
 
     private static final Class<? extends RuntimeException> DEFAULT_EXCEPTION_TYPE = DimmerInvocationException.class;
 
@@ -33,14 +33,14 @@ public final class FeatureBuilder {
     private final DimmerConfigReader dimmerConfigReader;
 
 
-    FeatureBuilder(
+    BehaviourBuilder(
             Collection<String> environments,
             Map<String, Set<Behaviour>> configMetadata,
             DimmerConfigReader dimmerConfigReader) {
         this(environments, configMetadata, DimmerInvocationException.class, dimmerConfigReader);
     }
 
-    FeatureBuilder(
+    BehaviourBuilder(
             Collection<String> environments,
             Map<String, Set<Behaviour>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType,
@@ -51,12 +51,12 @@ public final class FeatureBuilder {
         this.dimmerConfigReader = dimmerConfigReader;
     }
 
-    private FeatureBuilder newInstance(
+    private BehaviourBuilder newInstance(
             Collection<String> environments,
             Map<String, Set<Behaviour>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType,
             DimmerConfigReader dimmerConfigReader) {
-        return new FeatureBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+        return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
     }
 
 
@@ -66,7 +66,7 @@ public final class FeatureBuilder {
      * @param environments List of environments
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public FeatureBuilder environments(String... environments) {
+    public BehaviourBuilder environments(String... environments) {
         Preconditions.checkNullOrEmpty(environments, "environments");
         final List<String> envs = Arrays.asList(environments);
         return newInstance(envs, configMetadata, defaultExceptionType, dimmerConfigReader);
@@ -79,7 +79,7 @@ public final class FeatureBuilder {
      * @param propertiesPath
      * @return
      */
-    public FeatureBuilder withProperties(String propertiesPath) {
+    public BehaviourBuilder withProperties(String propertiesPath) {
         dimmerConfigReader.setPropertiesLocation(propertiesPath);
         return this;
     }
@@ -102,7 +102,7 @@ public final class FeatureBuilder {
      * @see Function
      * @see DimmerConfigException
      */
-    public FeatureBuilder featureWithBehaviourConditional(
+    public BehaviourBuilder featureWithBehaviourConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -130,7 +130,7 @@ public final class FeatureBuilder {
      * @see Function
      * @see DimmerConfigException
      */
-    public FeatureBuilder featureWithBehaviour(
+    public BehaviourBuilder featureWithBehaviour(
             String feature,
             String operation,
             Function<FeatureInvocation, Object> behaviour) {
@@ -156,9 +156,9 @@ public final class FeatureBuilder {
      * @param operation           operation representing the specific method
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public FeatureBuilder featureWithDefaultExceptionConditional(boolean interceptingFeature,
-                                                                 String feature,
-                                                                 String operation) {
+    public BehaviourBuilder featureWithDefaultExceptionConditional(boolean interceptingFeature,
+                                                                   String feature,
+                                                                   String operation) {
         return interceptingFeature
                 ? featureWithDefaultException(feature, operation)
                 : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
@@ -174,7 +174,7 @@ public final class FeatureBuilder {
      * @param operation operation representing the specific method
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public FeatureBuilder featureWithDefaultException(String feature, String operation) {
+    public BehaviourBuilder featureWithDefaultException(String feature, String operation) {
 
         return featureWithBehaviour(
                 feature,
@@ -197,7 +197,7 @@ public final class FeatureBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      * @see FeatureInvocation
      */
-    public FeatureBuilder featureWithCustomExceptionConditional(
+    public BehaviourBuilder featureWithCustomExceptionConditional(
             boolean interceptingFeature,
             String feature,
             String operation,
@@ -222,7 +222,7 @@ public final class FeatureBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      * @see FeatureInvocation
      */
-    public FeatureBuilder featureWithCustomException(
+    public BehaviourBuilder featureWithCustomException(
             String feature,
             String operation,
             Class<? extends RuntimeException> exceptionType) {
@@ -245,10 +245,10 @@ public final class FeatureBuilder {
      * @param valueToReturn       value to be associated with the specified key
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public FeatureBuilder featureWithValueConditional(boolean interceptingFeature,
-                                                      String feature,
-                                                      String operation,
-                                                      Object valueToReturn) {
+    public BehaviourBuilder featureWithValueConditional(boolean interceptingFeature,
+                                                        String feature,
+                                                        String operation,
+                                                        Object valueToReturn) {
 
         return interceptingFeature
                 ? featureWithValue(feature, operation, valueToReturn)
@@ -268,9 +268,9 @@ public final class FeatureBuilder {
      * @param valueToReturn value to be associated with the specified key
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public FeatureBuilder featureWithValue(String feature,
-                                           String operation,
-                                           Object valueToReturn) {
+    public BehaviourBuilder featureWithValue(String feature,
+                                             String operation,
+                                             Object valueToReturn) {
         return featureWithBehaviour(feature, operation, signature -> valueToReturn);
 
     }
@@ -298,7 +298,7 @@ public final class FeatureBuilder {
      * @param newDefaultExceptionType new default exception type
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public FeatureBuilder setDefaultExceptionType(
+    public BehaviourBuilder setDefaultExceptionType(
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Preconditions.checkNullOrEmpty(newDefaultExceptionType, "defaultExceptionType");
         ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
