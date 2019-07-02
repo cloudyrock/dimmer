@@ -10,13 +10,11 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.assertEquals;
 
 //TODO: add environment tests: configure different environment and ensure the behaviour is from the one executed
-//TODO: default environment
 //TODO: checking the right signature is injected
-//TODO: check changing defaultException
 //TODO: throwing an exception inside a behaviour should be propagated
 //TODO: configuration: when is in file, but not in builder, vice versa, etc.
 //TODO: throw config exception when method's signature and the value to return(withValue) mismatch
-//TODO: should return a null value whern withValue
+//TODO: should return a null value when withValue
 //TODO: Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type
 //TODO: Should get FeatureInvocation as parameter when featureWithCustomException
 //TODO: invalid file
