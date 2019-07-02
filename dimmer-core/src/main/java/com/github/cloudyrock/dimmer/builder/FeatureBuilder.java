@@ -3,9 +3,10 @@ package com.github.cloudyrock.dimmer.builder;
 import com.github.cloudyrock.dimmer.*;
 import com.github.cloudyrock.dimmer.exception.DimmerConfigException;
 import com.github.cloudyrock.dimmer.exception.DimmerInvocationException;
-import com.github.cloudyrock.dimmer.metadata.*;
+import com.github.cloudyrock.dimmer.behaviour.*;
 import com.github.cloudyrock.dimmer.reader.DimmerConfigReader;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
+import com.github.cloudyrock.dimmer.util.ExceptionUtil;
 import org.aspectj.lang.Aspects;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public final class FeatureBuilder {
 
     private final Collection<String> environments;
 
-    final Map<String, Set<FeatureMetadata>> configMetadata;
+    final Map<String, Set<Behaviour>> configMetadata;
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
@@ -34,14 +35,14 @@ public final class FeatureBuilder {
 
     FeatureBuilder(
             Collection<String> environments,
-            Map<String, Set<FeatureMetadata>> configMetadata,
+            Map<String, Set<Behaviour>> configMetadata,
             DimmerConfigReader dimmerConfigReader) {
         this(environments, configMetadata, DimmerInvocationException.class, dimmerConfigReader);
     }
 
     FeatureBuilder(
             Collection<String> environments,
-            Map<String, Set<FeatureMetadata>> configMetadata,
+            Map<String, Set<Behaviour>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType,
             DimmerConfigReader dimmerConfigReader) {
         this.environments = environments;
@@ -52,7 +53,7 @@ public final class FeatureBuilder {
 
     private FeatureBuilder newInstance(
             Collection<String> environments,
-            Map<String, Set<FeatureMetadata>> configMetadata,
+            Map<String, Set<Behaviour>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType,
             DimmerConfigReader dimmerConfigReader) {
         return new FeatureBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
@@ -134,12 +135,12 @@ public final class FeatureBuilder {
             String operation,
             Function<FeatureInvocation, Object> behaviour) {
         Preconditions.checkNullOrEmpty(behaviour, "behaviour");
-        final BehaviourFeatureMetadata metadata = new BehaviourFeatureMetadata(
+        final Behaviour metadata = new Behaviour(
                 feature,
                 operation,
                 behaviour
         );
-        addFeatureMetadata(metadata);
+        addBehaviour(metadata);
         return newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
 
     }
@@ -174,11 +175,11 @@ public final class FeatureBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
     public FeatureBuilder featureWithDefaultException(String feature, String operation) {
-        final FeatureMetadata metadata = new DefaultExceptionFeatureMetadata(
+
+        return featureWithBehaviour(
                 feature,
-                operation);
-        addFeatureMetadata(metadata);
-        return newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+                operation,
+                signature -> ExceptionUtil.throwException(DimmerInvocationException.class, signature));
     }
 
     /**
@@ -225,12 +226,8 @@ public final class FeatureBuilder {
             String feature,
             String operation,
             Class<? extends RuntimeException> exceptionType) {
-
         ExceptionUtil.checkExceptionConstructorType(exceptionType);
-        final FeatureMetadata metadata = new CustomExceptionFeatureMetadata(
-                feature, operation, exceptionType);
-        addFeatureMetadata(metadata);
-        return newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+        return featureWithBehaviour(feature, operation, signature-> ExceptionUtil.throwException(exceptionType, signature));
     }
 
 
@@ -252,6 +249,7 @@ public final class FeatureBuilder {
                                                       String feature,
                                                       String operation,
                                                       Object valueToReturn) {
+
         return interceptingFeature
                 ? featureWithValue(feature, operation, valueToReturn)
                 : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
@@ -273,22 +271,20 @@ public final class FeatureBuilder {
     public FeatureBuilder featureWithValue(String feature,
                                            String operation,
                                            Object valueToReturn) {
-        final FeatureMetadata metadata =
-                new ValueFeatureMetadata(feature, operation, valueToReturn);
-        addFeatureMetadata(metadata);
-        return newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+        return featureWithBehaviour(feature, operation, signature -> valueToReturn);
 
     }
 
-    private void addFeatureMetadata(FeatureMetadata metadata) {
-
-        Preconditions.checkNullOrEmpty(metadata.getFeature(), "feature");
-        Preconditions.checkNullOrEmpty(metadata.getOperation(), "operation");
+    private void addBehaviour(Behaviour behaviour) {
+        Preconditions.checkNullOrEmpty(behaviour);
+        Preconditions.checkNullOrEmpty(behaviour.getFeature(), "feature");
+        Preconditions.checkNullOrEmpty(behaviour.getOperation(), "operation");
+        Preconditions.checkNullOrEmpty(behaviour.getBehaviour(), "behaviour");
         environments.forEach(env -> {
             if (!configMetadata.containsKey(env)) {
                 configMetadata.put(env, new HashSet<>());
             }
-            configMetadata.get(env).add(metadata);
+            configMetadata.get(env).add(behaviour);
         });
     }
 

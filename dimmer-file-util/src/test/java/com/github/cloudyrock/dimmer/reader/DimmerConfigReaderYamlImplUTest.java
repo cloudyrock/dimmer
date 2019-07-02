@@ -3,7 +3,6 @@ package com.github.cloudyrock.dimmer.reader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.github.cloudyrock.dimmer.FileConfigException;
 import com.github.cloudyrock.dimmer.DisplayName;
 import com.github.cloudyrock.dimmer.FileConfigException;
 import com.github.cloudyrock.dimmer.reader.models.DimmerConfig;
@@ -21,18 +20,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl.DIMMER_CONFIGURATION_FILE_COULD_NOT_BE_READ;
-import static com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl.DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY;
-import static com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl.DIMMER_CONFIG_EXCEPTION_INVALID_URL;
-import static com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl.DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH;
+import static com.github.cloudyrock.dimmer.reader.DimmerConfigReaderYamlImpl.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.junit.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DimmerConfigReaderYamlImplUTest {

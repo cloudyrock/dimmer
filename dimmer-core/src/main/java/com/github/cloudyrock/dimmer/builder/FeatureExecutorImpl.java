@@ -2,7 +2,7 @@ package com.github.cloudyrock.dimmer.builder;
 
 import com.github.cloudyrock.dimmer.*;
 import com.github.cloudyrock.dimmer.exception.DimmerConfigException;
-import com.github.cloudyrock.dimmer.metadata.*;
+import com.github.cloudyrock.dimmer.behaviour.*;
 
 import java.util.Map;
 import java.util.Objects;
@@ -11,7 +11,7 @@ import java.util.function.Function;
 /**
  * Class in charge of executing the Dimmer feature. It doesn't get involve in
  * intercepting, it just execute a feature with the given information matching
- * the metadata injected by the builder.
+ * the behaviour injected by the builder.
  */
 public class FeatureExecutorImpl implements FeatureExecutor {
 

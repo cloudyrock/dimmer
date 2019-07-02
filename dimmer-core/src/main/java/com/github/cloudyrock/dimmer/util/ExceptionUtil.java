@@ -1,4 +1,4 @@
-package com.github.cloudyrock.dimmer.metadata;
+package com.github.cloudyrock.dimmer.util;
 
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 import com.github.cloudyrock.dimmer.Preconditions;

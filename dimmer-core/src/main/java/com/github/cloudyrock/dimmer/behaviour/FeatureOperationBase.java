@@ -1,17 +1,18 @@
-package com.github.cloudyrock.dimmer.metadata;
+package com.github.cloudyrock.dimmer.behaviour;
 
+//TODO remove this
 public class FeatureOperationBase {
 
 	protected final String feature;
 	protected final String operation;
 
-	public FeatureOperationBase(String feature, String operation) {
+	FeatureOperationBase(String feature, String operation) {
 		checkProperty(feature, "Feature");
 		this.feature = feature;
 		this.operation = operation != null ? operation : "";
 	}
 
-	protected void checkProperty(String feature, String propertyName1) {
+	void checkProperty(String feature, String propertyName1) {
 		if(feature == null || feature.isEmpty()) {
 			throw new IllegalArgumentException(propertyName1 + " cannot be empty");
 		}

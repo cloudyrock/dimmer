@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 //TODO: add environment tests: configure different environment and ensure the behaviour is from the one executed
 //TODO: default environment
 //TODO: checking the right signature is injected
-//TODO: check updating defaultException
+//TODO: check changing defaultException
 //TODO: throwing an exception inside a behaviour should be propagated
 //TODO: configuration: when is in file, but not in builder, vice versa, etc.
 //TODO: throw config exception when method's signature and the value to return(withValue) mismatch

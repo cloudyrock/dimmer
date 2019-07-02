@@ -1,4 +1,4 @@
-package com.github.cloudyrock.dimmer.metadata;
+package com.github.cloudyrock.dimmer.behaviour;
 
 public class BehaviourKey extends FeatureOperationBase{
 

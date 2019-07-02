@@ -1,8 +1,12 @@
 package com.github.cloudyrock.dimmer.builder;
 
-import com.github.cloudyrock.dimmer.*;
-import com.github.cloudyrock.dimmer.exception.DimmerConfigException;
-import com.github.cloudyrock.dimmer.metadata.*;
+
+import com.github.cloudyrock.dimmer.DimmerLogger;
+import com.github.cloudyrock.dimmer.FeatureInvocation;
+import com.github.cloudyrock.dimmer.FeatureObservable;
+import com.github.cloudyrock.dimmer.FeatureUpdateEvent;
+import com.github.cloudyrock.dimmer.behaviour.BehaviourKey;
+import com.github.cloudyrock.dimmer.behaviour.Behaviour;
 
 import java.util.Map;
 import java.util.Set;
@@ -16,13 +20,13 @@ class FeatureBroker {
     private static final DimmerLogger logger = new DimmerLogger(FeatureBroker.class);
 
     private final FeatureObservable featureObservable;
-    private final Set<FeatureMetadata> featureActions;
+    private final Set<Behaviour> featureActions;
     private final Class<? extends RuntimeException> defaultException;
 
     private Consumer<Map<BehaviourKey, Function<FeatureInvocation, ?>>> subscriber;
 
     FeatureBroker(FeatureObservable featureObservable,
-                  Set<FeatureMetadata> featureActions,
+                  Set<Behaviour> featureActions,
                   Class<? extends RuntimeException> defaultException) {
         this.featureActions = featureActions;
         this.featureObservable = featureObservable;
@@ -44,7 +48,7 @@ class FeatureBroker {
             featureActions.stream()
                     .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
                     .peek(fm -> logger.info("APPLIED feature [{}]", fm.toString()))
-                    .collect(Collectors.toMap(FeatureMetadata::getKey, FeatureMetadata::getFunction));
+                    .collect(Collectors.toMap(Behaviour::getKey, Behaviour::getBehaviour));
             subscriber.accept(behaviours);
         }
 
