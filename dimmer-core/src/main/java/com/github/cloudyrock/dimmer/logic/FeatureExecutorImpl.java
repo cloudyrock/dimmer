@@ -1,7 +1,6 @@
-package com.github.cloudyrock.dimmer.builder;
+package com.github.cloudyrock.dimmer.logic;
 
 import com.github.cloudyrock.dimmer.*;
-import com.github.cloudyrock.dimmer.DimmerConfigException;
 
 import java.util.Map;
 import java.util.Objects;

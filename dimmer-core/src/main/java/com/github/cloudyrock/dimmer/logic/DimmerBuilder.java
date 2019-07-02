@@ -1,4 +1,4 @@
-package com.github.cloudyrock.dimmer.builder;
+package com.github.cloudyrock.dimmer.logic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;

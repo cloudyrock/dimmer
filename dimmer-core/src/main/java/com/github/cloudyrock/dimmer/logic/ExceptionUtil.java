@@ -1,8 +1,8 @@
-package com.github.cloudyrock.dimmer.builder;
+package com.github.cloudyrock.dimmer.logic;
 
+import com.github.cloudyrock.dimmer.DimmerConfigException;
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 import com.github.cloudyrock.dimmer.Preconditions;
-import com.github.cloudyrock.dimmer.DimmerConfigException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

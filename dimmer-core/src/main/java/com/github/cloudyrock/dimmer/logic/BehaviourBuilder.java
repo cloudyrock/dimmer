@@ -1,8 +1,6 @@
-package com.github.cloudyrock.dimmer.builder;
+package com.github.cloudyrock.dimmer.logic;
 
 import com.github.cloudyrock.dimmer.*;
-import com.github.cloudyrock.dimmer.DimmerConfigException;
-import com.github.cloudyrock.dimmer.DimmerInvocationException;
 import com.github.cloudyrock.dimmer.reader.DimmerConfigReader;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import org.aspectj.lang.Aspects;

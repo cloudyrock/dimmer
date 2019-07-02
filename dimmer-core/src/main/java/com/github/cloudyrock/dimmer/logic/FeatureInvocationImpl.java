@@ -1,9 +1,11 @@
-package com.github.cloudyrock.dimmer.builder;
+package com.github.cloudyrock.dimmer.logic;
+
+import com.github.cloudyrock.dimmer.FeatureInvocation;
 
 /**
  * Represents method call with all its information.
  */
-class FeatureInvocationImpl implements com.github.cloudyrock.dimmer.FeatureInvocation {
+class FeatureInvocationImpl implements FeatureInvocation {
     /**
      * Name of the feature covering the set of methods that define an entire functionality.
      */
