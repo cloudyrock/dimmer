@@ -6,6 +6,7 @@ import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import org.aspectj.lang.Aspects;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -18,8 +19,6 @@ public final class BehaviourBuilder {
 
     private static final DimmerLogger logger = new DimmerLogger(BehaviourBuilder.class);
 
-    private static final Class<? extends RuntimeException> INITIAL_DEFAULT_EXCEPTION_TYPE = DimmerInvocationException.class;
-
     private final Collection<String> environments;
 
     private final Map<String, Set<Behaviour>> configMetadata;
@@ -28,31 +27,27 @@ public final class BehaviourBuilder {
 
     private final DimmerConfigReader dimmerConfigReader;
 
+    private final List<Behaviour.BehaviourKey> featuresWithDefaultExceptions;
+
 
     BehaviourBuilder(
             Collection<String> environments,
             Map<String, Set<Behaviour>> configMetadata,
             DimmerConfigReader dimmerConfigReader) {
-        this(environments, configMetadata, DimmerInvocationException.class, dimmerConfigReader);
+        this(environments, configMetadata, DimmerInvocationException.class, dimmerConfigReader, new ArrayList<>());
     }
 
-    BehaviourBuilder(
+    private BehaviourBuilder(
             Collection<String> environments,
             Map<String, Set<Behaviour>> configMetadata,
             Class<? extends RuntimeException> defaultExceptionType,
-            DimmerConfigReader dimmerConfigReader) {
+            DimmerConfigReader dimmerConfigReader,
+            List<Behaviour.BehaviourKey> featuresWithDefaultExceptions) {
         this.environments = environments;
         this.configMetadata = configMetadata;
         this.defaultExceptionType = defaultExceptionType;
         this.dimmerConfigReader = dimmerConfigReader;
-    }
-
-    private BehaviourBuilder newInstance(
-            Collection<String> environments,
-            Map<String, Set<Behaviour>> configMetadata,
-            Class<? extends RuntimeException> defaultExceptionType,
-            DimmerConfigReader dimmerConfigReader) {
-        return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+        this.featuresWithDefaultExceptions = featuresWithDefaultExceptions;
     }
 
 
@@ -65,7 +60,7 @@ public final class BehaviourBuilder {
     public BehaviourBuilder environments(String... environments) {
         Preconditions.checkNullOrEmpty(environments, "environments");
         final List<String> envs = Arrays.asList(environments);
-        return newInstance(envs, configMetadata, defaultExceptionType, dimmerConfigReader);
+        return new BehaviourBuilder(envs, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
 
     /**
@@ -77,9 +72,9 @@ public final class BehaviourBuilder {
      */
     public BehaviourBuilder withProperties(String propertiesPath) {
         dimmerConfigReader.setPropertiesLocation(propertiesPath);
-        return this;
-    }
+        return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
 
+    }
 
 
     /**
@@ -106,7 +101,7 @@ public final class BehaviourBuilder {
 
         return interceptingFeature
                 ? featureWithBehaviour(feature, operation, behaviour)
-                : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
 
     }
 
@@ -131,7 +126,7 @@ public final class BehaviourBuilder {
             String operation,
             Function<FeatureInvocation, Object> behaviour) {
         addBehaviour(feature, operation, behaviour);
-        return newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+        return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
 
 
@@ -150,7 +145,7 @@ public final class BehaviourBuilder {
                                                                    String operation) {
         return interceptingFeature
                 ? featureWithDefaultException(feature, operation)
-                : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
 
     }
 
@@ -164,11 +159,12 @@ public final class BehaviourBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
     public BehaviourBuilder featureWithDefaultException(String feature, String operation) {
-
-        return featureWithBehaviour(
-                feature,
-                operation,
-                signature -> ExceptionUtil.throwException(DimmerInvocationException.class, signature));
+        featuresWithDefaultExceptions.add(new Behaviour.BehaviourKey(feature, operation));
+        return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
+//        return featureWithBehaviour(
+//                feature,
+//                operation,
+//                signature -> ExceptionUtil.throwException(DimmerInvocationException.class, signature));
     }
 
     /**
@@ -194,7 +190,7 @@ public final class BehaviourBuilder {
 
         return interceptingFeature
                 ? featureWithCustomException(feature, operation, exceptionType)
-                : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
 
     /**
@@ -216,7 +212,7 @@ public final class BehaviourBuilder {
             String operation,
             Class<? extends RuntimeException> exceptionType) {
         ExceptionUtil.checkExceptionConstructorType(exceptionType);
-        return featureWithBehaviour(feature, operation, signature-> ExceptionUtil.throwException(exceptionType, signature));
+        return featureWithBehaviour(feature, operation, signature -> ExceptionUtil.throwException(exceptionType, signature));
     }
 
 
@@ -241,7 +237,7 @@ public final class BehaviourBuilder {
 
         return interceptingFeature
                 ? featureWithValue(feature, operation, valueToReturn)
-                : newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
+                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
 
     /**
@@ -264,17 +260,6 @@ public final class BehaviourBuilder {
 
     }
 
-    private void addBehaviour(String feature, String operation, Function<FeatureInvocation, Object> behaviourFunction) {
-        Preconditions.checkNullOrEmpty(feature, "feature");
-        Preconditions.checkNullOrEmpty(operation, "operation");
-        Preconditions.checkNullOrEmpty(behaviourFunction, "behaviour");
-        environments.forEach(env -> {
-            if (!configMetadata.containsKey(env)) {
-                configMetadata.put(env, new HashSet<>());
-            }
-            configMetadata.get(env).add(new Behaviour(feature, operation, behaviourFunction));
-        });
-    }
 
     /**
      * Switch the default exception to the given one. This method can be executed several
@@ -290,14 +275,8 @@ public final class BehaviourBuilder {
             Class<? extends RuntimeException> newDefaultExceptionType) {
         Preconditions.checkNullOrEmpty(newDefaultExceptionType, "defaultExceptionType");
         ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
-        return newInstance(environments, configMetadata, newDefaultExceptionType, dimmerConfigReader);
+        return new BehaviourBuilder(environments, configMetadata, newDefaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
-
-
-    Class<? extends RuntimeException> getDefaultExceptionType() {
-        return this.defaultExceptionType != null ? defaultExceptionType : INITIAL_DEFAULT_EXCEPTION_TYPE;
-    }
-
 
 
     /**
@@ -308,19 +287,18 @@ public final class BehaviourBuilder {
      * @param environment Environment to run
      * @return Feature executor
      */
-    public void run(String environment) {
+    public void runWithEnvironment(String environment) throws DimmerConfigException{
 
-        final EnvironmentConfig environmentConfig;
         try {
-            environmentConfig = dimmerConfigReader.loadEnvironmentOrDefault(environment);
-        } catch (FileConfigException ex) {
+
+            featuresWithDefaultExceptions.forEach(this::addDefaultExceptionBehaviours);
+            final FeatureExecutorImpl featureExecutor = getFeatureExecutor(dimmerConfigReader.loadEnvironmentOrDefault(environment));
+            Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
+            logger.info("Dimmer Aspect running");
+            featureExecutor.getBroker().start();
+        } catch (Exception ex) {
             throw new DimmerConfigException(ex);
         }
-        final FeatureExecutorImpl featureExecutor = getFeatureExecutor(environmentConfig);
-        Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
-        logger.info("Dimmer Aspect running");
-        featureExecutor.getBroker().start();
-
     }
 
     /**
@@ -330,8 +308,8 @@ public final class BehaviourBuilder {
      *
      * @return Feature executor
      */
-    public void runWithDefaultEnvironment() {
-        run(null);
+    public void runWithDefaultEnvironment() throws DimmerConfigException {
+        runWithEnvironment(null);
     }
 
 
@@ -342,6 +320,25 @@ public final class BehaviourBuilder {
                 configMetadata.getOrDefault(environmentConfig.getName(), new HashSet<>()),
                 defaultExceptionType);
         return new FeatureExecutorImpl(broker);
+    }
+
+    private void addDefaultExceptionBehaviours(Behaviour.BehaviourKey key) {
+        addBehaviour(
+                key.getFeature(),
+                key.getOperation(),
+                signature -> ExceptionUtil.throwException(defaultExceptionType, signature));
+    }
+
+    private void addBehaviour(String feature, String operation, Function<FeatureInvocation, Object> behaviourFunction) {
+        Preconditions.checkNullOrEmpty(feature, "feature");
+        Preconditions.checkNullOrEmpty(operation, "operation");
+        Preconditions.checkNullOrEmpty(behaviourFunction, "behaviour");
+        environments.forEach(env -> {
+            if (!configMetadata.containsKey(env)) {
+                configMetadata.put(env, new HashSet<>());
+            }
+            configMetadata.get(env).add(new Behaviour(feature, operation, behaviourFunction));
+        });
     }
 
 

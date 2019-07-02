@@ -23,8 +23,7 @@ final class ExceptionUtil {
                     throw exceptionType.getConstructor().newInstance();
 
                 case FEATURE_INVOCATION_CONSTRUCTOR:
-                    throw exceptionType.getConstructor(FeatureInvocation.class)
-                            .newInstance(f);
+                    throw exceptionType.getConstructor(FeatureInvocation.class).newInstance(f);
                 case NO_COMPATIBLE_CONSTRUCTOR:
                 default:
                     //This cannot happen...unless enum is changed and the code is not
