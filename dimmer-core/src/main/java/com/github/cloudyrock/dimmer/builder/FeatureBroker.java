@@ -5,7 +5,6 @@ import com.github.cloudyrock.dimmer.DimmerLogger;
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 import com.github.cloudyrock.dimmer.FeatureObservable;
 import com.github.cloudyrock.dimmer.FeatureUpdateEvent;
-import com.github.cloudyrock.dimmer.behaviour.Behaviour;
 
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +44,7 @@ class FeatureBroker {
         if (featureActions != null && subscriber != null) {
             final Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours =
             featureActions.stream()
-                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getFeature()))
+                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getKey().getFeature()))
                     .peek(fm -> logger.info("APPLIED feature [{}]", fm.toString()))
                     .collect(Collectors.toMap(Behaviour::getKey, Behaviour::getBehaviour));
             subscriber.accept(behaviours);

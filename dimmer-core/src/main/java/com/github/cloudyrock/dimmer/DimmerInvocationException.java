@@ -1,4 +1,4 @@
-package com.github.cloudyrock.dimmer.exception;
+package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 

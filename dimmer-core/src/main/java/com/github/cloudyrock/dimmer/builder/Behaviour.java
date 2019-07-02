@@ -1,49 +1,30 @@
-package com.github.cloudyrock.dimmer.behaviour;
+package com.github.cloudyrock.dimmer.builder;
 
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 import com.github.cloudyrock.dimmer.Preconditions;
 
 import java.util.function.Function;
 
-public class Behaviour {
+class Behaviour {
 
 
-    private final String feature;
-    private final String operation;
+    private final BehaviourKey key;
     private final Function<FeatureInvocation, Object> behaviour;
 
-    public Behaviour(String feature,
-                     String operation,
-                     Function<FeatureInvocation, Object> behaviour) {
-        checkProperty(feature, "Feature");
-        this.feature = feature;
-        this.operation = operation != null ? operation : "";
+    Behaviour(String feature,
+              String operation,
+              Function<FeatureInvocation, Object> behaviour) {
+        this.key = new BehaviourKey(feature, operation);
         this.behaviour = behaviour;
     }
 
-
-    void checkProperty(String feature, String propertyName1) {
-        if(feature == null || feature.isEmpty()) {
-            throw new IllegalArgumentException(propertyName1 + " cannot be empty");
-        }
+    BehaviourKey getKey() {
+        return key;
     }
 
-    public String getFeature() {
-        return feature;
-    }
-
-    public String getOperation() {
-        return operation;
-    }
-
-    public Function<FeatureInvocation, Object> getBehaviour() {
+    Function<FeatureInvocation, Object> getBehaviour() {
         return behaviour;
     }
-
-    public BehaviourKey getKey() {
-        return new BehaviourKey(getFeature(), getOperation());
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -54,16 +35,13 @@ public class Behaviour {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
-        final Behaviour that = (Behaviour) o;
-
-        return feature.equals(that.feature) && operation.equals(that.operation);
+        return this.key.equals(((Behaviour) o).key);
     }
 
 
     @Override
     public int hashCode() {
-        return 31 * feature.hashCode() + operation.hashCode();
+        return key.hashCode();
     }
 
     public static class BehaviourKey {
@@ -71,18 +49,18 @@ public class Behaviour {
         private final String feature;
         private final String operation;
 
-        public BehaviourKey(String feature,
-                         String operation) {
+        BehaviourKey(String feature,
+                     String operation) {
             Preconditions.checkNullOrEmpty(feature, "feature");
             this.feature = feature;
             this.operation = operation != null ? operation : "";
         }
 
-        public String getFeature() {
+        String getFeature() {
             return feature;
         }
 
-        public String getOperation() {
+        String getOperation() {
             return operation;
         }
 

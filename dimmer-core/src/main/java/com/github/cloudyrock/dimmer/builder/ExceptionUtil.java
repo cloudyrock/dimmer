@@ -1,19 +1,19 @@
-package com.github.cloudyrock.dimmer.util;
+package com.github.cloudyrock.dimmer.builder;
 
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 import com.github.cloudyrock.dimmer.Preconditions;
-import com.github.cloudyrock.dimmer.exception.DimmerConfigException;
+import com.github.cloudyrock.dimmer.DimmerConfigException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public final class ExceptionUtil {
+final class ExceptionUtil {
 
     private ExceptionUtil() {
 
     }
 
-    public static Object throwException(Class<? extends RuntimeException> exceptionType,
+    static Object throwException(Class<? extends RuntimeException> exceptionType,
                                  FeatureInvocation f) {
         final ExceptionConstructorType constructorType =
                 getExceptionConstructorType(exceptionType);
@@ -37,7 +37,7 @@ public final class ExceptionUtil {
         }
     }
 
-    public static void checkExceptionConstructorType(
+    static void checkExceptionConstructorType(
             Class<? extends RuntimeException> exceptionType) {
         Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
@@ -53,7 +53,7 @@ public final class ExceptionUtil {
                 exceptionType.getSimpleName()));
     }
 
-    public static ExceptionConstructorType getExceptionConstructorType(
+    private static ExceptionConstructorType getExceptionConstructorType(
             Class<? extends RuntimeException> exceptionType) {
         Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
@@ -77,4 +77,7 @@ public final class ExceptionUtil {
         return constructorType;
     }
 
+    private enum ExceptionConstructorType {
+        NO_COMPATIBLE_CONSTRUCTOR, EMPTY_CONSTRUCTOR, FEATURE_INVOCATION_CONSTRUCTOR
+    }
 }

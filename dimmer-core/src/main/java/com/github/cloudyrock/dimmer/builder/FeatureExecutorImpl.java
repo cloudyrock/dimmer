@@ -1,8 +1,7 @@
 package com.github.cloudyrock.dimmer.builder;
 
 import com.github.cloudyrock.dimmer.*;
-import com.github.cloudyrock.dimmer.exception.DimmerConfigException;
-import com.github.cloudyrock.dimmer.behaviour.*;
+import com.github.cloudyrock.dimmer.DimmerConfigException;
 
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +12,7 @@ import java.util.function.Function;
  * intercepting, it just execute a feature with the given information matching
  * the behaviour injected by the builder.
  */
-public class FeatureExecutorImpl implements FeatureExecutor {
+class FeatureExecutorImpl implements FeatureExecutor {
 
     private static final String EXCEPTION_MESSAGE_CAST =
             "The expected return types between the real method and the configured function are mismatched";

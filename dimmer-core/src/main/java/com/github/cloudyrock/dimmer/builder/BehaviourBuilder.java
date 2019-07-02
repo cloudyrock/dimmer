@@ -1,12 +1,10 @@
 package com.github.cloudyrock.dimmer.builder;
 
 import com.github.cloudyrock.dimmer.*;
-import com.github.cloudyrock.dimmer.exception.DimmerConfigException;
-import com.github.cloudyrock.dimmer.exception.DimmerInvocationException;
-import com.github.cloudyrock.dimmer.behaviour.*;
+import com.github.cloudyrock.dimmer.DimmerConfigException;
+import com.github.cloudyrock.dimmer.DimmerInvocationException;
 import com.github.cloudyrock.dimmer.reader.DimmerConfigReader;
 import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
-import com.github.cloudyrock.dimmer.util.ExceptionUtil;
 import org.aspectj.lang.Aspects;
 
 import java.util.*;
@@ -22,11 +20,11 @@ public final class BehaviourBuilder {
 
     private static final DimmerLogger logger = new DimmerLogger(BehaviourBuilder.class);
 
-    private static final Class<? extends RuntimeException> DEFAULT_EXCEPTION_TYPE = DimmerInvocationException.class;
+    private static final Class<? extends RuntimeException> INITIAL_DEFAULT_EXCEPTION_TYPE = DimmerInvocationException.class;
 
     private final Collection<String> environments;
 
-    final Map<String, Set<Behaviour>> configMetadata;
+    private final Map<String, Set<Behaviour>> configMetadata;
 
     private final Class<? extends RuntimeException> defaultExceptionType;
 
@@ -134,15 +132,8 @@ public final class BehaviourBuilder {
             String feature,
             String operation,
             Function<FeatureInvocation, Object> behaviour) {
-        Preconditions.checkNullOrEmpty(behaviour, "behaviour");
-        final Behaviour metadata = new Behaviour(
-                feature,
-                operation,
-                behaviour
-        );
-        addBehaviour(metadata);
+        addBehaviour(feature, operation, behaviour);
         return newInstance(environments, configMetadata, defaultExceptionType, dimmerConfigReader);
-
     }
 
 
@@ -275,16 +266,15 @@ public final class BehaviourBuilder {
 
     }
 
-    private void addBehaviour(Behaviour behaviour) {
-        Preconditions.checkNullOrEmpty(behaviour);
-        Preconditions.checkNullOrEmpty(behaviour.getFeature(), "feature");
-        Preconditions.checkNullOrEmpty(behaviour.getOperation(), "operation");
-        Preconditions.checkNullOrEmpty(behaviour.getBehaviour(), "behaviour");
+    private void addBehaviour(String feature, String operation, Function<FeatureInvocation, Object> behaviourFunction) {
+        Preconditions.checkNullOrEmpty(feature, "feature");
+        Preconditions.checkNullOrEmpty(operation, "operation");
+        Preconditions.checkNullOrEmpty(behaviourFunction, "behaviour");
         environments.forEach(env -> {
             if (!configMetadata.containsKey(env)) {
                 configMetadata.put(env, new HashSet<>());
             }
-            configMetadata.get(env).add(behaviour);
+            configMetadata.get(env).add(new Behaviour(feature, operation, behaviourFunction));
         });
     }
 
@@ -307,7 +297,7 @@ public final class BehaviourBuilder {
 
 
     Class<? extends RuntimeException> getDefaultExceptionType() {
-        return this.defaultExceptionType != null ? defaultExceptionType : DEFAULT_EXCEPTION_TYPE;
+        return this.defaultExceptionType != null ? defaultExceptionType : INITIAL_DEFAULT_EXCEPTION_TYPE;
     }
 
 

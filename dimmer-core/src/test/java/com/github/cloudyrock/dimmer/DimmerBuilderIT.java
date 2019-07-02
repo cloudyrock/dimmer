@@ -2,7 +2,6 @@ package com.github.cloudyrock.dimmer;
 
 
 import com.github.cloudyrock.dimmer.builder.DimmerBuilder;
-import com.github.cloudyrock.dimmer.exception.DimmerInvocationException;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
