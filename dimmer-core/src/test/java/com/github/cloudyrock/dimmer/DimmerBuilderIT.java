@@ -260,7 +260,6 @@ public class DimmerBuilderIT {
             return REAL_VALUE;
         }
 
-
         @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_NULL)
         String operationWithNullValue() {
             return REAL_VALUE;
