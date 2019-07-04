@@ -13,8 +13,8 @@ import java.util.function.Function;
  */
 class FeatureExecutorImpl implements FeatureExecutor {
 
-    private static final String EXCEPTION_MESSAGE_CAST =
-            "The expected return types between the real method and the configured function are mismatched";
+    private static final String EXCEPTION_MISMATCHED_RETURNED_TYPE =
+            "Mismatched returned type for method[%s.%s()] with feature[%s] and operation[%s]: expected[%s], actual returned in behaviour[%s]";
 
     private Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours;
     private FeatureBroker broker;
@@ -58,16 +58,27 @@ class FeatureExecutorImpl implements FeatureExecutor {
     Object executeFeature(String feature, String operation, FeatureInvocation featureInvocation) {
         final Behaviour.BehaviourKey key = new Behaviour.BehaviourKey(feature, operation);
         final Object result = behaviours.get(key).apply(featureInvocation);
-        checkReturnType(featureInvocation.getReturnType(), result);
+        if (!isRightReturnedType(featureInvocation.getReturnType(), result)) {
+
+//            final String EXCEPTION_MISMATCHED_RETURNED_TYPE2 =
+//                    "Mismatched returned type for method[%s.%s] with feature[%s] and operation[%s]: expected[%s], actual returned in behaviour[%s]";
+            String message = String.format(EXCEPTION_MISMATCHED_RETURNED_TYPE,
+                    featureInvocation.getDeclaringType().getSimpleName(),
+                    featureInvocation.getMethodName(),
+                    feature,
+                    operation,
+                    featureInvocation.getReturnType().getSimpleName(),
+                    result.getClass().getSimpleName());
+
+
+            throw new DimmerConfigException(message);
+        }
         return result;
     }
 
     @SuppressWarnings("unchecked")
-    static void checkReturnType(Class returnType, Object behaviourResult) {
-        if (!Objects.isNull(behaviourResult)
-                && !returnType.isAssignableFrom(behaviourResult.getClass())) {
-            throw new DimmerConfigException(EXCEPTION_MESSAGE_CAST);
-        }
+    static boolean isRightReturnedType(Class returnType, Object behaviourResult) {
+        return Objects.isNull(behaviourResult) || returnType.isAssignableFrom(behaviourResult.getClass());
     }
 
     private void logDimmerInterception(String feature,
@@ -80,7 +91,6 @@ class FeatureExecutorImpl implements FeatureExecutor {
                 feature,
                 operation);
     }
-
 
 
 }

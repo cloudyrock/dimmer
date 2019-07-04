@@ -10,8 +10,6 @@ import org.junit.rules.ExpectedException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-
-//TODO: throw config exception when method's signature and the value to return(withValue) mismatch
 //TODO: add environment tests: configure different environment and ensure the behaviour is from the one executed
 //TODO: configuration: when is in file, but not in builder, vice versa, etc.
 //TODO: Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type
@@ -37,6 +35,7 @@ public class DimmerBuilderIT {
     private static final String OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION = "OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION";
     private static final String OPERATION_VALUE = "OPERATION_VALUE";
     private static final String OPERATION_VALUE_NULL = "OPERATION_VALUE_NULL";
+    private static final String OPERATION_VALUE_MISMATCHING = "OPERATION_VALUE_MISMATCHING";
     private static final String OPERATION_CUSTOM_EXCEPTION = "OPERATION_CUSTOM_EXCEPTION";
     private static final String OPERATION_DEFAULT_EXCEPTION = "OPERATION_DEFAULT_EXCEPTION";
     private static final String OPERATION_RETURNS_CUSTOM_OBJECT = "OPERATION_RETURNS_CUSTOM_OBJECT";
@@ -73,6 +72,7 @@ public class DimmerBuilderIT {
                 })
                 .featureWithValue(FEATURE_FIXED, OPERATION_VALUE, TOGGLED_OFF_VALUE)
                 .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_NULL, null)
+                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_MISMATCHING, 1L)
                 .featureWithCustomException(FEATURE_FIXED, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
                 .featureWithDefaultException(FEATURE_FIXED, OPERATION_DEFAULT_EXCEPTION)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_RETURNS_CUSTOM_OBJECT, f-> new ReturnedClassChild(CHILD_VALUE))
@@ -143,6 +143,17 @@ public class DimmerBuilderIT {
     public void shouldReturnNullValue() {
         setUp();
         assertNull(testFeaturedClass.operationWithNullValue());
+    }
+
+    @Test
+    @DisplayName("Should return null when it's configured to return null as value")
+    public void shouldThrowExceptionWhenMismatchingReturnType() {
+        setUp();
+        expectedException.expect(DimmerConfigException.class);
+        expectedException.expectMessage("Mismatched returned " +
+                "type for method[TestFeaturedClass.operationWithMismatchedReturnValue()] with feature[FEATURE_FIXED] " +
+                "and operation[OPERATION_VALUE_MISMATCHING]: expected[String], actual returned in behaviour[Long]");
+        assertNull(testFeaturedClass.operationWithMismatchedReturnValue());
     }
 
     @Test(expected = CustomException.class)
@@ -262,6 +273,11 @@ public class DimmerBuilderIT {
 
         @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_NULL)
         String operationWithNullValue() {
+            return REAL_VALUE;
+        }
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_MISMATCHING)
+        String operationWithMismatchedReturnValue() {
             return REAL_VALUE;
         }
 
