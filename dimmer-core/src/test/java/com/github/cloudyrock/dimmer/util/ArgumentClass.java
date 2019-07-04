@@ -1,13 +1,13 @@
-package com.github.cloudyrock.dimmer;
+package com.github.cloudyrock.dimmer.util;
 
 import java.util.Objects;
 
-class ArgumentClass {
+public class ArgumentClass {
 
 
     private final String value;
 
-    ArgumentClass(String value) {
+    public ArgumentClass(String value) {
         this.value = value;
     }
 
