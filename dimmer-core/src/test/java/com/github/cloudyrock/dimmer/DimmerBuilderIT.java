@@ -3,7 +3,6 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
 import com.github.cloudyrock.dimmer.logic.DimmerBuilder;
-import com.sun.org.apache.xpath.internal.Arg;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -33,13 +32,13 @@ public class DimmerBuilderIT {
     private static final String FEATURE_CONDITIONAL_TRUE = "FEATURE_CONDITIONAL_TRUE";
 
     //OPERATIONS
-    private static final String OPERATION_1_BEHAVIOUR = "OPERATION_1_BEHAVIOUR";
-    private static final String OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION = "OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION";
-    private static final String OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION = "OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION";
-    private static final String OPERATION_1_VALUE = "OPERATION_1_VALUE";
-    private static final String OPERATION_1_VALUE_NULL = "OPERATION_1_VALUE_NULL";
-    private static final String OPERATION_1_CUSTOM_EXCEPTION = "OPERATION_1_CUSTOM_EXCEPTION";
-    private static final String OPERATION_1_DEFAULT_EXCEPTION = "OPERATION_1_DEFAULT_EXCEPTION";
+    private static final String OPERATION_BEHAVIOUR = "OPERATION_BEHAVIOUR";
+    private static final String OPERATION_BEHAVIOUR_THROWING_EXCEPTION = "OPERATION_BEHAVIOUR_THROWING_EXCEPTION";
+    private static final String OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION = "OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION";
+    private static final String OPERATION_VALUE = "OPERATION_VALUE";
+    private static final String OPERATION_VALUE_NULL = "OPERATION_VALUE_NULL";
+    private static final String OPERATION_CUSTOM_EXCEPTION = "OPERATION_CUSTOM_EXCEPTION";
+    private static final String OPERATION_DEFAULT_EXCEPTION = "OPERATION_DEFAULT_EXCEPTION";
     private static final String OPERATION_RETURNS_CUSTOM_OBJECT = "OPERATION_RETURNS_CUSTOM_OBJECT";
 
     //VALUES
@@ -60,11 +59,11 @@ public class DimmerBuilderIT {
     public static <T extends RuntimeException> void setUp(Class<T> defaultException, String executedEnv) {
         BehaviourBuilder builder = DimmerBuilder
                 .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
-                .featureWithBehaviour(FEATURE_FIXED, OPERATION_1_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
-                .featureWithBehaviour(FEATURE_FIXED, OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION, f -> {throw new DummyRuntimeException();})
-                .featureWithBehaviour(FEATURE_FIXED, OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f -> {
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_THROWING_EXCEPTION, f -> {throw new DummyRuntimeException();})
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f -> {
                     assertEquals(FEATURE_FIXED, f.getFeature());
-                    assertEquals(OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f.getOperation());
+                    assertEquals(OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f.getOperation());
                     assertEquals("operationWithBehaviourCheckingInvocation", f.getMethodName());
                     assertEquals(String.class, f.getReturnType());
                     assertEquals(TestFeaturedClass.class, f.getDeclaringType());
@@ -72,23 +71,23 @@ public class DimmerBuilderIT {
                     assertEquals(new ArgumentClass("value1"), f.getArgs()[1]);
                     return BEHAVIOUR_VALUE;
                 })
-                .featureWithValue(FEATURE_FIXED, OPERATION_1_VALUE, TOGGLED_OFF_VALUE)
-                .featureWithValue(FEATURE_FIXED, OPERATION_1_VALUE_NULL, null)
-                .featureWithCustomException(FEATURE_FIXED, OPERATION_1_CUSTOM_EXCEPTION, CustomException.class)
-                .featureWithDefaultException(FEATURE_FIXED, OPERATION_1_DEFAULT_EXCEPTION)
+                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE, TOGGLED_OFF_VALUE)
+                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_NULL, null)
+                .featureWithCustomException(FEATURE_FIXED, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
+                .featureWithDefaultException(FEATURE_FIXED, OPERATION_DEFAULT_EXCEPTION)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_RETURNS_CUSTOM_OBJECT, f-> new ReturnedClassChild(CHILD_VALUE))
 
                 //conditional configuration non executing(false)
-                .featureWithBehaviourConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
-                .featureWithValueConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_VALUE, TOGGLED_OFF_VALUE)
-                .featureWithCustomExceptionConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_CUSTOM_EXCEPTION, CustomException.class)
-                .featureWithDefaultExceptionConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_1_DEFAULT_EXCEPTION)
+                .featureWithBehaviourConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
+                .featureWithValueConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_VALUE, TOGGLED_OFF_VALUE)
+                .featureWithCustomExceptionConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
+                .featureWithDefaultExceptionConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_DEFAULT_EXCEPTION)
 
                 //conditional configuration executing(true)
-                .featureWithBehaviourConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
-                .featureWithValueConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_VALUE, TOGGLED_OFF_VALUE)
-                .featureWithCustomExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_CUSTOM_EXCEPTION, CustomException.class)
-                .featureWithDefaultExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_DEFAULT_EXCEPTION)
+                .featureWithBehaviourConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
+                .featureWithValueConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_VALUE, TOGGLED_OFF_VALUE)
+                .featureWithCustomExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
+                .featureWithDefaultExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_DEFAULT_EXCEPTION)
                 .withProperties(LOCAL_CONFIG_FILE);
 
         run(setExceptionIfRequired(defaultException, builder), executedEnv);
@@ -241,80 +240,80 @@ public class DimmerBuilderIT {
     static class TestFeaturedClass {
 
         //FEATURE_FIXED
-        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_BEHAVIOUR)
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_BEHAVIOUR)
         String operationWithBehaviourFixed() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION)
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_BEHAVIOUR_THROWING_EXCEPTION)
         String operationWithBehaviourThrowingExceptionInside() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION)
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION)
         String operationWithBehaviourCheckingInvocation(String arg1, ArgumentClass arg2) {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_VALUE)
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE)
         String operationWithValueFixed() {
             return REAL_VALUE;
         }
 
 
-        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_VALUE_NULL)
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_NULL)
         String operationWithNullValue() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_CUSTOM_EXCEPTION)
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_CUSTOM_EXCEPTION)
         String operationWithCustomExceptionFixed() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_DEFAULT_EXCEPTION)
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_DEFAULT_EXCEPTION)
         String operationWithDefaultExceptionFixed() {
             return REAL_VALUE;
         }
 
         //FEATURE_CONDITIONAL_FALSE
-        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_1_BEHAVIOUR)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_BEHAVIOUR)
         String operationWithBehaviourConditionalFalse() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_1_VALUE)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_VALUE)
         String operationWithValueConditionalFalse() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_1_CUSTOM_EXCEPTION)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_CUSTOM_EXCEPTION)
         String operationWithCustomExceptionConditionalFalse() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_1_DEFAULT_EXCEPTION)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_FALSE, op = OPERATION_DEFAULT_EXCEPTION)
         String operationWithDefaultExceptionConditionalFalse() {
             return REAL_VALUE;
         }
 
         //FEATURE_CONDITIONAL_FALSE
-        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_1_BEHAVIOUR)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_BEHAVIOUR)
         String operationWithBehaviourConditionalTrue() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_1_VALUE)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_VALUE)
         String operationWithValueConditionalTrue() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_1_CUSTOM_EXCEPTION)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_CUSTOM_EXCEPTION)
         String operationWithCustomExceptionConditionalTrue() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_1_DEFAULT_EXCEPTION)
+        @DimmerFeature(value = FEATURE_CONDITIONAL_TRUE, op = OPERATION_DEFAULT_EXCEPTION)
         String operationWithDefaultExceptionConditionalTrue() {
             return REAL_VALUE;
         }
@@ -326,13 +325,13 @@ public class DimmerBuilderIT {
 
     }
 
-    public static class ReturnedClassParent {
+    static class ReturnedClassParent {
     }
 
     public static class ReturnedClassChild extends ReturnedClassParent {
-        public String value;
+        String value;
 
-        public ReturnedClassChild(String value) {
+        ReturnedClassChild(String value) {
             this.value = value;
         }
     }
