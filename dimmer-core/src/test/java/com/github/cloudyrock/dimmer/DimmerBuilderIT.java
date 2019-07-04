@@ -3,18 +3,18 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
 import com.github.cloudyrock.dimmer.logic.DimmerBuilder;
+import com.sun.org.apache.xpath.internal.Arg;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-//TODO: add environment tests: configure different environment and ensure the behaviour is from the one executed
-//TODO: checking the right signature is injected
-//TODO: throwing an exception inside a behaviour should be propagated
-//TODO: configuration: when is in file, but not in builder, vice versa, etc.
+
 //TODO: throw config exception when method's signature and the value to return(withValue) mismatch
-//TODO: should return a null value when withValue
+//TODO: add environment tests: configure different environment and ensure the behaviour is from the one executed
+//TODO: configuration: when is in file, but not in builder, vice versa, etc.
 //TODO: Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type
 //TODO: Should get FeatureInvocation as parameter when featureWithCustomException
 //TODO: invalid file
@@ -31,9 +31,13 @@ public class DimmerBuilderIT {
     private static final String FEATURE_FIXED = "FEATURE_FIXED";
     private static final String FEATURE_CONDITIONAL_FALSE = "FEATURE_CONDITIONAL_FALSE";
     private static final String FEATURE_CONDITIONAL_TRUE = "FEATURE_CONDITIONAL_TRUE";
+
     //OPERATIONS
     private static final String OPERATION_1_BEHAVIOUR = "OPERATION_1_BEHAVIOUR";
+    private static final String OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION = "OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION";
+    private static final String OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION = "OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION";
     private static final String OPERATION_1_VALUE = "OPERATION_1_VALUE";
+    private static final String OPERATION_1_VALUE_NULL = "OPERATION_1_VALUE_NULL";
     private static final String OPERATION_1_CUSTOM_EXCEPTION = "OPERATION_1_CUSTOM_EXCEPTION";
     private static final String OPERATION_1_DEFAULT_EXCEPTION = "OPERATION_1_DEFAULT_EXCEPTION";
     private static final String OPERATION_RETURNS_CUSTOM_OBJECT = "OPERATION_RETURNS_CUSTOM_OBJECT";
@@ -44,19 +48,32 @@ public class DimmerBuilderIT {
     private static final String REAL_VALUE = "real_value";
     private static final String CHILD_VALUE = "CHILD_VALUE";
 
-    @Rule public ExpectedException exception = ExpectedException.none();
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     private static final TestFeaturedClass testFeaturedClass = new TestFeaturedClass();
 
     public static void setUp() {
-        setUp(null);
+        setUp(null, null);
     }
 
-    public static <T extends RuntimeException> void setUp(Class<T> defaultException) {
+    public static <T extends RuntimeException> void setUp(Class<T> defaultException, String executedEnv) {
         BehaviourBuilder builder = DimmerBuilder
                 .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_1_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION, f -> {throw new DummyRuntimeException();})
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f -> {
+                    assertEquals(FEATURE_FIXED, f.getFeature());
+                    assertEquals(OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f.getOperation());
+                    assertEquals("operationWithBehaviourCheckingInvocation", f.getMethodName());
+                    assertEquals(String.class, f.getReturnType());
+                    assertEquals(TestFeaturedClass.class, f.getDeclaringType());
+                    assertEquals("value-1", f.getArgs()[0]);
+                    assertEquals(new ArgumentClass("value1"), f.getArgs()[1]);
+                    return BEHAVIOUR_VALUE;
+                })
                 .featureWithValue(FEATURE_FIXED, OPERATION_1_VALUE, TOGGLED_OFF_VALUE)
+                .featureWithValue(FEATURE_FIXED, OPERATION_1_VALUE_NULL, null)
                 .featureWithCustomException(FEATURE_FIXED, OPERATION_1_CUSTOM_EXCEPTION, CustomException.class)
                 .featureWithDefaultException(FEATURE_FIXED, OPERATION_1_DEFAULT_EXCEPTION)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_RETURNS_CUSTOM_OBJECT, f-> new ReturnedClassChild(CHILD_VALUE))
@@ -74,12 +91,23 @@ public class DimmerBuilderIT {
                 .featureWithDefaultExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_1_DEFAULT_EXCEPTION)
                 .withProperties(LOCAL_CONFIG_FILE);
 
+        run(setExceptionIfRequired(defaultException, builder), executedEnv);
+    }
+
+    private static <T extends RuntimeException> BehaviourBuilder setExceptionIfRequired(Class<T> defaultException, BehaviourBuilder builder) {
         if(defaultException != null) {
             builder = builder.setDefaultExceptionType(defaultException);
         }
-        builder.runWithDefaultEnvironment();
+        return builder;
     }
 
+    private static void run(BehaviourBuilder builder, String executedEnv) {
+        if(executedEnv != null ) {
+            builder.runWithEnvironment(executedEnv);
+        } else {
+            builder.runWithDefaultEnvironment();
+        }
+    }
 
     @Test
     @DisplayName("Should run behaviour when it's fixed behaviour-configured(non conditional)")
@@ -89,10 +117,33 @@ public class DimmerBuilderIT {
     }
 
     @Test
+    @DisplayName("Should inject the right FeatureInvocation to the behaviour")
+    public void shouldInjectTheRightFeatureInvocation() {
+        setUp();
+        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourCheckingInvocation("value-1", new ArgumentClass("value1")));
+    }
+
+    @Test
+    @DisplayName("Should throw exception inside behaviour")
+    public void shouldThrowExceptionInsideBehaviour() {
+        setUp();
+        expectedException.expect(DummyRuntimeException.class);
+        expectedException.expectMessage(DummyRuntimeException.MESSAGE);
+        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourThrowingExceptionInside());
+    }
+
+    @Test
     @DisplayName("Should return value when it's fixed value-configured(non conditional)")
     public void shouldReturnValueNonConditional() {
         setUp();
         assertEquals(TOGGLED_OFF_VALUE, testFeaturedClass.operationWithValueFixed());
+    }
+
+    @Test
+    @DisplayName("Should return null when it's configured to return null as value")
+    public void shouldReturnNullValue() {
+        setUp();
+        assertNull(testFeaturedClass.operationWithNullValue());
     }
 
     @Test(expected = CustomException.class)
@@ -114,7 +165,7 @@ public class DimmerBuilderIT {
     @Test(expected = NewDefaultExceptionException.class)
     @DisplayName("Should throw default exception when it's fixed default-exception-configured(non conditional)")
     public void shouldThrowDefaultExceptionUpdatedNonConditional() {
-        setUp(NewDefaultExceptionException.class);
+        setUp(NewDefaultExceptionException.class, null);
         testFeaturedClass.operationWithDefaultExceptionFixed();
     }
 
@@ -195,8 +246,24 @@ public class DimmerBuilderIT {
             return REAL_VALUE;
         }
 
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_BEHAVIOUR_THROWING_EXCEPTION)
+        String operationWithBehaviourThrowingExceptionInside() {
+            return REAL_VALUE;
+        }
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_BEHAVIOUR_CHECKING_FEATURE_INVOCATION)
+        String operationWithBehaviourCheckingInvocation(String arg1, ArgumentClass arg2) {
+            return REAL_VALUE;
+        }
+
         @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_VALUE)
         String operationWithValueFixed() {
+            return REAL_VALUE;
+        }
+
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_1_VALUE_NULL)
+        String operationWithNullValue() {
             return REAL_VALUE;
         }
 
