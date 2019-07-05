@@ -1,11 +1,11 @@
 package com.github.cloudyrock.dimmer;
 
 
+import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
 import com.github.cloudyrock.dimmer.util.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.internal.matchers.Contains;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -23,18 +23,23 @@ public class DimmerBuilderIT {
     public ExpectedException expectedException = ExpectedException.none();
     
     private static final TestFeaturedClass testFeaturedClass = new TestFeaturedClass();
+    
+    private BehaviourBuilder getBuilderWithBasicConfiguration() {
+        return BuilderTestUtil.basicSetUp()
+                .withProperties(LOCAL_CONFIG_FILE);
+    }
 
     @Test
     @DisplayName("Should run behaviour when it's fixed behaviour-configured(non conditional)")
     public void shouldRunBehaviourNonConditional() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();
         assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourFixed());
     }
 
     @Test
     @DisplayName("Should return value when it's fixed value-configured(non conditional)")
     public void shouldReturnValueNonConditional() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         assertEquals(TOGGLED_OFF_VALUE, testFeaturedClass.operationWithValueFixed());
     }
 
@@ -42,7 +47,7 @@ public class DimmerBuilderIT {
     @Test
     @DisplayName("Should return null when it's configured to return null as value")
     public void shouldThrowExceptionWhenMismatchingReturnType() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         expectedException.expect(DimmerConfigException.class);
         expectedException.expectMessage("Mismatched returned " +
                 "type for method[TestFeaturedClass.operationWithMismatchedReturnValue()] with feature[FEATURE_FIXED] " +
@@ -53,14 +58,14 @@ public class DimmerBuilderIT {
     @Test(expected = CustomException.class)
     @DisplayName("Should throw custom exception when it's custom-exception-fixed configured(non conditional)")
     public void shouldThrowCustomExceptionNonConditional() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         testFeaturedClass.operationWithCustomExceptionFixed();
     }
 
     @Test(expected = DimmerInvocationException.class)
     @DisplayName("Should throw default exception when it's fixed default-exception-configured(non conditional)")
     public void shouldThrowDefaultExceptionNonConditional() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();
         testFeaturedClass.operationWithDefaultExceptionFixed();
     }
 
@@ -69,7 +74,7 @@ public class DimmerBuilderIT {
     @Test(expected = NewDefaultExceptionException.class)
     @DisplayName("Should throw default exception when it's fixed default-exception-configured(non conditional)")
     public void shouldThrowDefaultExceptionUpdatedNonConditional() {
-        BuilderTestUtil.setUp(NewDefaultExceptionException.class, null);
+        getBuilderWithBasicConfiguration().setDefaultExceptionType(NewDefaultExceptionException.class).runWithDefaultEnvironment();
         testFeaturedClass.operationWithDefaultExceptionFixed();
     }
 

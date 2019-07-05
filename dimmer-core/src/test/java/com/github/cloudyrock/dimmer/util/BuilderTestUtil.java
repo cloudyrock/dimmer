@@ -12,12 +12,8 @@ public final class BuilderTestUtil {
 
     }
 
-    public static void setUp() {
-        setUp(null, null);
-    }
-
-    public static <T extends RuntimeException> void setUp(Class<T> defaultException, String executedEnv) {
-        BehaviourBuilder builder = DimmerBuilder
+    public static BehaviourBuilder basicSetUp() {
+        return DimmerBuilder
                 .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_THROWING_EXCEPTION, f -> {throw new DummyRuntimeException();})
@@ -48,24 +44,22 @@ public final class BuilderTestUtil {
                 .featureWithBehaviourConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
                 .featureWithValueConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_VALUE, TOGGLED_OFF_VALUE)
                 .featureWithCustomExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
-                .featureWithDefaultExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_DEFAULT_EXCEPTION)
-                .withProperties(LOCAL_CONFIG_FILE);
+                .featureWithDefaultExceptionConditional(true, FEATURE_CONDITIONAL_TRUE, OPERATION_DEFAULT_EXCEPTION);
 
-        run(setExceptionIfRequired(defaultException, builder), executedEnv);
     }
 
-    private static <T extends RuntimeException> BehaviourBuilder setExceptionIfRequired(Class<T> defaultException, BehaviourBuilder builder) {
-        if(defaultException != null) {
-            builder = builder.setDefaultExceptionType(defaultException);
-        }
-        return builder;
-    }
-
-    private static void run(BehaviourBuilder builder, String executedEnv) {
-        if(executedEnv != null ) {
-            builder.runWithEnvironment(executedEnv);
-        } else {
-            builder.runWithDefaultEnvironment();
-        }
-    }
+//    private static <T extends RuntimeException> BehaviourBuilder setExceptionIfRequired(Class<T> defaultException, BehaviourBuilder builder) {
+//        if(defaultException != null) {
+//            builder = builder.setDefaultExceptionType(defaultException);
+//        }
+//        return builder;
+//    }
+//
+//    private static void run(BehaviourBuilder builder, String executedEnv) {
+//        if(executedEnv != null ) {
+//            builder.runWithEnvironment(executedEnv);
+//        } else {
+//            builder.runWithDefaultEnvironment();
+//        }
+//    }
 }

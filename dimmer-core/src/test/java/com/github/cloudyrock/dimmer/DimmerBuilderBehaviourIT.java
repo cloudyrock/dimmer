@@ -1,6 +1,7 @@
 package com.github.cloudyrock.dimmer;
 
 
+import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
 import com.github.cloudyrock.dimmer.util.*;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,10 +18,15 @@ public class DimmerBuilderBehaviourIT {
     
     private static final TestFeaturedClass testFeaturedClass = new TestFeaturedClass();
 
+    private BehaviourBuilder getBuilderWithBasicConfiguration() {
+        return BuilderTestUtil.basicSetUp()
+                .withProperties(LOCAL_CONFIG_FILE);
+    }
+
     @Test
     @DisplayName("Should return child value when behaviour returns child and methods's signature indicates parent ")
     public void shouldReturnChildValueOfInstanceOfParent() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         TestFeaturedClass.ReturnedClassParent parent = testFeaturedClass.operationReturnsCustomObject();
         TestFeaturedClass.ReturnedClassChild child = (TestFeaturedClass.ReturnedClassChild) parent;
         assertEquals(CHILD_VALUE, child.getValue());
@@ -29,14 +35,14 @@ public class DimmerBuilderBehaviourIT {
     @Test
     @DisplayName("Should inject the right FeatureInvocation to the behaviour")
     public void shouldInjectTheRightFeatureInvocation() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourCheckingInvocation("value-1", new ArgumentClass("value1")));
     }
 
     @Test
     @DisplayName("Should throw exception inside behaviour")
     public void shouldThrowExceptionInsideBehaviour() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         expectedException.expect(DummyRuntimeException.class);
         expectedException.expectMessage(DummyRuntimeException.MESSAGE);
         assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourThrowingExceptionInside());
@@ -45,7 +51,7 @@ public class DimmerBuilderBehaviourIT {
     @Test
     @DisplayName("Should return null when it's configured to return null as value")
     public void shouldReturnNullValue() {
-        BuilderTestUtil.setUp();
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         assertNull(testFeaturedClass.operationWithNullValue());
     }
 }
