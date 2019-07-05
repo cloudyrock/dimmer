@@ -44,17 +44,6 @@ public class DimmerBuilderIT {
     }
 
 
-    @Test
-    @DisplayName("Should return null when it's configured to return null as value")
-    public void shouldThrowExceptionWhenMismatchingReturnType() {
-        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
-        expectedException.expect(DimmerConfigException.class);
-        expectedException.expectMessage("Mismatched returned " +
-                "type for method[TestFeaturedClass.operationWithMismatchedReturnValue()] with feature[FEATURE_FIXED] " +
-                "and operation[OPERATION_VALUE_MISMATCHING]: expected[String], actual returned in behaviour[Long]");
-        assertNull(testFeaturedClass.operationWithMismatchedReturnValue());
-    }
-
     @Test(expected = CustomException.class)
     @DisplayName("Should throw custom exception when it's custom-exception-fixed configured(non conditional)")
     public void shouldThrowCustomExceptionNonConditional() {

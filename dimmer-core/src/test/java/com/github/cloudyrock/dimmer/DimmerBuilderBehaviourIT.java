@@ -16,10 +16,24 @@ public class DimmerBuilderBehaviourIT {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     
-    private static final TestFeaturedClass testFeaturedClass = new TestFeaturedClass();
+    private static final TestFeaturedClassBehaviours testFeaturedClass = new TestFeaturedClassBehaviours();
 
     private BehaviourBuilder getBuilderWithBasicConfiguration() {
         return BuilderTestUtil.basicSetUp()
+                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_NULL, null)
+                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_MISMATCHING, 1L)
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_THROWING_EXCEPTION, f -> {throw new DummyRuntimeException();})
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_RETURNS_CUSTOM_OBJECT, f-> new TestFeaturedClass.ReturnedClassChild(CHILD_VALUE))
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f -> {
+                    assertEquals(FEATURE_FIXED, f.getFeature());
+                    assertEquals(OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f.getOperation());
+                    assertEquals("operationWithBehaviourCheckingInvocation", f.getMethodName());
+                    assertEquals(String.class, f.getReturnType());
+                    assertEquals(TestFeaturedClassBehaviours.class, f.getDeclaringType());
+                    assertEquals("value-1", f.getArgs()[0]);
+                    assertEquals(new ArgumentClass("value1"), f.getArgs()[1]);
+                    return BEHAVIOUR_VALUE;
+                })
                 .withProperties(LOCAL_CONFIG_FILE);
     }
 
@@ -35,7 +49,7 @@ public class DimmerBuilderBehaviourIT {
     @Test
     @DisplayName("Should inject the right FeatureInvocation to the behaviour")
     public void shouldInjectTheRightFeatureInvocation() {
-        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();
         assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourCheckingInvocation("value-1", new ArgumentClass("value1")));
     }
 
@@ -53,5 +67,48 @@ public class DimmerBuilderBehaviourIT {
     public void shouldReturnNullValue() {
         getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         assertNull(testFeaturedClass.operationWithNullValue());
+    }
+
+    @Test
+    @DisplayName("Should return null when it's configured to return null as value")
+    public void shouldThrowExceptionWhenMismatchingReturnType() {
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
+        expectedException.expect(DimmerConfigException.class);
+        expectedException.expectMessage("Mismatched returned " +
+                "type for method[TestFeaturedClassBehaviours.operationWithMismatchedReturnValue()] with feature[FEATURE_FIXED] " +
+                "and operation[OPERATION_VALUE_MISMATCHING]: expected[String], actual returned in behaviour[Long]");
+        assertNull(testFeaturedClass.operationWithMismatchedReturnValue());
+    }
+
+
+    static class TestFeaturedClassBehaviours {
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_RETURNS_CUSTOM_OBJECT)
+        TestFeaturedClass.ReturnedClassParent operationReturnsCustomObject() {
+            return new TestFeaturedClass.ReturnedClassParent();
+        }
+
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_BEHAVIOUR_THROWING_EXCEPTION)
+        String operationWithBehaviourThrowingExceptionInside() {
+            return REAL_VALUE;
+        }
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION)
+        String operationWithBehaviourCheckingInvocation(String arg1, ArgumentClass arg2) {
+            return REAL_VALUE;
+        }
+
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_NULL)
+        String operationWithNullValue() {
+            return REAL_VALUE;
+        }
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_MISMATCHING)
+        String operationWithMismatchedReturnValue() {
+            return REAL_VALUE;
+        }
+
     }
 }

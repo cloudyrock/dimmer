@@ -16,23 +16,9 @@ public final class BuilderTestUtil {
         return DimmerBuilder
                 .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
-                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_THROWING_EXCEPTION, f -> {throw new DummyRuntimeException();})
-                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f -> {
-                    assertEquals(FEATURE_FIXED, f.getFeature());
-                    assertEquals(OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION, f.getOperation());
-                    assertEquals("operationWithBehaviourCheckingInvocation", f.getMethodName());
-                    assertEquals(String.class, f.getReturnType());
-                    assertEquals(TestFeaturedClass.class, f.getDeclaringType());
-                    assertEquals("value-1", f.getArgs()[0]);
-                    assertEquals(new ArgumentClass("value1"), f.getArgs()[1]);
-                    return BEHAVIOUR_VALUE;
-                })
                 .featureWithValue(FEATURE_FIXED, OPERATION_VALUE, TOGGLED_OFF_VALUE)
-                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_NULL, null)
-                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_MISMATCHING, 1L)
                 .featureWithCustomException(FEATURE_FIXED, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
                 .featureWithDefaultException(FEATURE_FIXED, OPERATION_DEFAULT_EXCEPTION)
-                .featureWithBehaviour(FEATURE_FIXED, OPERATION_RETURNS_CUSTOM_OBJECT, f-> new TestFeaturedClass.ReturnedClassChild(CHILD_VALUE))
 
                 //conditional configuration non executing(false)
                 .featureWithBehaviourConditional(false, FEATURE_CONDITIONAL_FALSE, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)

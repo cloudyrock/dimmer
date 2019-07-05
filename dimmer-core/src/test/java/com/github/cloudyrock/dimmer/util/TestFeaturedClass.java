@@ -14,30 +14,15 @@ public class TestFeaturedClass {
         return REAL_VALUE;
     }
 
-    @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_BEHAVIOUR_THROWING_EXCEPTION)
-    public String operationWithBehaviourThrowingExceptionInside() {
-        return REAL_VALUE;
-    }
-
-    @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_BEHAVIOUR_CHECKING_FEATURE_INVOCATION)
-    public String operationWithBehaviourCheckingInvocation(String arg1, ArgumentClass arg2) {
-        return REAL_VALUE;
-    }
-
     @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE)
     public String operationWithValueFixed() {
         return REAL_VALUE;
     }
 
-    @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_NULL)
-    public String operationWithNullValue() {
-        return REAL_VALUE;
-    }
 
-    @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_MISMATCHING)
-    public String operationWithMismatchedReturnValue() {
-        return REAL_VALUE;
-    }
+
+
+
 
     @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_CUSTOM_EXCEPTION)
     public String operationWithCustomExceptionFixed() {
@@ -91,10 +76,7 @@ public class TestFeaturedClass {
         return REAL_VALUE;
     }
 
-    @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_RETURNS_CUSTOM_OBJECT)
-    public ReturnedClassParent operationReturnsCustomObject() {
-        return new ReturnedClassParent();
-    }
+
 
 
     public static class ReturnedClassParent {
