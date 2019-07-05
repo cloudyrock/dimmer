@@ -12,7 +12,7 @@ import org.junit.rules.ExpectedException;
 
 import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.*;
 import static org.junit.Assert.assertEquals;
-//TODO: invalid file
+
 //TODO: configuration: when it's in file, but not in builder, vice versa, etc.
 //TODO: Should throw DimmerConfigException when real method is void and Configuration of the Feature Invocation has a return type
 //TODO: Should get FeatureInvocation as parameter when featureWithCustomException
