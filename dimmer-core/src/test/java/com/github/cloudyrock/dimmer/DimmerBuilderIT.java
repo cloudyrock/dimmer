@@ -32,34 +32,12 @@ public class DimmerBuilderIT {
     }
 
     @Test
-    @DisplayName("Should inject the right FeatureInvocation to the behaviour")
-    public void shouldInjectTheRightFeatureInvocation() {
-        BuilderTestUtil.setUp();
-        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourCheckingInvocation("value-1", new ArgumentClass("value1")));
-    }
-
-    @Test
-    @DisplayName("Should throw exception inside behaviour")
-    public void shouldThrowExceptionInsideBehaviour() {
-        BuilderTestUtil.setUp();
-        expectedException.expect(DummyRuntimeException.class);
-        expectedException.expectMessage(DummyRuntimeException.MESSAGE);
-        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourThrowingExceptionInside());
-    }
-
-    @Test
     @DisplayName("Should return value when it's fixed value-configured(non conditional)")
     public void shouldReturnValueNonConditional() {
         BuilderTestUtil.setUp();
         assertEquals(TOGGLED_OFF_VALUE, testFeaturedClass.operationWithValueFixed());
     }
 
-    @Test
-    @DisplayName("Should return null when it's configured to return null as value")
-    public void shouldReturnNullValue() {
-        BuilderTestUtil.setUp();
-        assertNull(testFeaturedClass.operationWithNullValue());
-    }
 
     @Test
     @DisplayName("Should return null when it's configured to return null as value")
@@ -94,84 +72,5 @@ public class DimmerBuilderIT {
         BuilderTestUtil.setUp(NewDefaultExceptionException.class, null);
         testFeaturedClass.operationWithDefaultExceptionFixed();
     }
-
-    //CONDITIONAL FALSE
-    @Test
-    @DisplayName("Should return real value when it's conditional-false behaviour-configured")
-    public void shouldReturnRealValueWhenBehaviourIfConditionalFalse() {
-        BuilderTestUtil.setUp();
-        assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourConditionalFalse());
-    }
-
-    @Test
-    @DisplayName("Should return real value when it's conditional-false value-configured")
-    public void shouldReturnRealValueWhenValueIfConditionalFalse() {
-        BuilderTestUtil.setUp();
-        assertEquals(REAL_VALUE, testFeaturedClass.operationWithValueConditionalFalse());
-    }
-
-    @Test
-    @DisplayName("Should return real value when it's conditional-false custom-exception-configured")
-    public void shouldReturnRealValueWhenCustomExceptionIfConditionalFalse() {
-        BuilderTestUtil.setUp();
-        assertEquals(REAL_VALUE, testFeaturedClass.operationWithCustomExceptionConditionalFalse());
-    }
-
-    @Test
-    @DisplayName("Should return real value when it's conditional-false default-exception-configured")
-    public void shouldReturnRealValueWhenDefaultExceptionIfConditionalFalse() {
-        BuilderTestUtil.setUp();
-        assertEquals(REAL_VALUE, testFeaturedClass.operationWithDefaultExceptionConditionalFalse());
-    }
-
-    //CONDITIONAL TRUE
-    @Test
-    @DisplayName("Should run behaviour when it's conditional-true behaviour-configured")
-    public void shouldRunBehaviourConditionalTrue() {
-        BuilderTestUtil.setUp();
-        assertEquals(BEHAVIOUR_VALUE, testFeaturedClass.operationWithBehaviourConditionalTrue());
-    }
-
-    @Test
-    @DisplayName("Should return value when it's conditional-true value-configured")
-    public void shouldReturnValueConditionalTrue() {
-        BuilderTestUtil.setUp();
-        assertEquals(TOGGLED_OFF_VALUE, testFeaturedClass.operationWithValueConditionalTrue());
-    }
-
-    @Test(expected = CustomException.class)
-    @DisplayName("Should throw custom exception when it's conditional-true custom-exception-configured")
-    public void shouldThrowCustomExceptionConditionalTrue() {
-        BuilderTestUtil.setUp();
-        testFeaturedClass.operationWithCustomExceptionConditionalTrue();
-    }
-
-    @Test(expected = DimmerInvocationException.class)
-    @DisplayName("Should throw default exception when it's conditional-true default-exception-configured")
-    public void shouldThrowDefaultExceptionConditionalTrue() {
-        BuilderTestUtil.setUp();
-        testFeaturedClass.operationWithDefaultExceptionConditionalTrue();
-    }
-
-    //GENERAL
-    @Test
-    @DisplayName("Should run behaviour when it's conditional-true behaviour-configured")
-    public void shouldWorkReturningAnInstanceOfAChildClass() {
-        BuilderTestUtil.setUp();
-        TestFeaturedClass.ReturnedClassParent parent = testFeaturedClass.operationReturnsCustomObject();
-        TestFeaturedClass.ReturnedClassChild child = (TestFeaturedClass.ReturnedClassChild) parent;
-        assertEquals(CHILD_VALUE, child.getValue());
-    }
-
-    //Environments
-    @Test
-    @DisplayName("Should throw default exception when it's conditional-true default-exception-configured")
-    public void shouldThrowConfigurationExceptionWhenRunningNonExistingEnvironment() {
-        expectedException.expect(DimmerConfigException.class);
-        expectedException.expectMessage(new Contains("The selected environment doesn't exist in the Dimmer configuration file"));
-        expectedException.expectMessage(new Contains("WRONG-ENV"));
-        BuilderTestUtil.setUp(DimmerInvocationException.class, "WRONG-ENV");
-    }
-
 
 }
