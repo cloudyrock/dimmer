@@ -1,10 +1,8 @@
 package com.github.cloudyrock.dimmer.util;
 
-import com.github.cloudyrock.dimmer.DimmerBuilderIT;
 import com.github.cloudyrock.dimmer.DimmerFeature;
 
 import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.*;
-import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.OPERATION_RETURNS_CUSTOM_OBJECT;
 
 public class TestFeaturedClass {
 

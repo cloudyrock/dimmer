@@ -20,7 +20,6 @@ public class DimmerBuilderBehaviourIT {
     public ExpectedException expectedException = ExpectedException.none();
     
     private static final TestFeaturedClassBehaviours testFeaturedClass = new TestFeaturedClassBehaviours();
-
     private BehaviourBuilder getBuilderWithBasicConfiguration() {
         return DimmerBuilder
                 .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
