@@ -2,7 +2,10 @@ package com.github.cloudyrock.dimmer;
 
 
 import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
-import com.github.cloudyrock.dimmer.util.*;
+import com.github.cloudyrock.dimmer.logic.DimmerBuilder;
+import com.github.cloudyrock.dimmer.util.ArgumentClass;
+import com.github.cloudyrock.dimmer.util.DummyRuntimeException;
+import com.github.cloudyrock.dimmer.util.TestFeaturedClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,7 +22,8 @@ public class DimmerBuilderBehaviourIT {
     private static final TestFeaturedClassBehaviours testFeaturedClass = new TestFeaturedClassBehaviours();
 
     private BehaviourBuilder getBuilderWithBasicConfiguration() {
-        return BuilderTestUtil.basicSetUp()
+        return DimmerBuilder
+                .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
                 .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_NULL, null)
                 .featureWithValue(FEATURE_FIXED, OPERATION_VALUE_MISMATCHING, 1L)
                 .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR_THROWING_EXCEPTION, f -> {throw new DummyRuntimeException();})

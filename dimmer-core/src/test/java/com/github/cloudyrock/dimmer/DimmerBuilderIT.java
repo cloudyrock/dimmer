@@ -2,14 +2,16 @@ package com.github.cloudyrock.dimmer;
 
 
 import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
-import com.github.cloudyrock.dimmer.util.*;
+import com.github.cloudyrock.dimmer.logic.DimmerBuilder;
+import com.github.cloudyrock.dimmer.util.CustomException;
+import com.github.cloudyrock.dimmer.util.NewDefaultExceptionException;
+import com.github.cloudyrock.dimmer.util.TestFeaturedClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.*;
+import static org.junit.Assert.assertEquals;
 
 //TODO: add environment tests: configure different environment and ensure the behaviour is from the one executed
 //TODO: configuration: when it's in file, but not in builder, vice versa, etc.
@@ -25,7 +27,12 @@ public class DimmerBuilderIT {
     private static final TestFeaturedClass testFeaturedClass = new TestFeaturedClass();
     
     private BehaviourBuilder getBuilderWithBasicConfiguration() {
-        return BuilderTestUtil.basicSetUp()
+        return DimmerBuilder
+                .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
+                .featureWithBehaviour(FEATURE_FIXED, OPERATION_BEHAVIOUR, f -> BEHAVIOUR_VALUE)
+                .featureWithValue(FEATURE_FIXED, OPERATION_VALUE, TOGGLED_OFF_VALUE)
+                .featureWithCustomException(FEATURE_FIXED, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
+                .featureWithDefaultException(FEATURE_FIXED, OPERATION_DEFAULT_EXCEPTION)
                 .withProperties(LOCAL_CONFIG_FILE);
     }
 

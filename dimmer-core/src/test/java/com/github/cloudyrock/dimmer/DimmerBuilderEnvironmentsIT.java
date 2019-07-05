@@ -2,13 +2,14 @@ package com.github.cloudyrock.dimmer;
 
 
 import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
+import com.github.cloudyrock.dimmer.logic.DimmerBuilder;
 import com.github.cloudyrock.dimmer.util.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.internal.matchers.Contains;
 
-import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.LOCAL_CONFIG_FILE;
+import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -20,7 +21,8 @@ public class DimmerBuilderEnvironmentsIT {
 
 
     private BehaviourBuilder getBuilderWithBasicConfiguration() {
-        return BuilderTestUtil.basicSetUp()
+        return DimmerBuilder
+                .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
                 .withProperties(LOCAL_CONFIG_FILE);
     }
 
