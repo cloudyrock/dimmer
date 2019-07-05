@@ -297,7 +297,7 @@ public final class BehaviourBuilder {
             logger.info("Dimmer Aspect running");
             featureExecutor.getBroker().start();
         } catch (Exception ex) {
-            throw new DimmerConfigException(ex);
+            throw new DimmerConfigException(ex.getMessage());
         }
     }
 
