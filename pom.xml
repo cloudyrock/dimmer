@@ -152,12 +152,13 @@
         <!-- Local check for pull requests -->
         <profile>
             <id>noCoverage</id>
+            <activation><activeByDefault>true</activeByDefault></activation>
         </profile>
 
 
         <profile>
             <id>withCoverage</id>
-            <activation><activeByDefault>true</activeByDefault></activation>
+<!--            <activation><activeByDefault>true</activeByDefault></activation>-->
             <build>
                 <plugins>
                     <plugin>
