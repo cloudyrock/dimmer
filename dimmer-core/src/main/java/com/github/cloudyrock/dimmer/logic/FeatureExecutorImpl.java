@@ -60,8 +60,6 @@ class FeatureExecutorImpl implements FeatureExecutor {
         final Object result = behaviours.get(key).apply(featureInvocation);
         if (!isRightReturnedType(featureInvocation.getReturnType(), result)) {
 
-//            final String EXCEPTION_MISMATCHED_RETURNED_TYPE2 =
-//                    "Mismatched returned type for method[%s.%s] with feature[%s] and operation[%s]: expected[%s], actual returned in behaviour[%s]";
             String message = String.format(EXCEPTION_MISMATCHED_RETURNED_TYPE,
                     featureInvocation.getDeclaringType().getSimpleName(),
                     featureInvocation.getMethodName(),
