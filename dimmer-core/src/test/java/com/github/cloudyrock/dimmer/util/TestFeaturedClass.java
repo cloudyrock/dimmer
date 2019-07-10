@@ -32,7 +32,7 @@ public class TestFeaturedClass {
         return REAL_VALUE;
     }
 
-    @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_DEFAULT_EXCEPTION_WITH_FEATURE_INVOCATION)
+    @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_DEFAULT_EXCEPTION)
     public String operationWithDefaultExceptionWithFeatureInvocation(String arg1, ArgumentClass arg2) {
         return REAL_VALUE;
     }
