@@ -73,7 +73,7 @@ public class DimmerBuilderBehaviourIT {
     }
 
     @Test
-    @DisplayName("Should return null when it's configured to return null as value")
+    @DisplayName("Should throw exception qhen mistmached type between real method and feature configuration")
     public void shouldThrowExceptionWhenMismatchingReturnType() {
         getBuilderWithBasicConfiguration().runWithDefaultEnvironment();;
         expectedException.expect(DimmerConfigException.class);
@@ -83,6 +83,17 @@ public class DimmerBuilderBehaviourIT {
         assertNull(testFeaturedClass.operationWithMismatchedReturnValue());
     }
 
+
+    @Test
+    @DisplayName("Should throw exception qhen mistmached type between real method returning void and feature configuration")
+    public void shouldThrowExceptionWhenMismatchingReturnTypeBecauseOfVoid() {
+        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();
+        expectedException.expect(DimmerConfigException.class);
+        expectedException.expectMessage("Mismatched returned " +
+                "type for method[TestFeaturedClassBehaviours.operationReturningVoid()] with feature[FEATURE_FIXED] " +
+                "and operation[OPERATION_VALUE_MISMATCHING]: expected[void], actual returned in behaviour[Long]");
+        testFeaturedClass.operationReturningVoid();
+    }
 
     static class TestFeaturedClassBehaviours {
 
@@ -111,6 +122,10 @@ public class DimmerBuilderBehaviourIT {
         @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_MISMATCHING)
         String operationWithMismatchedReturnValue() {
             return REAL_VALUE;
+        }
+
+        @DimmerFeature(value = FEATURE_FIXED, op = OPERATION_VALUE_MISMATCHING)
+        void operationReturningVoid() {
         }
 
     }
