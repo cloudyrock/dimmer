@@ -1,7 +1,8 @@
 package com.github.cloudyrock.dimmer.util;
 
 public class ConstantsTestUtil {
-    public static final String LOCAL_CONFIG_FILE = "dimmer-it-test.yml";
+    public static final String CONFIG_FILE_FOR_BEHAVIOURS_TEST = "dimmer-config-file-default-it.yml";
+    public static final String CONFIG_FILE_FOR_CONFIG_FILE_TEST = "dimmer-config-file-default-it.yml";
 
     //ENVIRONMENTS
     public static final String DEV_ENVIRONMENT= "dev";

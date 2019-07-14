@@ -27,7 +27,7 @@ public class DimmerBuilderIT {
                 .featureWithValue(FEATURE_FIXED, OPERATION_VALUE, TOGGLED_OFF_VALUE)
                 .featureWithCustomException(FEATURE_FIXED, OPERATION_CUSTOM_EXCEPTION, CustomException.class)
                 .featureWithDefaultException(FEATURE_FIXED, OPERATION_DEFAULT_EXCEPTION)
-                .withProperties(LOCAL_CONFIG_FILE);
+                .withProperties(CONFIG_FILE_FOR_BEHAVIOURS_TEST);
     }
 
     @Test

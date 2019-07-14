@@ -44,7 +44,7 @@ public class DimmerBuilderConfigFileIT {
     @Test
     @DisplayName("Should not throw exception when building a behaviour which is not in the config file")
     public void shouldNoThrowConfigurationExceptionWhenBuildingBehaviourForNonExistingFeatureInConfigFile() {
-        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
+        getBuilderWithBasicConfiguration(CONFIG_FILE_FOR_CONFIG_FILE_TEST)
                 .featureWithValue("NON_EXISTING_FEATURE", "NON_EXISTING_OPERATION", "whateverValue")
                 .runWithEnvironment(DEV_ENVIRONMENT);
     }
@@ -52,14 +52,14 @@ public class DimmerBuilderConfigFileIT {
     @Test
     @DisplayName("Should not throw exception when not building a behaviour which appears in the config file")
     public void shouldNoThrowConfigurationExceptionWhenNotBuildingBehaviourForExistingFeatureInConfigFile() {
-        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
+        getBuilderWithBasicConfiguration(CONFIG_FILE_FOR_CONFIG_FILE_TEST)
                 .runWithEnvironment(DEV_ENVIRONMENT);
     }
 
     @Test
     @DisplayName("Should run real method when the feature is in toggledOn and behaviour configured")
     public void shouldRunRealMethodWhenFeatureIsToggledOn() {
-        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
+        getBuilderWithBasicConfiguration(CONFIG_FILE_FOR_CONFIG_FILE_TEST)
                 .featureWithValue(FEATURE_FIXED, OPERATION_BEHAVIOUR, BEHAVIOUR_VALUE)
                 .runWithEnvironment(ENVIRONMENT_WITH_TOGGLE_ON_FEATURES);
         Assert.assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourFixed());
@@ -68,7 +68,7 @@ public class DimmerBuilderConfigFileIT {
     @Test
     @DisplayName("Should run real method when the feature is in toggledOn and behaviour no configured")
     public void shouldRunRealMethodWhenFeatureIsToggledOnOn() {
-        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE).runWithEnvironment(ENVIRONMENT_WITH_TOGGLE_ON_FEATURES);
+        getBuilderWithBasicConfiguration(CONFIG_FILE_FOR_CONFIG_FILE_TEST).runWithEnvironment(ENVIRONMENT_WITH_TOGGLE_ON_FEATURES);
         Assert.assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourFixed());
     }
 }

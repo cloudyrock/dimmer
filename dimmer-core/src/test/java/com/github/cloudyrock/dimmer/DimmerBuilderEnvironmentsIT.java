@@ -10,8 +10,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.internal.matchers.Contains;
 
 import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 
 public class DimmerBuilderEnvironmentsIT {
@@ -21,7 +20,7 @@ public class DimmerBuilderEnvironmentsIT {
 
     private static final TestFeaturedClassEnvironments testedClass = new TestFeaturedClassEnvironments();
 
-    private static final String FEATURE_NEUTRAL_ENVS = "FEATURE_NEUTRAL_ENV";
+    private static final String FEATURE_ALL_ENVS = "FEATURE_ALL_ENVS";
     private static final String FEATURE_DEV_ENV = "FEATURE_DEV_ENV";
     private static final String FEATURE_DEFAULT_ENV = "FEATURE_DEFAULT_ENV";
 
@@ -32,15 +31,15 @@ public class DimmerBuilderEnvironmentsIT {
     private BehaviourBuilder getBuilderWithBasicConfiguration() {
         return DimmerBuilder
                 .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
-                .featureWithBehaviour(FEATURE_NEUTRAL_ENVS, OPERATION_ENV_BEHAVIOUR, f-> "NEUTRAL_ENVS_BEHAVIOUR")
-                .featureWithValue(FEATURE_NEUTRAL_ENVS, OPERATION_ENV_VALUE, "NEUTRAL_ENVS_VALUE")
+                .featureWithBehaviour(FEATURE_ALL_ENVS, OPERATION_ENV_BEHAVIOUR, f-> "NEUTRAL_ENVS_BEHAVIOUR")
+                .featureWithValue(FEATURE_ALL_ENVS, OPERATION_ENV_VALUE, "NEUTRAL_ENVS_VALUE")
                 .environments(DEV_ENVIRONMENT)
                 .featureWithBehaviour(FEATURE_DEV_ENV, OPERATION_ENV_BEHAVIOUR, f-> "DEV_ENV_BEHAVIOUR")
                 .featureWithValue(FEATURE_DEV_ENV, OPERATION_ENV_VALUE, "DEV_ENV_VALUE")
                 .environments(DEFAULT_ENVIRONMENT)
                 .featureWithBehaviour(FEATURE_DEFAULT_ENV, OPERATION_ENV_BEHAVIOUR, f-> "DEFAULT_ENV_BEHAVIOUR")
                 .featureWithValue(FEATURE_DEFAULT_ENV, OPERATION_ENV_VALUE, "DEFAULT_ENV_VALUE")
-                .withProperties(LOCAL_CONFIG_FILE);
+                .withProperties("dimmer-config-file-for-environments-test.yml");
     }
 
     @Test
@@ -53,44 +52,67 @@ public class DimmerBuilderEnvironmentsIT {
     }
 
     @Test
-    @DisplayName("Should return toggled-off values for features/operations for the default and neutral environments")
-    public void shouldReturnToggledOffValuesForDefaultAndNeutralEnvironments() {
-        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();
+    @DisplayName("Should return toggled-off values for features/operations for the default and all environments")
+    public void shouldReturnToggledOffValuesForDefaultAndAllEnvironments() {
+        BehaviourBuilder builder = getBuilderWithBasicConfiguration();
+        builder.runWithDefaultEnvironment();
 
-        assertEquals("NEUTRAL_ENVS_BEHAVIOUR", testedClass.operationNeutralEnvsBehaviour());
-        assertEquals("NEUTRAL_ENVS_VALUE", testedClass.operationNeutralEnvsValue());
+        assertEquals("NEUTRAL_ENVS_BEHAVIOUR", testedClass.operationForAllEnvsBehaviour());
+        assertEquals("NEUTRAL_ENVS_VALUE", testedClass.operationForAllEnvsValue());
 
         assertEquals("DEFAULT_ENV_BEHAVIOUR", testedClass.operationDefaultEnvBehaviour());
         assertEquals("DEFAULT_ENV_VALUE", testedClass.operationDefaultEnvValue());
 
-        assertEquals(REAL_VALUE, testedClass.operationDevEnvBehaviour());
-        assertEquals(REAL_VALUE, testedClass.operationDevEnvValue());
+        try {
+            testedClass.operationDevEnvBehaviour();
+            fail();
+        } catch (DimmerInvocationException ex) {
+            // Exception successfully thrown
+        }
+
+        try {
+            testedClass.operationDevEnvValue();
+            fail();
+        } catch (DimmerInvocationException ex) {
+            // Exception successfully thrown
+        }
     }
 
     @Test
-    @DisplayName("Should return toggled-off values for features/operations for the dev and neutral environments")
-    public void shouldReturnToggledOffValuesForDevAndNeutralEnvironments() {
+    @DisplayName("Should return toggled-off values for features/operations for the dev and both-configured environments")
+    public void shouldReturnToggledOffValuesForDevAndAllEnvironments() {
         getBuilderWithBasicConfiguration().runWithEnvironment(DEV_ENVIRONMENT);
 
-        assertEquals("NEUTRAL_ENVS_BEHAVIOUR", testedClass.operationNeutralEnvsBehaviour());
-        assertEquals("NEUTRAL_ENVS_VALUE", testedClass.operationNeutralEnvsValue());
+        assertEquals("NEUTRAL_ENVS_BEHAVIOUR", testedClass.operationForAllEnvsBehaviour());
+        assertEquals("NEUTRAL_ENVS_VALUE", testedClass.operationForAllEnvsValue());
 
         assertEquals("DEV_ENV_BEHAVIOUR", testedClass.operationDevEnvBehaviour());
         assertEquals("DEV_ENV_VALUE", testedClass.operationDevEnvValue());
 
-        assertEquals(REAL_VALUE, testedClass.operationDefaultEnvBehaviour());
-        assertEquals(REAL_VALUE, testedClass.operationDefaultEnvValue());
+        try {
+            testedClass.operationDefaultEnvBehaviour();
+            fail();
+        } catch (DimmerInvocationException ex) {
+            // Exception successfully thrown
+        }
+
+        try {
+            testedClass.operationDefaultEnvValue();
+            fail();
+        } catch (DimmerInvocationException ex) {
+            // Exception successfully thrown
+        }
     }
 
     public static class TestFeaturedClassEnvironments extends TestFeaturedClass{
 
-        @DimmerFeature(value = FEATURE_NEUTRAL_ENVS, op = OPERATION_ENV_BEHAVIOUR)
-        String operationNeutralEnvsBehaviour() {
+        @DimmerFeature(value = FEATURE_ALL_ENVS, op = OPERATION_ENV_BEHAVIOUR)
+        String operationForAllEnvsBehaviour() {
             return REAL_VALUE;
         }
 
-        @DimmerFeature(value = FEATURE_NEUTRAL_ENVS, op = OPERATION_ENV_VALUE)
-        String operationNeutralEnvsValue() {
+        @DimmerFeature(value = FEATURE_ALL_ENVS, op = OPERATION_ENV_VALUE)
+        String operationForAllEnvsValue() {
             return REAL_VALUE;
         }
 

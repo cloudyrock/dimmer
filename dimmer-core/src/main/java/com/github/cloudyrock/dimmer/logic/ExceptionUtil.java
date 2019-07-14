@@ -30,9 +30,10 @@ final class ExceptionUtil {
         switch (constructorType) {
             case EMPTY_CONSTRUCTOR:
                 exception = exceptionType.getConstructor().newInstance();
-
+                break;
             case FEATURE_INVOCATION_CONSTRUCTOR:
                 exception = exceptionType.getConstructor(FeatureInvocation.class).newInstance(f);
+                break;
             case NO_COMPATIBLE_CONSTRUCTOR:
             default:
                 //This cannot happen...unless enum is changed and the code is not

@@ -37,7 +37,7 @@ public class DimmerBuilderBehaviourIT {
                     assertEquals(new ArgumentClass("value1"), f.getArgs()[1]);
                     return BEHAVIOUR_VALUE;
                 })
-                .withProperties(LOCAL_CONFIG_FILE);
+                .withProperties(CONFIG_FILE_FOR_BEHAVIOURS_TEST);
     }
 
     @Test
