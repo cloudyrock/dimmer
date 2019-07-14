@@ -52,7 +52,7 @@ public class DimmerBuilderEnvironmentsIT {
     }
 
     @Test
-    @DisplayName("Should return toggled-off values for features/operations for the default and all environments")
+    @DisplayName("Should return toggled-off values for features/operations for the default and all-configured environments")
     public void shouldReturnToggledOffValuesForDefaultAndAllEnvironments() {
         BehaviourBuilder builder = getBuilderWithBasicConfiguration();
         builder.runWithDefaultEnvironment();
@@ -79,7 +79,7 @@ public class DimmerBuilderEnvironmentsIT {
     }
 
     @Test
-    @DisplayName("Should return toggled-off values for features/operations for the dev and both-configured environments")
+    @DisplayName("Should return toggled-off values for features/operations for the dev and all-configured environments")
     public void shouldReturnToggledOffValuesForDevAndAllEnvironments() {
         getBuilderWithBasicConfiguration().runWithEnvironment(DEV_ENVIRONMENT);
 
