@@ -4,15 +4,15 @@ dimmer:
     defaultEnvironment:
       default: true
       toggledOn:
-        - FEATURE_FIXED
-        - FEATURE_CONDITIONAL_FALSE
-        - FEATURE_CONDITIONAL_TRUE
-        - FEATURE_NEUTRAL_ENV
-        - FEATURE_DEFAULT_ENV
+#        - FEATURE_FIXED
+#        - FEATURE_CONDITIONAL_FALSE
+#        - FEATURE_CONDITIONAL_TRUE
+#        - FEATURE_NEUTRAL_ENV
+#        - FEATURE_DEFAULT_ENV
     dev:
       toggledOn:
-        - FEATURE1
-        - FEATURE_NEUTRAL_ENV
-        - FEATURE_DEV_ENV
+#        - FEATURE1
+#        - FEATURE_NEUTRAL_ENV
+#        - FEATURE_DEV_ENV
     prod:
       server: http://asdasd.com:880

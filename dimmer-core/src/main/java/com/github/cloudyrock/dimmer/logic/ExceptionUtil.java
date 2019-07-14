@@ -15,25 +15,31 @@ final class ExceptionUtil {
 
     static Object throwException(Class<? extends RuntimeException> exceptionType,
                                  FeatureInvocation f) {
-        final ExceptionConstructorType constructorType =
-                getExceptionConstructorType(exceptionType);
         try {
-            switch (constructorType) {
-                case EMPTY_CONSTRUCTOR:
-                    throw exceptionType.getConstructor().newInstance();
-
-                case FEATURE_INVOCATION_CONSTRUCTOR:
-                    throw exceptionType.getConstructor(FeatureInvocation.class).newInstance(f);
-                case NO_COMPATIBLE_CONSTRUCTOR:
-                default:
-                    //This cannot happen...unless enum is changed and the code is not
-                    //updated
-                    throw new DimmerConfigException(constructorType + " not compatible");
-            }
+            throw createExceptionInstance(exceptionType, f);
         } catch (InstantiationException | IllegalAccessException |
                 InvocationTargetException | NoSuchMethodException e) {
             throw new DimmerConfigException(e);
         }
+    }
+
+    static RuntimeException createExceptionInstance(Class<? extends RuntimeException> exceptionType,
+                                                            FeatureInvocation f) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        RuntimeException exception;
+        final ExceptionConstructorType constructorType = getExceptionConstructorType(exceptionType);
+        switch (constructorType) {
+            case EMPTY_CONSTRUCTOR:
+                exception = exceptionType.getConstructor().newInstance();
+
+            case FEATURE_INVOCATION_CONSTRUCTOR:
+                exception = exceptionType.getConstructor(FeatureInvocation.class).newInstance(f);
+            case NO_COMPATIBLE_CONSTRUCTOR:
+            default:
+                //This cannot happen...unless enum is changed and the code is not
+                //updated
+                exception = new DimmerConfigException(constructorType + " not compatible");
+        }
+        return exception;
     }
 
     static void checkExceptionConstructorType(

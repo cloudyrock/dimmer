@@ -6,6 +6,7 @@ import com.github.cloudyrock.dimmer.FeatureInvocation;
 import com.github.cloudyrock.dimmer.FeatureObservable;
 import com.github.cloudyrock.dimmer.FeatureUpdateEvent;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -21,7 +22,7 @@ class FeatureBroker {
     private final Set<Behaviour> featureActions;
     private final Class<? extends RuntimeException> defaultException;
 
-    private Consumer<Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>>> subscriber;
+    private Consumer<FeatureExecutionPlan> subscriber;
 
     FeatureBroker(FeatureObservable featureObservable,
                   Set<Behaviour> featureActions,
@@ -35,7 +36,7 @@ class FeatureBroker {
         featureObservable.subscribe(this::process);
     }
 
-    void setSubscriber(Consumer<Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>>> subscriber) {
+    void setSubscriber(Consumer<FeatureExecutionPlan> subscriber) {
         this.subscriber = subscriber;
     }
 
@@ -44,10 +45,13 @@ class FeatureBroker {
         if (featureActions != null && subscriber != null) {
             final Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours =
             featureActions.stream()
-                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOn().contains(fm.getKey().getFeature()))
-                    .peek(fm -> logger.info("APPLIED feature [{}]", fm.toString()))
+                    .filter(fm-> !featureUpdateEvent.getFeaturesToggledOn().contains(fm.getKey().getFeature()))
+                    .peek(fm -> logger.info("APPLIED dimmer feature [{}]", fm.toString()))
                     .collect(Collectors.toMap(Behaviour::getKey, Behaviour::getBehaviour));
-            subscriber.accept(behaviours);
+
+            Set<String> toggledOnFeatures = featureUpdateEvent.getFeaturesToggledOn() == null
+                    ? new HashSet<>() : featureUpdateEvent.getFeaturesToggledOn();
+            subscriber.accept(new FeatureExecutionPlan(toggledOnFeatures, behaviours));
         }
 
     }

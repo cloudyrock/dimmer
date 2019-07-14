@@ -123,11 +123,6 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
 
     private static void checkEnvironmentSettings(List<String> featuresList, String server) throws FileConfigException {
 
-        //server or toggledOn don't exist
-        if ((featuresList == null) && (server == null)) {
-            throw new FileConfigException(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY);
-        }
-
         //server and toggledOn both exist simultaneously
         if ((featuresList != null && !featuresList.isEmpty()) && (server != null && !server.isEmpty())) {
             throw new FileConfigException(DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH);

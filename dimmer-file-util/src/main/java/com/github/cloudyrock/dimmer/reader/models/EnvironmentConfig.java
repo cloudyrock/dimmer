@@ -22,7 +22,7 @@ public final class EnvironmentConfig {
     }
 
     public List<String> getToggledOn() {
-        return new ArrayList<>(toggledOn);
+        return toggledOn != null ? new ArrayList<>(toggledOn) : new ArrayList<>();
     }
 
     public boolean isDefault() {

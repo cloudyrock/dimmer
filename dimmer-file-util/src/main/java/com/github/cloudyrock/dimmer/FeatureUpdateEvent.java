@@ -7,7 +7,7 @@ public final class FeatureUpdateEvent {
 
     private final Set<String> featuresToggledOn;
 
-    public FeatureUpdateEvent(Set<String> featuresToggledOn) {
+    FeatureUpdateEvent(Set<String> featuresToggledOn) {
         this.featuresToggledOn = featuresToggledOn;
     }
 

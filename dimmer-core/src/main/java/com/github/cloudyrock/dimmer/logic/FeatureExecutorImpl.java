@@ -2,9 +2,8 @@ package com.github.cloudyrock.dimmer.logic;
 
 import com.github.cloudyrock.dimmer.*;
 
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Class in charge of executing the Dimmer feature. It doesn't get involve in
@@ -16,7 +15,7 @@ class FeatureExecutorImpl implements FeatureExecutor {
     private static final String EXCEPTION_MISMATCHED_RETURNED_TYPE =
             "Mismatched returned type for method[%s.%s()] with feature[%s] and operation[%s]: expected[%s], actual returned in behaviour[%s]";
 
-    private Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours;
+    private FeatureExecutionPlan executionPlan;
     private FeatureBroker broker;
 
 
@@ -31,8 +30,8 @@ class FeatureExecutorImpl implements FeatureExecutor {
         return broker;
     }
 
-    void updateBehaviours(Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
-        this.behaviours = behaviours;
+    void updateBehaviours(FeatureExecutionPlan executionPlan) {
+        this.executionPlan = executionPlan;
     }
 
 
@@ -41,23 +40,27 @@ class FeatureExecutorImpl implements FeatureExecutor {
                                        String operation,
                                        FeatureInvocation featureInvocation,
                                        MethodCaller realMethod) throws Throwable {
-        if (isConditionPresent(feature, operation)) {
+        if (executionPlan.isFeatureToggledOn(feature)) {
+            logger.warn("Dimmer ignored due to feature {} is toggled on", feature);
+            return realMethod.call();
+        } else if (executionPlan.isThereBehaviourFor(feature, operation)) {
+
             logDimmerInterception(feature, operation, featureInvocation);
             return executeFeature(feature, operation, featureInvocation);
         } else {
-            logger.trace("Dimmer ignored due to feature {} is not configured", feature);
-            return realMethod.call();
+            try {
+                throw ExceptionUtil.createExceptionInstance(executionPlan.getDefaultExceptionType(), featureInvocation);
+            } catch (InstantiationException | IllegalAccessException |
+                    InvocationTargetException | NoSuchMethodException e) {
+                throw new DimmerConfigException(e);
+            }
         }
     }
 
 
-    boolean isConditionPresent(String feature, String operation) {
-        return behaviours.containsKey(new Behaviour.BehaviourKey(feature, operation));
-    }
-
     Object executeFeature(String feature, String operation, FeatureInvocation featureInvocation) {
         final Behaviour.BehaviourKey key = new Behaviour.BehaviourKey(feature, operation);
-        final Object result = behaviours.get(key).apply(featureInvocation);
+        final Object result = executionPlan.getBehaviours().get(key).apply(featureInvocation);
         if (!isRightReturnedType(featureInvocation.getReturnType(), result)) {
 
             String message = String.format(EXCEPTION_MISMATCHED_RETURNED_TYPE,
