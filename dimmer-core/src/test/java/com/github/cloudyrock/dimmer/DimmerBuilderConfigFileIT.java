@@ -22,7 +22,7 @@ public class DimmerBuilderConfigFileIT {
 
     private BehaviourBuilder getBuilderWithBasicConfiguration(String file) {
         return DimmerBuilder
-                .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
+                .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT, ENVIRONMENT_WITH_TOGGLE_ON_FEATURES)
                 .withProperties(file);
     }
 
@@ -38,8 +38,6 @@ public class DimmerBuilderConfigFileIT {
     @Test
     @DisplayName("Should not throw exception when config file's feature list is empty")
     public void shouldNoThrowConfigurationExceptionWhenFeatureListIsEmpty() {
-        expectedException.expect(DimmerConfigException.class);
-        expectedException.expectMessage("Environment configuration is empty");
         getBuilderWithBasicConfiguration("dimmer-with-empty-feature-list.yml").runWithDefaultEnvironment();
     }
 
@@ -63,14 +61,14 @@ public class DimmerBuilderConfigFileIT {
     public void shouldRunRealMethodWhenFeatureIsToggledOn() {
         getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
                 .featureWithValue(FEATURE_FIXED, OPERATION_BEHAVIOUR, BEHAVIOUR_VALUE)
-                .runWithEnvironment(DEFAULT_ENVIRONMENT);
+                .runWithEnvironment(ENVIRONMENT_WITH_TOGGLE_ON_FEATURES);
         Assert.assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourFixed());
     }
 
     @Test
     @DisplayName("Should run real method when the feature is in toggledOn and behaviour no configured")
     public void shouldRunRealMethodWhenFeatureIsToggledOnOn() {
-        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE).runWithEnvironment(DEFAULT_ENVIRONMENT);
+        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE).runWithEnvironment(ENVIRONMENT_WITH_TOGGLE_ON_FEATURES);
         Assert.assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourFixed());
     }
 }

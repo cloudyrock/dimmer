@@ -6,6 +6,7 @@ public class ConstantsTestUtil {
     //ENVIRONMENTS
     public static final String DEV_ENVIRONMENT= "dev";
     public static final String DEFAULT_ENVIRONMENT= "defaultEnvironment";
+    public static final String ENVIRONMENT_WITH_TOGGLE_ON_FEATURES = "environmentWithToggleOnFeatures";
 
     //FEATURES
     public static final String FEATURE_FIXED = "FEATURE_FIXED";

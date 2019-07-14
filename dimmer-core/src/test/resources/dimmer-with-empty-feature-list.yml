@@ -5,6 +5,3 @@ dimmer:
       default: true
     environment_2:
       toggledOn:
-        - FEATURE1
-    prod:
-      server: http://asdasd.com:880
