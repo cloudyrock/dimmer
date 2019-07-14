@@ -5,14 +5,14 @@ import java.util.Set;
 
 public final class FeatureUpdateEvent {
 
-    private final Set<String> featuresToggledOff;
+    private final Set<String> featuresToggledOn;
 
-    public FeatureUpdateEvent(Set<String> featuresToggledOff) {
-        this.featuresToggledOff = featuresToggledOff;
+    public FeatureUpdateEvent(Set<String> featuresToggledOn) {
+        this.featuresToggledOn = featuresToggledOn;
     }
 
-    public Set<String> getFeaturesToggledOff() {
-        return new HashSet<>(featuresToggledOff);
+    public Set<String> getFeaturesToggledOn() {
+        return new HashSet<>(featuresToggledOn);
     }
 
 }

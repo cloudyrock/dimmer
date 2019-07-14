@@ -44,7 +44,7 @@ class FeatureBroker {
         if (featureActions != null && subscriber != null) {
             final Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours =
             featureActions.stream()
-                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOff().contains(fm.getKey().getFeature()))
+                    .filter(fm-> featureUpdateEvent.getFeaturesToggledOn().contains(fm.getKey().getFeature()))
                     .peek(fm -> logger.info("APPLIED feature [{}]", fm.toString()))
                     .collect(Collectors.toMap(Behaviour::getKey, Behaviour::getBehaviour));
             subscriber.accept(behaviours);

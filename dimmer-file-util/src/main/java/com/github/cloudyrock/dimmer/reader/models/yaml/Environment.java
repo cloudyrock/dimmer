@@ -10,18 +10,18 @@ public class Environment {
     @JsonProperty(value = "server", required = false)
     private String server;
 
-    @JsonProperty(value = "switchedOn", required = false)
-    private List<String> switchedOn;
+    @JsonProperty(value = "toggledOn", required = false)
+    private List<String> toggledOn;
 
     @JsonProperty(value = "default", required = false)
     private boolean isDefault;
 
-    public List<String> getSwitchedOn() {
-        return switchedOn;
+    public List<String> getToggledOn() {
+        return toggledOn;
     }
 
-    public void setSwitchedOn(ArrayList<String> switchedOn) {
-        this.switchedOn = switchedOn;
+    public void setToggledOn(ArrayList<String> toggledOn) {
+        this.toggledOn = toggledOn;
     }
 
     public String getServer() {

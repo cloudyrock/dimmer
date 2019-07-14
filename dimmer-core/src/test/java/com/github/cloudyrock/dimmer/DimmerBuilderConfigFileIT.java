@@ -59,8 +59,17 @@ public class DimmerBuilderConfigFileIT {
     }
 
     @Test
-    @DisplayName("Should run real method when the feature is in switchedOn and no behaviour configure")
-    public void shouldRunRealMethodWhenFeatureIsSwitchedOn() {
+    @DisplayName("Should run real method when the feature is in toggledOn and behaviour configured")
+    public void shouldRunRealMethodWhenFeatureIsToggledOn() {
+        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
+                .featureWithValue(FEATURE_FIXED, OPERATION_BEHAVIOUR, BEHAVIOUR_VALUE)
+                .runWithEnvironment(DEFAULT_ENVIRONMENT);
+        Assert.assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourFixed());
+    }
+
+    @Test
+    @DisplayName("Should run real method when the feature is in toggledOn and behaviour no configured")
+    public void shouldRunRealMethodWhenFeatureIsToggledOnOn() {
         getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE).runWithEnvironment(DEFAULT_ENVIRONMENT);
         Assert.assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourFixed());
     }

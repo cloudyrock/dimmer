@@ -315,7 +315,7 @@ public final class BehaviourBuilder {
     private FeatureExecutorImpl getFeatureExecutor(EnvironmentConfig environmentConfig) {
         logger.debug("Building local executor");
         FeatureBroker broker = new FeatureBroker(
-                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getSwitchedOn())),
+                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getToggledOn())),
                 configMetadata.getOrDefault(environmentConfig.getName(), new HashSet<>()),
                 defaultExceptionType);
         return new FeatureExecutorImpl(broker);
