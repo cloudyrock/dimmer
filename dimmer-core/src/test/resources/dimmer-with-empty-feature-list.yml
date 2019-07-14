@@ -4,7 +4,7 @@ dimmer:
     defaultEnvironment:
       default: true
     environment_2:
-      featureIntercept:
+      switchedOn:
         - FEATURE1
     prod:
       server: http://asdasd.com:880

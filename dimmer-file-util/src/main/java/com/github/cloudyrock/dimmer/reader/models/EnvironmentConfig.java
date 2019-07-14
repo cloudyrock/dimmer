@@ -6,14 +6,14 @@ import java.util.List;
 public final class EnvironmentConfig {
 
     private final String name;
-    private final List<String> featureIntercept;
+    private final List<String> switchedOn;
     private final String server;
     private final boolean isDefault;
 
-    public EnvironmentConfig (String name, String server, List<String> featureIntercept, boolean isDefault){
+    public EnvironmentConfig (String name, String server, List<String> switchedOnFeatures, boolean isDefault){
         this.name = name;
         this.server = server;
-        this.featureIntercept = featureIntercept;
+        this.switchedOn = switchedOnFeatures;
         this.isDefault = isDefault;
     }
 
@@ -21,8 +21,8 @@ public final class EnvironmentConfig {
         return name;
     }
 
-    public List<String> getFeatureIntercept() {
-        return new ArrayList<>(featureIntercept);
+    public List<String> getSwitchedOn() {
+        return new ArrayList<>(switchedOn);
     }
 
     public boolean isDefault() {

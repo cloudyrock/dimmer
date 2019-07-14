@@ -107,7 +107,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
     private static Function<Map.Entry<String, Environment>, EnvironmentConfig> getEntryEnvironmentConfigFunction() {
         return k -> {
             final Environment value = k.getValue();
-            final List featuresList = value.getFeatureIntercept();
+            final List featuresList = value.getSwitchedOn();
             final String server = value.getServer();
 
             checkEnvironmentSettings(featuresList, server);
@@ -115,7 +115,7 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
             return new EnvironmentConfig(
                     k.getKey(),
                     value.getServer(),
-                    value.getFeatureIntercept(),
+                    value.getSwitchedOn(),
                     value.isDefault()
             );
         };
@@ -123,12 +123,12 @@ public final class DimmerConfigReaderYamlImpl implements DimmerConfigReader {
 
     private static void checkEnvironmentSettings(List<String> featuresList, String server) throws FileConfigException {
 
-        //server or featureIntercept don't exist
+        //server or switchedOn don't exist
         if ((featuresList == null) && (server == null)) {
             throw new FileConfigException(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY);
         }
 
-        //server and featureIntercept both exist simultaneously
+        //server and switchedOn both exist simultaneously
         if ((featuresList != null && !featuresList.isEmpty()) && (server != null && !server.isEmpty())) {
             throw new FileConfigException(DIMMER_CONFIG_EXCEPTION_SERVER_CONFIGURATION_AND_FEATURE_INTERCEPTOR_MISMATCH);
         }

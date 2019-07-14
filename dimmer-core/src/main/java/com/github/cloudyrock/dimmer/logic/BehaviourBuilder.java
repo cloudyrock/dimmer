@@ -6,7 +6,6 @@ import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import org.aspectj.lang.Aspects;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -316,7 +315,7 @@ public final class BehaviourBuilder {
     private FeatureExecutorImpl getFeatureExecutor(EnvironmentConfig environmentConfig) {
         logger.debug("Building local executor");
         FeatureBroker broker = new FeatureBroker(
-                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getFeatureIntercept())),
+                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getSwitchedOn())),
                 configMetadata.getOrDefault(environmentConfig.getName(), new HashSet<>()),
                 defaultExceptionType);
         return new FeatureExecutorImpl(broker);

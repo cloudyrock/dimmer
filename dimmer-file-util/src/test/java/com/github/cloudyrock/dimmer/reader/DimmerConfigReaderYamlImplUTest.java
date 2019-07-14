@@ -43,7 +43,7 @@ public class DimmerConfigReaderYamlImplUTest {
         assertNotNull(dimmerConfig);
         assertNotNull(dimmerConfig.getEnvironments());
         assertThat(dimmerConfig.getEnvironments().size(), is(3));
-        assertThat(dimmerConfig.getEnvironments().get("dev").getFeatureIntercept().size(), is(6));
+        assertThat(dimmerConfig.getEnvironments().get("dev").getSwitchedOn().size(), is(6));
         assertThat(dimmerConfig.getEnvironments().get("dev").isDefault(), is(true));
     }
 
@@ -57,7 +57,7 @@ public class DimmerConfigReaderYamlImplUTest {
     }
 
     @Test
-    @DisplayName("Should throw FileConfigException when Server and FeatureIntercepts are configured for same env.")
+    @DisplayName("Should throw FileConfigException when Server and switchedOn are configured for same env.")
     public void shouldThrowFileConfigException_WhenServerAndFeaturesAreSetForSameEnvironment() throws Exception {
 
         final ObjectMapper mapperMock = mock(ObjectMapper.class);
@@ -104,7 +104,7 @@ public class DimmerConfigReaderYamlImplUTest {
         final HashMap<String, Environment> environments = new HashMap<>();
         final Environment env1 = new Environment();
         env1.setServer("ASDF");
-        env1.setFeatureIntercept(new ArrayList<>(Arrays.asList("feature1", "feature2", "feature3")));
+        env1.setSwitchedOn(new ArrayList<>(Arrays.asList("feature1", "feature2", "feature3")));
         environments.put("env1", env1);
         dimmer.setEnvironments(environments);
 
