@@ -12,7 +12,6 @@ import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.*;
 import static org.junit.Assert.assertEquals;
 
 //TODO: configuration: when it's in file, but not in builder, vice versa, etc.
-//TODO: configuration file with empty list of features, shouldn't throw exception, but og a warning
 //TODO: what happens when the feature and operation is not configured in the builder -> default ???
 
 public class DimmerBuilderIT {

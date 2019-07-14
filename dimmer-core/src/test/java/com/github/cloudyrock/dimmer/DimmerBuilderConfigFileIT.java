@@ -19,18 +19,28 @@ public class DimmerBuilderConfigFileIT {
     public ExpectedException expectedException = ExpectedException.none();
 
 
-    private BehaviourBuilder getBuilderWithBasicConfiguration() {
+    private BehaviourBuilder getBuilderWithBasicConfiguration(String file) {
         return DimmerBuilder
                 .environments(DEV_ENVIRONMENT, DEFAULT_ENVIRONMENT)
-                .withProperties("dimmer-invalid.yml");
+                .withProperties(file);
     }
 
     @Test
-    @DisplayName("Should throw default exception when it's conditional-true default-exception-configured")
-    public void shouldThrowConfigurationExceptionWhenRunningNonExistingEnvironment() {
+    @DisplayName("Should throw config exception when config file's sintaxis is invalid")
+    public void ShouldThrowConfigExceptionWhenConfigFilesSintaxisIsInvalid() {
         expectedException.expect(DimmerConfigException.class);
-        expectedException.expectMessage("Failed mapping Dimmer configuration file.");
-        getBuilderWithBasicConfiguration().runWithDefaultEnvironment();
+        expectedException.expectMessage("Dimmer configuration file could not be read");
+        getBuilderWithBasicConfiguration("dimmer-sintactically-invalid.json").runWithDefaultEnvironment();
     }
 
+
+
+
+    @Test
+    @DisplayName("Should not throw exception when config file's feature list is empty")
+    public void shouldNoThrowConfigurationExceptionWhenFeatureListIsEmpty() {
+        expectedException.expect(DimmerConfigException.class);
+        expectedException.expectMessage("Environment configuration is empty");
+        getBuilderWithBasicConfiguration("dimmer-invalid.yml").runWithDefaultEnvironment();
+    }
 }
