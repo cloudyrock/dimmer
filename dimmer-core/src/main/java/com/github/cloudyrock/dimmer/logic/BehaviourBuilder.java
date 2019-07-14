@@ -110,10 +110,6 @@ public final class BehaviourBuilder {
     public BehaviourBuilder featureWithDefaultException(String feature, String operation) {
         featuresWithDefaultExceptions.add(new Behaviour.BehaviourKey(feature, operation));
         return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
-//        return featureWithBehaviour(
-//                feature,
-//                operation,
-//                signature -> ExceptionUtil.throwException(DimmerInvocationException.class, signature));
     }
 
     /**

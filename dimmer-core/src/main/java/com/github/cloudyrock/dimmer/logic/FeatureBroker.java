@@ -51,7 +51,7 @@ class FeatureBroker {
 
             Set<String> toggledOnFeatures = featureUpdateEvent.getFeaturesToggledOn() == null
                     ? new HashSet<>() : featureUpdateEvent.getFeaturesToggledOn();
-            subscriber.accept(new FeatureExecutionPlan(toggledOnFeatures, behaviours));
+            subscriber.accept(new FeatureExecutionPlan(toggledOnFeatures, behaviours, defaultException));
         }
 
     }

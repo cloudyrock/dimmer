@@ -1,6 +1,5 @@
 package com.github.cloudyrock.dimmer.logic;
 
-import com.github.cloudyrock.dimmer.DimmerInvocationException;
 import com.github.cloudyrock.dimmer.FeatureInvocation;
 
 import java.util.Map;
@@ -15,10 +14,11 @@ class FeatureExecutionPlan {
     private final Class<? extends RuntimeException> defaultException;
 
     FeatureExecutionPlan(Set<String> toggledOnFeatures,
-                         Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours) {
+                         Map<Behaviour.BehaviourKey, Function<FeatureInvocation, ?>> behaviours,
+                         Class<? extends RuntimeException> defaultException) {
         this.toggledOnFeatures = toggledOnFeatures.stream().map(String::toLowerCase).collect(Collectors.toSet());
         this.behaviours = behaviours;
-        this.defaultException = DimmerInvocationException.class; //todo changes this to take it from config
+        this.defaultException = defaultException;
     }
 
     boolean isFeatureToggledOn(String feature) {

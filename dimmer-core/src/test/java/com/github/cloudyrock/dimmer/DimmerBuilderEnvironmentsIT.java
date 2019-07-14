@@ -104,6 +104,27 @@ public class DimmerBuilderEnvironmentsIT {
         }
     }
 
+    @Test
+    @DisplayName("Should throw new default exception when feature toggled off and behaviour not configured")
+    public void shouldThrowNewDefaultExceptionForFeaturesWithNoBehaviours() {
+        getBuilderWithBasicConfiguration()
+                .setDefaultExceptionType(NewDefaultExceptionException.class)
+                .runWithEnvironment(DEV_ENVIRONMENT);
+        try {
+            testedClass.operationDefaultEnvBehaviour();
+            fail();
+        } catch (NewDefaultExceptionException ex) {
+            // Exception successfully thrown
+        }
+
+        try {
+            testedClass.operationDefaultEnvValue();
+            fail();
+        } catch (NewDefaultExceptionException ex) {
+            // Exception successfully thrown
+        }
+    }
+
     public static class TestFeaturedClassEnvironments extends TestFeaturedClass{
 
         @DimmerFeature(value = FEATURE_ALL_ENVS, op = OPERATION_ENV_BEHAVIOUR)
