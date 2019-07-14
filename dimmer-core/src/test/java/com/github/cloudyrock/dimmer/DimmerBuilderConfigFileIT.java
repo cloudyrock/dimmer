@@ -3,11 +3,9 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
 import com.github.cloudyrock.dimmer.logic.DimmerBuilder;
-import com.github.cloudyrock.dimmer.util.TestFeaturedClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.internal.matchers.Contains;
 
 import static com.github.cloudyrock.dimmer.util.ConstantsTestUtil.*;
 import static org.junit.Assert.assertEquals;
@@ -41,6 +39,6 @@ public class DimmerBuilderConfigFileIT {
     public void shouldNoThrowConfigurationExceptionWhenFeatureListIsEmpty() {
         expectedException.expect(DimmerConfigException.class);
         expectedException.expectMessage("Environment configuration is empty");
-        getBuilderWithBasicConfiguration("dimmer-invalid.yml").runWithDefaultEnvironment();
+        getBuilderWithBasicConfiguration("dimmer-semantically-invalid.yml").runWithDefaultEnvironment();
     }
 }
