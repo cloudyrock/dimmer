@@ -3,6 +3,8 @@ package com.github.cloudyrock.dimmer;
 
 import com.github.cloudyrock.dimmer.logic.BehaviourBuilder;
 import com.github.cloudyrock.dimmer.logic.DimmerBuilder;
+import com.github.cloudyrock.dimmer.util.TestFeaturedClass;
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -16,6 +18,7 @@ public class DimmerBuilderConfigFileIT {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    private static final TestFeaturedClass testFeaturedClass = new TestFeaturedClass();
 
     private BehaviourBuilder getBuilderWithBasicConfiguration(String file) {
         return DimmerBuilder
@@ -25,7 +28,7 @@ public class DimmerBuilderConfigFileIT {
 
     @Test
     @DisplayName("Should throw config exception when config file's sintaxis is invalid")
-    public void ShouldThrowConfigExceptionWhenConfigFilesSintaxisIsInvalid() {
+    public void shouldThrowConfigExceptionWhenConfigFilesSintaxisIsInvalid() {
         expectedException.expect(DimmerConfigException.class);
         expectedException.expectMessage("Dimmer configuration file could not be read");
         getBuilderWithBasicConfiguration("dimmer-sintactically-invalid.json").runWithDefaultEnvironment();
@@ -53,5 +56,12 @@ public class DimmerBuilderConfigFileIT {
     public void shouldNoThrowConfigurationExceptionWhenNotBuildingBehaviourForExistingFeatureInConfigFile() {
         getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
                 .runWithEnvironment(DEV_ENVIRONMENT);
+    }
+
+    @Test
+    @DisplayName("Should run real method when the feature is in switchedOn and no behaviour configure")
+    public void shouldRunRealMethodWhenFeatureIsSwitchedOn() {
+        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE).runWithEnvironment(DEFAULT_ENVIRONMENT);
+        Assert.assertEquals(REAL_VALUE, testFeaturedClass.operationWithBehaviourFixed());
     }
 }
