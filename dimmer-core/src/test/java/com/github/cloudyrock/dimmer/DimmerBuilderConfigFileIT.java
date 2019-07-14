@@ -32,8 +32,6 @@ public class DimmerBuilderConfigFileIT {
     }
 
 
-
-
     @Test
     @DisplayName("Should not throw exception when config file's feature list is empty")
     public void shouldNoThrowConfigurationExceptionWhenFeatureListIsEmpty() {
