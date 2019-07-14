@@ -37,6 +37,21 @@ public class DimmerBuilderConfigFileIT {
     public void shouldNoThrowConfigurationExceptionWhenFeatureListIsEmpty() {
         expectedException.expect(DimmerConfigException.class);
         expectedException.expectMessage("Environment configuration is empty");
-        getBuilderWithBasicConfiguration("dimmer-semantically-invalid.yml").runWithDefaultEnvironment();
+        getBuilderWithBasicConfiguration("dimmer-with-empty-feature-list.yml").runWithDefaultEnvironment();
+    }
+
+    @Test
+    @DisplayName("Should not throw exception when building a behaviour which is not in the config file")
+    public void shouldNoThrowConfigurationExceptionWhenBuildingBehaviourForNonExistingFeatureInConfigFile() {
+        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
+                .featureWithValue("NON_EXISTING_FEATURE", "NON_EXISTING_OPERATION", "whateverValue")
+                .runWithEnvironment(DEV_ENVIRONMENT);
+    }
+
+    @Test
+    @DisplayName("Should not throw exception when not building a behaviour which appears in the config file")
+    public void shouldNoThrowConfigurationExceptionWhenNotBuildingBehaviourForExistingFeatureInConfigFile() {
+        getBuilderWithBasicConfiguration(LOCAL_CONFIG_FILE)
+                .runWithEnvironment(DEV_ENVIRONMENT);
     }
 }

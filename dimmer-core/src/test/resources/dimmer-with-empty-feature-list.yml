@@ -3,7 +3,8 @@ dimmer:
   environments:
     defaultEnvironment:
       default: true
-    staging:
-      server: http://asdasd.com:880
+    environment_2:
+      featureIntercept:
+        - FEATURE1
     prod:
       server: http://asdasd.com:880
