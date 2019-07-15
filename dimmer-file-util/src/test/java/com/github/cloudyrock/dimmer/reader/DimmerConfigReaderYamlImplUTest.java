@@ -85,14 +85,11 @@ public class DimmerConfigReaderYamlImplUTest {
     }
 
     @Test
-    @DisplayName("Should throw FileConfigException when Server and features are empty for an Environment.")
-    public void shouldThrowFileConfigExceptionWhenServerAndFeaturesEmptyForEnv() throws Exception {
+    @DisplayName("Should not throw FileConfigException when Server and features are empty for an Environment.")
+    public void shouldNotThrowFileConfigExceptionWhenServerAndFeaturesEmptyForEnv() throws Exception {
 
         final ObjectMapper mapperMock = mock(ObjectMapper.class);
         when(mapperMock.readValue(any(File.class), any(DimmerYamlConfig.class.getClass()))).thenReturn(invalidConfigEmptyEnv());
-
-        exception.expect(FileConfigException.class);
-        exception.expectMessage(is(DIMMER_CONFIG_EXCEPTION_ENVIRONMENT_CONFIGURATION_IS_EMPTY));
 
         new DimmerConfigReaderYamlImpl("./dimmer.yml", mapperMock).loadConfiguration();
         verify(mapperMock, times(1)).readValue(any(File.class), any(DimmerYamlConfig.class.getClass()));
