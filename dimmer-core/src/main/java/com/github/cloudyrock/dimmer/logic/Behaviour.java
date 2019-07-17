@@ -7,7 +7,6 @@ import java.util.function.Function;
 
 class Behaviour {
 
-
     private final BehaviourKey key;
     private final Function<FeatureInvocation, Object> behaviour;
 

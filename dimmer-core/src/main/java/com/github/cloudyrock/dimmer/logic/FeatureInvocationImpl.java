@@ -36,12 +36,7 @@ class FeatureInvocationImpl implements FeatureInvocation {
      */
     private final Object[] args;
 
-    FeatureInvocationImpl(String feature,
-                                 String operation,
-                                 String methodName,
-                                 Class declaringType,
-                                 Object[] args,
-                                 Class returnType) {
+    FeatureInvocationImpl(String feature, String operation, String methodName, Class declaringType, Object[] args, Class returnType) {
         this.feature = feature;
         this.operation = operation;
         this.methodName = methodName;

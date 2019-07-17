@@ -20,9 +20,5 @@ public interface FeatureExecutor {
      * @see FeatureInvocation
      * @see MethodCaller
      */
-    Object executeDimmerFeature(
-            String feature,
-            String operation,
-            FeatureInvocation featureInvocation,
-            MethodCaller realMethod) throws Throwable;
+    Object executeDimmerFeature(String feature, String operation, FeatureInvocation featureInvocation, MethodCaller realMethod) throws Throwable;
 }

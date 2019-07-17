@@ -30,8 +30,7 @@ public class DimmerAspect {
     }
 
     @Around("dimmerFeaturePointCutDef(dimmerFeatureAnn)")
-    public Object dimmerFeatureAdvice(ProceedingJoinPoint joinPoint,
-                                      DimmerFeature dimmerFeatureAnn) throws Throwable {
+    public Object dimmerFeatureAdvice(ProceedingJoinPoint joinPoint, DimmerFeature dimmerFeatureAnn) throws Throwable {
         return featureExecutor.executeDimmerFeature(
                 dimmerFeatureAnn.value(),
                 dimmerFeatureAnn.op(),

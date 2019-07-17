@@ -14,10 +14,9 @@ final class ExceptionUtil {
 
     }
 
-    static Object throwException(Class<? extends RuntimeException> exceptionType,
-                                 FeatureInvocation f) {
+    static Object throwException(Class<? extends RuntimeException> exceptionType, FeatureInvocation featureInvocation) {
         try {
-            throw createExceptionInstance(exceptionType, f);
+            throw createExceptionInstance(exceptionType, featureInvocation);
         } catch (InstantiationException | IllegalAccessException |
                 InvocationTargetException | NoSuchMethodException e) {
             throw new DimmerConfigException(e);
@@ -43,8 +42,7 @@ final class ExceptionUtil {
         }
     }
 
-    private static ExceptionConstructorType getExceptionConstructorType(
-            Class<? extends RuntimeException> exceptionType) {
+    private static ExceptionConstructorType getExceptionConstructorType(Class<? extends RuntimeException> exceptionType) {
 
         Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
@@ -61,7 +59,7 @@ final class ExceptionUtil {
     }
 
     private static Optional<? extends RuntimeException> getInstanceFromType(Class<? extends RuntimeException> exceptionType,
-                                                                            FeatureInvocation f,
+                                                                            FeatureInvocation featureInvocation,
                                                                             ExceptionConstructorType constructorType)
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 
@@ -70,7 +68,7 @@ final class ExceptionUtil {
                 return Optional.of(exceptionType.getConstructor().newInstance());
 
             case FEATURE_INVOCATION_CONSTRUCTOR:
-                return Optional.of(exceptionType.getConstructor(FeatureInvocation.class).newInstance(f));
+                return Optional.of(exceptionType.getConstructor(FeatureInvocation.class).newInstance(featureInvocation));
 
             case NO_COMPATIBLE_CONSTRUCTOR:
             default:

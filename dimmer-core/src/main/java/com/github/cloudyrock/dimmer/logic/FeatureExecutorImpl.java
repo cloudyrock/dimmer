@@ -18,7 +18,6 @@ class FeatureExecutorImpl implements FeatureExecutor {
     private FeatureExecutionPlan executionPlan;
     private FeatureBroker broker;
 
-
     private static final DimmerLogger logger = new DimmerLogger(FeatureExecutorImpl.class);
 
     FeatureExecutorImpl(FeatureBroker broker) {
@@ -62,7 +61,6 @@ class FeatureExecutorImpl implements FeatureExecutor {
         final Behaviour.BehaviourKey key = new Behaviour.BehaviourKey(feature, operation);
         final Object result = executionPlan.getBehaviours().get(key).apply(featureInvocation);
         if (!isRightReturnedType(featureInvocation.getReturnType(), result)) {
-
             String message = String.format(EXCEPTION_MISMATCHED_RETURNED_TYPE,
                     featureInvocation.getDeclaringType().getSimpleName(),
                     featureInvocation.getMethodName(),
@@ -70,8 +68,6 @@ class FeatureExecutorImpl implements FeatureExecutor {
                     operation,
                     featureInvocation.getReturnType().getSimpleName(),
                     result.getClass().getSimpleName());
-
-
             throw new DimmerConfigException(message);
         }
         return result;
@@ -82,9 +78,7 @@ class FeatureExecutorImpl implements FeatureExecutor {
         return Objects.isNull(behaviourResult) || returnType.isAssignableFrom(behaviourResult.getClass());
     }
 
-    private void logDimmerInterception(String feature,
-                                       String operation,
-                                       FeatureInvocation featureInvocation) {
+    private void logDimmerInterception(String feature, String operation, FeatureInvocation featureInvocation) {
         logger.info(
                 "Intercepted method {}.{}() for feature {} and operation {}",
                 featureInvocation.getDeclaringType(),

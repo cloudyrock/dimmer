@@ -90,10 +90,7 @@ public final class BehaviourBuilder {
      * @see Function
      * @see DimmerConfigException
      */
-    public BehaviourBuilder featureWithBehaviour(
-            String feature,
-            String operation,
-            Function<FeatureInvocation, Object> behaviour) {
+    public BehaviourBuilder featureWithBehaviour(String feature, String operation, Function<FeatureInvocation, Object> behaviour) {
         addBehaviour(feature, operation, behaviour);
         return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
@@ -126,10 +123,7 @@ public final class BehaviourBuilder {
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      * @see FeatureInvocation
      */
-    public BehaviourBuilder featureWithCustomException(
-            String feature,
-            String operation,
-            Class<? extends RuntimeException> exceptionType) {
+    public BehaviourBuilder featureWithCustomException(String feature, String operation, Class<? extends RuntimeException> exceptionType) {
         ExceptionUtil.checkExceptionConstructorType(exceptionType);
         return featureWithBehaviour(feature, operation, signature -> ExceptionUtil.throwException(exceptionType, signature));
     }
@@ -147,9 +141,7 @@ public final class BehaviourBuilder {
      * @param valueToReturn value to be associated with the specified key
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public BehaviourBuilder featureWithValue(String feature,
-                                             String operation,
-                                             Object valueToReturn) {
+    public BehaviourBuilder featureWithValue(String feature, String operation, Object valueToReturn) {
         return featureWithBehaviour(feature, operation, signature -> valueToReturn);
 
     }
@@ -165,8 +157,7 @@ public final class BehaviourBuilder {
      * @param newDefaultExceptionType new default exception type
      * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
      */
-    public BehaviourBuilder setDefaultExceptionType(
-            Class<? extends RuntimeException> newDefaultExceptionType) {
+    public BehaviourBuilder setDefaultExceptionType(Class<? extends RuntimeException> newDefaultExceptionType) {
         Preconditions.checkNullOrEmpty(newDefaultExceptionType, "defaultExceptionType");
         ExceptionUtil.checkExceptionConstructorType(newDefaultExceptionType);
         return new BehaviourBuilder(environments, configMetadata, newDefaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
@@ -181,10 +172,8 @@ public final class BehaviourBuilder {
      * @param environment Environment to run
      * @return Feature executor
      */
-    public void runWithEnvironment(String environment) throws DimmerConfigException{
-
+    public void runWithEnvironment(String environment) throws DimmerConfigException {
         try {
-
             featuresWithDefaultExceptions.forEach(this::addDefaultExceptionBehaviours);
             final FeatureExecutorImpl featureExecutor = getFeatureExecutor(dimmerConfigReader.loadEnvironmentOrDefault(environment));
             Aspects.aspectOf(DimmerAspect.class).setFeatureExecutor(featureExecutor);
