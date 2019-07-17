@@ -8,6 +8,7 @@ public final class FeatureUpdateEvent {
     private final Set<String> featuresToggledOn;
 
     FeatureUpdateEvent(Set<String> featuresToggledOn) {
+        Preconditions.checkNullOrEmpty(featuresToggledOn, "Features toggled on in new event");
         this.featuresToggledOn = featuresToggledOn;
     }
 

@@ -6,6 +6,7 @@ import com.github.cloudyrock.dimmer.Preconditions;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 final class ExceptionUtil {
 
@@ -24,63 +25,57 @@ final class ExceptionUtil {
     }
 
     static RuntimeException createExceptionInstance(Class<? extends RuntimeException> exceptionType,
-                                                            FeatureInvocation f) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        RuntimeException exception;
-        final ExceptionConstructorType constructorType = getExceptionConstructorType(exceptionType);
-        switch (constructorType) {
-            case EMPTY_CONSTRUCTOR:
-                exception = exceptionType.getConstructor().newInstance();
-                break;
-            case FEATURE_INVOCATION_CONSTRUCTOR:
-                exception = exceptionType.getConstructor(FeatureInvocation.class).newInstance(f);
-                break;
-            case NO_COMPATIBLE_CONSTRUCTOR:
-            default:
-                //This cannot happen...unless enum is changed and the code is not
-                //updated
-                exception = new DimmerConfigException(constructorType + " not compatible");
-        }
-        return exception;
+                                                    FeatureInvocation featureInvocation)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+
+        return getInstanceFromType(exceptionType, featureInvocation, getExceptionConstructorType(exceptionType))
+                .orElseThrow(() -> new DimmerConfigException(String.format(
+                        "Exception [%s] must have either empty constructor or with FeatureInvocation argument",
+                        exceptionType.getSimpleName())));
     }
 
-    static void checkExceptionConstructorType(
-            Class<? extends RuntimeException> exceptionType) {
-        Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
-        final Constructor<?>[] constructors = exceptionType.getConstructors();
-        for (Constructor<?> c : constructors) {
-            if (c.getParameterCount() == 0 ||
-                    (c.getParameterCount() == 1 && FeatureInvocation.class.equals(c.getParameterTypes()[0]))) {
-                return;
-            }
+    static void checkExceptionConstructorType(Class<? extends RuntimeException> exceptionType) {
+
+        if (getExceptionConstructorType(exceptionType) == ExceptionConstructorType.NO_COMPATIBLE_CONSTRUCTOR) {
+            throw new DimmerConfigException(String.format(
+                    "Exception %s must have either empty constructor or with FeatureInvocation argument",
+                    exceptionType.getSimpleName()));
         }
-        throw new DimmerConfigException(String.format(
-                "Exception %s must have either empty constructor or with " +
-                        "FeatureInvocation argument",
-                exceptionType.getSimpleName()));
     }
 
     private static ExceptionConstructorType getExceptionConstructorType(
             Class<? extends RuntimeException> exceptionType) {
+
         Preconditions.checkNullOrEmpty(exceptionType, "exceptionType");
         final Constructor<?>[] constructors = exceptionType.getConstructors();
         ExceptionConstructorType constructorType = ExceptionConstructorType.NO_COMPATIBLE_CONSTRUCTOR;
         for (Constructor<?> c : constructors) {
-            if (c.getParameterCount() == 1 && FeatureInvocation.class
-                    .equals(c.getParameterTypes()[0])) {
-                constructorType = ExceptionConstructorType.FEATURE_INVOCATION_CONSTRUCTOR;
-                break;
+            if (c.getParameterCount() == 1 && FeatureInvocation.class.equals(c.getParameterTypes()[0])) {
+                return ExceptionConstructorType.FEATURE_INVOCATION_CONSTRUCTOR;
+
             } else if (c.getParameterCount() == 0) {
                 constructorType = ExceptionConstructorType.EMPTY_CONSTRUCTOR;
             }
         }
-
-        if (ExceptionConstructorType.NO_COMPATIBLE_CONSTRUCTOR.equals(constructorType)) {
-            throw new DimmerConfigException(String.format(
-                    "Exception %s must have either empty constructor or with " +
-                            "FeatureInvocation argument",
-                    exceptionType.getSimpleName()));
-        }
         return constructorType;
+    }
+
+    private static Optional<? extends RuntimeException> getInstanceFromType(Class<? extends RuntimeException> exceptionType,
+                                                                            FeatureInvocation f,
+                                                                            ExceptionConstructorType constructorType)
+            throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+
+        switch (constructorType) {
+            case EMPTY_CONSTRUCTOR:
+                return Optional.of(exceptionType.getConstructor().newInstance());
+
+            case FEATURE_INVOCATION_CONSTRUCTOR:
+                return Optional.of(exceptionType.getConstructor(FeatureInvocation.class).newInstance(f));
+
+            case NO_COMPATIBLE_CONSTRUCTOR:
+            default:
+                return Optional.empty();
+        }
     }
 
     private enum ExceptionConstructorType {

@@ -49,9 +49,7 @@ class FeatureBroker {
                     .peek(fm -> logger.info("APPLIED dimmer feature [{}]", fm.toString()))
                     .collect(Collectors.toMap(Behaviour::getKey, Behaviour::getBehaviour));
 
-            Set<String> toggledOnFeatures = featureUpdateEvent.getFeaturesToggledOn() == null
-                    ? new HashSet<>() : featureUpdateEvent.getFeaturesToggledOn();
-            subscriber.accept(new FeatureExecutionPlan(toggledOnFeatures, behaviours, defaultException));
+            subscriber.accept(new FeatureExecutionPlan(featureUpdateEvent.getFeaturesToggledOn(), behaviours, defaultException));
         }
 
     }
