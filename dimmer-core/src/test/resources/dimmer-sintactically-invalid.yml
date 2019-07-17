@@ -1,6 +1,6 @@
 dimmer:
   #version: 1.0 - for future release
-  environment:
+  somethingWrong:
     defaultEnvironment:
       default: true
     staging:

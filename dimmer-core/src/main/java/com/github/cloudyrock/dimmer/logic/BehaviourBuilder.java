@@ -6,7 +6,6 @@ import com.github.cloudyrock.dimmer.reader.models.EnvironmentConfig;
 import org.aspectj.lang.Aspects;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -76,36 +75,6 @@ public final class BehaviourBuilder {
 
     }
 
-
-    /**
-     * If interceptingFeature is true and the specified feature is not already associated
-     * with a behaviour(or is mapped to null), associates it with the given {@link Function}
-     * that represents the desired behaviour, otherwise it's ignored.
-     * <p>
-     * Notice that the function that represents the feature's behaviour must ensure compatibility
-     * with the real method's returning type or a {@link DimmerConfigException} will be thrown.
-     *
-     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
-     * @param feature             feature covering the generic functionality
-     * @param operation           operation representing the specific method
-     * @param behaviour           {@link Function} to be associated with the specified key as behaviour
-     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
-     * @see Function
-     * @see DimmerConfigException
-     */
-    public BehaviourBuilder featureWithBehaviourConditional(
-            boolean interceptingFeature,
-            String feature,
-            String operation,
-            Function<FeatureInvocation, Object> behaviour) {
-
-        return interceptingFeature
-                ? featureWithBehaviour(feature, operation, behaviour)
-                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
-
-    }
-
-
     /**
      * If the specified feature is not already associated
      * with a behaviour(or is mapped to null), associates it with the given {@link Function}
@@ -129,26 +98,6 @@ public final class BehaviourBuilder {
         return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
 
-
-    /**
-     * If interceptingFeature is true and the specified feature is not already associated
-     * with a behaviour(or is mapped to null), associates it with the default exception,
-     * otherwise it's ignored.
-     *
-     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
-     * @param feature             feature covering the generic functionality
-     * @param operation           operation representing the specific method
-     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
-     */
-    public BehaviourBuilder featureWithDefaultExceptionConditional(boolean interceptingFeature,
-                                                                   String feature,
-                                                                   String operation) {
-        return interceptingFeature
-                ? featureWithDefaultException(feature, operation)
-                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
-
-    }
-
     /**
      * If the specified feature is not already associated
      * with a behaviour(or is mapped to null), associates it with the default exception,
@@ -161,36 +110,6 @@ public final class BehaviourBuilder {
     public BehaviourBuilder featureWithDefaultException(String feature, String operation) {
         featuresWithDefaultExceptions.add(new Behaviour.BehaviourKey(feature, operation));
         return new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
-//        return featureWithBehaviour(
-//                feature,
-//                operation,
-//                signature -> ExceptionUtil.throwException(DimmerInvocationException.class, signature));
-    }
-
-    /**
-     * If interceptingFeature is true and the specified feature is not already associated
-     * with a behaviour(or is mapped to null), associates it with the given exception and
-     * returns true, otherwise it's ignored.
-     * <p>
-     * Notice the exception type must have either an empty constructor or a contractor with only
-     * one parameter, {@link FeatureInvocation}
-     *
-     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
-     * @param feature             feature covering the generic functionality
-     * @param operation           operation representing the specific method
-     * @param exceptionType       exception type to be associated with the specified key
-     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
-     * @see FeatureInvocation
-     */
-    public BehaviourBuilder featureWithCustomExceptionConditional(
-            boolean interceptingFeature,
-            String feature,
-            String operation,
-            Class<? extends RuntimeException> exceptionType) {
-
-        return interceptingFeature
-                ? featureWithCustomException(feature, operation, exceptionType)
-                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
 
     /**
@@ -213,31 +132,6 @@ public final class BehaviourBuilder {
             Class<? extends RuntimeException> exceptionType) {
         ExceptionUtil.checkExceptionConstructorType(exceptionType);
         return featureWithBehaviour(feature, operation, signature -> ExceptionUtil.throwException(exceptionType, signature));
-    }
-
-
-    /**
-     * If interceptingFeature is true and the specified feature is not already associated
-     * with a behaviour(or is mapped to null), associates it with the given value and returns
-     * true, otherwise it's ignored.
-     * <p>
-     * Notice that the value must be compatibility with the real method's returning type
-     * or a {@link DimmerConfigException} will be thrown.
-     *
-     * @param interceptingFeature if true indicates the configuration must be added, ignore otherwise
-     * @param feature             feature covering the generic functionality
-     * @param operation           operation representing the specific method
-     * @param valueToReturn       value to be associated with the specified key
-     * @return A new immutable instance of a DimmerFeatureConfigurable with the current configuration applied.
-     */
-    public BehaviourBuilder featureWithValueConditional(boolean interceptingFeature,
-                                                        String feature,
-                                                        String operation,
-                                                        Object valueToReturn) {
-
-        return interceptingFeature
-                ? featureWithValue(feature, operation, valueToReturn)
-                : new BehaviourBuilder(environments, configMetadata, defaultExceptionType, dimmerConfigReader, featuresWithDefaultExceptions);
     }
 
     /**
@@ -316,7 +210,7 @@ public final class BehaviourBuilder {
     private FeatureExecutorImpl getFeatureExecutor(EnvironmentConfig environmentConfig) {
         logger.debug("Building local executor");
         FeatureBroker broker = new FeatureBroker(
-                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getFeatureIntercept())),
+                new StaticLocalFeatureObservable(new HashSet<>(environmentConfig.getToggledOn())),
                 configMetadata.getOrDefault(environmentConfig.getName(), new HashSet<>()),
                 defaultExceptionType);
         return new FeatureExecutorImpl(broker);

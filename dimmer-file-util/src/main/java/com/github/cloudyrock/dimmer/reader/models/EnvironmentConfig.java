@@ -6,14 +6,14 @@ import java.util.List;
 public final class EnvironmentConfig {
 
     private final String name;
-    private final List<String> featureIntercept;
+    private final List<String> toggledOn;
     private final String server;
     private final boolean isDefault;
 
-    public EnvironmentConfig (String name, String server, List<String> featureIntercept, boolean isDefault){
+    public EnvironmentConfig (String name, String server, List<String> toggledOnFeatures, boolean isDefault){
         this.name = name;
         this.server = server;
-        this.featureIntercept = featureIntercept;
+        this.toggledOn = toggledOnFeatures;
         this.isDefault = isDefault;
     }
 
@@ -21,8 +21,8 @@ public final class EnvironmentConfig {
         return name;
     }
 
-    public List<String> getFeatureIntercept() {
-        return new ArrayList<>(featureIntercept);
+    public List<String> getToggledOn() {
+        return toggledOn != null ? new ArrayList<>(toggledOn) : new ArrayList<>();
     }
 
     public boolean isDefault() {

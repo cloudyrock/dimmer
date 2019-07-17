@@ -10,18 +10,18 @@ public class Environment {
     @JsonProperty(value = "server", required = false)
     private String server;
 
-    @JsonProperty(value = "featureIntercept", required = false)
-    private List<String> featureIntercept;
+    @JsonProperty(value = "toggledOn", required = false)
+    private List<String> toggledOn;
 
     @JsonProperty(value = "default", required = false)
     private boolean isDefault;
 
-    public List<String> getFeatureIntercept() {
-        return featureIntercept;
+    public List<String> getToggledOn() {
+        return toggledOn;
     }
 
-    public void setFeatureIntercept(ArrayList<String> featureIntercept) {
-        this.featureIntercept = featureIntercept;
+    public void setToggledOn(ArrayList<String> toggledOn) {
+        this.toggledOn = toggledOn;
     }
 
     public String getServer() {

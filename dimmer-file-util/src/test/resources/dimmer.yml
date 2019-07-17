@@ -3,7 +3,7 @@ dimmer:
   environments:
     dev:
       default: true
-      featureIntercept:
+      toggledOn:
         - feature2
         - feature3
         - feature2

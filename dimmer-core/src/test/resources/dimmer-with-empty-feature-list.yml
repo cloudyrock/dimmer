@@ -1,0 +1,7 @@
+dimmer:
+  #version: 1.0 - for future release
+  environments:
+    defaultEnvironment:
+      default: true
+    environment_2:
+      toggledOn:
