@@ -1,0 +1,56 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'java'
+    id 'maven-publish'
+//    id "aspectj.gradle" version "0.1.6"
+}
+
+group 'com.github.cloudyrock.dimmer'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+
+gradlePlugin {
+    plugins {
+        dimmerPlugin {
+            id = 'dimmer'
+            implementationClass = 'com.github.cloudyrock.dimmer.DimmerGradlePlugin'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.github.cloudyrock.dimmer:dimmer-local:2.2.2'
+    compile 'org.aspectj:aspectjrt:1.8.2'
+    compile 'org.aspectj:aspectjtools:1.8.2'
+    compile 'org.aspectj:aspectjweaver:1.8.2'
+
+    testCompile gradleTestKit()
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            repository(url: uri('../repo'))
+//        }
+//    }
+//}
+//
+//publishing {
+//    publications {
+//        maven(MavenPublication) {
+//            groupId = project.group
+//            artifactId = project.name
+//            version = project.version
+//            from components.java
+//        }
+//    }
+//}
